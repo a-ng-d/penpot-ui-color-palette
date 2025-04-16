@@ -241,6 +241,8 @@ const loadUI = async () => {
     setTimeout(() => getPalettesOnCurrentPage(), 1000)
   })
 
+  penpot.on('selectionchange', () => processSelection())
+
   penpot.on('themechange', () => {
     penpot.ui.sendMessage({
       type: 'SET_THEME',
