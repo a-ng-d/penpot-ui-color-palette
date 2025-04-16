@@ -1,0 +1,37 @@
+name: Release for Figma/FigJam/Dev mode
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - dev
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Extract package version
+      id: extract_version
+      run: |
+        package_version=$(jq -r '.version' package.json)
+        echo "::set-output name=package_version::$package_version"
+
+    - name: Create release
+      id: create_release
+      if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'ui-color-palette-')
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.extract_version.outputs.package_version }}
+        release_name: ${{ github.event.pull_request.title}}
+        body: |
+          ## What's Changed
+          [Friendly release note](https://ui-color-palette.canny.io/changelog/${{ github.head_ref }})・[Full Changelog](https://github.com/a-ng-d/figma-ui-color-palette/commits/${{ github.head_ref }})

@@ -1,0 +1,15 @@
+{
+  "name": "UI Color Palette・WCAG-Compliant Color Palette Suite",
+  "code": "/plugin.js",
+  "icon": "/plugin_icon.webp",
+  "permissions": [
+    "content:read",
+    "content:write",
+    "library:read",
+    "library:write",
+    "user:read",
+    "selection:read",
+    "file:read",
+    "file:write"
+  ]
+}

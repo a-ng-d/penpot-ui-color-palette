@@ -1,0 +1,24 @@
+{
+  "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-css-order"],
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true,
+  "parser": "typescript",
+  "singleAttributePerLine": true,
+  "overrides": [
+    {
+      "files": "*.css",
+      "options": {
+        "parser": "css"
+      }
+    },
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "html",
+        "singleAttributePerLine": true
+      }
+    }
+  ]
+}

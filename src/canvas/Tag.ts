@@ -1,0 +1,243 @@
+import { RgbModel } from '@a_ng_d/figmug-ui'
+import { Board, Ellipse, ImageData, Text } from '@penpot/plugin-types'
+import chroma from 'chroma-js'
+
+export default class Tag {
+  private name: string
+  private content: string
+  private fontSize: number
+  private url: string | null
+  private backgroundColor: {
+    rgb: RgbModel
+    alpha: number
+  }
+  private isCompact: boolean
+  private nodeTag: Board | null
+  private nodeTagWithAvatar: Board | null
+  private nodeTagwithIndicator: Board | null
+  private nodeText: Text | null
+  private nodeIndicator: Ellipse | null
+  private nodeAvatar: Ellipse | null
+
+  constructor(options: {
+    name: string
+    content: string
+    fontSize?: number
+    backgroundColor?: {
+      rgb: RgbModel
+      alpha: number
+    }
+    isCompact?: boolean
+    url?: string | null
+  }) {
+    this.name = options.name
+    this.content = options.content
+    this.fontSize = options.fontSize ?? 8
+    this.url = options.url ?? (null as string | null)
+    this.backgroundColor = options.backgroundColor ?? {
+      rgb: {
+        r: 1,
+        g: 1,
+        b: 1,
+      },
+      alpha: 0.5,
+    }
+    this.isCompact = options.isCompact ?? false
+    this.nodeTag = null
+    this.nodeTagwithIndicator = null
+    this.nodeTagWithAvatar = null
+    this.nodeText = null
+    this.nodeIndicator = null
+    this.nodeAvatar = null
+  }
+
+  makeNodeTag = () => {
+    // Base
+    this.nodeTag = penpot.createBoard()
+    this.nodeTag.name = this.name
+    this.nodeTag.fills = [
+      {
+        fillColor: chroma([
+          this.backgroundColor.rgb.r * 255,
+          this.backgroundColor.rgb.g * 255,
+          this.backgroundColor.rgb.b * 255,
+        ]).hex(),
+        fillOpacity: this.backgroundColor.alpha,
+      },
+    ]
+    this.nodeTag.strokes = [
+      {
+        strokeColor: '#000000',
+        strokeOpacity: 0.05,
+      },
+    ]
+    this.nodeTag.borderRadius = 16
+    this.nodeTag.horizontalSizing = 'auto'
+    this.nodeTag.verticalSizing = 'auto'
+
+    // Layout
+    const flex = this.nodeTag.addFlexLayout()
+    flex.dir = 'row'
+    flex.horizontalSizing = 'fit-content'
+    flex.verticalSizing = 'fit-content'
+    flex.rowGap = 4
+    flex.rightPadding = this.isCompact ? 2 : 8
+    flex.leftPadding = 8
+    flex.topPadding = flex.bottomPadding = this.isCompact ? 2 : 4
+
+    // Insert
+    const textNode = this.makeNodeText()
+    if (textNode) this.nodeTag.appendChild(textNode)
+
+    return this.nodeTag
+  }
+
+  makeNodeTagwithIndicator = (gl: Array<number> = [0, 0, 0, 1]) => {
+    // Base
+    this.nodeTagwithIndicator = penpot.createBoard()
+    this.nodeTagwithIndicator.name = this.name
+    this.nodeTagwithIndicator.fills = [
+      {
+        fillColor: chroma([
+          this.backgroundColor.rgb.r * 255,
+          this.backgroundColor.rgb.g * 255,
+          this.backgroundColor.rgb.b * 255,
+        ]).hex(),
+        fillOpacity: this.backgroundColor.alpha,
+      },
+    ]
+    this.nodeTagwithIndicator.strokes = [
+      {
+        strokeColor: '#000000',
+        strokeOpacity: 0.05,
+      },
+    ]
+    this.nodeTagwithIndicator.borderRadius = 16
+    this.nodeTagwithIndicator.horizontalSizing = 'auto'
+    this.nodeTagwithIndicator.verticalSizing = 'auto'
+
+    // Layout
+    const flex = this.nodeTagwithIndicator.addFlexLayout()
+    flex.dir = 'row'
+    flex.horizontalSizing = 'fit-content'
+    flex.verticalSizing = 'fit-content'
+    flex.rightPadding = this.isCompact ? 2 : 8
+    flex.leftPadding = 8
+    flex.topPadding = flex.bottomPadding = this.isCompact ? 2 : 4
+    flex.rowGap = 4
+
+    // Insert
+    this.nodeTagwithIndicator.appendChild(
+      this.makeNodeIndicator([gl[0], gl[1], gl[2]])
+    )
+    const textNode = this.makeNodeText()
+    if (textNode) this.nodeTagwithIndicator.appendChild(textNode)
+
+    return this.nodeTagwithIndicator
+  }
+
+  makeNodeTagWithAvatar = (image?: ImageData | null): Board => {
+    // Base
+    this.nodeTagWithAvatar = penpot.createBoard()
+    this.nodeTagWithAvatar.name = this.name
+    this.nodeTagWithAvatar.fills = [
+      {
+        fillColor: chroma([
+          this.backgroundColor.rgb.r * 255,
+          this.backgroundColor.rgb.g * 255,
+          this.backgroundColor.rgb.b * 255,
+        ]).hex(),
+        fillOpacity: this.backgroundColor.alpha,
+      },
+    ]
+    this.nodeTagWithAvatar.strokes = [
+      {
+        strokeColor: '#000000',
+        strokeOpacity: 0.05,
+      },
+    ]
+    this.nodeTagWithAvatar.borderRadius = 16
+    this.nodeTagWithAvatar.horizontalSizing = 'auto'
+    this.nodeTagWithAvatar.verticalSizing = 'auto'
+
+    // Layout
+    const flex = this.nodeTagWithAvatar.addFlexLayout()
+    flex.dir = 'row'
+    flex.horizontalSizing = 'fit-content'
+    flex.verticalSizing = 'fit-content'
+    flex.horizontalPadding = this.isCompact ? 4 : 8
+    flex.verticalPadding = this.isCompact ? 2 : 4
+    flex.rowGap = 8
+
+    // Insert
+    const textNode = this.makeNodeText()
+    if (textNode) this.nodeTagWithAvatar.appendChild(textNode)
+
+    this.nodeTagWithAvatar.appendChild(this.makeNodeAvatar(image))
+
+    return this.nodeTagWithAvatar
+  }
+
+  makeNodeText = () => {
+    // Base
+    this.nodeText = penpot.createText(this.content)
+    if (this.nodeText) {
+      this.nodeText.name = '_text'
+      this.nodeText.fontFamily = 'Martian Mono'
+      this.nodeText.fontSize = this.fontSize.toString()
+      this.nodeText.fontWeight = '500'
+      this.nodeText.lineHeight = '1'
+      this.nodeText.align = 'center'
+      /*if (this.url !== null) {
+      this.nodeText.setRangeHyperlink(0, this.content.length, {
+        type: "URL",
+        value: this.url,
+      });
+      this.nodeText.setRangeTextDecoration(0, this.content.length, "UNDERLINE");
+    }*/
+      this.nodeText.fills = [
+        {
+          fillColor: '#000',
+        },
+      ]
+    }
+
+    return this.nodeText
+  }
+
+  makeNodeIndicator = (rgb: Array<number>) => {
+    // Base
+    this.nodeIndicator = penpot.createEllipse()
+    this.nodeIndicator.name = '_indicator'
+    this.nodeIndicator.resize(8, 8)
+    this.nodeIndicator.fills = [
+      {
+        fillColor: chroma([rgb[0], rgb[1], rgb[2]]).hex(),
+      },
+    ]
+    this.nodeIndicator.strokes = [
+      {
+        strokeColor: '#000000',
+        strokeOpacity: 0.1,
+      },
+    ]
+
+    return this.nodeIndicator
+  }
+
+  makeNodeAvatar = (image?: ImageData | null) => {
+    // Base
+    this.nodeAvatar = penpot.createEllipse()
+    this.nodeAvatar.resize(24, 24)
+    this.nodeAvatar.name = '_avatar'
+
+    if (image !== null && image !== undefined)
+      this.nodeAvatar.fills = [
+        {
+          fillImage: image,
+        },
+      ]
+
+    return this.nodeAvatar
+  }
+}
