@@ -50,6 +50,7 @@ const createPalette = async (msg: Msg) => {
     const scene: Shape[] = [palette]
     palette.x = penpot.viewport.center.x - palette.width / 2
     palette.y = penpot.viewport.center.y - palette.height / 2
+    penpot.selection = scene
     penpot.viewport.zoomIntoView(scene)
 
     /*await figma.saveVersionHistoryAsync(
