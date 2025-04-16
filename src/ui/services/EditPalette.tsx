@@ -162,12 +162,12 @@ export default class EditPalette extends PureComponent<
     this.unsubscribe = $canPaletteDeepSync.subscribe((value) => {
       this.setState({ canPaletteDeepSync: value })
     })
-    //window.addEventListener('message', this.handleMessage)
+    window.addEventListener('message', this.handleMessage)
   }
 
   componentWillUnmount = () => {
     if (this.unsubscribe) this.unsubscribe()
-    //window.removeEventListener('message', this.handleMessage)
+    window.removeEventListener('message', this.handleMessage)
   }
 
   // Handlers
@@ -180,7 +180,7 @@ export default class EditPalette extends PureComponent<
       DEFAULT: () => null,
     }
 
-    return actions[e.data.pluginMessage?.type ?? 'DEFAULT']?.()
+    return actions[e.data.type ?? 'DEFAULT']?.()
   }
 
   navHandler = (e: Event) =>

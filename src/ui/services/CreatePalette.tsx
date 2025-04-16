@@ -115,11 +115,11 @@ export default class CreatePalette extends PureComponent<
 
   // Lifecycle
   componentDidMount = () => {
-    //window.addEventListener('message', this.handleMessage)
+    window.addEventListener('message', this.handleMessage)
   }
 
   componentWillUnmount = () => {
-    //window.removeEventListener('message', this.handleMessage)
+    window.removeEventListener('message', this.handleMessage)
   }
 
   // Handlers
@@ -132,7 +132,7 @@ export default class CreatePalette extends PureComponent<
       DEFAULT: () => null,
     }
 
-    return actions[e.data.pluginMessage?.type ?? 'DEFAULT']?.()
+    return actions[e.data.type ?? 'DEFAULT']?.()
   }
 
   navHandler = (e: Event) =>

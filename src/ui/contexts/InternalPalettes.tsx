@@ -41,11 +41,11 @@ export default class InternalPalettes extends PureComponent<
   componentDidMount = () => {
     parent.postMessage({ pluginMessage: { type: 'GET_PALETTES' } }, '*')
 
-    //window.addEventListener('message', this.handleMessage)
+    window.addEventListener('message', this.handleMessage)
   }
 
   componentWillUnmount = () => {
-    //window.removeEventListener('message', this.handleMessage)
+    window.removeEventListener('message', this.handleMessage)
   }
 
   // Handlers
@@ -61,7 +61,7 @@ export default class InternalPalettes extends PureComponent<
       DEFAULT: () => null,
     }
 
-    return actions[e.data.pluginMessage?.type ?? 'DEFAULT']?.()
+    return actions[e.data.type ?? 'DEFAULT']?.()
   }
 
   // Direct Actions
