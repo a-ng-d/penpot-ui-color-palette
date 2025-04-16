@@ -53,10 +53,6 @@ const createPalette = async (msg: Msg) => {
     penpot.selection = scene
     penpot.viewport.zoomIntoView(scene)
 
-    /*await figma.saveVersionHistoryAsync(
-      locals[lang].info.paletteCreated.replace('$1', msg.data.palette.name)
-    )*/
-
     return true
   } else palette.remove()
 }
