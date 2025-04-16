@@ -23,7 +23,7 @@ const processSelection = () => {
   const viableSelection: Array<SourceColorConfiguration> = []
 
   const palette = selection[0] as Board
-  const selectionHandler = (state: string, element: Board | null = null) => {
+  const selectionHandler = (state: string) => {
     const actions: ActionsList = {
       PALETTE_SELECTED: async () => {
         penpot.ui.sendMessage({
@@ -123,31 +123,30 @@ const processSelection = () => {
     selectionHandler('EMPTY_SELECTION')
 
   selection.forEach((element) => {
-    const foundColors = (element as Board).fills.find(
-      (fill) => fill.fillColor === undefined
+    const foundColors = (element as Board).fills.filter(
+      (fill) => fill.fillColor !== undefined
     )
     if (
       element.type !== 'group' &&
       element.type !== 'image' &&
       element.type !== 'boolean'
     )
-      if (
-        foundColors !== undefined &&
-        element.getPluginDataKeys().length === 0
-      ) {
-        const hexToGl = chroma(foundColors.fillColor as HexModel).gl()
-        viableSelection.push({
-          name: element.name,
-          rgb: {
-            r: hexToGl[0],
-            g: hexToGl[1],
-            b: hexToGl[2],
-          },
-          source: 'CANVAS',
-          id: uid(),
-          isRemovable: false,
+      if (foundColors.length > 0 && element.getPluginDataKeys().length === 0) {
+        foundColors.forEach((color) => {
+          const hexToGl = chroma(color.fillColor as HexModel).gl()
+          viableSelection.push({
+            name: element.name,
+            rgb: {
+              r: hexToGl[0],
+              g: hexToGl[1],
+              b: hexToGl[2],
+            },
+            source: 'CANVAS',
+            id: uid(),
+            isRemovable: false,
+          })
         })
-        selectionHandler('COLOR_SELECTED', element as Board)
+        selectionHandler('COLOR_SELECTED')
       }
   })
 
