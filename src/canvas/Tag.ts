@@ -80,10 +80,11 @@ export default class Tag {
     flex.dir = 'row'
     flex.horizontalSizing = 'fit-content'
     flex.verticalSizing = 'fit-content'
-    flex.rowGap = 4
+    flex.columnGap = 4
+    flex.alignItems = 'center'
     flex.rightPadding = this.isCompact ? 2 : 8
     flex.leftPadding = 8
-    flex.topPadding = flex.bottomPadding = this.isCompact ? 2 : 4
+    flex.verticalPadding = this.isCompact ? 2 : 4
 
     // Insert
     const textNode = this.makeNodeText()
@@ -121,10 +122,11 @@ export default class Tag {
     flex.dir = 'row'
     flex.horizontalSizing = 'fit-content'
     flex.verticalSizing = 'fit-content'
+    flex.columnGap = 4
+    flex.alignItems = 'center'
     flex.rightPadding = this.isCompact ? 2 : 8
     flex.leftPadding = 8
-    flex.topPadding = flex.bottomPadding = this.isCompact ? 2 : 4
-    flex.rowGap = 4
+    flex.verticalPadding = this.isCompact ? 2 : 4
 
     // Insert
     this.nodeTagwithIndicator.appendChild(
@@ -165,9 +167,9 @@ export default class Tag {
     flex.dir = 'row'
     flex.horizontalSizing = 'fit-content'
     flex.verticalSizing = 'fit-content'
+    flex.columnGap = 8
     flex.horizontalPadding = this.isCompact ? 4 : 8
     flex.verticalPadding = this.isCompact ? 2 : 4
-    flex.rowGap = 8
 
     // Insert
     const textNode = this.makeNodeText()
@@ -212,7 +214,7 @@ export default class Tag {
     this.nodeIndicator.resize(8, 8)
     this.nodeIndicator.fills = [
       {
-        fillColor: chroma([rgb[0], rgb[1], rgb[2]]).hex(),
+        fillColor: chroma([rgb[0] * 255, rgb[1] * 255, rgb[2] * 255]).hex(),
       },
     ]
     this.nodeIndicator.strokes = [

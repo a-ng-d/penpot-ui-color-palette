@@ -109,27 +109,47 @@ export default class Sample {
     flex.verticalSizing = 'fill'
 
     // Insert
-    if (this.view.includes('PALETTE_WITH_PROPERTIES') && !isColorName)
-      this.node.appendChild(
-        new Properties(
-          this.scale ?? '0',
-          this.rgb,
-          this.colorSpace,
-          this.visionSimulationMode,
-          this.textColorsTheme
-        ).makeNode()
-      )
-    else if (isColorName)
-      this.node.appendChild(new Property('_label', this.name, 10).makeNode())
-    if (this.status.isClosestToRef || this.status.isLocked)
-      this.node.appendChild(
-        new Status(
-          this.status,
-          this.source
-            ? { r: this.source.r, g: this.source.g, b: this.source.b }
-            : {}
-        ).makeNode()
-      )
+    if (this.view.includes('PALETTE_WITH_PROPERTIES') && !isColorName) {
+      const properties = new Properties(
+        this.scale ?? '0',
+        this.rgb,
+        this.colorSpace,
+        this.visionSimulationMode,
+        this.textColorsTheme
+      ).makeNode()
+
+      this.node.appendChild(properties)
+
+      if (properties.layoutChild) {
+        properties.layoutChild.horizontalSizing = 'fill'
+        properties.layoutChild.verticalSizing = 'fill'
+      }
+    } else if (isColorName) {
+      const property = new Property('_label', this.name, 10).makeNode()
+
+      this.node.appendChild(property)
+
+      if (property.layoutChild) {
+        property.layoutChild.horizontalSizing = 'fill'
+        property.layoutChild.verticalSizing = 'fill'
+      }
+    }
+
+    if (this.status.isClosestToRef || this.status.isLocked) {
+      const status = new Status(
+        this.status,
+        this.source
+          ? { r: this.source.r, g: this.source.g, b: this.source.b }
+          : {}
+      ).makeNode()
+
+      this.node.appendChild(status)
+
+      if (status.layoutChild) {
+        status.layoutChild.horizontalSizing = 'fill'
+        status.layoutChild.verticalSizing = 'fill'
+      }
+    }
 
     return this.node
   }

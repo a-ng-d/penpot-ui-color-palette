@@ -110,6 +110,8 @@ export default class Properties {
     this.nodeBottomProps = penpot.createBoard()
     this.nodeBottomProps.name = '_bottom'
     this.nodeBottomProps.fills = []
+    this.nodeBottomProps.horizontalSizing = 'auto'
+    this.nodeBottomProps.verticalSizing = 'auto'
 
     // Layout
     const flex = this.nodeBottomProps.addFlexLayout()
@@ -118,7 +120,12 @@ export default class Properties {
     flex.verticalSizing = 'fit-content'
 
     // Insert
-    this.nodeBottomProps.appendChild(this.makeNodeContrastScoresProps())
+    const nodeContrastScoresProps = this.makeNodeContrastScoresProps()
+
+    this.nodeBottomProps.appendChild(nodeContrastScoresProps)
+
+    if (nodeContrastScoresProps.layoutChild)
+      nodeContrastScoresProps.layoutChild.horizontalSizing = 'fill'
 
     return this.nodeBottomProps
   }
@@ -128,14 +135,16 @@ export default class Properties {
     this.nodeBaseProps = penpot.createBoard()
     this.nodeBaseProps.name = '_base'
     this.nodeBaseProps.fills = []
+    this.nodeBaseProps.horizontalSizing = 'auto'
+    this.nodeBaseProps.verticalSizing = 'auto'
 
     // Layout
     const flex = this.nodeBaseProps.addFlexLayout()
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
-    flex.columnGap = 4
-    flex.justifyContent = 'end'
+    flex.rowGap = 4
+    flex.alignItems = 'end'
 
     let basePropViaColorSpace
 
@@ -199,13 +208,15 @@ export default class Properties {
     this.nodeContrastScoresProps = penpot.createBoard()
     this.nodeContrastScoresProps.name = '_contrast-scores'
     this.nodeContrastScoresProps.fills = []
+    this.nodeContrastScoresProps.horizontalSizing = 'auto'
+    this.nodeContrastScoresProps.verticalSizing = 'auto'
 
     // Layout
     const flex = this.nodeContrastScoresProps.addFlexLayout()
     flex.dir = 'column'
+    flex.rowGap = 4
     flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
-    flex.columnGap = 4
 
     // Insert
     // WCAG
@@ -652,13 +663,12 @@ export default class Properties {
     flex.verticalSizing = 'fill'
     flex.justifyContent = 'space-between'
 
-    if (this.node.layoutChild) {
-      this.node.layoutChild.horizontalSizing = 'fill'
-      this.node.layoutChild.horizontalSizing = 'fill'
-    }
-
     // Insert
-    /*this.node.appendChild(this.makeNodeTopProps())
+    const nodeTopProps = this.makeNodeTopProps()
+    const nodeBaseProps = this.makeNodeBaseProps()
+    const nodeBottomProps = this.makeNodeBottomProps()
+
+    this.node.appendChild(nodeTopProps)
     this.nodeTopProps?.appendChild(
       new Tag({
         name: '_scale',
@@ -666,8 +676,15 @@ export default class Properties {
         fontSize: 10,
       }).makeNodeTag()
     )
-    this.nodeTopProps?.appendChild(this.makeNodeBaseProps())
-    this.node.appendChild(this.makeNodeBottomProps())*/
+    this.nodeTopProps?.appendChild(nodeBaseProps)
+    this.node.appendChild(nodeBottomProps)
+
+    if (nodeTopProps.layoutChild)
+      nodeTopProps.layoutChild.horizontalSizing = 'fill'
+    if (nodeBaseProps.layoutChild)
+      nodeBaseProps.layoutChild.horizontalSizing = 'fill'
+    if (nodeBottomProps.layoutChild)
+      nodeBottomProps.layoutChild.horizontalSizing = 'fill'
 
     return this.node
   }
