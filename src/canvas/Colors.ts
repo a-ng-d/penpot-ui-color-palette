@@ -542,12 +542,18 @@ export default class Colors {
     flex.dir = 'column'
     flex.horizontalSizing = 'fit-content'
     flex.verticalSizing = 'fit-content'
-    flex.columnGap = 16
+    flex.rowGap = 16
 
     // Insert
-    this.node.appendChild(new Title(this.parent).makeNode())
+    const title = new Title(this.parent).makeNode()
+    const signature = new Signature().makeNode()
+
+    this.node.appendChild(title)
     this.node.appendChild(this.makeNodeShades())
-    this.node.appendChild(new Signature().makeNode())
+    this.node.appendChild(signature)
+
+    if (title.layoutChild) title.layoutChild.horizontalSizing = 'fill'
+    if (signature.layoutChild) signature.layoutChild.horizontalSizing = 'fill'
 
     if (this.palette !== undefined)
       this.palette.fills = [
