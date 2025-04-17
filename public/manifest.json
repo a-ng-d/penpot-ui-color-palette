@@ -5,9 +5,9 @@
   "permissions": [
     "content:read",
     "content:write",
+    "user:read",
     "library:read",
     "library:write",
-    "user:read",
     "selection:read",
     "file:read",
     "file:write"
