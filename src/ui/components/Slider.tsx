@@ -41,8 +41,8 @@ export default class Slider extends Component<SliderProps, SliderStates> {
 
   static defaultProps = {
     colors: {
-      min: 'var(--figma-color-bg-secondary)',
-      max: 'var(--figma-color-bg-secondary)',
+      min: 'var(--color-background-quaternary)',
+      max: 'var(--color-background-quaternary)',
     },
   }
 
