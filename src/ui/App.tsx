@@ -54,10 +54,8 @@ import { ActionsList, TextColorsThemeHexModel } from '../types/models'
 import { UserSession } from '../types/user'
 import doLightnessScale from '../utils/doLightnessScale'
 import {
-  trackEditorEvent,
   trackExportEvent,
   trackPurchaseEvent,
-  trackTrialEnablementEvent,
   trackUserConsentEvent,
 } from '../utils/eventsTracker'
 import { userConsent } from '../utils/userConsent'

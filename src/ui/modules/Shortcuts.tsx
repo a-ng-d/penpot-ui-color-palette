@@ -29,7 +29,7 @@ import {
 import { UserConfiguration } from '../../types/configurations'
 import { UserSession } from '../../types/user'
 import Feature from '../components/Feature'
-import TrialControls from './TrialControls'
+import PlanControls from './PlanControls'
 
 interface ShortcutsProps {
   planStatus: PlanStatus
@@ -197,7 +197,7 @@ export default class Shortcuts extends PureComponent<
     let fragment = null
 
     if (isTrialEnabled || this.props.trialStatus !== 'UNUSED')
-      fragment = <TrialControls {...this.props} />
+      fragment = <PlanControls {...this.props} />
     else if (
       this.props.planStatus === 'UNPAID' &&
       this.props.trialStatus === 'UNUSED'
