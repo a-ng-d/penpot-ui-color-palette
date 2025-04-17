@@ -419,40 +419,40 @@ export default class Colors {
       if (!this.parent.view.includes('PALETTE')) flex.rowGap = this.gap
 
       // Insert
-      this.nodeRowSource.appendChild(
-        this.parent.view.includes('PALETTE')
-          ? new Sample(
-              color.name,
-              null,
-              null,
-              sourceColor.rgb,
-              this.parent.colorSpace,
-              this.parent.visionSimulationMode,
-              this.parent.view,
-              this.parent.textColorsTheme
-            ).makeNodeShade(
-              this.sampleSize,
-              this.sampleSize * this.sampleRatio,
-              color.name,
-              true
-            )
-          : new Sample(
-              color.name,
-              null,
-              null,
-              sourceColor.rgb,
-              this.parent.colorSpace,
-              this.parent.visionSimulationMode,
-              this.parent.view,
-              this.parent.textColorsTheme
-            ).makeNodeRichShade(
-              this.sampleSize * this.sampleRatio,
-              this.sampleSize * this.sampleRatio * this.sampleScale,
-              color.name,
-              true,
-              color.description
-            )
-      )
+      const sampleNode = this.parent.view.includes('PALETTE')
+        ? new Sample(
+            color.name,
+            null,
+            null,
+            sourceColor.rgb,
+            this.parent.colorSpace,
+            this.parent.visionSimulationMode,
+            this.parent.view,
+            this.parent.textColorsTheme
+          ).makeNodeShade(
+            this.sampleSize,
+            this.sampleSize * this.sampleRatio,
+            color.name,
+            true
+          )
+        : new Sample(
+            color.name,
+            null,
+            null,
+            sourceColor.rgb,
+            this.parent.colorSpace,
+            this.parent.visionSimulationMode,
+            this.parent.view,
+            this.parent.textColorsTheme
+          ).makeNodeRichShade(
+            this.sampleSize * this.sampleRatio,
+            this.sampleSize * this.sampleRatio * this.sampleScale,
+            color.name,
+            true,
+            color.description
+          )
+
+      this.nodeRowSource.appendChild(sampleNode)
 
       color.shades
         .filter((shade) => shade.name !== 'source')
@@ -545,15 +545,16 @@ export default class Colors {
     flex.rowGap = 16
 
     // Insert
-    const title = new Title(this.parent).makeNode()
-    const signature = new Signature().makeNode()
+    const titleNode = new Title(this.parent).makeNode()
+    const signatureNode = new Signature().makeNode()
 
-    this.node.appendChild(title)
+    this.node.appendChild(titleNode)
     this.node.appendChild(this.makeNodeShades())
-    this.node.appendChild(signature)
+    this.node.appendChild(signatureNode)
 
-    if (title.layoutChild) title.layoutChild.horizontalSizing = 'fill'
-    if (signature.layoutChild) signature.layoutChild.horizontalSizing = 'fill'
+    if (titleNode.layoutChild) titleNode.layoutChild.horizontalSizing = 'fill'
+    if (signatureNode.layoutChild)
+      signatureNode.layoutChild.horizontalSizing = 'fill'
 
     if (this.palette !== undefined)
       this.palette.fills = [

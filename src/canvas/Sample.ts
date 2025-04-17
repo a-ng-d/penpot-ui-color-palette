@@ -110,7 +110,7 @@ export default class Sample {
 
     // Insert
     if (this.view.includes('PALETTE_WITH_PROPERTIES') && !isColorName) {
-      const properties = new Properties(
+      const propertiesNode = new Properties(
         this.scale ?? '0',
         this.rgb,
         this.colorSpace,
@@ -118,36 +118,36 @@ export default class Sample {
         this.textColorsTheme
       ).makeNode()
 
-      this.node.appendChild(properties)
+      this.node.appendChild(propertiesNode)
 
-      if (properties.layoutChild) {
-        properties.layoutChild.horizontalSizing = 'fill'
-        properties.layoutChild.verticalSizing = 'fill'
+      if (propertiesNode.layoutChild) {
+        propertiesNode.layoutChild.horizontalSizing = 'fill'
+        propertiesNode.layoutChild.verticalSizing = 'fill'
       }
     } else if (isColorName) {
-      const property = new Property('_label', this.name, 10).makeNode()
+      const propertyNode = new Property('_label', this.name, 10).makeNode()
 
-      this.node.appendChild(property)
+      this.node.appendChild(propertyNode)
 
-      if (property.layoutChild) {
-        property.layoutChild.horizontalSizing = 'fill'
-        property.layoutChild.verticalSizing = 'fill'
+      if (propertyNode.layoutChild) {
+        propertyNode.layoutChild.horizontalSizing = 'fill'
+        propertyNode.layoutChild.verticalSizing = 'fill'
       }
     }
 
     if (this.status.isClosestToRef || this.status.isLocked) {
-      const status = new Status(
+      const statusNode = new Status(
         this.status,
         this.source
           ? { r: this.source.r, g: this.source.g, b: this.source.b }
           : {}
       ).makeNode()
 
-      this.node.appendChild(status)
+      this.node.appendChild(statusNode)
 
-      if (status.layoutChild) {
-        status.layoutChild.horizontalSizing = 'fill'
-        status.layoutChild.verticalSizing = 'fill'
+      if (statusNode.layoutChild) {
+        statusNode.layoutChild.horizontalSizing = 'fill'
+        statusNode.layoutChild.verticalSizing = 'fill'
       }
     }
 
@@ -177,11 +177,14 @@ export default class Sample {
     // color
     this.nodeColor = penpot.createBoard()
     this.nodeColor.name = '_color'
+    this.nodeColor.resize(96, 96)
+    this.nodeColor.horizontalSizing = 'fix'
+    this.nodeColor.verticalSizing = 'auto'
+
     const flexColor = this.nodeColor.addFlexLayout()
     flexColor.dir = 'column'
     flexColor.horizontalPadding = flex.verticalPadding = 8
-    flexColor.columnGap = 8
-    this.nodeColor.resize(96, 96)
+    flexColor.rowGap = 8
 
     this.nodeColor.fills = [
       {
@@ -191,38 +194,55 @@ export default class Sample {
     this.nodeColor.borderRadius = 16
 
     // Insert
-    this.nodeColor.appendChild(new Property('_label', name, 10).makeNode())
-    if (this.status.isClosestToRef)
-      this.nodeColor.appendChild(
-        new Status(
-          this.status,
-          this.source
-            ? { r: this.source.r, g: this.source.g, b: this.source.b }
-            : {}
-        ).makeNode()
-      )
+    const propertyNode = new Property('_label', name, 10).makeNode()
+
+    this.nodeColor.appendChild(propertyNode)
+
+    if (this.status.isClosestToRef) {
+      const statusNode = new Status(
+        this.status,
+        this.source
+          ? { r: this.source.r, g: this.source.g, b: this.source.b }
+          : {}
+      ).makeNode()
+
+      this.nodeColor.appendChild(statusNode)
+
+      if (statusNode.layoutChild)
+        statusNode.layoutChild.horizontalSizing = 'fill'
+    }
 
     this.node.appendChild(this.nodeColor)
-    if (isColorName && description !== '')
-      this.node.appendChild(
-        new Paragraph(
-          '_description',
-          description,
-          'FILL',
-          undefined,
-          8
-        ).makeNode()
-      )
-    else if (!this.view.includes('SHEET_SAFE_MODE') && !isColorName)
-      this.node.appendChild(
-        new Properties(
-          this.scale ?? '0',
-          this.rgb,
-          this.colorSpace,
-          this.visionSimulationMode,
-          this.textColorsTheme
-        ).makeNodeDetailed()
-      )
+
+    if (isColorName && description !== '') {
+      const paragraphNode = new Paragraph(
+        '_description',
+        description,
+        'FILL',
+        undefined,
+        8
+      ).makeNode()
+
+      this.node.appendChild(paragraphNode)
+
+      if (paragraphNode.layoutChild)
+        paragraphNode.layoutChild.horizontalSizing = 'fill'
+    } else if (!this.view.includes('SHEET_SAFE_MODE') && !isColorName) {
+      const propertiesNode = new Properties(
+        this.scale ?? '0',
+        this.rgb,
+        this.colorSpace,
+        this.visionSimulationMode,
+        this.textColorsTheme
+      ).makeNode()
+
+      this.node.appendChild(propertiesNode)
+
+      if (propertiesNode.layoutChild) {
+        propertiesNode.layoutChild.horizontalSizing = 'fill'
+        propertiesNode.layoutChild.verticalSizing = 'fill'
+      }
+    }
 
     return this.node
   }

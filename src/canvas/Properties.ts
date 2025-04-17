@@ -664,11 +664,11 @@ export default class Properties {
     flex.justifyContent = 'space-between'
 
     // Insert
-    const nodeTopProps = this.makeNodeTopProps()
-    const nodeBaseProps = this.makeNodeBaseProps()
-    const nodeBottomProps = this.makeNodeBottomProps()
+    const nodeTopPropsNode = this.makeNodeTopProps()
+    const nodeBasePropsNode = this.makeNodeBaseProps()
+    const nodeBottomPropsNode = this.makeNodeBottomProps()
 
-    this.node.appendChild(nodeTopProps)
+    this.node.appendChild(nodeTopPropsNode)
     this.nodeTopProps?.appendChild(
       new Tag({
         name: '_scale',
@@ -676,15 +676,15 @@ export default class Properties {
         fontSize: 10,
       }).makeNodeTag()
     )
-    this.nodeTopProps?.appendChild(nodeBaseProps)
-    this.node.appendChild(nodeBottomProps)
+    this.nodeTopProps?.appendChild(nodeBasePropsNode)
+    this.node.appendChild(nodeBottomPropsNode)
 
-    if (nodeTopProps.layoutChild)
-      nodeTopProps.layoutChild.horizontalSizing = 'fill'
-    if (nodeBaseProps.layoutChild)
-      nodeBaseProps.layoutChild.horizontalSizing = 'fill'
-    if (nodeBottomProps.layoutChild)
-      nodeBottomProps.layoutChild.horizontalSizing = 'fill'
+    if (nodeTopPropsNode.layoutChild)
+      nodeTopPropsNode.layoutChild.horizontalSizing = 'fill'
+    if (nodeBasePropsNode.layoutChild)
+      nodeBasePropsNode.layoutChild.horizontalSizing = 'fill'
+    if (nodeBottomPropsNode.layoutChild)
+      nodeBottomPropsNode.layoutChild.horizontalSizing = 'fill'
 
     return this.node
   }
