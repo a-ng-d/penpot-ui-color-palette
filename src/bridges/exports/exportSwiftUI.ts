@@ -44,11 +44,13 @@ const exportSwiftUI = (palette: Board) => {
 
     penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_SWIFTUI',
-      id: penpot.currentUser.id,
-      context: 'APPLE_SWIFTUI',
-      data: `import SwiftUI\n\npublic extension Color {\n  static let Token = Color.TokenColor()\n  struct TokenColor {\n    ${swift.join(
-        '\n    '
-      )}\n  }\n}`,
+      data: {
+        id: penpot.currentUser.id,
+        context: 'APPLE_SWIFTUI',
+        code: `import SwiftUI\n\npublic extension Color {\n  static let Token = Color.TokenColor()\n  struct TokenColor {\n    ${swift.join(
+          '\n    '
+        )}\n  }\n}`,
+      },
     })
   } else null //figma.notify(locals[lang].error.corruption);
 }

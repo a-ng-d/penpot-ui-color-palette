@@ -40,9 +40,11 @@ const exportKt = (palette: Board) => {
 
     penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_KT',
-      id: penpot.currentUser.id,
-      context: 'ANDROID_COMPOSE',
-      data: `import androidx.compose.ui.graphics.Color\n\n${kotlin.join('\n')}`,
+      data: {
+        id: penpot.currentUser.id,
+        context: 'ANDROID_COMPOSE',
+        code: `import androidx.compose.ui.graphics.Color\n\n${kotlin.join('\n')}`,
+      },
     })
   } else null //figma.notify(locals[lang].error.corruption);
 }

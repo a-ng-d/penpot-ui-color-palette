@@ -16,15 +16,15 @@ const checkUserConsent = async () => {
     })
   )
 
-  penpot.ui.sendMessage({
+  return penpot.ui.sendMessage({
     type: 'CHECK_USER_CONSENT',
-    mustUserConsent:
-      currentUserConsentVersion !== userConsentVersion ||
-      currentUserConsentVersion === undefined,
-    userConsent: userConsentData,
+    data: {
+      mustUserConsent:
+        currentUserConsentVersion !== userConsentVersion ||
+        currentUserConsentVersion === undefined,
+      userConsent: userConsentData,
+    },
   })
-
-  return null
 }
 
 export default checkUserConsent

@@ -38,11 +38,13 @@ const exportXml = (palette: Board) => {
 
     penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_XML',
-      id: penpot.currentUser.id,
-      context: 'ANDROID_XML',
-      data: `<?xml version="1.0" encoding="utf-8"?>\n<resources>\n  ${resources.join(
-        '\n  '
-      )}\n</resources>`,
+      data: {
+        id: penpot.currentUser.id,
+        context: 'ANDROID_XML',
+        code: `<?xml version="1.0" encoding="utf-8"?>\n<resources>\n  ${resources.join(
+          '\n  '
+        )}\n</resources>`,
+      },
     })
   } else null //figma.notify(locals[lang].error.corruption);
 }

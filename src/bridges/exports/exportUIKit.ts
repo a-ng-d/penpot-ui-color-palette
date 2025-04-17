@@ -41,9 +41,11 @@ const exportUIKit = (palette: Board) => {
 
     penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_UIKIT',
-      id: penpot.currentUser.id,
-      context: 'APPLE_UIKIT',
-      data: `import UIKit\n\nstruct Color {\n  ${swift.join('\n\n  ')}\n}`,
+      data: {
+        id: penpot.currentUser.id,
+        context: 'APPLE_UIKIT',
+        code: `import UIKit\n\nstruct Color {\n  ${swift.join('\n\n  ')}\n}`,
+      },
     })
   } else null //figma.notify(locals[lang].error.corruption);
 }

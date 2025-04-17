@@ -59,17 +59,19 @@ const exportCsv = (palette: Board) => {
 
     penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_CSV',
-      id: penpot.currentUser.id,
-      context: 'CSV',
-      data:
-        paletteData.themes[0].colors.length === 0
-          ? [
-              {
-                name: 'empty',
-                colors: [{ csv: locals[lang].warning.emptySourceColors }],
-              },
-            ]
-          : themeCsv,
+      data: {
+        id: penpot.currentUser.id,
+        context: 'CSV',
+        code:
+          paletteData.themes[0].colors.length === 0
+            ? [
+                {
+                  name: 'empty',
+                  colors: [{ csv: locals[lang].warning.emptySourceColors }],
+                },
+              ]
+            : themeCsv,
+      },
     })
   } else null //figma.notify(locals[lang].error.corruption);
 }

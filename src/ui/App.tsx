@@ -270,68 +270,52 @@ export default class App extends Component<Record<string, never>, AppStates> {
       .catch((error) => console.error(error))*/
 
     window.addEventListener('message', (e: MessageEvent) => {
-      console.log(e.data)
+      const path = e.data
+
       try {
         const setTheme = () => {
           document.documentElement.setAttribute(
             'data-mode',
-            e.data.data.theme === 'light' ? 'penpot-light' : 'penpot-dark'
+            path.data.theme === 'light' ? 'penpot-light' : 'penpot-dark'
           )
         }
 
         const checkUserAuthentication = async () => {
           this.setState({
             userIdentity: {
-              id: e.data.id,
-              fullName: e.data.data.fullName,
-              avatar: e.data.data.avatar,
+              id: path.data.id,
+              fullName: path.data.fullName,
+              avatar: path.data.avatar,
             },
           })
         }
 
         const checkUserConsent = () => {
           this.setState({
-            mustUserConsent: e.data.mustUserConsent,
-            userConsent: e.data.userConsent,
+            mustUserConsent: path.data.mustUserConsent,
+            userConsent: path.data.userConsent,
           })
         }
 
         const checkUserPreferences = () => {
           setTimeout(() => this.setState({ isLoaded: true }), 1000)
-          $isWCAGDisplayed.set(e.data.data.isWCAGDisplayed)
-          $isAPCADisplayed.set(e.data.data.isAPCADisplayed)
-          $canPaletteDeepSync.set(e.data.data.canDeepSyncPalette)
-          $canVariablesDeepSync.set(e.data.data.canDeepSyncVariables)
-          $canStylesDeepSync.set(e.data.data.canDeepSyncStyles)
-          $isVsCodeMessageDisplayed.set(e.data.data.isVsCodeMessageDisplayed)
-        }
-
-        const checkEditorType = () => {
-          this.setState({ editorType: e.data.data })
-          setTimeout(
-            () =>
-              trackEditorEvent(
-                e.data.id,
-                this.state.userConsent.find(
-                  (consent) => consent.id === 'mixpanel'
-                )?.isConsented ?? false,
-                {
-                  editor: e.data.data,
-                }
-              ),
-            1000
-          )
+          $isWCAGDisplayed.set(path.data.isWCAGDisplayed)
+          $isAPCADisplayed.set(path.data.isAPCADisplayed)
+          $canPaletteDeepSync.set(path.data.canDeepSyncPalette)
+          $canVariablesDeepSync.set(path.data.canDeepSyncVariables)
+          $canStylesDeepSync.set(path.data.canDeepSyncStyles)
+          $isVsCodeMessageDisplayed.set(path.data.isVsCodeMessageDisplayed)
         }
 
         const handleHighlight = () => {
           this.setState({
             priorityContainerContext:
-              e.data.data !== 'DISPLAY_HIGHLIGHT_DIALOG'
+              path.data.status !== 'DISPLAY_HIGHLIGHT_DIALOG'
                 ? 'EMPTY'
                 : 'HIGHLIGHT',
             highlight: {
               version: this.state.highlight.version,
-              status: e.data.data,
+              status: path.data.status,
             },
           })
         }
@@ -339,7 +323,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
         const handleOnboarding = () => {
           this.setState({
             priorityContainerContext:
-              e.data.data !== 'DISPLAY_ONBOARDING_DIALOG'
+              path.data.status !== 'DISPLAY_ONBOARDING_DIALOG'
                 ? 'EMPTY'
                 : 'ONBOARDING',
           })
@@ -347,9 +331,9 @@ export default class App extends Component<Record<string, never>, AppStates> {
 
         const checkPlanStatus = () =>
           this.setState({
-            planStatus: e.data.data.planStatus,
-            trialStatus: e.data.data.trialStatus,
-            trialRemainingTime: e.data.data.trialRemainingTime,
+            planStatus: path.data.planStatus,
+            trialStatus: path.data.trialStatus,
+            trialRemainingTime: path.data.trialRemainingTime,
           })
 
         const updateWhileEmptySelection = () => {
@@ -518,7 +502,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
                 (sourceColor: SourceColorConfiguration) =>
                   sourceColor.source !== 'CANVAS'
               )
-              .concat(e.data.data.selection),
+              .concat(path.data.selection),
             onGoingStep: 'colors selected',
           })
           isPaletteSelected = false
@@ -526,7 +510,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
 
         const updateWhilePaletteSelected = () => {
           isPaletteSelected = true
-          this.palette.setKey('preset', e.data.data.preset)
+          this.palette.setKey('preset', path.data.preset)
           parent.postMessage(
             {
               pluginMessage: {
@@ -546,64 +530,64 @@ export default class App extends Component<Record<string, never>, AppStates> {
             '*'
           )
           this.setState({
-            service: e.data.data.editorType !== 'dev' ? 'EDIT' : 'TRANSFER',
+            service: path.data.editorType !== 'dev' ? 'EDIT' : 'TRANSFER',
             sourceColors: [],
-            id: e.data.data.id,
-            name: e.data.data.name,
-            description: e.data.data.description,
-            preset: e.data.data.preset,
-            scale: e.data.data.scale,
-            shift:
-              e.data.data.shift !== '' ? e.data.data.shift : { chroma: 100 },
-            areSourceColorsLocked: e.data.data.areSourceColorsLocked,
-            colors: e.data.data.colors,
-            colorSpace: e.data.data.colorSpace,
-            visionSimulationMode: e.data.data.visionSimulationMode,
-            themes: e.data.data.themes,
-            view: e.data.data.view,
-            algorithmVersion: e.data.data.algorithmVersion,
-            textColorsTheme: e.data.data.textColorsTheme,
-            screenshot: e.data.data.screenshot,
+            id: path.data.id,
+            name: path.data.name,
+            description: path.data.description,
+            preset: path.data.preset,
+            scale: path.data.scale,
+            shift: path.data.shift !== '' ? path.data.shift : { chroma: 100 },
+            areSourceColorsLocked: path.data.areSourceColorsLocked,
+            colors: path.data.colors,
+            colorSpace: path.data.colorSpace,
+            visionSimulationMode: path.data.visionSimulationMode,
+            themes: path.data.themes,
+            view: path.data.view,
+            algorithmVersion: path.data.algorithmVersion,
+            textColorsTheme: path.data.textColorsTheme,
+            screenshot: path.data.screenshot,
             dates: {
-              createdAt: e.data.data.createdAt,
-              updatedAt: e.data.data.updatedAt,
-              publishedAt: e.data.data.publishedAt,
+              createdAt: path.data.createdAt,
+              updatedAt: path.data.updatedAt,
+              publishedAt: path.data.publishedAt,
             },
             publicationStatus: {
-              isPublished: e.data.data.isPublished,
-              isShared: e.data.data.isShared,
+              isPublished: path.data.isPublished,
+              isShared: path.data.isShared,
             },
             creatorIdentity: {
-              creatorFullName: e.data.data.creatorFullName,
-              creatorAvatar: e.data.data.creatorAvatar,
-              creatorId: e.data.data.creatorId,
+              creatorFullName: path.data.creatorFullName,
+              creatorAvatar: path.data.creatorAvatar,
+              creatorId: path.data.creatorId,
             },
             onGoingStep: 'palette selected',
           })
         }
 
         const exportPaletteToJson = () => {
+          console.log()
           this.setState({
             export: {
               format: 'JSON',
-              context: e.data.context,
+              context: path.data.context,
               label: `${locals[this.state.lang].actions.export} ${
                 locals[this.state.lang].export.tokens.label
               }`,
               colorSpace: 'RGB',
               mimeType: 'application/json',
-              data: e.data.data,
+              data: path.data.code,
             },
             onGoingStep: 'export previewed',
           })
-          if (e.data.context !== 'TOKENS_GLOBAL')
+          if (path.data.context !== 'TOKENS_GLOBAL')
             trackExportEvent(
-              e.data.id,
+              path.data.id,
               this.state.userConsent.find(
                 (consent) => consent.id === 'mixpanel'
               )?.isConsented ?? false,
               {
-                feature: e.data.context,
+                feature: path.data.context,
               }
             )
         }
@@ -612,23 +596,23 @@ export default class App extends Component<Record<string, never>, AppStates> {
           this.setState({
             export: {
               format: 'CSS',
-              colorSpace: e.data.colorSpace,
-              context: e.data.context,
+              colorSpace: path.data.colorSpace,
+              context: path.data.context,
               label: `${locals[this.state.lang].actions.export} ${
                 locals[this.state.lang].export.css.customProperties
               }`,
               mimeType: 'text/css',
-              data: e.data.data,
+              data: path.data.code,
             },
             onGoingStep: 'export previewed',
           })
           trackExportEvent(
-            e.data.id,
+            path.data.id,
             this.state.userConsent.find((consent) => consent.id === 'mixpanel')
               ?.isConsented ?? false,
             {
-              feature: e.data.context,
-              colorSpace: e.data.colorSpace,
+              feature: path.data.context,
+              colorSpace: path.data.colorSpace,
             }
           )
         }
@@ -637,14 +621,14 @@ export default class App extends Component<Record<string, never>, AppStates> {
           this.setState({
             export: {
               format: 'TAILWIND',
-              context: e.data.context,
+              context: path.data.context,
               label: `${locals[this.state.lang].actions.export} ${
                 locals[this.state.lang].export.tailwind.config
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/javascript',
               data: `/** @type {import('tailwindcss').Config} */\nmodule.exports = ${JSON.stringify(
-                e.data.data,
+                path.data.code,
                 null,
                 '  '
               )}`,
@@ -652,11 +636,11 @@ export default class App extends Component<Record<string, never>, AppStates> {
             onGoingStep: 'export previewed',
           })
           trackExportEvent(
-            e.data.id,
+            path.data.id,
             this.state.userConsent.find((consent) => consent.id === 'mixpanel')
               ?.isConsented ?? false,
             {
-              feature: e.data.context,
+              feature: path.data.context,
             }
           )
         }
@@ -665,22 +649,22 @@ export default class App extends Component<Record<string, never>, AppStates> {
           this.setState({
             export: {
               format: 'SWIFT',
-              context: e.data.context,
+              context: path.data.context,
               label: `${locals[this.state.lang].actions.export} ${
                 locals[this.state.lang].export.apple.swiftui
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/swift',
-              data: e.data.data,
+              data: path.data.code,
             },
             onGoingStep: 'export previewed',
           })
           trackExportEvent(
-            e.data.id,
+            path.data.id,
             this.state.userConsent.find((consent) => consent.id === 'mixpanel')
               ?.isConsented ?? false,
             {
-              feature: e.data.context,
+              feature: path.data.context,
             }
           )
         }
@@ -689,22 +673,22 @@ export default class App extends Component<Record<string, never>, AppStates> {
           this.setState({
             export: {
               format: 'SWIFT',
-              context: e.data.context,
+              context: path.data.context,
               label: `${locals[this.state.lang].actions.export} ${
                 locals[this.state.lang].export.apple.uikit
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/swift',
-              data: e.data.data,
+              data: path.data.code,
             },
             onGoingStep: 'export previewed',
           })
           trackExportEvent(
-            e.data.id,
+            path.data.id,
             this.state.userConsent.find((consent) => consent.id === 'mixpanel')
               ?.isConsented ?? false,
             {
-              feature: e.data.context,
+              feature: path.data.context,
             }
           )
         }
@@ -713,22 +697,22 @@ export default class App extends Component<Record<string, never>, AppStates> {
           this.setState({
             export: {
               format: 'KT',
-              context: e.data.context,
+              context: path.data.context,
               label: `${locals[this.state.lang].actions.export} ${
                 locals[this.state.lang].export.android.compose
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/x-kotlin',
-              data: e.data.data,
+              data: path.data.code,
             },
             onGoingStep: 'export previewed',
           })
           trackExportEvent(
-            e.data.id,
+            path.data.id,
             this.state.userConsent.find((consent) => consent.id === 'mixpanel')
               ?.isConsented ?? false,
             {
-              feature: e.data.context,
+              feature: path.data.context,
             }
           )
         }
@@ -737,22 +721,22 @@ export default class App extends Component<Record<string, never>, AppStates> {
           this.setState({
             export: {
               format: 'XML',
-              context: e.data.context,
+              context: path.data.context,
               label: `${locals[this.state.lang].actions.export} ${
                 locals[this.state.lang].export.android.resources
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/xml',
-              data: e.data.data,
+              data: path.data.code,
             },
             onGoingStep: 'export previewed',
           })
           trackExportEvent(
-            e.data.id,
+            path.data.id,
             this.state.userConsent.find((consent) => consent.id === 'mixpanel')
               ?.isConsented ?? false,
             {
-              feature: e.data.context,
+              feature: path.data.context,
             }
           )
         }
@@ -761,22 +745,22 @@ export default class App extends Component<Record<string, never>, AppStates> {
           this.setState({
             export: {
               format: 'CSV',
-              context: e.data.context,
+              context: path.data.context,
               label: `${locals[this.state.lang].actions.export} ${
                 locals[this.state.lang].export.csv.spreadsheet
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/csv',
-              data: e.data.data,
+              data: path.data.code,
             },
             onGoingStep: 'export previewed',
           })
           trackExportEvent(
-            e.data.id,
+            path.data.id,
             this.state.userConsent.find((consent) => consent.id === 'mixpanel')
               ?.isConsented ?? false,
             {
-              feature: e.data.context,
+              feature: path.data.context,
             }
           )
         }
@@ -797,30 +781,13 @@ export default class App extends Component<Record<string, never>, AppStates> {
 
         const getProPlan = () => {
           this.setState({
-            planStatus: e.data.data,
+            planStatus: path.data.status,
             priorityContainerContext: 'WELCOME_TO_PRO',
           })
           trackPurchaseEvent(
-            e.data.id,
+            path.data.id,
             this.state.userConsent.find((consent) => consent.id === 'mixpanel')
               ?.isConsented ?? false
-          )
-        }
-
-        const enableTrial = () => {
-          this.setState({
-            planStatus: 'PAID',
-            trialStatus: 'PENDING',
-            priorityContainerContext: 'WELCOME_TO_TRIAL',
-          })
-          trackTrialEnablementEvent(
-            e.data.id,
-            this.state.userConsent.find((consent) => consent.id === 'mixpanel')
-              ?.isConsented ?? false,
-            {
-              date: e.data.date,
-              trialTime: e.data.trialTime,
-            }
           )
         }
 
@@ -834,7 +801,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
           CHECK_USER_AUTHENTICATION: () => checkUserAuthentication(),
           CHECK_USER_CONSENT: () => checkUserConsent(),
           CHECK_USER_PREFERENCES: () => checkUserPreferences(),
-          CHECK_EDITOR_TYPE: () => checkEditorType(),
           PUSH_HIGHLIGHT_STATUS: () => handleHighlight(),
           PUSH_ONBOARDING_STATUS: () => handleOnboarding(),
           CHECK_PLAN_STATUS: () => checkPlanStatus(),
@@ -849,15 +815,14 @@ export default class App extends Component<Record<string, never>, AppStates> {
           EXPORT_PALETTE_KT: () => exportPaletteToKt(),
           EXPORT_PALETTE_XML: () => exportPaletteToXml(),
           EXPORT_PALETTE_CSV: () => exportPaletteToCsv(),
-          UPDATE_SCREENSHOT: () => updateScreenshot(e.data?.data),
-          UPDATE_PALETTE_DATE: () => updatePaletteDate(e.data?.data),
+          UPDATE_SCREENSHOT: () => updateScreenshot(path?.data),
+          UPDATE_PALETTE_DATE: () => updatePaletteDate(path?.data),
           GET_PRO_PLAN: () => getProPlan(),
-          ENABLE_TRIAL: () => enableTrial(),
-          SIGN_OUT: () => signOut(e.data?.data),
+          SIGN_OUT: () => signOut(path?.data),
           DEFAULT: () => null,
         }
 
-        return actions[e.data.type ?? 'DEFAULT']?.()
+        return actions[path.type ?? 'DEFAULT']?.()
       } catch (error) {
         console.error(error)
       }

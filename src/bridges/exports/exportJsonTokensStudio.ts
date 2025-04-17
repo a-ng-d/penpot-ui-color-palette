@@ -60,9 +60,11 @@ const exportJsonTokensStudio = (palette: Board) => {
 
     penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_JSON',
-      id: penpot.currentUser.id,
-      context: 'TOKENS_TOKENS_STUDIO',
-      data: JSON.stringify(json, null, '  '),
+      data: {
+        id: penpot.currentUser.id,
+        context: 'TOKENS_TOKENS_STUDIO',
+        code: JSON.stringify(json, null, '  '),
+      },
     })
   } else null //figma.notify(locals[lang].error.corruption);
 }

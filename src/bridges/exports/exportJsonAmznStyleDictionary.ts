@@ -57,9 +57,11 @@ const exportJsonAmznStyleDictionary = (palette: Board) => {
 
     penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_JSON',
-      id: penpot.currentUser.id,
-      context: 'TOKENS_AMZN_STYLE_DICTIONARY',
-      data: JSON.stringify(json, null, '  '),
+      data: {
+        id: penpot.currentUser.id,
+        context: 'TOKENS_AMZN_STYLE_DICTIONARY',
+        code: JSON.stringify(json, null, '  '),
+      },
     })
   } else null //figma.notify(locals[lang].error.corruption);
 }

@@ -48,9 +48,11 @@ const exportTailwind = (palette: Board) => {
 
     penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_TAILWIND',
-      id: penpot.currentUser.id,
-      context: 'TAILWIND',
-      data: json,
+      data: {
+        id: penpot.currentUser.id,
+        context: 'TAILWIND',
+        code: json,
+      },
     })
   } else null //figma.notify(locals[lang].error.corruption);
 }

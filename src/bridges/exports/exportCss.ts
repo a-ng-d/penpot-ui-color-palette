@@ -60,10 +60,12 @@ const exportCss = (palette: Board, colorSpace: 'RGB' | 'LCH' | 'P3') => {
 
     penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_CSS',
-      id: penpot.currentUser.id,
-      context: 'CSS',
-      colorSpace: colorSpace,
-      data: css.join('\n\n'),
+      data: {
+        id: penpot.currentUser.id,
+        context: 'CSS',
+        colorSpace: colorSpace,
+        code: css.join('\n\n'),
+      },
     })
   } else null //figma.notify(locals[lang].error.corruption);
 }

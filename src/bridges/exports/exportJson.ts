@@ -91,9 +91,11 @@ const exportJson = (palette: Board) => {
 
     penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_JSON',
-      id: penpot.currentUser.id,
-      context: 'TOKENS_GLOBAL',
-      data: JSON.stringify(json, null, '  '),
+      data: {
+        id: penpot.currentUser.id,
+        context: 'TOKENS_GLOBAL',
+        code: JSON.stringify(json, null, '  '),
+      },
     })
   } else null //figma.notify(locals[lang].error.corruption);
 }
