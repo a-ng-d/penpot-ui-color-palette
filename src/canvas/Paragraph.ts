@@ -55,14 +55,21 @@ export default class Paragraph {
         fillOpacity: 0.5,
       },
     ]
+    this.node.strokes = [
+      {
+        strokeColor: '#000000',
+        strokeOpacity: 0.05,
+      },
+    ]
     this.node.borderRadius = 16
     if (this.type === 'FIXED') this.node.resize(this.width ?? 100, 100)
+    if (this.type === 'FIXED') this.node.horizontalSizing = 'fix'
+    else this.node.horizontalSizing = 'fix'
+    this.node.verticalSizing = 'auto'
 
     // Layout
     const flex = this.node.addFlexLayout()
     flex.dir = 'row'
-    if (this.type === 'FIXED') this.node.horizontalSizing = 'fix'
-    else this.node.horizontalSizing = 'fix'
 
     flex.verticalSizing = 'fit-content'
     flex.horizontalPadding = flex.verticalPadding = 8
@@ -70,6 +77,8 @@ export default class Paragraph {
     // Insert
     const textNode = this.makeNodeText()
     if (textNode) this.node.appendChild(textNode)
+
+    if (textNode?.layoutChild) textNode.layoutChild.horizontalSizing = 'fill'
 
     return this.node
   }
