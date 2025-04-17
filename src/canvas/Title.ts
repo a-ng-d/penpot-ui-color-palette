@@ -30,7 +30,7 @@ export default class Title {
     // Layout
     const flex = this.nodeGlobalInfo.addFlexLayout()
     flex.dir = 'column'
-    flex.columnGap = 8
+    flex.rowGap = 8
     flex.horizontalSizing = 'fit-content'
     flex.verticalSizing = 'fit-content'
 
@@ -167,14 +167,13 @@ export default class Title {
     this.node = penpot.createBoard()
     this.node.name = '_title'
     this.node.fills = []
-    this.node.horizontalSizing = 'fix'
+    this.node.horizontalSizing = 'auto'
     this.node.verticalSizing = 'auto'
 
     // Layout
     const flex = this.node.addFlexLayout()
     flex.dir = 'row'
     flex.justifyContent = 'space-between'
-    flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
 
     // Insert
