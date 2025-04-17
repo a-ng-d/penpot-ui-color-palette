@@ -74,7 +74,6 @@ const loadUI = async () => {
   // UI > Canvas
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   penpot.ui.onMessage(async (msg: any) => {
-    console.log(msg)
     const palette = penpot.selection[0] as Board
 
     const actions: ActionsList = {

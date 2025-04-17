@@ -1,52 +1,25 @@
-import { ShapeBase } from '@penpot/plugin-types'
+import { PaletteData } from 'src/types/data'
 
 const getPalettesOnCurrentPage = async () => {
-  const palettes = penpot.currentPage?.findShapes({
-    nameLike: 'UI Color Palette',
-  }) as Array<ShapeBase>
-  /*.catch(() => {
-      figma.notify(locals[lang].error.palettesPicking)
-      return []
-    })*/
-
-  if (palettes !== undefined && palettes.length !== 0) {
-    const palettesList = async () => {
-      const palettePromises = palettes.map(async (palette) => {
-        const name = palette.getPluginData('name')
-        const preset = palette.getPluginData('preset')
-        const colors = palette.getPluginData('colors')
-        const themes = palette.getPluginData('themes')
-
-        if (preset === '' || colors === '' || themes === '') return null
-
-        const bytes = await palette.export({
-          type: 'png',
-          scale: 0.25,
-        })
-        return {
-          id: palette.id,
-          name: name,
-          preset: JSON.parse(preset).name,
-          colors: JSON.parse(colors),
-          themes: JSON.parse(themes),
-          screenshot: bytes,
-        }
-      })
-      const filteredPalettes = (await Promise.all(palettePromises)).filter(
-        (palette) => palette !== null
-      )
-      return filteredPalettes
-    }
-
-    penpot.ui.sendMessage({
-      type: 'EXPOSE_PALETTES',
-      data: palettesList(),
-    })
-  } else
-    penpot.ui.sendMessage({
+  const dataKeys = penpot.currentPage?.getPluginDataKeys()
+  if (dataKeys === undefined)
+    return penpot.ui.sendMessage({
       type: 'EXPOSE_PALETTES',
       data: [],
     })
+
+  const dataList = dataKeys.map((key) => {
+    const data = penpot.currentPage?.getPluginData(key)
+    return data ? JSON.parse(data) : undefined
+  })
+  const palettesList: Array<PaletteData> = dataList.filter((data) => {
+    if (data !== undefined) return data.type === 'UI_COLOR_PALETTE'
+  })
+
+  return penpot.ui.sendMessage({
+    type: 'EXPOSE_PALETTES',
+    data: palettesList,
+  })
 }
 
 export default getPalettesOnCurrentPage

@@ -1,6 +1,15 @@
 import { Feature } from '@a_ng_d/figmug-utils'
 
-export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
+export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
+  {
+    name: 'BROWSE',
+    description: 'Service for browsing palettes in the file',
+    isActive: true,
+    isPro: false,
+    isNew: false,
+    type: 'SERVICE',
+    service: [],
+  },
   {
     name: 'CREATE',
     description:
@@ -14,15 +23,6 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
   {
     name: 'EDIT',
     description: 'Service for configuring a palette when it is selected',
-    isActive: true,
-    isPro: false,
-    isNew: false,
-    type: 'SERVICE',
-    service: [],
-  },
-  {
-    name: 'TRANSFER',
-    description: 'Service for transferring a palette when dev mode is selected',
     isActive: true,
     isPro: false,
     isNew: false,
@@ -75,40 +75,22 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     service: ['EDIT'],
   },
   {
-    name: 'PALETTES',
-    description: 'Reusable palettes',
+    name: 'LIBRARY_PAGE',
+    description: 'Saved palettes in the page',
     isActive: true,
     isPro: false,
     isNew: false,
     type: 'CONTEXT',
-    service: ['CREATE'],
+    service: ['BROWSE'],
   },
   {
-    name: 'PALETTES_SELF',
-    description: 'Self-created palettes',
+    name: 'LIBRARY_FILE',
+    description: 'Saved palettes in the file',
     isActive: true,
     isPro: false,
     isNew: false,
     type: 'CONTEXT',
-    service: ['CREATE'],
-  },
-  {
-    name: 'PALETTES_COMMUNITY',
-    description: 'Community-created palettes',
-    isActive: true,
-    isPro: false,
-    isNew: false,
-    type: 'CONTEXT',
-    service: ['CREATE'],
-  },
-  {
-    name: 'PALETTES_DEV',
-    description: 'Palettes for dev mode',
-    isActive: true,
-    isPro: false,
-    isNew: false,
-    type: 'DIVISION',
-    service: ['CREATE', 'TRANSFER'],
+    service: ['BROWSE'],
   },
   {
     name: 'SOURCE',
@@ -534,7 +516,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'CONTEXT',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_TOKENS',
@@ -543,7 +525,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_TOKENS_JSON',
@@ -552,7 +534,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_TOKENS_JSON_AMZN_STYLE_DICTIONARY',
@@ -561,7 +543,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_TOKENS_JSON_TOKENS_STUDIO',
@@ -570,7 +552,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_CSS',
@@ -579,7 +561,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_CSS_RGB',
@@ -588,7 +570,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_CSS_HEX',
@@ -597,7 +579,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_CSS_HSL',
@@ -606,7 +588,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_CSS_LCH',
@@ -615,7 +597,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_CSS_P3',
@@ -624,7 +606,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_TAILWIND',
@@ -633,7 +615,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_APPLE',
@@ -642,7 +624,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_APPLE_SWIFTUI',
@@ -651,7 +633,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_APPLE_UIKIT',
@@ -660,7 +642,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_ANDROID',
@@ -669,7 +651,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_ANDROID_COMPOSE',
@@ -678,7 +660,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_ANDROID_XML',
@@ -687,7 +669,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'EXPORT_CSV',
@@ -696,7 +678,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT', 'TRANSFER'],
+    service: ['EDIT'],
   },
   {
     name: 'SETTINGS',
@@ -1104,7 +1086,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'DIVISION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_USER',
@@ -1113,7 +1095,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'DIVISION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_HIGHLIGHT',
@@ -1122,7 +1104,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_ONBOARDING',
@@ -1131,7 +1113,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'DIVISION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_DOCUMENTATION',
@@ -1140,7 +1122,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_REPOSITORY',
@@ -1149,7 +1131,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_EMAIL',
@@ -1158,7 +1140,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_FEEDBACK',
@@ -1167,7 +1149,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_REPORTING',
@@ -1176,7 +1158,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_REQUESTS',
@@ -1185,7 +1167,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_STORE',
@@ -1194,7 +1176,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_ABOUT',
@@ -1203,7 +1185,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_NETWORKING',
@@ -1212,7 +1194,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'SHORTCUTS_AUTHOR',
@@ -1221,7 +1203,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'PUBLICATION',
@@ -1239,7 +1221,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'CONSENT',
@@ -1248,7 +1230,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'DIVISION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
   {
     name: 'REPORT',
@@ -1257,7 +1239,7 @@ export const featuresScheme: Array<Feature<'CREATE' | 'EDIT' | 'TRANSFER'>> = [
     isPro: false,
     isNew: false,
     type: 'DIVISION',
-    service: ['CREATE', 'EDIT', 'TRANSFER'],
+    service: ['CREATE', 'EDIT'],
   },
 ]
 

@@ -1,10 +1,8 @@
-export type Service = 'CREATE' | 'EDIT' | 'TRANSFER'
+export type Service = 'BROWSE' | 'CREATE' | 'EDIT'
 
 export type Context =
-  | 'PALETTES'
-  | 'PALETTES_PAGE'
-  | 'PALETTES_SELF'
-  | 'PALETTES_COMMUNITY'
+  | 'LIBRARY_PAGE'
+  | 'LIBRARY_FILE'
   | 'SOURCE'
   | 'SOURCE_OVERVIEW'
   | 'SOURCE_EXPLORE'

@@ -64,9 +64,9 @@ import PriorityContainer from './modules/PriorityContainer'
 import Shortcuts from './modules/Shortcuts'
 import CreatePalette from './services/CreatePalette'
 import EditPalette from './services/EditPalette'
-import TransferPalette from './services/TransferPalette'
 import './stylesheets/app-components.css'
 import './stylesheets/app.css'
+import BrowsePalette from './services/BrowsePalette'
 
 export interface AppStates {
   service: Service
@@ -114,6 +114,11 @@ export default class App extends Component<Record<string, never>, AppStates> {
   private palette: typeof $palette
 
   static features = (planStatus: PlanStatus) => ({
+    BROWSE: new FeatureStatus({
+      features: features,
+      featureName: 'BROWSE',
+      planStatus: planStatus,
+    }),
     CREATE: new FeatureStatus({
       features: features,
       featureName: 'CREATE',
@@ -122,11 +127,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
     EDIT: new FeatureStatus({
       features: features,
       featureName: 'EDIT',
-      planStatus: planStatus,
-    }),
-    TRANSFER: new FeatureStatus({
-      features: features,
-      featureName: 'TRANSFER',
       planStatus: planStatus,
     }),
     CONSENT: new FeatureStatus({
@@ -145,7 +145,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
     super(props)
     this.palette = $palette
     this.state = {
-      service: 'CREATE',
+      service: 'BROWSE',
       sourceColors: [],
       id: '',
       name: locals[lang].settings.global.name.default,
@@ -406,7 +406,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
             })
           }
           this.setState({
-            service: 'CREATE',
+            //service: 'CREATE',
             sourceColors: this.state.sourceColors.filter(
               (sourceColor: SourceColorConfiguration) =>
                 sourceColor.source !== 'CANVAS'
@@ -494,7 +494,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
             })
           }
           this.setState({
-            service: 'CREATE',
+            //service: 'CREATE',
             sourceColors: this.state.sourceColors
               .filter(
                 (sourceColor: SourceColorConfiguration) =>
@@ -528,7 +528,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
             '*'
           )
           this.setState({
-            service: path.data.editorType !== 'dev' ? 'EDIT' : 'TRANSFER',
+            service: 'EDIT',
             sourceColors: [],
             id: path.data.id,
             name: path.data.name,
@@ -564,7 +564,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
         }
 
         const exportPaletteToJson = () => {
-          console.log()
           this.setState({
             export: {
               format: 'JSON',
@@ -870,9 +869,15 @@ export default class App extends Component<Record<string, never>, AppStates> {
         <main className="ui">
           <Feature
             isActive={
+              App.features(this.props.planStatus).BROWSE.isActive() &&
+              this.state.service === 'BROWSE'
+            }
+          >
+            <BrowsePalette {...this.state} />
+          </Feature>
+          <Feature
+            isActive={
               App.features(this.props.planStatus).CREATE.isActive() &&
-              this.state.editorType !== 'dev' &&
-              this.state.editorType !== 'dev_vscode' &&
               this.state.service === 'CREATE'
             }
           >
@@ -893,8 +898,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
           <Feature
             isActive={
               App.features(this.props.planStatus).EDIT.isActive() &&
-              this.state.editorType !== 'dev' &&
-              this.state.editorType !== 'dev_vscode' &&
               this.state.service === 'EDIT'
             }
           >
@@ -912,15 +915,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
               onLockSourceColors={(e) => this.setState({ ...e })}
               onGetProPlan={(e) => this.setState({ ...e })}
             />
-          </Feature>
-          <Feature
-            isActive={
-              App.features(this.props.planStatus).TRANSFER.isActive() &&
-              (this.state.editorType === 'dev' ||
-                this.state.editorType === 'dev_vscode')
-            }
-          >
-            <TransferPalette {...this.state} />
           </Feature>
           <Feature isActive={this.state.priorityContainerContext !== 'EMPTY'}>
             {document.getElementById('modal') &&

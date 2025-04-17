@@ -10,13 +10,12 @@ import React from 'react'
 
 import { doClassnames } from '@a_ng_d/figmug-utils'
 import { locals } from '../../content/locals'
-import { EditorType, Language } from '../../types/app'
+import { Language } from '../../types/app'
 import { ExtractOfPaletteConfiguration } from '../../types/configurations'
 import { ActionsList } from '../../types/models'
 import getPaletteMeta from '../../utils/setPaletteMeta'
 
 interface InternalPalettesProps {
-  editorType: EditorType
   lang: Language
 }
 
@@ -50,18 +49,19 @@ export default class InternalPalettes extends PureComponent<
 
   // Handlers
   handleMessage = (e: MessageEvent) => {
+    const path = e.data
+
     const actions: ActionsList = {
       EXPOSE_PALETTES: () =>
         this.setState({
-          paletteListsStatus:
-            e.data.pluginMessage.data.length > 0 ? 'LOADED' : 'EMPTY',
-          paletteLists: e.data.pluginMessage.data,
+          paletteListsStatus: path.data.length > 0 ? 'LOADED' : 'EMPTY',
+          paletteLists: path.data,
         }),
       LOAD_PALETTES: () => this.setState({ paletteListsStatus: 'LOADING' }),
       DEFAULT: () => null,
     }
 
-    return actions[e.data.type ?? 'DEFAULT']?.()
+    return actions[path.type ?? 'DEFAULT']?.()
   }
 
   // Direct Actions
@@ -95,18 +95,16 @@ export default class InternalPalettes extends PureComponent<
       >
         {this.state.paletteListsStatus === 'LOADED' && (
           <>
-            {this.props.editorType === 'dev' && (
-              <div
-                className={doClassnames([
-                  texts.type,
-                  texts['type--secondary'],
-                  'rich-list__title',
-                ])}
-                style={{ padding: '0 var(--size-small)' }}
-              >
-                {locals[this.props.lang].palettes.devMode.title}
-              </div>
-            )}
+            <div
+              className={doClassnames([
+                texts.type,
+                texts['type--secondary'],
+                'rich-list__title',
+              ])}
+              style={{ padding: '0 var(--size-small)' }}
+            >
+              {locals[this.props.lang].palettes.devMode.title}
+            </div>
             {this.state.paletteLists.map((palette, index) => (
               <ActionsItem
                 id={palette.id}
@@ -146,7 +144,7 @@ export default class InternalPalettes extends PureComponent<
         {this.state.paletteListsStatus === 'EMPTY' && (
           <SemanticMessage
             type="NEUTRAL"
-            message={`${locals[this.props.lang].warning.noPaletteOnCurrrentPage}${this.props.editorType === 'dev' ? ' ' + locals[this.props.lang].warning.noPaletteOnCurrentPageOnDevMode : ''}`}
+            message={`${locals[this.props.lang].warning.noPaletteOnCurrrentPage}`}
           />
         )}
       </List>

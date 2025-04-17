@@ -61,6 +61,7 @@ export const locals: { [key: string]: any } = {
     palettes: {
       contexts: {
         page: 'This page',
+        file: 'This file',
         self: 'My palettes',
         community: 'Community',
         explore: 'Explore',

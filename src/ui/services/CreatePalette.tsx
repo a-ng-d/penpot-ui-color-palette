@@ -101,7 +101,7 @@ export default class CreatePalette extends PureComponent<
     super(props)
     this.palette = $palette
     this.contexts = setContexts(
-      ['PALETTES', 'SOURCE', 'SCALE', 'SETTINGS'],
+      ['SOURCE', 'SCALE', 'SETTINGS'],
       props.planStatus
     )
     this.state = {
@@ -285,7 +285,7 @@ export default class CreatePalette extends PureComponent<
           border={['BOTTOM']}
         />
         <section className="context">{fragment}</section>
-        <Feature isActive={this.state.context !== 'PALETTES'}>
+        <Feature>
           <Actions
             {...this.props}
             {...this.state}
@@ -295,10 +295,9 @@ export default class CreatePalette extends PureComponent<
           />
         </Feature>
         <Feature
-          isActive={
-            CreatePalette.features(this.props.planStatus).PREVIEW.isActive() &&
-            this.state.context !== 'PALETTES'
-          }
+          isActive={CreatePalette.features(
+            this.props.planStatus
+          ).PREVIEW.isActive()}
         >
           <Preview
             {...this.props}
