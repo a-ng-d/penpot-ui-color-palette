@@ -332,166 +332,17 @@ export default class App extends Component<Record<string, never>, AppStates> {
           })
 
         const updateWhileEmptySelection = () => {
-          if (isPaletteSelected) {
-            const preset =
-              presets.find((preset) => preset.id === 'MATERIAL') ??
-              defaultPreset
-            const scale = doLightnessScale(
-              preset.scale,
-              preset.min,
-              preset.max,
-              preset.easing
-            )
-
-            this.setState({
-              id: '',
-              name: locals['en-US'].settings.global.name.default,
-              description: '',
-              preset: preset,
-              scale: scale,
-              shift: {
-                chroma: 100,
-              },
-              areSourceColorsLocked: false,
-              colorSpace: 'LCH',
-              visionSimulationMode: 'NONE',
-              view: 'PALETTE_WITH_PROPERTIES',
-              algorithmVersion: algorithmVersion,
-              textColorsTheme: {
-                lightColor: '#FFFFFF',
-                darkColor: '#000000',
-              },
-              screenshot: null,
-              dates: {
-                createdAt: '',
-                updatedAt: '',
-                publishedAt: '',
-              },
-              publicationStatus: {
-                isPublished: false,
-                isShared: false,
-              },
-              creatorIdentity: {
-                creatorFullName: '',
-                creatorAvatar: '',
-                creatorId: '',
-              },
-              priorityContainerContext: (() => {
-                if (this.state.priorityContainerContext === 'PUBLICATION')
-                  return 'EMPTY'
-                else return this.state.priorityContainerContext
-              })(),
-              onGoingStep: 'selection empty',
-            })
-            this.palette.setKey(
-              'name',
-              locals[this.state.lang].settings.global.name.default
-            )
-            this.palette.setKey('description', '')
-            this.palette.setKey('preset', defaultPreset)
-            this.palette.setKey('scale', scale)
-            this.palette.setKey('shift', {
-              chroma: 100,
-            })
-            this.palette.setKey('areSourceColorsLocked', false)
-            this.palette.setKey('colorSpace', 'LCH')
-            this.palette.setKey('visionSimulationMode', 'NONE')
-            this.palette.setKey('view', 'PALETTE_WITH_PROPERTIES')
-            this.palette.setKey('textColorsTheme', {
-              lightColor: '#FFFFFF',
-              darkColor: '#000000',
-            })
-          }
           this.setState({
-            //service: 'CREATE',
             sourceColors: this.state.sourceColors.filter(
               (sourceColor: SourceColorConfiguration) =>
                 sourceColor.source !== 'CANVAS'
             ),
             onGoingStep: 'selection empty',
           })
-
-          isPaletteSelected = false
         }
 
         const updateWhileColorSelected = () => {
-          if (isPaletteSelected) {
-            const preset =
-              presets.find((preset) => preset.id === 'MATERIAL') ??
-              defaultPreset
-            const scale = doLightnessScale(
-              preset.scale,
-              preset.min,
-              preset.max,
-              preset.easing
-            )
-
-            this.setState({
-              id: '',
-              name: locals['en-US'].settings.global.name.default,
-              description: '',
-              preset:
-                presets.find((preset) => preset.id === 'MATERIAL') ??
-                defaultPreset,
-              scale: scale,
-              shift: {
-                chroma: 100,
-              },
-              areSourceColorsLocked: false,
-              colorSpace: 'LCH',
-              visionSimulationMode: 'NONE',
-              view: 'PALETTE_WITH_PROPERTIES',
-              algorithmVersion: algorithmVersion,
-              textColorsTheme: {
-                lightColor: '#FFFFFF',
-                darkColor: '#000000',
-              },
-              screenshot: null,
-              dates: {
-                createdAt: '',
-                updatedAt: '',
-                publishedAt: '',
-              },
-              publicationStatus: {
-                isPublished: false,
-                isShared: false,
-              },
-              creatorIdentity: {
-                creatorFullName: '',
-                creatorAvatar: '',
-                creatorId: '',
-              },
-              priorityContainerContext: (() => {
-                if (this.state.priorityContainerContext === 'PUBLICATION')
-                  return 'EMPTY'
-                else return this.state.priorityContainerContext
-              })(),
-            })
-            this.palette.setKey(
-              'name',
-              locals[this.state.lang].settings.global.name.default
-            )
-            this.palette.setKey('description', '')
-            this.palette.setKey(
-              'preset',
-              presets.find((preset) => preset.id === 'MATERIAL') ??
-                defaultPreset
-            )
-            this.palette.setKey('scale', scale)
-            this.palette.setKey('shift', {
-              chroma: 100,
-            })
-            this.palette.setKey('areSourceColorsLocked', false)
-            this.palette.setKey('colorSpace', 'LCH')
-            this.palette.setKey('visionSimulationMode', 'NONE')
-            this.palette.setKey('view', 'PALETTE_WITH_PROPERTIES')
-            this.palette.setKey('textColorsTheme', {
-              lightColor: '#FFFFFF',
-              darkColor: '#000000',
-            })
-          }
           this.setState({
-            //service: 'CREATE',
             sourceColors: this.state.sourceColors
               .filter(
                 (sourceColor: SourceColorConfiguration) =>
@@ -500,11 +351,9 @@ export default class App extends Component<Record<string, never>, AppStates> {
               .concat(path.data.selection),
             onGoingStep: 'colors selected',
           })
-          isPaletteSelected = false
         }
 
         const loadPalette = () => {
-          isPaletteSelected = true
           this.palette.setKey('preset', path.data.base.preset)
           parent.postMessage(
             {
@@ -857,6 +706,72 @@ export default class App extends Component<Record<string, never>, AppStates> {
     trackUserConsentEvent(e)
   }
 
+  onReset = () => {
+    const preset =
+      presets.find((preset) => preset.id === 'MATERIAL') ?? defaultPreset
+    const scale = doLightnessScale(
+      preset.scale,
+      preset.min,
+      preset.max,
+      preset.easing
+    )
+
+    this.setState({
+      service: 'BROWSE',
+      id: '',
+      name: locals[lang].settings.global.name.default,
+      description: '',
+      preset: preset,
+      scale: scale,
+      shift: {
+        chroma: 100,
+      },
+      areSourceColorsLocked: false,
+      colorSpace: 'LCH',
+      visionSimulationMode: 'NONE',
+      view: 'PALETTE_WITH_PROPERTIES',
+      algorithmVersion: algorithmVersion,
+      textColorsTheme: {
+        lightColor: '#FFFFFF',
+        darkColor: '#000000',
+      },
+      screenshot: null,
+      dates: {
+        createdAt: '',
+        updatedAt: '',
+        publishedAt: '',
+      },
+      publicationStatus: {
+        isPublished: false,
+        isShared: false,
+      },
+      creatorIdentity: {
+        creatorFullName: '',
+        creatorAvatar: '',
+        creatorId: '',
+      },
+    })
+
+    this.palette.setKey(
+      'name',
+      locals[this.state.lang].settings.global.name.default
+    )
+    this.palette.setKey('description', '')
+    this.palette.setKey('preset', preset)
+    this.palette.setKey('scale', scale)
+    this.palette.setKey('shift', {
+      chroma: 100,
+    })
+    this.palette.setKey('areSourceColorsLocked', false)
+    this.palette.setKey('colorSpace', 'LCH')
+    this.palette.setKey('visionSimulationMode', 'NONE')
+    this.palette.setKey('view', 'PALETTE_WITH_PROPERTIES')
+    this.palette.setKey('textColorsTheme', {
+      lightColor: '#FFFFFF',
+      darkColor: '#000000',
+    })
+  }
+
   // Render
   render() {
     if (this.state.isLoaded)
@@ -891,7 +806,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
               onChangeSettings={(e) => this.setState({ ...e })}
               onConfigureExternalSourceColors={(e) => this.setState({ ...e })}
               onGetProPlan={(e) => this.setState({ ...e })}
-              onCancelPalette={(e) => this.setState({ ...e })}
+              onCancelPalette={this.onReset}
               onSavedPalette={(e) => this.setState({ ...e })}
             />
           </Feature>
@@ -914,6 +829,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
               }
               onLockSourceColors={(e) => this.setState({ ...e })}
               onGetProPlan={(e) => this.setState({ ...e })}
+              onUnloadPalette={this.onReset}
             />
           </Feature>
           <Feature isActive={this.state.priorityContainerContext !== 'EMPTY'}>

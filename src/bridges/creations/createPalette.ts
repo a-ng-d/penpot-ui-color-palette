@@ -94,8 +94,6 @@ const createPalette = async (msg: Msg) => {
     },
   }).makePaletteFullData()
 
-  console.log('Palette created:', palette)
-
   penpot.ui.sendMessage({
     type: 'LOAD_PALETTE',
     data: palette,

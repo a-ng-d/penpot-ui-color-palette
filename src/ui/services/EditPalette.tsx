@@ -1,5 +1,12 @@
 import type { ConsentConfiguration, DropdownOption } from '@a_ng_d/figmug-ui'
-import { Bar, Dropdown, FormItem, Tabs } from '@a_ng_d/figmug-ui'
+import {
+  Bar,
+  Button,
+  Dropdown,
+  FormItem,
+  layouts,
+  Tabs,
+} from '@a_ng_d/figmug-ui'
 import { Case, FeatureStatus } from '@a_ng_d/figmug-utils'
 import FileSaver from 'file-saver'
 import JSZip from 'jszip'
@@ -83,6 +90,7 @@ interface EditPaletteProps {
   onPublishPalette: () => void
   onLockSourceColors: React.Dispatch<Partial<AppStates>>
   onGetProPlan: (context: { priorityContainerContext: PriorityContext }) => void
+  onUnloadPalette: () => void
 }
 
 interface EditPaletteStates {
@@ -456,6 +464,10 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
       return this.props.themes.filter((theme) => theme.type === 'default theme')
   }
 
+  onUnloadPalette = () => {
+    this.props.onUnloadPalette()
+  }
+
   // Render
   render() {
     let fragment
@@ -516,11 +528,18 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
       <>
         <Bar
           leftPartSlot={
-            <Tabs
-              tabs={this.contexts}
-              active={this.state.context ?? ''}
-              action={this.navHandler}
-            />
+            <div className={layouts['snackbar--tight']}>
+              <Button
+                type="icon"
+                icon="back"
+                action={this.onUnloadPalette}
+              />
+              <Tabs
+                tabs={this.contexts}
+                active={this.state.context ?? ''}
+                action={this.navHandler}
+              />
+            </div>
           }
           rightPartSlot={
             <Feature
