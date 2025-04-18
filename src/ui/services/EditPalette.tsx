@@ -97,10 +97,7 @@ interface EditPaletteStates {
   canPaletteDeepSync: boolean
 }
 
-export default class EditPalette extends PureComponent<
-  EditPaletteProps,
-  EditPaletteStates
-> {
+export default class EditPalette extends PureComponent<EditPaletteProps, EditPaletteStates> {
   private colorsMessage: ColorsMessage
   private themesMessage: ThemesMessage
   private dispatch: { [key: string]: DispatchProcess }
@@ -115,9 +112,14 @@ export default class EditPalette extends PureComponent<
       featureName: 'THEMES',
       planStatus: planStatus,
     }),
+    ACTIONS: new FeatureStatus({
+      features: features,
+      featureName: 'ACTIONS',
+      planStatus: planStatus,
+    }),
     PREVIEW: new FeatureStatus({
       features: features,
-      featureName: 'PREVIEW_WCAG',
+      featureName: 'PREVIEW',
       planStatus: planStatus,
     }),
   })
@@ -548,7 +550,12 @@ export default class EditPalette extends PureComponent<
           border={['BOTTOM']}
         />
         <section className="context">{fragment}</section>
-        <Feature isActive={this.state.context !== 'EXPORT'}>
+        <Feature
+          isActive={
+            EditPalette.features(this.props.planStatus).ACTIONS.isActive() &&
+            this.state.context !== 'EXPORT'
+          }
+        >
           <Actions
             {...this.props}
             {...this.state}
