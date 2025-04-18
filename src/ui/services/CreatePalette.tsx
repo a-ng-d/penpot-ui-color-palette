@@ -140,9 +140,6 @@ export default class CreatePalette extends PureComponent<
         this.setState({
           isPrimaryLoading: false,
         })
-        /*this.props.onSavedPalette({
-          service: 'EDIT',
-        })*/
       },
       DEFAULT: () => null,
     }

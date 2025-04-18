@@ -239,5 +239,7 @@ export default class Data {
       `palette_${this.meta.id}`,
       JSON.stringify(fullPaletteData)
     )
+
+    return fullPaletteData
   }
 }
