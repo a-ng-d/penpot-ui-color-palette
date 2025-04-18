@@ -75,6 +75,15 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     service: ['EDIT'],
   },
   {
+    name: 'DELETE_PALETTE',
+    description: 'Deletes the palette in the page',
+    isActive: true,
+    isPro: false,
+    isNew: false,
+    type: 'ACTION',
+    service: ['BROWSE', 'EDIT'],
+  },
+  {
     name: 'LIBRARY_PAGE',
     description: 'Saved palettes in the page',
     isActive: true,

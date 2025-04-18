@@ -1,38 +1,44 @@
-import {
-  ActionsItem,
-  Button,
-  List,
-  SemanticMessage,
-  texts,
-} from '@a_ng_d/figmug-ui'
+import { ActionsItem, Button, List, SemanticMessage } from '@a_ng_d/figmug-ui'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 
-import { doClassnames } from '@a_ng_d/figmug-utils'
+import { FeatureStatus } from '@a_ng_d/figmug-utils'
+import { FullPaletteConfiguration } from 'src/types/configurations'
+import features from '../../config'
 import { locals } from '../../content/locals'
-import { Language } from '../../types/app'
+import { Language, PlanStatus } from '../../types/app'
 import { ActionsList } from '../../types/models'
 import getPaletteMeta from '../../utils/setPaletteMeta'
-import { FullPaletteConfiguration } from 'src/types/configurations'
 
 interface InternalPalettesProps {
+  planStatus: PlanStatus
   lang: Language
 }
 
 interface InternalPalettesStates {
   paletteListsStatus: 'LOADING' | 'LOADED' | 'EMPTY'
   paletteLists: Array<FullPaletteConfiguration>
+  isDeleteDialogOpen: boolean
 }
 
 export default class InternalPalettes extends PureComponent<
   InternalPalettesProps,
   InternalPalettesStates
 > {
+  static features = (planStatus: PlanStatus) => ({
+    DELETE_PALETTE: new FeatureStatus({
+      features: features,
+      featureName: 'ACTIONS',
+      planStatus: planStatus,
+    }),
+  })
+
   constructor(props: InternalPalettesProps) {
     super(props)
     this.state = {
       paletteListsStatus: 'LOADING',
       paletteLists: [],
+      isDeleteDialogOpen: false,
     }
   }
 
@@ -74,7 +80,7 @@ export default class InternalPalettes extends PureComponent<
     } else return ''
   }
 
-  onSelectPalette = (id: string) => {
+  onEditPalette = (id: string) => {
     parent.postMessage(
       {
         pluginMessage: {
@@ -87,6 +93,57 @@ export default class InternalPalettes extends PureComponent<
   }
 
   // Templates
+  /*Modals = () => {
+    return (
+      <>
+        <Feature
+          isActive={
+            InternalPalettes.features(
+              this.props.planStatus
+            ).DELETE_PALETTE.isActive() && this.state.isDeleteDialogOpen
+          }
+        >
+          {document.getElementById('modal') &&
+            createPortal(
+              <Dialog
+                title={
+                  locals[this.props.lang].settings.deleteActivityDialog.title
+                }
+                actions={{
+                  destructive: {
+                    label:
+                      locals[this.props.lang].settings.deleteActivityDialog
+                        .delete,
+                    feature: 'DELETE_PALETTE',
+                    action: this.props.onChangeActivities,
+                  },
+                  secondary: {
+                    label:
+                      locals[this.props.lang].settings.deleteActivityDialog
+                        .cancel,
+                    action: () => this.setState({ isDeleteDialogOpen: false }),
+                  },
+                }}
+                onClose={() => this.setState({ isDeleteDialogOpen: false })}
+              >
+                <div className="dialog__text">
+                  <p className={texts.type}>
+                    {locals[
+                      this.props.lang
+                    ].settings.deleteActivityDialog.message.replace(
+                      '$1',
+                      this.props.activity.name
+                    )}
+                  </p>
+                </div>
+              </Dialog>,
+              document.getElementById('modal') ?? document.createElement('app')
+            )}
+        </Feature>
+      </>
+    )
+  }*/
+
   InternalPalettesList = () => {
     return (
       <List
@@ -110,15 +167,28 @@ export default class InternalPalettes extends PureComponent<
                   palette.base.themes
                 )}
                 actionsSlot={
-                  <Button
-                    type="icon"
-                    icon="target"
-                    helper={{
-                      label:
-                        locals[this.props.lang].palettes.actions.selectPalette,
-                    }}
-                    action={() => this.onSelectPalette(palette.meta.id)}
-                  />
+                  <>
+                    <Button
+                      type="icon"
+                      icon="trash"
+                      helper={{
+                        label:
+                          locals[this.props.lang].palettes.actions
+                            .selectPalette,
+                      }}
+                      action={() => null}
+                    />
+                    <Button
+                      type="secondary"
+                      helper={{
+                        label:
+                          locals[this.props.lang].palettes.actions
+                            .selectPalette,
+                      }}
+                      label="Edit palette"
+                      action={() => this.onEditPalette(palette.meta.id)}
+                    />
+                  </>
                 }
               />
             ))}

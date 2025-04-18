@@ -503,9 +503,9 @@ export default class App extends Component<Record<string, never>, AppStates> {
           isPaletteSelected = false
         }
 
-        const updateWhilePaletteSelected = () => {
+        const loadPalette = () => {
           isPaletteSelected = true
-          this.palette.setKey('preset', path.data.preset)
+          this.palette.setKey('preset', path.data.base.preset)
           parent.postMessage(
             {
               pluginMessage: {
@@ -516,47 +516,42 @@ export default class App extends Component<Record<string, never>, AppStates> {
             },
             '*'
           )
-          parent.postMessage(
-            {
-              pluginMessage: {
-                type: 'UPDATE_SCREENSHOT',
-              },
-            },
-            '*'
-          )
           this.setState({
             service: 'EDIT',
             sourceColors: [],
-            id: path.data.id,
-            name: path.data.name,
-            description: path.data.description,
-            preset: path.data.preset,
-            scale: path.data.scale,
-            shift: path.data.shift !== '' ? path.data.shift : { chroma: 100 },
-            areSourceColorsLocked: path.data.areSourceColorsLocked,
-            colors: path.data.colors,
-            colorSpace: path.data.colorSpace,
-            visionSimulationMode: path.data.visionSimulationMode,
-            themes: path.data.themes,
-            view: path.data.view,
-            algorithmVersion: path.data.algorithmVersion,
-            textColorsTheme: path.data.textColorsTheme,
-            screenshot: path.data.screenshot,
+            id: path.data.base.id,
+            name: path.data.base.name,
+            description: path.data.base.description,
+            preset: path.data.base.preset,
+            scale: path.data.base.scale,
+            shift:
+              path.data.base.shift !== ''
+                ? path.data.base.shift
+                : { chroma: 100 },
+            areSourceColorsLocked: path.data.base.areSourceColorsLocked,
+            colors: path.data.base.colors,
+            colorSpace: path.data.base.colorSpace,
+            visionSimulationMode: path.data.base.visionSimulationMode,
+            themes: path.data.base.themes,
+            view: path.data.base.view,
+            algorithmVersion: path.data.base.algorithmVersion,
+            textColorsTheme: path.data.base.textColorsTheme,
+            screenshot: null,
             dates: {
-              createdAt: path.data.createdAt,
-              updatedAt: path.data.updatedAt,
-              publishedAt: path.data.publishedAt,
+              createdAt: path.data.meta.dates.createdAt,
+              updatedAt: path.data.meta.dates.updatedAt,
+              publishedAt: path.data.meta.dates.publishedAt,
             },
             publicationStatus: {
-              isPublished: path.data.isPublished,
-              isShared: path.data.isShared,
+              isPublished: path.data.meta.publicationStatus.isPublished,
+              isShared: path.data.meta.publicationStatus.isShared,
             },
             creatorIdentity: {
-              creatorFullName: path.data.creatorFullName,
-              creatorAvatar: path.data.creatorAvatar,
-              creatorId: path.data.creatorId,
+              creatorFullName: path.data.meta.creatorIdentity.creatorFullName,
+              creatorAvatar: path.data.meta.creatorIdentity.creatorAvatar,
+              creatorId: path.data.meta.creatorIdentity.creatorId,
             },
-            onGoingStep: 'palette selected',
+            onGoingStep: 'palette loaded',
           })
         }
 
@@ -798,9 +793,12 @@ export default class App extends Component<Record<string, never>, AppStates> {
           PUSH_HIGHLIGHT_STATUS: () => handleHighlight(),
           PUSH_ONBOARDING_STATUS: () => handleOnboarding(),
           CHECK_PLAN_STATUS: () => checkPlanStatus(),
-          EMPTY_SELECTION: () => updateWhileEmptySelection(),
-          COLOR_SELECTED: () => updateWhileColorSelected(),
-          PALETTE_SELECTED: () => updateWhilePaletteSelected(),
+          EMPTY_SELECTION: () =>
+            this.state.service === 'CREATE' && updateWhileEmptySelection(),
+          COLOR_SELECTED: () =>
+            this.state.service === 'CREATE' && updateWhileColorSelected(),
+          //PALETTE_SELECTED: () => updateWhilePaletteSelected(),
+          LOAD_PALETTE: () => loadPalette(),
           EXPORT_PALETTE_JSON: () => exportPaletteToJson(),
           EXPORT_PALETTE_CSS: () => exportPaletteToCss(),
           EXPORT_PALETTE_TAILWIND: () => exportPaletteToTaiwind(),

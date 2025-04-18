@@ -184,16 +184,14 @@ const loadUI = async () => {
       //
       GET_PALETTES: async () => await getPalettesOnCurrentPage(),
       JUMP_TO_PALETTE: async () => {
-        /*const scene: Array<Shape> = []
-        const palette = await penpot.currentPage
-          .then(() => figma.currentPage.findOne((node) => node.id === msg.pluginMessage.id))
-          .catch((error) => {
-            figma.notify(locals[lang].error.generic)
-            throw error
+        const palette = penpot.currentPage?.getPluginData(
+          `palette_${msg.pluginMessage.id}`
+        )
+        if (palette !== undefined)
+          penpot.ui.sendMessage({
+            type: 'LOAD_PALETTE',
+            data: JSON.parse(palette),
           })
-        palette !== null && scene.push(palette)
-        figma.currentPage.selection = scene
-        figma.viewport.scrollAndZoomIntoView(scene)*/
       },
       GET_VARIABLES_COLLECTIONS: async () => {
         /*const collections =
