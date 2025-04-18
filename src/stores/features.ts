@@ -1035,6 +1035,15 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     service: ['EDIT'],
   },
   {
+    name: 'ACTIONS',
+    description: 'Controls of the palette',
+    isActive: true,
+    isPro: false,
+    isNew: false,
+    type: 'DIVISION',
+    service: ['CREATE', 'EDIT'],
+  },
+  {
     name: 'PREVIEW',
     description: 'Quick glance at the palette',
     isActive: true,

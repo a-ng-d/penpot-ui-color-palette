@@ -897,6 +897,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
               onConfigureExternalSourceColors={(e) => this.setState({ ...e })}
               onGetProPlan={(e) => this.setState({ ...e })}
               onCancelPalette={(e) => this.setState({ ...e })}
+              onSavedPalette={(e) => this.setState({ ...e })}
             />
           </Feature>
           <Feature

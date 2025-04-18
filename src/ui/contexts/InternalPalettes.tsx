@@ -11,9 +11,9 @@ import React from 'react'
 import { doClassnames } from '@a_ng_d/figmug-utils'
 import { locals } from '../../content/locals'
 import { Language } from '../../types/app'
-import { ExtractOfPaletteConfiguration } from '../../types/configurations'
 import { ActionsList } from '../../types/models'
 import getPaletteMeta from '../../utils/setPaletteMeta'
+import { FullPaletteConfiguration } from 'src/types/configurations'
 
 interface InternalPalettesProps {
   lang: Language
@@ -21,7 +21,7 @@ interface InternalPalettesProps {
 
 interface InternalPalettesStates {
   paletteListsStatus: 'LOADING' | 'LOADED' | 'EMPTY'
-  paletteLists: Array<ExtractOfPaletteConfiguration>
+  paletteLists: Array<FullPaletteConfiguration>
 }
 
 export default class InternalPalettes extends PureComponent<
@@ -95,37 +95,20 @@ export default class InternalPalettes extends PureComponent<
       >
         {this.state.paletteListsStatus === 'LOADED' && (
           <>
-            <div
-              className={doClassnames([
-                texts.type,
-                texts['type--secondary'],
-                'rich-list__title',
-              ])}
-              style={{ padding: '0 var(--size-small)' }}
-            >
-              {locals[this.props.lang].palettes.devMode.title}
-            </div>
             {this.state.paletteLists.map((palette, index) => (
               <ActionsItem
-                id={palette.id}
+                id={palette.meta.id}
                 key={`palette-${index}`}
-                src={this.getImageSrc(palette.screenshot)}
                 name={
-                  palette.name === ''
+                  palette.base.name === ''
                     ? locals[this.props.lang].name
-                    : palette.name
+                    : palette.base.name
                 }
-                indicator={
-                  palette.devStatus === 'READY_FOR_DEV'
-                    ? {
-                        label:
-                          locals[this.props.lang].palettes.devMode.readyForDev,
-                        status: 'ACTIVE',
-                      }
-                    : undefined
-                }
-                description={palette.preset}
-                subdescription={getPaletteMeta(palette.colors, palette.themes)}
+                description={palette.base.preset.name}
+                subdescription={getPaletteMeta(
+                  palette.base.colors,
+                  palette.base.themes
+                )}
                 actionsSlot={
                   <Button
                     type="icon"
@@ -134,7 +117,7 @@ export default class InternalPalettes extends PureComponent<
                       label:
                         locals[this.props.lang].palettes.actions.selectPalette,
                     }}
-                    action={() => this.onSelectPalette(palette.id)}
+                    action={() => this.onSelectPalette(palette.meta.id)}
                   />
                 }
               />

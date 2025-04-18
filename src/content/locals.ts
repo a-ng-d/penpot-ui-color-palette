@@ -460,7 +460,7 @@ export const locals: { [key: string]: any } = {
       license: glossary.license,
     },
     actions: {
-      createPalette: `Create a ${glossary.name}`,
+      createPalette: `Save the ${glossary.name}`,
       sync: 'Sync',
       createLocalStyles: 'Sync with the local styles',
       createLocalVariables: 'Sync with the local variables',
