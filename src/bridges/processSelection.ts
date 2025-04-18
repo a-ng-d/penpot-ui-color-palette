@@ -136,6 +136,7 @@ const processSelection = () => {
           const hexToGl = chroma(color.fillColor as HexModel).gl()
           viableSelection.push({
             name: element.name,
+            description: '',
             rgb: {
               r: hexToGl[0],
               g: hexToGl[1],
@@ -144,6 +145,14 @@ const processSelection = () => {
             source: 'CANVAS',
             id: uid(),
             isRemovable: false,
+            hue: {
+              shift: 0,
+              isLocked: false,
+            },
+            chroma: {
+              shift: 100,
+              isLocked: false,
+            },
           })
         })
         selectionHandler('COLOR_SELECTED')

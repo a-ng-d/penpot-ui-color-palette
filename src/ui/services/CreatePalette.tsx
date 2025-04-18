@@ -82,6 +82,7 @@ interface CreatePaletteProps {
   onLockSourceColors: React.Dispatch<Partial<AppStates>>
   onGetProPlan: (context: { priorityContainerContext: PriorityContext }) => void
   onCancelPalette: React.Dispatch<Partial<AppStates>>
+  onSavedPalette: React.Dispatch<Partial<AppStates>>
 }
 
 interface CreatePaletteStates {
@@ -97,9 +98,14 @@ export default class CreatePalette extends PureComponent<
   private palette: typeof $palette
 
   static features = (planStatus: PlanStatus) => ({
+    ACTIONS: new FeatureStatus({
+      features: features,
+      featureName: 'ACTIONS',
+      planStatus: planStatus,
+    }),
     PREVIEW: new FeatureStatus({
       features: features,
-      featureName: 'PREVIEW_WCAG',
+      featureName: 'PREVIEW',
       planStatus: planStatus,
     }),
   })
@@ -132,10 +138,14 @@ export default class CreatePalette extends PureComponent<
   // Handlers
   handleMessage = (e: MessageEvent) => {
     const actions: ActionsList = {
-      STOP_LOADER: () =>
+      STOP_LOADER: () => {
         this.setState({
           isPrimaryLoading: false,
-        }),
+        })
+        /*this.props.onSavedPalette({
+          service: 'EDIT',
+        })*/
+      },
       DEFAULT: () => null,
     }
 
@@ -226,12 +236,21 @@ export default class CreatePalette extends PureComponent<
         const gl = chroma(color).gl()
         return {
           name: `Color ${index + 1}`,
+          description: '',
           rgb: {
             r: gl[0],
             g: gl[1],
             b: gl[2],
           },
           source: 'REMOTE',
+          hue: {
+            shift: 0,
+            isLocked: false,
+          },
+          chroma: {
+            shift: 100,
+            isLocked: false,
+          },
           id: uid(),
           isRemovable: false,
         }
@@ -305,7 +324,11 @@ export default class CreatePalette extends PureComponent<
           border={[]}
         />
         <section className="context">{fragment}</section>
-        <Feature>
+        <Feature
+          isActive={CreatePalette.features(
+            this.props.planStatus
+          ).ACTIONS.isActive()}
+        >
           <Actions
             {...this.props}
             {...this.state}

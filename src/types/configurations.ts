@@ -2,24 +2,23 @@ import { HexModel, RgbModel } from '@a_ng_d/figmug-ui'
 
 import { Easing, ThirdParty } from './app'
 import { TextColorsThemeHexModel } from './models'
+import { PaletteData } from './data'
 
 export interface SourceColorConfiguration {
   name: string
+  description: string
   rgb: RgbModel
   source: 'CANVAS' | 'REMOTE' | ThirdParty
   id: string
   isRemovable: boolean
-  description?: string
-  hue?: {
+  hue: {
     shift: number
     isLocked: boolean
   }
-  chroma?: {
+  chroma: {
     shift: number
     isLocked: boolean
   }
-  hueShifting?: number
-  chromaShifting?: number
 }
 
 export interface PaletteConfiguration {
@@ -32,6 +31,8 @@ export interface PaletteConfiguration {
   scale: ScaleConfiguration
   shift: ShiftConfiguration
   areSourceColorsLocked: LockedSourceColorsConfiguration
+  colors: Array<ColorConfiguration>
+  themes: Array<ThemeConfiguration>
   colorSpace: ColorSpaceConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
   view: ViewConfiguration
@@ -88,6 +89,8 @@ export interface ThemeConfiguration {
   name: string
   description: string
   scale: ScaleConfiguration
+  visionSimulationMode: VisionSimulationModeConfiguration
+  textColorsTheme: TextColorsThemeHexModel
   paletteBackground: HexModel
   isEnabled: boolean
   id: string
@@ -180,3 +183,9 @@ export interface MetaConfiguration {
   publicationStatus: PublicationConfiguration
   creatorIdentity: CreatorConfiguration
 }
+
+export interface FullPaletteConfiguration {
+  base: PaletteConfiguration
+  meta: MetaConfiguration
+  data?: PaletteData
+} 

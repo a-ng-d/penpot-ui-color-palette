@@ -10,7 +10,7 @@ export interface PaletteData {
   name: string
   description: string
   themes: Array<PaletteDataThemeItem>
-  collectionId: string
+  collectionId?: string
   version: string
   type: 'palette'
 }
@@ -19,7 +19,7 @@ export interface PaletteDataThemeItem {
   name: string
   description: string
   colors: Array<PaletteDataColorItem>
-  modeId: string
+  modeId?: string
   id: string
   type: 'default theme' | 'custom theme'
 }
@@ -44,7 +44,7 @@ export interface PaletteDataShadeItem {
   oklab: [number, number, number]
   hsl: [number, number, number]
   hsluv: [number, number, number]
-  variableId: string
+  variableId?: string
   styleId: string
   isClosestToRef?: boolean
   isSourceColorLocked?: boolean

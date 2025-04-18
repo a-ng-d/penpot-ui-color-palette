@@ -88,6 +88,8 @@ export default class Palette {
               description: '',
               scale: this.scale,
               paletteBackground: '#FFFFFF',
+              visionSimulationMode: 'NONE',
+              textColorsTheme: textColorsTheme,
               isEnabled: true,
               id: '00000000000',
               type: 'default theme',
