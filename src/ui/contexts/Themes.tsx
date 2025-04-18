@@ -18,12 +18,7 @@ import { uid } from 'uid'
 import features from '../../config'
 import { locals } from '../../content/locals'
 import { $canPaletteDeepSync } from '../../stores/preferences'
-import {
-  EditorType,
-  Language,
-  PlanStatus,
-  PriorityContext,
-} from '../../types/app'
+import { Language, PlanStatus, PriorityContext } from '../../types/app'
 import {
   PresetConfiguration,
   ScaleConfiguration,
@@ -31,7 +26,11 @@ import {
   UserConfiguration,
 } from '../../types/configurations'
 import { ThemesMessage } from '../../types/messages'
-import { ActionsList, DispatchProcess } from '../../types/models'
+import {
+  ActionsList,
+  DispatchProcess,
+  TextColorsThemeHexModel,
+} from '../../types/models'
 import doLightnessScale from '../../utils/doLightnessScale'
 import { trackColorThemesManagementEvent } from '../../utils/eventsTracker'
 import type { AppStates } from '../App'
@@ -42,10 +41,10 @@ interface ThemesProps {
   preset: PresetConfiguration
   scale: ScaleConfiguration
   themes: Array<ThemeConfiguration>
+  textColorsTheme: TextColorsThemeHexModel
   userIdentity: UserConfiguration
   userConsent: Array<ConsentConfiguration>
   planStatus: PlanStatus
-  editorType: EditorType
   lang: Language
   onChangeThemes: React.Dispatch<Partial<AppStates>>
   onGetProPlan: (context: { priorityContainerContext: PriorityContext }) => void
@@ -139,6 +138,8 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
           this.props.preset.max === undefined ? 90 : this.props.preset.max
         ),
         paletteBackground: '#FFFFFF',
+        visionSimulationMode: 'NONE',
+        textColorsTheme: this.props.textColorsTheme,
         isEnabled: true,
         id: uid(),
         type: 'custom theme',
@@ -329,6 +330,8 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
         this.props.preset.max === undefined ? 90 : this.props.preset.max
       ),
       paletteBackground: '#FFFFFF',
+      visionSimulationMode: 'NONE',
+      textColorsTheme: this.props.textColorsTheme,
       isEnabled: true,
       id: uid(),
       type: 'custom theme',

@@ -13,7 +13,6 @@ import { $canPaletteDeepSync } from '../../stores/preferences'
 import {
   Context,
   ContextItem,
-  EditorType,
   Language,
   PlanStatus,
   PriorityContext,
@@ -74,7 +73,6 @@ interface EditPaletteProps {
   userIdentity: UserConfiguration
   userConsent: Array<ConsentConfiguration>
   planStatus: PlanStatus
-  editorType: EditorType
   lang: Language
   onChangeScale: React.Dispatch<Partial<AppStates>>
   onChangeStop?: React.Dispatch<Partial<AppStates>>

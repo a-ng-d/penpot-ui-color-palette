@@ -27,7 +27,6 @@ import { $canPaletteDeepSync } from '../../stores/preferences'
 import { defaultPreset, presets } from '../../stores/presets'
 import {
   Easing,
-  EditorType,
   Language,
   NamingConvention,
   PlanStatus,
@@ -62,7 +61,6 @@ interface ScaleProps {
   userIdentity: UserConfiguration
   userConsent: Array<ConsentConfiguration>
   planStatus: PlanStatus
-  editorType?: EditorType
   lang: Language
   onChangePreset?: React.Dispatch<Partial<AppStates>>
   onChangeScale: () => void

@@ -1,9 +1,5 @@
-import { Easing, EditorType, NamingConvention } from './app'
+import { Easing, NamingConvention } from './app'
 import { ColorSpaceConfiguration } from './configurations'
-
-export interface EditorEvent {
-  editor: EditorType
-}
 
 export interface TrialEvent {
   date: number

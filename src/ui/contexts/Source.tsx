@@ -7,7 +7,6 @@ import features from '../../config'
 import {
   Context,
   ContextItem,
-  EditorType,
   FilterOptions,
   Language,
   PlanStatus,
@@ -28,7 +27,6 @@ interface SourceProps {
   userIdentity: UserConfiguration
   userConsent: Array<ConsentConfiguration>
   planStatus: PlanStatus
-  editorType?: EditorType
   lang: Language
   onChangeColorsFromImport: (
     onChangeColorsFromImport: Array<SourceColorConfiguration>,

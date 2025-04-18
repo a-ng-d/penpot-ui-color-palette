@@ -20,7 +20,6 @@ import features, {
 } from '../../config'
 import { locals } from '../../content/locals'
 import {
-  EditorType,
   HighlightDigest,
   Language,
   PlanStatus,
@@ -39,7 +38,6 @@ interface ShortcutsProps {
   userSession: UserSession
   userConsent: Array<ConsentConfiguration>
   lang: Language
-  editorType: EditorType
   highlight: HighlightDigest
   onReOpenHighlight: () => void
   onReOpenOnboarding: () => void

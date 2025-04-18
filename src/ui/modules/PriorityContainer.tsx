@@ -21,7 +21,6 @@ import pp from '../../content/images/pro_plan.webp'
 import t from '../../content/images/trial.webp'
 import { locals } from '../../content/locals'
 import {
-  EditorType,
   HighlightDigest,
   Language,
   PlanStatus,
@@ -45,7 +44,6 @@ interface PriorityContainerProps {
   userSession: UserSession
   highlight: HighlightDigest
   lang: Language
-  editorType: EditorType
   onChangePublication: React.Dispatch<Partial<AppStates>>
   onClose: React.ChangeEventHandler<HTMLInputElement> & (() => void)
 }

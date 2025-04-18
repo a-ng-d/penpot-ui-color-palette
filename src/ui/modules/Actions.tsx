@@ -17,7 +17,7 @@ import { UserSession } from 'src/types/user'
 import features from '../../config'
 import { locals } from '../../content/locals'
 import { $palette } from '../../stores/palette'
-import { EditorType, Language, PlanStatus, Service } from '../../types/app'
+import { Language, PlanStatus, Service } from '../../types/app'
 import {
   CreatorConfiguration,
   ScaleConfiguration,
@@ -35,7 +35,6 @@ interface ActionsProps {
   userSession?: UserSession
   exportType?: string
   planStatus: PlanStatus
-  editorType?: EditorType
   lang: Language
   isPrimaryLoading?: boolean
   isSecondaryLoading?: boolean
@@ -302,76 +301,14 @@ export default class Actions extends PureComponent<
     return (
       <Bar
         rightPartSlot={
-          this.props.editorType === 'figma' ? (
-            <div className={layouts['snackbar--medium']}>
-              <Feature
-                isActive={Actions.features(
-                  this.props.planStatus ?? 'UNPAID'
-                ).PUBLISH_PALETTE.isActive()}
-              >
-                <Button
-                  type="secondary"
-                  label={this.publicationLabel()}
-                  feature="PUBLISH_PALETTE"
-                  isBlocked={Actions.features(
-                    this.props.planStatus ?? 'UNPAID'
-                  ).PUBLISH_PALETTE.isBlocked()}
-                  isNew={Actions.features(
-                    this.props.planStatus ?? 'UNPAID'
-                  ).PUBLISH_PALETTE.isNew()}
-                  action={this.props.onPublishPalette}
-                />
-              </Feature>
-              <Menu
-                id="local-styles-variables"
-                label={locals[this.props.lang].actions.sync}
-                type="PRIMARY"
-                options={[
-                  {
-                    label: locals[this.props.lang].actions.createLocalStyles,
-                    value: 'EDIT',
-                    feature: 'SYNC_LOCAL_STYLES',
-                    type: 'OPTION',
-                    isActive: Actions.features(
-                      this.props.planStatus ?? 'UNPAID'
-                    ).SYNC_LOCAL_STYLES.isActive(),
-                    isBlocked: Actions.features(
-                      this.props.planStatus ?? 'UNPAID'
-                    ).SYNC_LOCAL_STYLES.isBlocked(),
-                    isNew: Actions.features(
-                      this.props.planStatus ?? 'UNPAID'
-                    ).SYNC_LOCAL_STYLES.isNew(),
-                    action: (e) => this.props.onSyncLocalStyles?.(e),
-                  },
-                  {
-                    label: locals[this.props.lang].actions.createLocalVariables,
-                    value: 'LOCAL_VARIABLES',
-                    feature: 'SYNC_LOCAL_VARIABLES',
-                    type: 'OPTION',
-                    isActive: Actions.features(
-                      this.props.planStatus ?? 'UNPAID'
-                    ).SYNC_LOCAL_VARIABLES.isActive(),
-                    isBlocked: Actions.features(
-                      this.props.planStatus ?? 'UNPAID'
-                    ).SYNC_LOCAL_VARIABLES.isBlocked(),
-                    isNew: Actions.features(
-                      this.props.planStatus ?? 'UNPAID'
-                    ).SYNC_LOCAL_VARIABLES.isNew(),
-                    action: (e) => this.props.onSyncLocalVariables?.(e),
-                  },
-                ]}
-                alignment="TOP_RIGHT"
-                state={this.props.isPrimaryLoading ? 'LOADING' : 'DEFAULT'}
-              />
-            </div>
-          ) : (
+          <div className={layouts['snackbar--medium']}>
             <Feature
               isActive={Actions.features(
                 this.props.planStatus ?? 'UNPAID'
               ).PUBLISH_PALETTE.isActive()}
             >
               <Button
-                type="primary"
+                type="secondary"
                 label={this.publicationLabel()}
                 feature="PUBLISH_PALETTE"
                 isBlocked={Actions.features(
@@ -383,7 +320,48 @@ export default class Actions extends PureComponent<
                 action={this.props.onPublishPalette}
               />
             </Feature>
-          )
+            <Menu
+              id="local-styles-variables"
+              label={locals[this.props.lang].actions.sync}
+              type="PRIMARY"
+              options={[
+                {
+                  label: locals[this.props.lang].actions.createLocalStyles,
+                  value: 'EDIT',
+                  feature: 'SYNC_LOCAL_STYLES',
+                  type: 'OPTION',
+                  isActive: Actions.features(
+                    this.props.planStatus ?? 'UNPAID'
+                  ).SYNC_LOCAL_STYLES.isActive(),
+                  isBlocked: Actions.features(
+                    this.props.planStatus ?? 'UNPAID'
+                  ).SYNC_LOCAL_STYLES.isBlocked(),
+                  isNew: Actions.features(
+                    this.props.planStatus ?? 'UNPAID'
+                  ).SYNC_LOCAL_STYLES.isNew(),
+                  action: (e) => this.props.onSyncLocalStyles?.(e),
+                },
+                {
+                  label: locals[this.props.lang].actions.createLocalVariables,
+                  value: 'LOCAL_VARIABLES',
+                  feature: 'SYNC_LOCAL_VARIABLES',
+                  type: 'OPTION',
+                  isActive: Actions.features(
+                    this.props.planStatus ?? 'UNPAID'
+                  ).SYNC_LOCAL_VARIABLES.isActive(),
+                  isBlocked: Actions.features(
+                    this.props.planStatus ?? 'UNPAID'
+                  ).SYNC_LOCAL_VARIABLES.isBlocked(),
+                  isNew: Actions.features(
+                    this.props.planStatus ?? 'UNPAID'
+                  ).SYNC_LOCAL_VARIABLES.isNew(),
+                  action: (e) => this.props.onSyncLocalVariables?.(e),
+                },
+              ]}
+              alignment="TOP_RIGHT"
+              state={this.props.isPrimaryLoading ? 'LOADING' : 'DEFAULT'}
+            />
+          </div>
         }
         border={['TOP']}
         padding="var(--size-xxsmall) var(--size-xsmall)"
@@ -416,7 +394,6 @@ export default class Actions extends PureComponent<
       <>
         {this.props.service === 'CREATE' && <this.Create />}
         {this.props.service === 'EDIT' && <this.Deploy />}
-        {this.props.service === 'TRANSFER' && <this.Export />}
       </>
     )
   }

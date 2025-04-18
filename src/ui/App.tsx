@@ -22,7 +22,6 @@ import {
 import { defaultPreset, presets } from '../stores/presets'
 import {
   Easing,
-  EditorType,
   HighlightDigest,
   Language,
   NamingConvention,
@@ -91,7 +90,6 @@ export interface AppStates {
   dates: DatesConfiguration
   export: ExportConfiguration
   palettesList: Array<ExtractOfPaletteConfiguration>
-  editorType: EditorType
   planStatus: PlanStatus
   trialStatus: TrialStatus
   trialRemainingTime: number
@@ -184,7 +182,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
         data: '',
       },
       palettesList: [],
-      editorType: 'figma',
       planStatus: 'UNPAID',
       trialStatus: 'UNUSED',
       trialRemainingTime: trialTime,

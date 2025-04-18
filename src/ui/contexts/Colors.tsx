@@ -21,12 +21,7 @@ import { uid } from 'uid'
 import features from '../../config'
 import { locals } from '../../content/locals'
 import { $canPaletteDeepSync } from '../../stores/preferences'
-import {
-  EditorType,
-  Language,
-  PlanStatus,
-  PriorityContext,
-} from '../../types/app'
+import { Language, PlanStatus, PriorityContext } from '../../types/app'
 import {
   ColorConfiguration,
   ShiftConfiguration,
@@ -42,7 +37,6 @@ import Dispatcher from '../modules/Dispatcher'
 interface ColorsProps {
   colors: Array<ColorConfiguration>
   shift: ShiftConfiguration
-  editorType: EditorType
   userIdentity: UserConfiguration
   userConsent: Array<ConsentConfiguration>
   planStatus: PlanStatus

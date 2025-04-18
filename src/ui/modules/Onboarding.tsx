@@ -3,11 +3,10 @@ import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { announcementsWorkerUrl } from '../../config'
 import { locals } from '../../content/locals'
-import { EditorType, Language } from '../../types/app'
+import { Language } from '../../types/app'
 
 interface OnboardingProps {
   lang: Language
-  editorType: EditorType
   onCloseOnboarding: (e: MouseEvent) => void
 }
 
@@ -67,11 +66,7 @@ export default class Onboarding extends PureComponent<
           )
 
           this.setState({
-            announcements:
-              this.props.editorType === 'dev' ||
-              this.props.editorType === 'dev_vscode'
-                ? forDev
-                : forDesigner,
+            announcements: forDev,
             status: 'LOADED',
           })
         } else this.setState({ status: 'ERROR' })

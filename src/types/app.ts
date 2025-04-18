@@ -23,8 +23,6 @@ export type FilterOptions =
   | 'VIOLET'
   | 'BLUE'
 
-export type EditorType = 'figma' | 'figjam' | 'dev' | 'dev_vscode'
-
 export type PlanStatus = 'UNPAID' | 'PAID' | 'NOT_SUPPORTED'
 
 export type TrialStatus = 'UNUSED' | 'PENDING' | 'EXPIRED'
