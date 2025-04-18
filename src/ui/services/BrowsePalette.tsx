@@ -13,6 +13,7 @@ import {
 import { UserSession } from '../../types/user'
 import { setContexts } from '../../utils/setContexts'
 import InternalPalettes from '../contexts/InternalPalettes'
+import { AppStates } from '../App'
 
 interface BrowsePaletteProps {
   userIdentity: UserConfiguration
@@ -21,6 +22,7 @@ interface BrowsePaletteProps {
   palettesList: Array<ExtractOfPaletteConfiguration>
   planStatus: PlanStatus
   lang: Language
+  onCreatePalette: React.Dispatch<Partial<AppStates>>
 }
 
 interface BrowsePaletteStates {
@@ -61,10 +63,18 @@ export default class BrowsePalette extends PureComponent<
     }
   }
 
+  // Handlers
   navHandler = (e: Event) =>
     this.setState({
       context: (e.target as HTMLElement).dataset.feature as Context,
     })
+
+  // Direct Actions
+  onCreatePalette = () => {
+    this.props.onCreatePalette({
+      service: 'CREATE',
+    })
+  }
 
   // Renders
   render() {
@@ -92,6 +102,7 @@ export default class BrowsePalette extends PureComponent<
               type="primary"
               icon="plus"
               label="New UI Color Palette"
+              action={this.onCreatePalette}
             />
           }
         />

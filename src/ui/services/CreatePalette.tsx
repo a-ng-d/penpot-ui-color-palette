@@ -1,4 +1,10 @@
-import { Bar, ConsentConfiguration, HexModel, Tabs } from '@a_ng_d/figmug-ui'
+import {
+  Bar,
+  Button,
+  ConsentConfiguration,
+  HexModel,
+  Tabs,
+} from '@a_ng_d/figmug-ui'
 import chroma from 'chroma-js'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
@@ -75,6 +81,7 @@ interface CreatePaletteProps {
   onResetSourceColors: React.Dispatch<Partial<AppStates>>
   onLockSourceColors: React.Dispatch<Partial<AppStates>>
   onGetProPlan: (context: { priorityContainerContext: PriorityContext }) => void
+  onCancelPalette: React.Dispatch<Partial<AppStates>>
 }
 
 interface CreatePaletteStates {
@@ -107,7 +114,7 @@ export default class CreatePalette extends PureComponent<
     this.state = {
       context:
         this.contexts[0] !== undefined
-          ? this.contexts[this.props.sourceColors.length === 0 ? 1 : 2].id
+          ? this.contexts[this.props.sourceColors.length === 0 ? 0 : 1].id
           : '',
       isPrimaryLoading: false,
     }
@@ -232,6 +239,12 @@ export default class CreatePalette extends PureComponent<
     })
   }
 
+  onCancelPalette = () => {
+    this.props.onCancelPalette({
+      service: 'BROWSE',
+    })
+  }
+
   // Renders
   render() {
     let fragment
@@ -282,7 +295,14 @@ export default class CreatePalette extends PureComponent<
               action={this.navHandler}
             />
           }
-          border={['BOTTOM']}
+          rightPartSlot={
+            <Button
+              type="secondary"
+              label="Cancel and return"
+              action={this.onCancelPalette}
+            />
+          }
+          border={[]}
         />
         <section className="context">{fragment}</section>
         <Feature>

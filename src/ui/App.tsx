@@ -873,7 +873,10 @@ export default class App extends Component<Record<string, never>, AppStates> {
               this.state.service === 'BROWSE'
             }
           >
-            <BrowsePalette {...this.state} />
+            <BrowsePalette
+              {...this.state}
+              onCreatePalette={(e) => this.setState({ ...e })}
+            />
           </Feature>
           <Feature
             isActive={
@@ -893,6 +896,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
               onChangeSettings={(e) => this.setState({ ...e })}
               onConfigureExternalSourceColors={(e) => this.setState({ ...e })}
               onGetProPlan={(e) => this.setState({ ...e })}
+              onCancelPalette={(e) => this.setState({ ...e })}
             />
           </Feature>
           <Feature
