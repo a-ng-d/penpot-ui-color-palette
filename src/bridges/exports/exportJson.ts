@@ -2,9 +2,9 @@ import { lang, locals } from '../../content/locals'
 import { PaletteData, PaletteDataShadeItem } from '../../types/data'
 
 const exportJson = (id: string) => {
-  const palette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
-  if (palette === null)
+  if (rawPalette === undefined || rawPalette === null)
     return penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_JSON',
       data: {
@@ -14,14 +14,14 @@ const exportJson = (id: string) => {
       },
     })
 
-  const paletteData: PaletteData = JSON.parse(palette ?? '{}').data,
-    workingThemes =
-      paletteData.themes.filter((theme) => theme.type === 'custom theme')
-        .length === 0
-        ? paletteData.themes.filter((theme) => theme.type === 'default theme')
-        : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    json: { [key: string]: any } = {}
+    const paletteData: PaletteData = JSON.parse(rawPalette).data,
+      workingThemes =
+        paletteData.themes.filter((theme) => theme.type === 'custom theme')
+          .length === 0
+          ? paletteData.themes.filter((theme) => theme.type === 'default theme')
+          : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      json: { [key: string]: any } = {}
 
   const model = (shade: PaletteDataShadeItem) => {
     return {

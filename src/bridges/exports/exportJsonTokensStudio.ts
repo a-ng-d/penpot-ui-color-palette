@@ -6,9 +6,9 @@ import {
 } from '../../types/data'
 
 const exportJsonTokensStudio = (id: string) => {
-  const palette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
-  if (palette === null)
+  if (rawPalette === undefined || rawPalette === null)
     return penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_JSON',
       data: {
@@ -18,7 +18,7 @@ const exportJsonTokensStudio = (id: string) => {
       },
     })
 
-  const paletteData: PaletteData = JSON.parse(palette ?? '{}').data,
+  const paletteData: PaletteData = JSON.parse(rawPalette).data,
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0

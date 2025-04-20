@@ -13,9 +13,9 @@ interface themeCsv {
 }
 
 const exportCsv = (id: string) => {
-  const palette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
-  if (palette === null)
+  if (rawPalette === undefined || rawPalette === null)
     return penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_CSV',
       data: {
@@ -25,18 +25,18 @@ const exportCsv = (id: string) => {
       },
     })
 
-  const paletteData: PaletteData = JSON.parse(palette ?? '{}').data,
-    workingThemes =
-      paletteData.themes.filter((theme) => theme.type === 'custom theme')
-        .length === 0
-        ? paletteData.themes.filter((theme) => theme.type === 'default theme')
-        : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
-    colorCsv: Array<colorCsv> = [],
-    themeCsv: Array<themeCsv> = [],
-    lightness: Array<string> = [],
-    l: Array<number | string> = [],
-    c: Array<number | string> = [],
-    h: Array<number | string> = []
+    const paletteData: PaletteData = JSON.parse(rawPalette).data,
+      workingThemes =
+        paletteData.themes.filter((theme) => theme.type === 'custom theme')
+          .length === 0
+          ? paletteData.themes.filter((theme) => theme.type === 'default theme')
+          : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
+      colorCsv: Array<colorCsv> = [],
+      themeCsv: Array<themeCsv> = [],
+      lightness: Array<string> = [],
+      l: Array<number | string> = [],
+      c: Array<number | string> = [],
+      h: Array<number | string> = []
 
   workingThemes.forEach((theme) => {
     theme.colors.forEach((color) => {
