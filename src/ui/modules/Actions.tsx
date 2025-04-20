@@ -394,6 +394,7 @@ export default class Actions extends PureComponent<
       <>
         {this.props.service === 'CREATE' && <this.Create />}
         {this.props.service === 'EDIT' && <this.Deploy />}
+        {this.props.service === 'TRANSFER' && <this.Export />}
       </>
     )
   }

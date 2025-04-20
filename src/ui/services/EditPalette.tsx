@@ -392,7 +392,7 @@ export default class EditPalette extends PureComponent<
       )
       zip
         .generateAsync({ type: 'blob' })
-        .then((content) =>
+        .then((content: string | Blob) =>
           FileSaver.saveAs(
             content,
             this.props.name === ''
