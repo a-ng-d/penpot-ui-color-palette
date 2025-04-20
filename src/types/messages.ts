@@ -5,7 +5,6 @@ import {
   BaseConfiguration,
   ThemeConfiguration,
   VisionSimulationModeConfiguration,
-  ViewConfiguration,
 } from './configurations'
 import { TextColorsThemeHexModel } from './models'
 
@@ -57,4 +56,13 @@ export interface CollectionMessage {
     id: string
   }
   isEditedInRealTime: boolean
+}
+
+export interface PaletteMessage {
+  type: 'UPDATE_PALETTE'
+  id: string
+  items: Array<{
+    key: string
+    value: boolean | object | string
+  }>
 }

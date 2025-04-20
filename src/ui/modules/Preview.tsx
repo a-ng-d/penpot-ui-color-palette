@@ -40,6 +40,7 @@ import Shade from '../components/Shade'
 
 interface PreviewProps {
   service: Service
+  id: string
   colors: Array<SourceColorConfiguration> | Array<ColorConfiguration> | []
   scale: ScaleConfiguration
   shift?: ShiftConfiguration
@@ -235,9 +236,10 @@ export default class Preview extends PureComponent<
           {
             pluginMessage: {
               type: 'UPDATE_PALETTE',
+              id: this.props.id,
               items: [
                 {
-                  key: 'areSourceColorsLocked',
+                  key: 'base.areSourceColorsLocked',
                   value: target.checked,
                 },
               ],
@@ -272,9 +274,10 @@ export default class Preview extends PureComponent<
           {
             pluginMessage: {
               type: 'UPDATE_PALETTE',
+              id: this.props.id,
               items: [
                 {
-                  key: 'colorSpace',
+                  key: 'base.colorSpace',
                   value: target.dataset.value,
                 },
               ],
@@ -310,9 +313,10 @@ export default class Preview extends PureComponent<
           {
             pluginMessage: {
               type: 'UPDATE_PALETTE',
+              id: this.props.id,
               items: [
                 {
-                  key: 'visionSimulationMode',
+                  key: 'base.visionSimulationMode',
                   value: target.dataset.value,
                 },
               ],

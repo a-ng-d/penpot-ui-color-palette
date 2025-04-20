@@ -87,7 +87,7 @@ const loadUI = async () => {
       UPDATE_THEMES: () => updateThemes(path),
       UPDATE_SETTINGS: () => updateSettings(path),
       UPDATE_GLOBAL: () => updateGlobal(path),
-      UPDATE_PALETTE: () => updatePalette(path.items),
+      UPDATE_PALETTE: () => updatePalette(path),
       UPDATE_SCREENSHOT: async () =>
         penpot.ui.sendMessage({
           type: 'UPDATE_SCREENSHOT',
