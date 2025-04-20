@@ -37,7 +37,7 @@ import {
   CreatorConfiguration,
   DatesConfiguration,
   ExportConfiguration,
-  ExtractOfPaletteConfiguration,
+  ExtractOfBaseConfiguration,
   LockedSourceColorsConfiguration,
   PresetConfiguration,
   PublicationConfiguration,
@@ -89,7 +89,7 @@ export interface AppStates {
   screenshot: Uint8Array | null
   dates: DatesConfiguration
   export: ExportConfiguration
-  palettesList: Array<ExtractOfPaletteConfiguration>
+  palettesList: Array<ExtractOfBaseConfiguration>
   planStatus: PlanStatus
   trialStatus: TrialStatus
   trialRemainingTime: number

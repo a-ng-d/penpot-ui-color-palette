@@ -2,7 +2,7 @@ import {
   AlgorithmVersionConfiguration,
   ColorConfiguration,
   ColorSpaceConfiguration,
-  PaletteConfiguration,
+  BaseConfiguration,
   ThemeConfiguration,
   VisionSimulationModeConfiguration,
 } from './configurations'
@@ -11,7 +11,7 @@ import { TextColorsThemeHexModel } from './models'
 export interface ScaleMessage {
   type: 'UPDATE_SCALE'
   id: string
-  data: PaletteConfiguration
+  data: BaseConfiguration
   isEditedInRealTime: boolean
   feature?: string
 }
@@ -31,7 +31,7 @@ export interface ThemesMessage {
 
 export interface ViewMessage {
   type: 'UPDATE_VIEW'
-  data: PaletteConfiguration
+  data: BaseConfiguration
   isEditedInRealTime: boolean
 }
 

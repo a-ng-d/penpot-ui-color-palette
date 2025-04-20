@@ -3,7 +3,7 @@ import { lang, locals } from '../../content/locals'
 import {
   ColorConfiguration,
   MetaConfiguration,
-  PaletteConfiguration,
+  BaseConfiguration,
   SourceColorConfiguration,
   ThemeConfiguration,
 } from '../../types/configurations'
@@ -12,7 +12,7 @@ import Data from '../../utils/Data'
 interface Msg {
   data: {
     sourceColors: Array<SourceColorConfiguration>
-    palette: PaletteConfiguration
+    palette: BaseConfiguration
     themes?: Array<ThemeConfiguration>
     isRemote?: boolean
     paletteMeta?: MetaConfiguration

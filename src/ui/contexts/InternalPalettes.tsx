@@ -3,7 +3,7 @@ import { PureComponent } from 'preact/compat'
 import React from 'react'
 
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
-import { FullPaletteConfiguration } from 'src/types/configurations'
+import { FullBaseConfiguration } from 'src/types/configurations'
 import features from '../../config'
 import { locals } from '../../content/locals'
 import { Language, PlanStatus } from '../../types/app'
@@ -17,7 +17,7 @@ interface InternalPalettesProps {
 
 interface InternalPalettesStates {
   paletteListsStatus: 'LOADING' | 'LOADED' | 'EMPTY'
-  paletteLists: Array<FullPaletteConfiguration>
+  paletteLists: Array<FullBaseConfiguration>
   isDeleteDialogOpen: boolean
 }
 

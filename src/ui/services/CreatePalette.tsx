@@ -27,7 +27,7 @@ import {
 import {
   AlgorithmVersionConfiguration,
   ColorSpaceConfiguration,
-  ExtractOfPaletteConfiguration,
+  ExtractOfBaseConfiguration,
   LockedSourceColorsConfiguration,
   PresetConfiguration,
   ScaleConfiguration,
@@ -67,7 +67,7 @@ interface CreatePaletteProps {
   userIdentity: UserConfiguration
   userSession: UserSession
   userConsent: Array<ConsentConfiguration>
-  palettesList: Array<ExtractOfPaletteConfiguration>
+  palettesList: Array<ExtractOfBaseConfiguration>
   planStatus: PlanStatus
   lang: Language
   onChangeColorsFromImport: React.Dispatch<Partial<AppStates>>

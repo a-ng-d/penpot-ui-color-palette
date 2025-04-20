@@ -7,7 +7,7 @@ import features from '../../config'
 import { $palette } from '../../stores/palette'
 import { Context, ContextItem, Language, PlanStatus } from '../../types/app'
 import {
-  ExtractOfPaletteConfiguration,
+  ExtractOfBaseConfiguration,
   UserConfiguration,
 } from '../../types/configurations'
 import { UserSession } from '../../types/user'
@@ -19,7 +19,7 @@ interface BrowsePaletteProps {
   userIdentity: UserConfiguration
   userSession: UserSession
   userConsent: Array<ConsentConfiguration>
-  palettesList: Array<ExtractOfPaletteConfiguration>
+  palettesList: Array<ExtractOfBaseConfiguration>
   planStatus: PlanStatus
   lang: Language
   onCreatePalette: React.Dispatch<Partial<AppStates>>

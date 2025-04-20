@@ -21,7 +21,7 @@ export interface SourceColorConfiguration {
   }
 }
 
-export interface PaletteConfiguration {
+export interface BaseConfiguration {
   [key: string]: string | number | boolean | object | undefined
   name: string
   description: string
@@ -40,7 +40,7 @@ export interface PaletteConfiguration {
   textColorsTheme: TextColorsThemeHexModel
 }
 
-export interface ExtractOfPaletteConfiguration {
+export interface ExtractOfBaseConfiguration {
   id: string
   name: string
   preset: string
@@ -184,8 +184,8 @@ export interface MetaConfiguration {
   creatorIdentity: CreatorConfiguration
 }
 
-export interface FullPaletteConfiguration {
-  base: PaletteConfiguration
+export interface FullBaseConfiguration {
+  base: BaseConfiguration
   meta: MetaConfiguration
   data?: PaletteData
 } 

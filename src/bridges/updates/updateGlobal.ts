@@ -4,7 +4,7 @@ import {
   ColorConfiguration,
   CreatorConfiguration,
   DatesConfiguration,
-  PaletteConfiguration,
+  BaseConfiguration,
   PublicationConfiguration,
   ThemeConfiguration,
 } from '../../types/configurations'
@@ -16,7 +16,7 @@ import {
 } from '../processSelection'
 
 interface Msg {
-  data: PaletteConfiguration & {
+  data: BaseConfiguration & {
     creatorIdentity: CreatorConfiguration
     colors: Array<ColorConfiguration>
     themes: Array<ThemeConfiguration>
