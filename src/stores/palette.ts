@@ -5,6 +5,7 @@ import { lang, locals } from '../content/locals'
 import { presets } from './presets'
 
 export const $palette = deepMap<PaletteConfiguration>({
+  id: '',
   name: locals[lang].settings.global.name.default,
   description: '',
   min: 0,
@@ -23,4 +24,6 @@ export const $palette = deepMap<PaletteConfiguration>({
     lightColor: '#FFFFFF',
     darkColor: '#000000',
   },
+  colors: [],
+  themes: [],
 })

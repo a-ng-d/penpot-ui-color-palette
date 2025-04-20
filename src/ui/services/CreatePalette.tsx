@@ -315,13 +315,6 @@ export default class CreatePalette extends PureComponent<
               />
             </div>
           }
-          rightPartSlot={
-            <Button
-              type="secondary"
-              label="Cancel and return"
-              action={this.onCancelPalette}
-            />
-          }
           border={[]}
         />
         <section className="context">{fragment}</section>

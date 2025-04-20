@@ -355,6 +355,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
 
         const loadPalette = () => {
           this.palette.setKey('preset', path.data.base.preset)
+          this.palette.setKey('id', path.data.meta.id)
           parent.postMessage(
             {
               pluginMessage: {
