@@ -30,7 +30,7 @@ const updatePalette = async (msg: PaletteMessage) => {
     data: now,
   })
 
-  palette.data = new Data(palette).makePaletteData()
+  palette.data = new Data(palette).makePaletteData(palette.data)
 
   penpot.currentPage?.setPluginData(
     `palette_${msg.id}`,

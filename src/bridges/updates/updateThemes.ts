@@ -17,7 +17,7 @@ const updateThemes = async (msg: ThemesMessage) => {
     data: now,
   })
 
-  palette.data = new Data(palette).makePaletteData()
+  palette.data = new Data(palette).makePaletteData(palette.data)
 
   penpot.currentPage?.setPluginData(
     `palette_${msg.id}`,

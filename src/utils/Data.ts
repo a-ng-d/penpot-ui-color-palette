@@ -61,7 +61,7 @@ export default class Data {
     return styleId === undefined ? '' : styleId
   }
 
-  makePaletteData = () => {
+  makePaletteData = (previousData?: PaletteData) => {
     this.base.themes.forEach((theme) => {
       const paletteDataThemeItem: PaletteDataThemeItem = {
         name: theme.name,
@@ -140,7 +140,7 @@ export default class Data {
             sourceHsluv.hsluv_l,
           ],
           styleId: this.searchForShadeStyleId(
-            this.paletteData.themes,
+            previousData?.themes ?? this.paletteData.themes,
             theme.id,
             color.id,
             'source'
@@ -212,7 +212,7 @@ export default class Data {
                 : chroma(scaledColor[1]).hsl(),
             hsluv: [newHsluv.hsluv_h, newHsluv.hsluv_s, newHsluv.hsluv_l],
             styleId: this.searchForShadeStyleId(
-              this.paletteData.themes,
+              previousData?.themes ?? this.paletteData.themes,
               theme.id,
               color.id,
               scaleName
