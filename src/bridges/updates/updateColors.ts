@@ -1,6 +1,6 @@
-import { FullConfiguration } from 'src/types/configurations'
+import { FullConfiguration } from '../../types/configurations'
 import { ColorsMessage } from '../../types/messages'
-import Data from 'src/utils/Data'
+import Data from '../../utils/Data'
 
 const updateColors = async (msg: ColorsMessage) => {
   const palette: FullConfiguration = JSON.parse(

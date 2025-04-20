@@ -1,5 +1,5 @@
 import { Board } from '@penpot/plugin-types'
-import { PaletteNode } from 'src/types/nodes'
+import { PaletteNode } from '../../types/nodes'
 import Colors from '../../canvas/Colors'
 import { lang, locals } from '../../content/locals'
 import setPaletteName from '../../utils/setPaletteName'

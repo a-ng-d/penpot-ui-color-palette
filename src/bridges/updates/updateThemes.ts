@@ -1,6 +1,6 @@
-import { FullConfiguration } from 'src/types/configurations'
+import { FullConfiguration } from '../../types/configurations'
 import { ThemesMessage } from '../../types/messages'
-import Data from 'src/utils/Data'
+import Data from '../../utils/Data'
 
 const updateThemes = async (msg: ThemesMessage) => {
   const palette: FullConfiguration = JSON.parse(

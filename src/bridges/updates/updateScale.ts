@@ -1,7 +1,7 @@
-import { FullConfiguration } from 'src/types/configurations'
+import { FullConfiguration } from '../../types/configurations'
 import { ScaleMessage } from '../../types/messages'
+import Data from '../../utils/Data'
 import doLightnessScale from '../../utils/doLightnessScale'
-import Data from 'src/utils/Data'
 
 const updateScale = async (msg: ScaleMessage) => {
   const palette: FullConfiguration = JSON.parse(
