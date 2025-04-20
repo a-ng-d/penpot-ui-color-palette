@@ -18,6 +18,7 @@ export interface ScaleMessage {
 
 export interface ColorsMessage {
   type: 'UPDATE_COLORS'
+  id: string
   data: Array<ColorConfiguration>
   isEditedInRealTime: boolean
 }

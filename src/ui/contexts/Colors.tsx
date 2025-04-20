@@ -35,6 +35,7 @@ import Feature from '../components/Feature'
 import Dispatcher from '../modules/Dispatcher'
 
 interface ColorsProps {
+  id: string
   colors: Array<ColorConfiguration>
   shift: ShiftConfiguration
   userIdentity: UserConfiguration
@@ -91,6 +92,7 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
     super(props)
     this.colorsMessage = {
       type: 'UPDATE_COLORS',
+      id: this.props.id,
       data: [],
       isEditedInRealTime: false,
     }

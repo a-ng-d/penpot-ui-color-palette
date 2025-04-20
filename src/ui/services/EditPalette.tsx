@@ -145,6 +145,7 @@ export default class EditPalette extends PureComponent<
     }
     this.colorsMessage = {
       type: 'UPDATE_COLORS',
+      id: this.props.id,
       data: [],
       isEditedInRealTime: false,
     }
