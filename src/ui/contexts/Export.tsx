@@ -20,6 +20,7 @@ import { ActionsList } from '../../types/models'
 import Actions from '../modules/Actions'
 
 interface ExportProps {
+  id: string
   exportPreview: string
   planStatus: PlanStatus
   exportType: string
@@ -166,7 +167,11 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
         })
         parent.postMessage(
           {
-            pluginMessage: { type: 'EXPORT_PALETTE', export: 'TOKENS_GLOBAL' },
+            pluginMessage: {
+              type: 'EXPORT_PALETTE',
+              id: this.props.id,
+              export: 'TOKENS_GLOBAL',
+            },
           },
           '*'
         )
@@ -179,6 +184,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
+              id: this.props.id,
               export: 'TOKENS_AMZN_STYLE_DICTIONARY',
             },
           },
@@ -193,6 +199,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
+              id: this.props.id,
               export: 'TOKENS_TOKENS_STUDIO',
             },
           },
@@ -296,6 +303,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
+              id: this.props.id,
               export: 'CSS',
               colorSpace: 'RGB',
             },
@@ -314,6 +322,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
+              id: this.props.id,
               export: 'CSS',
               colorSpace: 'RGB',
             },
@@ -332,6 +341,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
+              id: this.props.id,
               export: 'CSS',
               colorSpace: 'HEX',
             },
@@ -350,6 +360,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
+              id: this.props.id,
               export: 'CSS',
               colorSpace: 'HSL',
             },
@@ -368,6 +379,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
+              id: this.props.id,
               export: 'CSS',
               colorSpace: 'LCH',
             },
@@ -386,6 +398,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
+              id: this.props.id,
               export: 'CSS',
               colorSpace: 'P3',
             },
@@ -398,7 +411,13 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           format: 'EXPORT_TAILWIND',
         })
         parent.postMessage(
-          { pluginMessage: { type: 'EXPORT_PALETTE', export: 'TAILWIND' } },
+          {
+            pluginMessage: {
+              type: 'EXPORT_PALETTE',
+              id: this.props.id,
+              export: 'TAILWIND',
+            },
+          },
           '*'
         )
       },
@@ -408,7 +427,11 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
         })
         parent.postMessage(
           {
-            pluginMessage: { type: 'EXPORT_PALETTE', export: 'APPLE_SWIFTUI' },
+            pluginMessage: {
+              type: 'EXPORT_PALETTE',
+              id: this.props.id,
+              export: 'APPLE_SWIFTUI',
+            },
           },
           '*'
         )
@@ -418,7 +441,13 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           format: 'EXPORT_APPLE_UIKIT',
         })
         parent.postMessage(
-          { pluginMessage: { type: 'EXPORT_PALETTE', export: 'APPLE_UIKIT' } },
+          {
+            pluginMessage: {
+              type: 'EXPORT_PALETTE',
+              id: this.props.id,
+              export: 'APPLE_UIKIT',
+            },
+          },
           '*'
         )
       },
@@ -430,6 +459,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
+              id: this.props.id,
               export: 'ANDROID_COMPOSE',
             },
           },
@@ -441,7 +471,13 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           format: 'EXPORT_ANDROID_XML',
         })
         parent.postMessage(
-          { pluginMessage: { type: 'EXPORT_PALETTE', export: 'ANDROID_XML' } },
+          {
+            pluginMessage: {
+              type: 'EXPORT_PALETTE',
+              id: this.props.id,
+              export: 'ANDROID_XML',
+            },
+          },
           '*'
         )
       },
@@ -450,7 +486,13 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           format: 'EXPORT_CSV',
         })
         parent.postMessage(
-          { pluginMessage: { type: 'EXPORT_PALETTE', export: 'CSV' } },
+          {
+            pluginMessage: {
+              type: 'EXPORT_PALETTE',
+              id: this.props.id,
+              export: 'CSV',
+            },
+          },
           '*'
         )
       },
@@ -467,6 +509,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
         {
           pluginMessage: {
             type: 'EXPORT_PALETTE',
+            id: this.props.id,
             export: this.state.format.replace('EXPORT_', ''),
           },
         },

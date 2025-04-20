@@ -507,6 +507,7 @@ export default class EditPalette extends PureComponent<
       case 'EXPORT': {
         fragment = (
           <Export
+            {...this.props}
             exportPreview={
               this.props.export.format === 'CSV'
                 ? this.props.export.data[0].colors[0].csv

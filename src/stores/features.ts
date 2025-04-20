@@ -1,6 +1,8 @@
 import { Feature } from '@a_ng_d/figmug-utils'
 
-export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
+export const featuresScheme: Array<
+  Feature<'BROWSE' | 'CREATE' | 'EDIT' | 'TRANSFER'>
+> = [
   {
     name: 'BROWSE',
     description: 'Service for browsing palettes in the file',
@@ -525,7 +527,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'CONTEXT',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_TOKENS',
@@ -534,7 +536,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_TOKENS_JSON',
@@ -543,7 +545,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_TOKENS_JSON_AMZN_STYLE_DICTIONARY',
@@ -552,7 +554,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_TOKENS_JSON_TOKENS_STUDIO',
@@ -561,7 +563,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_CSS',
@@ -570,7 +572,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_CSS_RGB',
@@ -579,7 +581,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_CSS_HEX',
@@ -588,7 +590,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_CSS_HSL',
@@ -597,7 +599,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_CSS_LCH',
@@ -606,7 +608,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_CSS_P3',
@@ -615,7 +617,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_TAILWIND',
@@ -624,7 +626,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_APPLE',
@@ -633,7 +635,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_APPLE_SWIFTUI',
@@ -642,7 +644,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_APPLE_UIKIT',
@@ -651,7 +653,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_ANDROID',
@@ -660,7 +662,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_ANDROID_COMPOSE',
@@ -669,7 +671,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_ANDROID_XML',
@@ -678,7 +680,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'EXPORT_CSV',
@@ -687,7 +689,7 @@ export const featuresScheme: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT'>> = [
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['EDIT'],
+    service: ['TRANSFER'],
   },
   {
     name: 'SETTINGS',

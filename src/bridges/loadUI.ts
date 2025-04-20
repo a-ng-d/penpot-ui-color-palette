@@ -75,19 +75,19 @@ const loadUI = async () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   penpot.ui.onMessage(async (msg: any) => {
     const palette = penpot.selection[0] as Board
+    const path = msg.pluginMessage
 
     const actions: ActionsList = {
       CHECK_USER_CONSENT: () => checkUserConsent(),
-      CHECK_HIGHLIGHT_STATUS: () =>
-        checkHighlightStatus(msg.pluginMessage.version),
+      CHECK_HIGHLIGHT_STATUS: () => checkHighlightStatus(path.version),
       //
-      UPDATE_SCALE: () => updateScale(msg.pluginMessage),
-      UPDATE_VIEW: () => updateView(msg.pluginMessage),
-      UPDATE_COLORS: () => updateColors(msg.pluginMessage),
-      UPDATE_THEMES: () => updateThemes(msg.pluginMessage),
-      UPDATE_SETTINGS: () => updateSettings(msg.pluginMessage),
-      UPDATE_GLOBAL: () => updateGlobal(msg.pluginMessage),
-      UPDATE_PALETTE: () => updatePalette(msg.pluginMessage.items),
+      UPDATE_SCALE: () => updateScale(path),
+      UPDATE_VIEW: () => updateView(path),
+      UPDATE_COLORS: () => updateColors(path),
+      UPDATE_THEMES: () => updateThemes(path),
+      UPDATE_SETTINGS: () => updateSettings(path),
+      UPDATE_GLOBAL: () => updateGlobal(path),
+      UPDATE_PALETTE: () => updatePalette(path.items),
       UPDATE_SCREENSHOT: async () =>
         penpot.ui.sendMessage({
           type: 'UPDATE_SCREENSHOT',
@@ -100,7 +100,7 @@ const loadUI = async () => {
         }),
       //
       CREATE_PALETTE: () =>
-        createPalette(msg.pluginMessage).finally(() =>
+        createPalette(path).finally(() =>
           penpot.ui.sendMessage({ type: 'STOP_LOADER' })
         ),
       SYNC_LOCAL_STYLES: async () =>
@@ -135,58 +135,52 @@ const loadUI = async () => {
           }),*/
       //
       EXPORT_PALETTE: () => {
-        msg.pluginMessage.export === 'TOKENS_GLOBAL' && exportJson(palette)
-        msg.pluginMessage.export === 'TOKENS_AMZN_STYLE_DICTIONARY' &&
-          exportJsonAmznStyleDictionary(palette)
-        msg.pluginMessage.export === 'TOKENS_TOKENS_STUDIO' &&
-          exportJsonTokensStudio(palette)
-        msg.pluginMessage.export === 'CSS' &&
-          exportCss(palette, msg.pluginMessage.colorSpace)
-        msg.pluginMessage.export === 'TAILWIND' && exportTailwind(palette)
-        msg.pluginMessage.export === 'APPLE_SWIFTUI' && exportSwiftUI(palette)
-        msg.pluginMessage.export === 'APPLE_UIKIT' && exportUIKit(palette)
-        msg.pluginMessage.export === 'ANDROID_COMPOSE' && exportKt(palette)
-        msg.pluginMessage.export === 'ANDROID_XML' && exportXml(palette)
-        msg.pluginMessage.export === 'CSV' && exportCsv(palette)
+        path.export === 'TOKENS_GLOBAL' && exportJson(path.id)
+        path.export === 'TOKENS_AMZN_STYLE_DICTIONARY' &&
+          exportJsonAmznStyleDictionary(path.id)
+        path.export === 'TOKENS_TOKENS_STUDIO' &&
+          exportJsonTokensStudio(path.id)
+        path.export === 'CSS' && exportCss(path.id, path.colorSpace)
+        path.export === 'TAILWIND' && exportTailwind(path.id)
+        path.export === 'APPLE_SWIFTUI' && exportSwiftUI(path.id)
+        path.export === 'APPLE_UIKIT' && exportUIKit(path.id)
+        path.export === 'ANDROID_COMPOSE' && exportKt(path.id)
+        path.export === 'ANDROID_XML' && exportXml(path.id)
+        path.export === 'CSV' && exportCsv(path.id)
       },
       //
-      SEND_MESSAGE: () => null, //figma.notify(msg.pluginMessage.message),
+      SEND_MESSAGE: () => null, //figma.notify(path.message),
       SET_ITEMS: () => {
-        msg.pluginMessage.items.forEach(
-          (item: { key: string; value: unknown }) => {
-            if (typeof item.value === 'object')
-              penpot.root?.setPluginData(item.key, JSON.stringify(item.value))
-            else if (
-              typeof item.value === 'boolean' ||
-              typeof item.value === 'number'
-            )
-              penpot.root?.setPluginData(item.key, item.value.toString())
-            else penpot.root?.setPluginData(item.key, item.value as string)
-          }
-        )
+        path.items.forEach((item: { key: string; value: unknown }) => {
+          if (typeof item.value === 'object')
+            penpot.root?.setPluginData(item.key, JSON.stringify(item.value))
+          else if (
+            typeof item.value === 'boolean' ||
+            typeof item.value === 'number'
+          )
+            penpot.root?.setPluginData(item.key, item.value.toString())
+          else penpot.root?.setPluginData(item.key, item.value as string)
+        })
       },
       GET_ITEMS: async () =>
-        msg.pluginMessage.items.map(async (item: string) =>
+        path.items.map(async (item: string) =>
           penpot.ui.sendMessage({
             type: `GET_ITEM_${item.toUpperCase()}`,
             value: penpot.root?.getPluginData(item),
           })
         ),
       DELETE_ITEMS: () =>
-        msg.pluginMessage.items.forEach(async (item: string) =>
+        path.items.forEach(async (item: string) =>
           penpot.root?.setPluginData(item, '')
         ),
       SET_DATA: () =>
-        msg.pluginMessage.items.forEach(
-          (item: { key: string; value: string }) =>
-            palette.setPluginData(item.key, JSON.stringify(item.value))
+        path.items.forEach((item: { key: string; value: string }) =>
+          palette.setPluginData(item.key, JSON.stringify(item.value))
         ),
       //
       GET_PALETTES: async () => await getPalettesOnCurrentPage(),
       JUMP_TO_PALETTE: async () => {
-        const palette = penpot.currentPage?.getPluginData(
-          `palette_${msg.pluginMessage.id}`
-        )
+        const palette = penpot.currentPage?.getPluginData(`palette_${path.id}`)
         if (palette !== undefined)
           penpot.ui.sendMessage({
             type: 'LOAD_PALETTE',
@@ -227,7 +221,7 @@ const loadUI = async () => {
         }),
     }
 
-    return actions[msg.pluginMessage.type]?.()
+    return actions[path.type]?.()
   })
 
   // Listeners

@@ -51,6 +51,7 @@ import Preview from '../modules/Preview'
 
 interface CreatePaletteProps {
   sourceColors: Array<SourceColorConfiguration> | []
+  id: string
   name: string
   description: string
   preset: PresetConfiguration

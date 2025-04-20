@@ -1,10 +1,23 @@
 import { Case } from '@a_ng_d/figmug-utils'
-import { Board } from '@penpot/plugin-types'
+import { lang, locals } from '../../content/locals'
 import { PaletteData, PaletteDataShadeItem } from '../../types/data'
 import { ActionsList } from '../../types/models'
 
-const exportCss = (palette: Board, colorSpace: 'RGB' | 'LCH' | 'P3') => {
-  const paletteData: PaletteData = JSON.parse(palette.getPluginData('data')),
+const exportCss = (id: string, colorSpace: 'RGB' | 'LCH' | 'P3') => {
+  const palette = penpot.currentPage?.getPluginData(`palette_${id}`)
+
+  if (palette === null)
+    return penpot.ui.sendMessage({
+      type: 'EXPORT_PALETTE_CSS',
+      data: {
+        id: penpot.currentUser.id,
+        context: 'CSS',
+        colorSpace: colorSpace,
+        code: locals[lang].export,
+      },
+    })
+
+  const paletteData: PaletteData = JSON.parse(palette ?? '{}').data,
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -36,38 +49,36 @@ const exportCss = (palette: Board, colorSpace: 'RGB' | 'LCH' | 'P3') => {
     return actions[colorSpace ?? 'RGB']?.()
   }
 
-  if (palette.children.length === 1) {
-    workingThemes.forEach((theme) => {
-      const rowCss: Array<string> = []
-      theme.colors.forEach((color) => {
-        rowCss.push(`/* ${color.name} */`)
-        color.shades.forEach((shade) => {
-          rowCss.push(
-            `--${new Case(color.name).doKebabCase()}-${shade.name}: ${setValueAccordingToColorSpace(shade)};`
-          )
-        })
-        rowCss.push('')
+  workingThemes.forEach((theme) => {
+    const rowCss: Array<string> = []
+    theme.colors.forEach((color) => {
+      rowCss.push(`/* ${color.name} */`)
+      color.shades.forEach((shade) => {
+        rowCss.push(
+          `--${new Case(color.name).doKebabCase()}-${shade.name}: ${setValueAccordingToColorSpace(shade)};`
+        )
       })
-      rowCss.pop()
-      css.push(
-        `:root${
-          theme.type === 'custom theme'
-            ? `[data-theme='${new Case(theme.name).doKebabCase()}']`
-            : ''
-        } {\n  ${rowCss.join('\n  ')}\n}`
-      )
+      rowCss.push('')
     })
+    rowCss.pop()
+    css.push(
+      `:root${
+        theme.type === 'custom theme'
+          ? `[data-theme='${new Case(theme.name).doKebabCase()}']`
+          : ''
+      } {\n  ${rowCss.join('\n  ')}\n}`
+    )
+  })
 
-    penpot.ui.sendMessage({
-      type: 'EXPORT_PALETTE_CSS',
-      data: {
-        id: penpot.currentUser.id,
-        context: 'CSS',
-        colorSpace: colorSpace,
-        code: css.join('\n\n'),
-      },
-    })
-  } else null //figma.notify(locals[lang].error.corruption);
+  penpot.ui.sendMessage({
+    type: 'EXPORT_PALETTE_CSS',
+    data: {
+      id: penpot.currentUser.id,
+      context: 'CSS',
+      colorSpace: colorSpace,
+      code: css.join('\n\n'),
+    },
+  })
 }
 
 export default exportCss

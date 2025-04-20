@@ -1,9 +1,21 @@
 import { Case } from '@a_ng_d/figmug-utils'
-import { Board } from '@penpot/plugin-types'
+import { lang, locals } from '../../content/locals'
 import { PaletteData } from '../../types/data'
 
-const exportKt = (palette: Board) => {
-  const paletteData: PaletteData = JSON.parse(palette.getPluginData('data')),
+const exportKt = (id: string) => {
+  const palette = penpot.currentPage?.getPluginData(`palette_${id}`)
+
+  if (palette === null)
+    return penpot.ui.sendMessage({
+      type: 'EXPORT_PALETTE_KT',
+      data: {
+        id: penpot.currentUser.id,
+        context: 'ANDROID_COMPOSE',
+        code: locals[lang].export,
+      },
+    })
+
+  const paletteData: PaletteData = JSON.parse(palette ?? '{}').data,
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -11,42 +23,40 @@ const exportKt = (palette: Board) => {
         : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
     kotlin: Array<string> = []
 
-  if (palette.children.length === 1) {
-    workingThemes.forEach((theme) => {
-      theme.colors.forEach((color) => {
-        const colors: Array<string> = []
+  workingThemes.forEach((theme) => {
+    theme.colors.forEach((color) => {
+      const colors: Array<string> = []
+      colors.unshift(
+        `// ${
+          workingThemes[0].type === 'custom theme' ? theme.name + ' - ' : ''
+        }${color.name}`
+      )
+      color.shades.forEach((shade) => {
         colors.unshift(
-          `// ${
-            workingThemes[0].type === 'custom theme' ? theme.name + ' - ' : ''
-          }${color.name}`
+          `val ${
+            workingThemes[0].type === 'custom theme'
+              ? new Case(theme.name + ' ' + color.name).doSnakeCase()
+              : new Case(color.name).doSnakeCase()
+          }_${shade.name} = Color(${shade.hex
+            .replace('#', '0xFF')
+            .toUpperCase()})`
         )
-        color.shades.forEach((shade) => {
-          colors.unshift(
-            `val ${
-              workingThemes[0].type === 'custom theme'
-                ? new Case(theme.name + ' ' + color.name).doSnakeCase()
-                : new Case(color.name).doSnakeCase()
-            }_${shade.name} = Color(${shade.hex
-              .replace('#', '0xFF')
-              .toUpperCase()})`
-          )
-        })
-        colors.unshift('')
-        colors.reverse().forEach((color) => kotlin.push(color))
       })
+      colors.unshift('')
+      colors.reverse().forEach((color) => kotlin.push(color))
     })
+  })
 
-    kotlin.pop()
+  kotlin.pop()
 
-    penpot.ui.sendMessage({
-      type: 'EXPORT_PALETTE_KT',
-      data: {
-        id: penpot.currentUser.id,
-        context: 'ANDROID_COMPOSE',
-        code: `import androidx.compose.ui.graphics.Color\n\n${kotlin.join('\n')}`,
-      },
-    })
-  } else null //figma.notify(locals[lang].error.corruption);
+  penpot.ui.sendMessage({
+    type: 'EXPORT_PALETTE_KT',
+    data: {
+      id: penpot.currentUser.id,
+      context: 'ANDROID_COMPOSE',
+      code: `import androidx.compose.ui.graphics.Color\n\n${kotlin.join('\n')}`,
+    },
+  })
 }
 
 export default exportKt

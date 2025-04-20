@@ -1,8 +1,20 @@
-import { Board } from '@penpot/plugin-types'
+import { lang, locals } from '../../content/locals'
 import { PaletteData, PaletteDataShadeItem } from '../../types/data'
 
-const exportJson = (palette: Board) => {
-  const paletteData: PaletteData = JSON.parse(palette.getPluginData('data')),
+const exportJson = (id: string) => {
+  const palette = penpot.currentPage?.getPluginData(`palette_${id}`)
+
+  if (palette === null)
+    return penpot.ui.sendMessage({
+      type: 'EXPORT_PALETTE_JSON',
+      data: {
+        id: penpot.currentUser.id,
+        context: 'TOKENS_GLOBAL',
+        code: locals[lang].export,
+      },
+    })
+
+  const paletteData: PaletteData = JSON.parse(palette ?? '{}').data,
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -59,45 +71,43 @@ const exportJson = (palette: Board) => {
     }
   }
 
-  if (palette.children.length === 1) {
-    if (workingThemes[0].type === 'custom theme')
-      workingThemes.forEach((theme) => {
-        json[theme.name] = {}
-        theme.colors.forEach((color) => {
-          json[theme.name][color.name] = {}
-          color.shades.reverse().forEach((shade) => {
-            json[theme.name][color.name][shade.name] = model(shade)
-          })
-          json[theme.name][color.name]['description'] = color.description
-          json[theme.name][color.name]['type'] = 'color'
+  if (workingThemes[0].type === 'custom theme')
+    workingThemes.forEach((theme) => {
+      json[theme.name] = {}
+      theme.colors.forEach((color) => {
+        json[theme.name][color.name] = {}
+        color.shades.reverse().forEach((shade) => {
+          json[theme.name][color.name][shade.name] = model(shade)
         })
-        json[theme.name]['description'] = theme.description
-        json[theme.name]['type'] = 'color theme'
+        json[theme.name][color.name]['description'] = color.description
+        json[theme.name][color.name]['type'] = 'color'
       })
-    else
-      workingThemes.forEach((theme) => {
-        theme.colors.forEach((color) => {
-          json[color.name] = {}
-          color.shades.sort().forEach((shade) => {
-            json[color.name][shade.name] = model(shade)
-          })
-          json[color.name]['description'] = color.description
-          json[color.name]['type'] = 'color'
-        })
-      })
-
-    json['descrption'] = paletteData.description
-    json['type'] = 'color palette'
-
-    penpot.ui.sendMessage({
-      type: 'EXPORT_PALETTE_JSON',
-      data: {
-        id: penpot.currentUser.id,
-        context: 'TOKENS_GLOBAL',
-        code: JSON.stringify(json, null, '  '),
-      },
+      json[theme.name]['description'] = theme.description
+      json[theme.name]['type'] = 'color theme'
     })
-  } else null //figma.notify(locals[lang].error.corruption);
+  else
+    workingThemes.forEach((theme) => {
+      theme.colors.forEach((color) => {
+        json[color.name] = {}
+        color.shades.sort().forEach((shade) => {
+          json[color.name][shade.name] = model(shade)
+        })
+        json[color.name]['description'] = color.description
+        json[color.name]['type'] = 'color'
+      })
+    })
+
+  json['descrption'] = paletteData.description
+  json['type'] = 'color palette'
+
+  penpot.ui.sendMessage({
+    type: 'EXPORT_PALETTE_JSON',
+    data: {
+      id: penpot.currentUser.id,
+      context: 'TOKENS_GLOBAL',
+      code: JSON.stringify(json, null, '  '),
+    },
+  })
 }
 
 export default exportJson

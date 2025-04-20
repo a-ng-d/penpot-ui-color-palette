@@ -1,9 +1,21 @@
 import { Case } from '@a_ng_d/figmug-utils'
-import { Board } from '@penpot/plugin-types'
+import { lang, locals } from '../../content/locals'
 import { PaletteData } from '../../types/data'
 
-const exportXml = (palette: Board) => {
-  const paletteData: PaletteData = JSON.parse(palette.getPluginData('data')),
+const exportXml = (id: string) => {
+  const palette = penpot.currentPage?.getPluginData(`palette_${id}`)
+
+  if (palette === null)
+    return penpot.ui.sendMessage({
+      type: 'EXPORT_PALETTE_XML',
+      data: {
+        id: penpot.currentUser.id,
+        context: 'ANDROID_XML',
+        code: locals[lang].export,
+      },
+    })
+
+  const paletteData: PaletteData = JSON.parse(palette ?? '{}').data,
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -11,42 +23,40 @@ const exportXml = (palette: Board) => {
         : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
     resources: Array<string> = []
 
-  if (palette.children.length === 1) {
-    workingThemes.forEach((theme) => {
-      theme.colors.forEach((color) => {
-        const colors: Array<string> = []
+  workingThemes.forEach((theme) => {
+    theme.colors.forEach((color) => {
+      const colors: Array<string> = []
+      colors.unshift(
+        `${'<'}!--` + workingThemes[0].type === 'custom theme'
+          ? theme.name + ' - ' + color.name + `--${'>'}`
+          : color.name + `--${'>'}`
+      )
+      color.shades.forEach((shade) => {
         colors.unshift(
-          `${'<'}!--` + workingThemes[0].type === 'custom theme'
-            ? theme.name + ' - ' + color.name + `--${'>'}`
-            : color.name + `--${'>'}`
+          `<color name="${
+            workingThemes[0].type === 'custom theme'
+              ? new Case(theme.name + ' ' + color.name).doSnakeCase()
+              : new Case(color.name).doSnakeCase()
+          }_${shade.name}">${shade.hex}</color>`
         )
-        color.shades.forEach((shade) => {
-          colors.unshift(
-            `<color name="${
-              workingThemes[0].type === 'custom theme'
-                ? new Case(theme.name + ' ' + color.name).doSnakeCase()
-                : new Case(color.name).doSnakeCase()
-            }_${shade.name}">${shade.hex}</color>`
-          )
-        })
-        colors.unshift('')
-        colors.reverse().forEach((color) => resources.push(color))
       })
+      colors.unshift('')
+      colors.reverse().forEach((color) => resources.push(color))
     })
+  })
 
-    resources.pop()
+  resources.pop()
 
-    penpot.ui.sendMessage({
-      type: 'EXPORT_PALETTE_XML',
-      data: {
-        id: penpot.currentUser.id,
-        context: 'ANDROID_XML',
-        code: `<?xml version="1.0" encoding="utf-8"?>\n<resources>\n  ${resources.join(
-          '\n  '
-        )}\n</resources>`,
-      },
-    })
-  } else null //figma.notify(locals[lang].error.corruption);
+  penpot.ui.sendMessage({
+    type: 'EXPORT_PALETTE_XML',
+    data: {
+      id: penpot.currentUser.id,
+      context: 'ANDROID_XML',
+      code: `<?xml version="1.0" encoding="utf-8"?>\n<resources>\n  ${resources.join(
+        '\n  '
+      )}\n</resources>`,
+    },
+  })
 }
 
 export default exportXml

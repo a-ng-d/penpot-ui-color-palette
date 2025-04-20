@@ -1,9 +1,21 @@
 import { Case } from '@a_ng_d/figmug-utils'
-import { Board } from '@penpot/plugin-types'
+import { lang, locals } from '../../content/locals'
 import { PaletteData } from '../../types/data'
 
-const exportTailwind = (palette: Board) => {
-  const paletteData: PaletteData = JSON.parse(palette.getPluginData('data')),
+const exportTailwind = (id: string) => {
+  const palette = penpot.currentPage?.getPluginData(`palette_${id}`)
+
+  if (palette === null)
+    return penpot.ui.sendMessage({
+      type: 'EXPORT_PALETTE_TAILWIND',
+      data: {
+        id: penpot.currentUser.id,
+        context: 'TAILWIND',
+        code: locals[lang].export,
+      },
+    })
+
+  const paletteData: PaletteData = JSON.parse(palette ?? '{}').data,
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -20,41 +32,39 @@ const exportTailwind = (palette: Board) => {
     json['theme']['colors'][new Case(color.name).doKebabCase()] = {}
   })
 
-  if (palette.children.length === 1) {
-    if (workingThemes[0].type === 'custom theme')
-      workingThemes.forEach((theme) => {
-        theme.colors.forEach((color) => {
+  if (workingThemes[0].type === 'custom theme')
+    workingThemes.forEach((theme) => {
+      theme.colors.forEach((color) => {
+        json['theme']['colors'][new Case(color.name).doKebabCase()][
+          new Case(theme.name).doKebabCase()
+        ] = {}
+        color.shades.reverse().forEach((shade) => {
           json['theme']['colors'][new Case(color.name).doKebabCase()][
             new Case(theme.name).doKebabCase()
-          ] = {}
-          color.shades.reverse().forEach((shade) => {
-            json['theme']['colors'][new Case(color.name).doKebabCase()][
-              new Case(theme.name).doKebabCase()
-            ][new Case(shade.name).doKebabCase()] = shade.hex
-          })
+          ][new Case(shade.name).doKebabCase()] = shade.hex
         })
       })
-    else
-      workingThemes.forEach((theme) => {
-        theme.colors.forEach((color) => {
-          json['theme']['colors'][new Case(color.name).doKebabCase()] = {}
-          color.shades.sort().forEach((shade) => {
-            json['theme']['colors'][new Case(color.name).doKebabCase()][
-              new Case(shade.name).doKebabCase()
-            ] = shade.hex
-          })
-        })
-      })
-
-    penpot.ui.sendMessage({
-      type: 'EXPORT_PALETTE_TAILWIND',
-      data: {
-        id: penpot.currentUser.id,
-        context: 'TAILWIND',
-        code: json,
-      },
     })
-  } else null //figma.notify(locals[lang].error.corruption);
+  else
+    workingThemes.forEach((theme) => {
+      theme.colors.forEach((color) => {
+        json['theme']['colors'][new Case(color.name).doKebabCase()] = {}
+        color.shades.sort().forEach((shade) => {
+          json['theme']['colors'][new Case(color.name).doKebabCase()][
+            new Case(shade.name).doKebabCase()
+          ] = shade.hex
+        })
+      })
+    })
+
+  penpot.ui.sendMessage({
+    type: 'EXPORT_PALETTE_TAILWIND',
+    data: {
+      id: penpot.currentUser.id,
+      context: 'TAILWIND',
+      code: json,
+    },
+  })
 }
 
 export default exportTailwind

@@ -380,6 +380,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
             {
               pluginMessage: {
                 type: 'EXPORT_PALETTE',
+                id: path.data.meta.id,
                 export: this.state.export.context,
                 colorSpace: this.state.export.colorSpace,
               },

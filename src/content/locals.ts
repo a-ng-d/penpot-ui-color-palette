@@ -673,6 +673,8 @@ export const locals: { [key: string]: any } = {
       corruption: `✕ Your ${glossary.name} seems corrupted. Do not edit any layer within it.`,
       palettesPicking: '✕ The palettes cannot be picked for now',
       generic: '✕ Something went wrong',
+      export:
+        'The code cannot be generated because the palette has not been found',
       badResponse: '✕ The response is not valid',
       authentication: '✕ The authentication has failed',
       timeout: '✕ The authentication has been timed out',

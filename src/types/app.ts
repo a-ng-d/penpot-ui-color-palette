@@ -1,4 +1,4 @@
-export type Service = 'BROWSE' | 'CREATE' | 'EDIT'
+export type Service = 'BROWSE' | 'CREATE' | 'EDIT' | 'TRANSFER'
 
 export type Context =
   | 'LIBRARY_PAGE'

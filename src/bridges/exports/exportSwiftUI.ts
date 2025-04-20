@@ -1,9 +1,21 @@
 import { Case } from '@a_ng_d/figmug-utils'
-import { Board } from '@penpot/plugin-types'
+import { lang, locals } from '../../content/locals'
 import { PaletteData } from '../../types/data'
 
-const exportSwiftUI = (palette: Board) => {
-  const paletteData: PaletteData = JSON.parse(palette.getPluginData('data')),
+const exportSwiftUI = (id: string) => {
+  const palette = penpot.currentPage?.getPluginData(`palette_${id}`)
+
+  if (palette === null)
+    return penpot.ui.sendMessage({
+      type: 'EXPORT_PALETTE_SWIFTUI',
+      data: {
+        id: penpot.currentUser.id,
+        context: 'APPLE_SWIFTUI',
+        code: locals[lang].export,
+      },
+    })
+
+  const paletteData: PaletteData = JSON.parse(palette ?? '{}').data,
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -11,48 +23,46 @@ const exportSwiftUI = (palette: Board) => {
         : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
     swift: Array<string> = []
 
-  if (palette.children.length === 1) {
-    workingThemes.forEach((theme) => {
-      theme.colors.forEach((color) => {
-        const Colors: Array<string> = []
+  workingThemes.forEach((theme) => {
+    theme.colors.forEach((color) => {
+      const Colors: Array<string> = []
+      Colors.unshift(
+        `// ${
+          workingThemes[0].type === 'custom theme' ? theme.name + ' - ' : ''
+        }${color.name}`
+      )
+      color.shades.forEach((shade) => {
         Colors.unshift(
-          `// ${
-            workingThemes[0].type === 'custom theme' ? theme.name + ' - ' : ''
-          }${color.name}`
+          `public let ${
+            workingThemes[0].type === 'custom theme'
+              ? new Case(theme.name + ' ' + color.name).doCamelCase()
+              : new Case(color.name).doCamelCase()
+          }${
+            shade.name === 'source' ? 'Source' : shade.name
+          } = Color(red: ${shade.gl[0].toFixed(
+            3
+          )}, green: ${shade.gl[1].toFixed(3)}, blue: ${shade.gl[2].toFixed(
+            3
+          )})`
         )
-        color.shades.forEach((shade) => {
-          Colors.unshift(
-            `public let ${
-              workingThemes[0].type === 'custom theme'
-                ? new Case(theme.name + ' ' + color.name).doCamelCase()
-                : new Case(color.name).doCamelCase()
-            }${
-              shade.name === 'source' ? 'Source' : shade.name
-            } = Color(red: ${shade.gl[0].toFixed(
-              3
-            )}, green: ${shade.gl[1].toFixed(3)}, blue: ${shade.gl[2].toFixed(
-              3
-            )})`
-          )
-        })
-        Colors.unshift('')
-        Colors.reverse().forEach((color) => swift.push(color))
       })
+      Colors.unshift('')
+      Colors.reverse().forEach((color) => swift.push(color))
     })
+  })
 
-    swift.pop()
+  swift.pop()
 
-    penpot.ui.sendMessage({
-      type: 'EXPORT_PALETTE_SWIFTUI',
-      data: {
-        id: penpot.currentUser.id,
-        context: 'APPLE_SWIFTUI',
-        code: `import SwiftUI\n\npublic extension Color {\n  static let Token = Color.TokenColor()\n  struct TokenColor {\n    ${swift.join(
-          '\n    '
-        )}\n  }\n}`,
-      },
-    })
-  } else null //figma.notify(locals[lang].error.corruption);
+  penpot.ui.sendMessage({
+    type: 'EXPORT_PALETTE_SWIFTUI',
+    data: {
+      id: penpot.currentUser.id,
+      context: 'APPLE_SWIFTUI',
+      code: `import SwiftUI\n\npublic extension Color {\n  static let Token = Color.TokenColor()\n  struct TokenColor {\n    ${swift.join(
+        '\n    '
+      )}\n  }\n}`,
+    },
+  })
 }
 
 export default exportSwiftUI
