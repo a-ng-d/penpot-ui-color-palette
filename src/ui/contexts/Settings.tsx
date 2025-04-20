@@ -45,6 +45,7 @@ import SyncPreferences from './SyncPreferences'
 
 interface SettingsProps {
   service: Service
+  id: string
   sourceColors?: Array<SourceColorConfiguration>
   name: string
   description: string
@@ -108,6 +109,7 @@ export default class Settings extends PureComponent<
     this.palette = $palette
     this.settingsMessage = {
       type: 'UPDATE_SETTINGS',
+      id: this.props.id,
       data: {
         name: '',
         description: '',

@@ -1,103 +1,30 @@
-import { Board } from '@penpot/plugin-types'
-import { PaletteNode } from 'src/types/nodes'
-import Colors from '../../canvas/Colors'
-import { lang, locals } from '../../content/locals'
+import { FullConfiguration } from 'src/types/configurations'
 import { SettingsMessage } from '../../types/messages'
-import setPaletteName from '../../utils/setPaletteName'
-import {
-  currentSelection,
-  isSelectionChanged,
-  previousSelection,
-} from '../processSelection'
 
 const updateSettings = async (msg: SettingsMessage) => {
-  const palette = isSelectionChanged
-    ? (previousSelection?.[0] as Board)
-    : (currentSelection[0] as Board)
+  const paletteData: FullConfiguration = JSON.parse(
+    penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
+  )
 
-  if (palette.children.length === 1) {
-    const keys = palette.getPluginDataKeys()
-    const paletteData: [string, string | boolean | object][] = keys.map(
-      (key) => {
-        const value = palette.getPluginData(key)
-        if (value === 'true' || value === 'false')
-          return [key, value === 'true']
-        else if (value.includes('{'))
-          return [key, JSON.parse(palette.getPluginData(key))]
-        return [key, value]
-      }
-    )
-    const paletteObject = makePaletteNode(paletteData)
-    const creatorAvatarImg =
-      paletteObject.creatorAvatar !== ''
-        ? await penpot
-            .uploadMediaUrl('Avatar', paletteObject.creatorAvatar ?? '')
-            .catch(() => null)
-        : null
+  paletteData.base.name = msg.data.name
+  paletteData.base.description = msg.data.description
+  paletteData.base.colorSpace = msg.data.colorSpace
+  paletteData.base.visionSimulationMode = msg.data.visionSimulationMode
+  paletteData.base.algorithmVersion = msg.data.algorithmVersion
+  paletteData.base.textColorsTheme = msg.data.textColorsTheme
 
-    palette.setPluginData('name', msg.data.name)
-    palette.setPluginData('description', msg.data.description)
-    palette.setPluginData('colorSpace', msg.data.colorSpace)
-    palette.setPluginData('visionSimulationMode', msg.data.visionSimulationMode)
-    palette.setPluginData(
-      'textColorsTheme',
-      JSON.stringify(msg.data.textColorsTheme)
-    )
-    palette.setPluginData('algorithmVersion', msg.data.algorithmVersion)
-
-    palette.children[0].remove()
-    palette.appendChild(
-      new Colors(
-        {
-          ...paletteObject,
-          name: msg.data.name,
-          description: msg.data.description,
-          colorSpace: msg.data.colorSpace,
-          visionSimulationMode: msg.data.visionSimulationMode,
-          textColorsTheme: msg.data.textColorsTheme,
-          algorithmVersion: msg.data.algorithmVersion,
-          view:
-            msg.isEditedInRealTime &&
-            paletteObject.view === 'PALETTE_WITH_PROPERTIES'
-              ? 'PALETTE'
-              : msg.isEditedInRealTime && paletteObject.view === 'SHEET'
-                ? 'SHEET_SAFE_MODE'
-                : paletteObject.view,
-          creatorAvatarImg: creatorAvatarImg,
-          service: 'EDIT',
-        },
-        palette
-      ).makeNode()
-    )
-
-    // Update
-    const now = new Date().toISOString()
-    palette.setPluginData('updatedAt', now)
-    penpot.ui.sendMessage({
-      type: 'UPDATE_PALETTE_DATE',
-      data: now,
-    })
-
-    // Palette migration
-    palette.name = setPaletteName(
-      msg.data.name !== undefined ? msg.data.name : locals[lang].name,
-      paletteObject.themes.find((theme) => theme.isEnabled)?.name,
-      paletteObject.preset.name,
-      msg.data.colorSpace,
-      msg.data.visionSimulationMode
-    )
-  } else null //figma.notify(locals[lang].error.corruption);
-}
-
-const makePaletteNode = (data: [string, string | boolean | object][]) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const obj: { [key: string]: any } = {}
-
-  data.forEach((d) => {
-    obj[d[0]] = d[1]
+  // Update
+  const now = new Date().toISOString()
+  paletteData.meta.dates.updatedAt = now
+  penpot.ui.sendMessage({
+    type: 'UPDATE_PALETTE_DATE',
+    data: now,
   })
 
-  return obj as PaletteNode
+  penpot.currentPage?.setPluginData(
+    `palette_${msg.id}`,
+    JSON.stringify(paletteData)
+  )
 }
 
 export default updateSettings

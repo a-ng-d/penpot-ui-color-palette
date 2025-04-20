@@ -5,6 +5,7 @@ import {
   BaseConfiguration,
   ThemeConfiguration,
   VisionSimulationModeConfiguration,
+  ViewConfiguration,
 } from './configurations'
 import { TextColorsThemeHexModel } from './models'
 
@@ -38,6 +39,7 @@ export interface ViewMessage {
 
 export interface SettingsMessage {
   type: 'UPDATE_SETTINGS'
+  id: string
   data: {
     name: string
     description: string
