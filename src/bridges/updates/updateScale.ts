@@ -1,9 +1,9 @@
-import { FullBaseConfiguration } from 'src/types/configurations'
+import { FullConfiguration } from 'src/types/configurations'
 import { ScaleMessage } from '../../types/messages'
 import doLightnessScale from '../../utils/doLightnessScale'
 
 const updateScale = async (msg: ScaleMessage) => {
-  const paletteData: FullBaseConfiguration = JSON.parse(
+  const paletteData: FullConfiguration = JSON.parse(
     penpot.currentPage?.getPluginData(`palette_${msg.data.id}`) ?? '{}'
   )
 

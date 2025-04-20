@@ -184,7 +184,7 @@ export interface MetaConfiguration {
   creatorIdentity: CreatorConfiguration
 }
 
-export interface FullBaseConfiguration {
+export interface FullConfiguration {
   base: BaseConfiguration
   meta: MetaConfiguration
   data?: PaletteData

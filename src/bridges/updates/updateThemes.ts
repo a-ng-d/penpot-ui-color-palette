@@ -1,8 +1,8 @@
-import { FullBaseConfiguration } from 'src/types/configurations'
+import { FullConfiguration } from 'src/types/configurations'
 import { ThemesMessage } from '../../types/messages'
 
 const updateThemes = async (msg: ThemesMessage) => {
-  const paletteData: FullBaseConfiguration = JSON.parse(
+  const paletteData: FullConfiguration = JSON.parse(
     penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
   )
 

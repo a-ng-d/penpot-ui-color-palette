@@ -4,7 +4,7 @@ import { Hsluv } from 'hsluv'
 import { paletteDataVersion } from '../config'
 import { lang, locals } from '../content/locals'
 import {
-  FullBaseConfiguration,
+  FullConfiguration,
   MetaConfiguration,
   BaseConfiguration,
   ScaleConfiguration,
@@ -22,7 +22,7 @@ export default class Data {
   private paletteData: PaletteData
   private currentScale: ScaleConfiguration
 
-  constructor({ base, meta }: FullBaseConfiguration) {
+  constructor({ base, meta }: FullConfiguration) {
     this.base = base
     this.meta = meta
     this.paletteData = {
