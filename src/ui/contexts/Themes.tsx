@@ -38,6 +38,7 @@ import Feature from '../components/Feature'
 import Dispatcher from '../modules/Dispatcher'
 
 interface ThemesProps {
+  id: string
   preset: PresetConfiguration
   scale: ScaleConfiguration
   themes: Array<ThemeConfiguration>
@@ -86,6 +87,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
     super(props)
     this.themesMessage = {
       type: 'UPDATE_THEMES',
+      id: this.props.id,
       data: [],
       isEditedInRealTime: false,
     }

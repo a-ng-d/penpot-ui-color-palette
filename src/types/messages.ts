@@ -10,6 +10,7 @@ import { TextColorsThemeHexModel } from './models'
 
 export interface ScaleMessage {
   type: 'UPDATE_SCALE'
+  id: string
   data: PaletteConfiguration
   isEditedInRealTime: boolean
   feature?: string
@@ -23,6 +24,7 @@ export interface ColorsMessage {
 
 export interface ThemesMessage {
   type: 'UPDATE_THEMES'
+  id: string
   data: Array<ThemeConfiguration>
   isEditedInRealTime: boolean
 }

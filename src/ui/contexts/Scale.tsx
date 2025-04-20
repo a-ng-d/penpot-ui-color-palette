@@ -51,6 +51,7 @@ import Dispatcher from '../modules/Dispatcher'
 
 interface ScaleProps {
   service: Service
+  id: string
   sourceColors?: Array<SourceColorConfiguration>
   preset: PresetConfiguration
   namingConvention: NamingConvention
@@ -204,6 +205,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     this.palette = $palette
     this.scaleMessage = {
       type: 'UPDATE_SCALE',
+      id: this.props.id,
       data: this.palette.value as PaletteConfiguration,
       isEditedInRealTime: true,
     }

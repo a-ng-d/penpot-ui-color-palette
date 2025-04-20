@@ -63,6 +63,7 @@ import Dispatcher from '../modules/Dispatcher'
 import Preview from '../modules/Preview'
 
 interface EditPaletteProps {
+  id: string
   name: string
   description: string
   preset: PresetConfiguration
@@ -103,7 +104,10 @@ interface EditPaletteStates {
   canPaletteDeepSync: boolean
 }
 
-export default class EditPalette extends PureComponent<EditPaletteProps, EditPaletteStates> {
+export default class EditPalette extends PureComponent<
+  EditPaletteProps,
+  EditPaletteStates
+> {
   private colorsMessage: ColorsMessage
   private themesMessage: ThemesMessage
   private dispatch: { [key: string]: DispatchProcess }
@@ -135,6 +139,7 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
     this.palette = $palette
     this.themesMessage = {
       type: 'UPDATE_THEMES',
+      id: this.props.id,
       data: [],
       isEditedInRealTime: false,
     }

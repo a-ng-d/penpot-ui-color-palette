@@ -106,8 +106,6 @@ export interface AppStates {
   onGoingStep: string
 }
 
-let isPaletteSelected = false
-
 export default class App extends Component<Record<string, never>, AppStates> {
   private palette: typeof $palette
 
@@ -354,8 +352,30 @@ export default class App extends Component<Record<string, never>, AppStates> {
         }
 
         const loadPalette = () => {
-          this.palette.setKey('preset', path.data.base.preset)
           this.palette.setKey('id', path.data.meta.id)
+          this.palette.setKey('name', path.data.base.name)
+          this.palette.setKey('description', path.data.base.description)
+          this.palette.setKey('preset', path.data.base.preset)
+          this.palette.setKey('scale', path.data.base.scale)
+          this.palette.setKey('shift', path.data.base.shift)
+          this.palette.setKey(
+            'areSourceColorsLocked',
+            path.data.base.areSourceColorsLocked
+          )
+          this.palette.setKey('colors', path.data.base.colors)
+          this.palette.setKey('themes', path.data.base.themes)
+          this.palette.setKey('colorSpace', path.data.base.colorSpace)
+          this.palette.setKey(
+            'visionSimulationMode',
+            path.data.base.visionSimulationMode
+          )
+          this.palette.setKey('view', path.data.base.view)
+          this.palette.setKey(
+            'algorithmVersion',
+            path.data.base.algorithmVersion
+          )
+          this.palette.setKey('textColorsTheme', path.data.base.textColorsTheme)
+
           parent.postMessage(
             {
               pluginMessage: {
@@ -366,18 +386,16 @@ export default class App extends Component<Record<string, never>, AppStates> {
             },
             '*'
           )
+
           this.setState({
             service: 'EDIT',
             sourceColors: [],
-            id: path.data.base.id,
+            id: path.data.meta.id,
             name: path.data.base.name,
             description: path.data.base.description,
             preset: path.data.base.preset,
             scale: path.data.base.scale,
-            shift:
-              path.data.base.shift !== ''
-                ? path.data.base.shift
-                : { chroma: 100 },
+            shift: path.data.base.shift,
             areSourceColorsLocked: path.data.base.areSourceColorsLocked,
             colors: path.data.base.colors,
             colorSpace: path.data.base.colorSpace,
