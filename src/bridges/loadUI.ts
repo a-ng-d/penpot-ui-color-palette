@@ -104,8 +104,8 @@ const loadUI = async () => {
           penpot.ui.sendMessage({ type: 'STOP_LOADER' })
         ),
       SYNC_LOCAL_STYLES: async () =>
-        createLocalStyles(palette)
-          .then(async (message) => [message, await updateLocalStyles(palette)])
+        createLocalStyles(path.id)
+          .then(async (message) => [message, await updateLocalStyles(path.id)])
           .then(
             (messages) =>
               null /*figma.notify(messages.join(locals[lang].separator), {

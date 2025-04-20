@@ -152,46 +152,52 @@ export default class InternalPalettes extends PureComponent<
       >
         {this.state.paletteListsStatus === 'LOADED' && (
           <>
-            {this.state.paletteLists.map((palette, index) => (
-              <ActionsItem
-                id={palette.meta.id}
-                key={`palette-${index}`}
-                name={
-                  palette.base.name === ''
-                    ? locals[this.props.lang].name
-                    : palette.base.name
-                }
-                description={palette.base.preset.name}
-                subdescription={getPaletteMeta(
-                  palette.base.colors,
-                  palette.base.themes
-                )}
-                actionsSlot={
-                  <>
-                    <Button
-                      type="icon"
-                      icon="trash"
-                      helper={{
-                        label:
-                          locals[this.props.lang].palettes.actions
-                            .selectPalette,
-                      }}
-                      action={() => null}
-                    />
-                    <Button
-                      type="secondary"
-                      helper={{
-                        label:
-                          locals[this.props.lang].palettes.actions
-                            .selectPalette,
-                      }}
-                      label="Edit palette"
-                      action={() => this.onEditPalette(palette.meta.id)}
-                    />
-                  </>
-                }
-              />
-            ))}
+            {this.state.paletteLists
+              .sort(
+                (a, b) =>
+                  new Date(b.meta.dates.updatedAt).getTime() -
+                  new Date(a.meta.dates.updatedAt).getTime()
+              )
+              .map((palette, index) => (
+                <ActionsItem
+                  id={palette.meta.id}
+                  key={`palette-${index}`}
+                  name={
+                    palette.base.name === ''
+                      ? locals[this.props.lang].name
+                      : palette.base.name
+                  }
+                  description={palette.base.preset.name}
+                  subdescription={getPaletteMeta(
+                    palette.base.colors,
+                    palette.base.themes
+                  )}
+                  actionsSlot={
+                    <>
+                      <Button
+                        type="icon"
+                        icon="trash"
+                        helper={{
+                          label:
+                            locals[this.props.lang].palettes.actions
+                              .selectPalette,
+                        }}
+                        action={() => null}
+                      />
+                      <Button
+                        type="secondary"
+                        helper={{
+                          label:
+                            locals[this.props.lang].palettes.actions
+                              .selectPalette,
+                        }}
+                        label="Edit palette"
+                        action={() => this.onEditPalette(palette.meta.id)}
+                      />
+                    </>
+                  }
+                />
+              ))}
           </>
         )}
         {this.state.paletteListsStatus === 'EMPTY' && (

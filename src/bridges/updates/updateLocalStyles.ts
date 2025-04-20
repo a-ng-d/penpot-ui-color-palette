@@ -1,170 +1,137 @@
-import { Board } from '@penpot/plugin-types'
+import { lang, locals } from '../../content/locals'
+import { PaletteData, PaletteDataThemeItem } from '../../types/data'
 
-const updateLocalStyles = async (palette: Board) => {
-  /*const paletteData: PaletteData = JSON.parse(palette.getPluginData("data")),
+const updateLocalStyles = async (id: string) => {
+  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+
+  if (rawPalette === undefined || rawPalette === null)
+    throw new Error(locals[lang].error.styles)
+
+  const paletteData: PaletteData = JSON.parse(rawPalette).data,
     workingThemes =
-      paletteData.themes.filter((theme) => theme.type === "custom theme")
+      paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
-        ? paletteData.themes.filter((theme) => theme.type === "default theme")
-        : paletteData.themes.filter((theme) => theme.type === "custom theme");
-  const canDeepSyncStyles = await window.localStorage.getItem(
-    "can_deep_sync_styles"
-  );
+        ? paletteData.themes.filter((theme) => theme.type === 'default theme')
+        : paletteData.themes.filter((theme) => theme.type === 'custom theme')
+  const canDeepSyncStyles =
+    penpot.root?.getPluginData('can_deep_sync_styles') === 'true'
 
-  if (palette.children.length === 1) {
-    const updatedLocalStylesStatusMessage = figma
-      .getLocalPaintStylesAsync()
-      .then((localStyles) => {
-        let i = 0,
-          j = 0,
-          k = 0;
-        const messages: Array<string> = [];
+  const updatedLocalStylesStatusMessage = await Promise.all(
+    penpot.library.local.colors
+  )
+    .then((localStyles) => {
+      let i = 0,
+        j = 0,
+        k = 0
+      const messages: Array<string> = []
 
-        if (canDeepSyncStyles ?? false)
-          localStyles.forEach((localStyle) => {
-            const shadeMatch = workingThemes.find(
-              (theme) =>
-                theme.colors.find(
-                  (color) =>
-                    color.shades.find(
-                      (shade) => shade.styleId === localStyle.id
-                    ) !== undefined
-                ) !== undefined
-            );
-            if (shadeMatch === undefined) {
-              localStyle.remove();
-              k++;
-            }
-          });
+      if (canDeepSyncStyles ?? false)
+        localStyles.forEach((localStyle) => {
+          const shadeMatch = workingThemes.find(
+            (theme) =>
+              theme.colors.find(
+                (color) =>
+                  color.shades.find(
+                    (shade) => shade.styleId === localStyle.id
+                  ) !== undefined
+              ) !== undefined
+          )
+          if (shadeMatch === undefined) {
+            localStyle.remove()
+            k++
+          }
+        })
 
-        workingThemes.forEach((theme: PaletteDataThemeItem) => {
-          theme.colors.forEach((color) => {
-            color.shades.forEach((shade) => {
-              const name =
-                  workingThemes[0].type === "custom theme"
-                    ? `${paletteData.name === "" ? "" : paletteData.name + "/"}${
-                        theme.name
-                      }/${color.name}/${shade.name}`
-                    : `${paletteData.name === "" ? "" : paletteData.name}/${
-                        color.name
-                      }/${shade.name}`,
-                description =
-                  color.description !== ""
-                    ? color.description +
-                      locals[lang].separator +
-                      shade.description
-                    : shade.description;
+      workingThemes.forEach((theme: PaletteDataThemeItem) => {
+        theme.colors.forEach((color) => {
+          color.shades.forEach((shade) => {
+            const path =
+              workingThemes[0].type === 'custom theme'
+                ? `${paletteData.name === '' ? '' : paletteData.name + ' / '}${
+                    theme.name
+                  } / ${color.name}`
+                : `${paletteData.name === '' ? '' : paletteData.name} / ${
+                    color.name
+                  }`
 
-              if (
-                localStyles.find(
-                  (localStyle) => localStyle.id === shade.styleId
-                ) !== undefined
-              ) {
-                const styleMatch = localStyles.find(
-                  (localStyle) => localStyle.id === shade.styleId
-                );
+            if (
+              localStyles.find(
+                (localStyle) => localStyle.id === shade.styleId
+              ) !== undefined
+            ) {
+              const styleMatch = localStyles.find(
+                (localStyle) => localStyle.id === shade.styleId
+              )
 
-                if (styleMatch !== undefined) {
-                  if (styleMatch.name !== name) {
-                    styleMatch.name = name;
-                    j++;
-                  }
-
-                  if (styleMatch.description !== description) {
-                    styleMatch.description = description;
-                    j++;
-                  }
-
-                  if (
-                    shade.hex !==
-                    chroma([
-                      (styleMatch.paints[0] as SolidPaint).color.r * 255,
-                      (styleMatch.paints[0] as SolidPaint).color.g * 255,
-                      (styleMatch.paints[0] as SolidPaint).color.b * 255,
-                    ]).hex()
-                  ) {
-                    styleMatch.paints = [
-                      {
-                        type: "SOLID",
-                        color: {
-                          r: shade.gl[0],
-                          g: shade.gl[1],
-                          b: shade.gl[2],
-                        },
-                      },
-                    ];
-                    j++;
-                  }
+              if (styleMatch !== undefined) {
+                if (styleMatch.name !== shade.name) {
+                  styleMatch.name = shade.name
+                  j++
                 }
 
-                j > 0 ? i++ : i;
-                j = 0;
-              } else if (
-                localStyles.find((localStyle) => localStyle.name === name) !==
-                undefined
-              ) {
-                const styleMatch = localStyles.find(
-                  (localStyle) => localStyle.name === name
-                );
-
-                if (styleMatch !== undefined) {
-                  if (styleMatch.name !== name) {
-                    styleMatch.name = name;
-                    j++;
-                  }
-
-                  if (styleMatch.description !== shade.description) {
-                    styleMatch.description = shade.description;
-                    j++;
-                  }
-
-                  if (
-                    shade.hex !==
-                    chroma([
-                      (styleMatch.paints[0] as SolidPaint).color.r * 255,
-                      (styleMatch.paints[0] as SolidPaint).color.g * 255,
-                      (styleMatch.paints[0] as SolidPaint).color.b * 255,
-                    ]).hex()
-                  ) {
-                    styleMatch.paints = [
-                      {
-                        type: "SOLID",
-                        color: {
-                          r: shade.gl[0],
-                          g: shade.gl[1],
-                          b: shade.gl[2],
-                        },
-                      },
-                    ];
-                    j++;
-                  }
+                if (styleMatch.path !== path) {
+                  styleMatch.path = path
+                  j++
                 }
 
-                j > 0 ? i++ : i;
-                j = 0;
+                if (shade.hex !== styleMatch.color) {
+                  styleMatch.color = shade.hex
+                  j++
+                }
               }
-            });
-          });
-        });
 
-        if (i > 1)
-          messages.push(`${i} ${locals[lang].info.updatedLocalStyles.plural}`);
-        else if (i === 1)
-          messages.push(locals[lang].info.updatedLocalStyles.single);
-        else messages.push(locals[lang].info.updatedLocalStyles.none);
+              j > 0 ? i++ : i
+              j = 0
+            } else if (
+              localStyles.find(
+                (localStyle) => localStyle.name === shade.name
+              ) !== undefined
+            ) {
+              const styleMatch = localStyles.find(
+                (localStyle) => localStyle.name === shade.name
+              )
 
-        if (k > 1)
-          messages.push(`${k} ${locals[lang].info.removedLocalStyles.plural}`);
-        else if (k === 1)
-          messages.push(locals[lang].info.removedLocalStyles.single);
-        else messages.push(locals[lang].info.removedLocalStyles.none);
+              if (styleMatch !== undefined) {
+                if (styleMatch.name !== shade.name) {
+                  styleMatch.name = shade.name
+                  j++
+                }
 
-        return messages.join(locals[lang].separator);
+                if (styleMatch.path !== path) {
+                  styleMatch.path = path
+                  j++
+                }
+
+                if (shade.hex !== styleMatch.color) {
+                  styleMatch.color = shade.hex
+                  j++
+                }
+              }
+
+              j > 0 ? i++ : i
+              j = 0
+            }
+          })
+        })
       })
-      .catch(() => locals[lang].error.generic);
 
-    return await updatedLocalStylesStatusMessage;
-  } else return locals[lang].error.corruption;*/
+      if (i > 1)
+        messages.push(`${i} ${locals[lang].info.updatedLocalStyles.plural}`)
+      else if (i === 1)
+        messages.push(locals[lang].info.updatedLocalStyles.single)
+      else messages.push(locals[lang].info.updatedLocalStyles.none)
+
+      if (k > 1)
+        messages.push(`${k} ${locals[lang].info.removedLocalStyles.plural}`)
+      else if (k === 1)
+        messages.push(locals[lang].info.removedLocalStyles.single)
+      else messages.push(locals[lang].info.removedLocalStyles.none)
+
+      return messages.join(locals[lang].separator)
+    })
+    .catch(() => locals[lang].error.generic)
+
+  return await updatedLocalStylesStatusMessage
 }
 
 export default updateLocalStyles

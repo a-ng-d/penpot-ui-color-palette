@@ -675,6 +675,8 @@ export const locals: { [key: string]: any } = {
       generic: '✕ Something went wrong',
       export:
         'The code cannot be generated because the palette has not been found',
+      styles: '✕ The styles cannot be generated',
+      variables: '✕ The variables cannot be generated',
       badResponse: '✕ The response is not valid',
       authentication: '✕ The authentication has failed',
       timeout: '✕ The authentication has been timed out',

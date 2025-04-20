@@ -331,7 +331,10 @@ export default class EditPalette extends PureComponent<
       isPrimaryLoading: true,
     })
 
-    parent.postMessage({ pluginMessage: { type: 'SYNC_LOCAL_STYLES' } }, '*')
+    parent.postMessage(
+      { pluginMessage: { type: 'SYNC_LOCAL_STYLES', id: this.props.id } },
+      '*'
+    )
 
     trackActionEvent(
       this.props.userIdentity.id,

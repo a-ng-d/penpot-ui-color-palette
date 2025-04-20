@@ -1,26 +1,22 @@
-import { RgbModel } from '@a_ng_d/figmug-ui'
+import { HexModel } from '@a_ng_d/figmug-ui'
 import { LibraryColor } from '@penpot/plugin-types'
-import chroma from 'chroma-js'
 
 export default class LocalStyle {
   private name: string
-  private description: string
-  private rgb: RgbModel
-  private paintStyle: LibraryColor | null
+  private hex: HexModel
+  private libraryColor: LibraryColor | null
 
-  constructor(name: string, description: string, rgb: RgbModel) {
+  constructor({ name, hex }: { name: string; hex: HexModel }) {
     this.name = name
-    this.description = description
-    this.rgb = rgb
-    this.paintStyle = null
+    this.hex = hex
+    this.libraryColor = null
   }
 
-  makePaintStyle = () => {
-    this.paintStyle = penpot.library.local.createColor()
-    this.paintStyle.name = this.name
-    //this.paintStyle.description = this.description
-    this.paintStyle.color = chroma([this.rgb.r, this.rgb.g, this.rgb.b]).hex()
+  makeLibraryColor = () => {
+    this.libraryColor = penpot.library.local.createColor()
+    this.libraryColor.name = this.name
+    this.libraryColor.color = this.hex
 
-    return this.paintStyle
+    return this.libraryColor
   }
 }
