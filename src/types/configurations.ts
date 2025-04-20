@@ -187,5 +187,5 @@ export interface MetaConfiguration {
 export interface FullConfiguration {
   base: BaseConfiguration
   meta: MetaConfiguration
-  data?: PaletteData
+  data: PaletteData
 } 
