@@ -25,7 +25,6 @@ export default class Source extends PureComponent<SourceProps, SourceStates> {
 
   // Render
   render() {
-    console.log(this.props)
     return (
       <div
         className="preview__cell"

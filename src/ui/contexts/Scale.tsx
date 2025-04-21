@@ -1431,8 +1431,8 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                     />
                   ) : (
                     <Slider
-                      type="EDIT"
                       {...this.props}
+                      type="EDIT"
                       presetName={this.props.preset.name}
                       stops={this.props.preset.scale}
                       colors={{
