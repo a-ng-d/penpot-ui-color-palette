@@ -555,6 +555,17 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
         <section className="context">{fragment}</section>
         <Feature
           isActive={
+            EditPalette.features(this.props.planStatus).PREVIEW.isActive() &&
+            this.state.context !== 'EXPORT'
+          }
+        >
+          <Preview
+            {...this.props}
+            service="EDIT"
+          />
+        </Feature>
+        <Feature
+          isActive={
             EditPalette.features(this.props.planStatus).ACTIONS.isActive() &&
             this.state.context !== 'EXPORT'
           }
@@ -565,17 +576,6 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
             service="EDIT"
             onSyncLocalStyles={this.onSyncStyles}
             onPublishPalette={this.props.onPublishPalette}
-          />
-        </Feature>
-        <Feature
-          isActive={
-            EditPalette.features(this.props.planStatus).PREVIEW.isActive() &&
-            this.state.context !== 'EXPORT'
-          }
-        >
-          <Preview
-            {...this.props}
-            service="EDIT"
           />
         </Feature>
       </>

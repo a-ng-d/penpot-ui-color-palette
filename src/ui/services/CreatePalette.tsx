@@ -322,6 +322,18 @@ export default class CreatePalette extends PureComponent<
         <Feature
           isActive={CreatePalette.features(
             this.props.planStatus
+          ).PREVIEW.isActive()}
+        >
+          <Preview
+            {...this.props}
+            service="CREATE"
+            colors={this.props.sourceColors}
+            onResetSourceColors={this.resetSourceColorsHandler}
+          />
+        </Feature>
+        <Feature
+          isActive={CreatePalette.features(
+            this.props.planStatus
           ).ACTIONS.isActive()}
         >
           <Actions
@@ -330,18 +342,6 @@ export default class CreatePalette extends PureComponent<
             service="CREATE"
             scale={this.props.scale}
             onCreatePalette={this.onCreatePalette}
-          />
-        </Feature>
-        <Feature
-          isActive={CreatePalette.features(
-            this.props.planStatus
-          ).PREVIEW.isActive()}
-        >
-          <Preview
-            {...this.props}
-            service="CREATE"
-            colors={this.props.sourceColors}
-            onResetSourceColors={this.resetSourceColorsHandler}
           />
         </Feature>
       </>
