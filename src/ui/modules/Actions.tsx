@@ -1,7 +1,6 @@
 import {
   Bar,
   Button,
-  DropdownOption,
   Icon,
   Input,
   layouts,
@@ -142,56 +141,6 @@ export default class Actions extends PureComponent<
       )
   }
 
-  // Direct Actions
-  publicationAction = (): Partial<DropdownOption> => {
-    if (this.props.userSession?.connectionStatus === 'UNCONNECTED')
-      return {
-        label: locals[this.props.lang].actions.publishOrSyncPalette,
-        value: 'PALETTE_PUBLICATION',
-        feature: 'PUBLISH_SYNC_PALETTE',
-      }
-    else if (
-      this.props.userSession?.userId === this.props.creatorIdentity?.creatorId
-    )
-      return {
-        label: locals[this.props.lang].actions.publishPalette,
-        value: 'PALETTE_PUBLICATION',
-        feature: 'PUBLISH_PALETTE',
-      }
-    else if (
-      this.props.userSession?.userId !==
-        this.props.creatorIdentity?.creatorId &&
-      this.props.creatorIdentity?.creatorId !== ''
-    )
-      return {
-        label: locals[this.props.lang].actions.syncPalette,
-        value: 'PALETTE_PUBLICATION',
-        feature: 'SYNC_PALETTE',
-      }
-    else
-      return {
-        label: locals[this.props.lang].actions.publishPalette,
-        value: 'PALETTE_PUBLICATION',
-        feature: 'PUBLISH_PALETTE',
-      }
-  }
-
-  publicationLabel = (): string => {
-    if (this.props.userSession?.connectionStatus === 'UNCONNECTED')
-      return locals[this.props.lang].actions.publishOrSyncPalette
-    else if (
-      this.props.userSession?.userId === this.props.creatorIdentity?.creatorId
-    )
-      return locals[this.props.lang].actions.publishPalette
-    else if (
-      this.props.userSession?.userId !==
-        this.props.creatorIdentity?.creatorId &&
-      this.props.creatorIdentity?.creatorId !== ''
-    )
-      return locals[this.props.lang].actions.syncPalette
-    else return locals[this.props.lang].actions.publishPalette
-  }
-
   // Templates
   Create = () => {
     return (
@@ -330,24 +279,6 @@ export default class Actions extends PureComponent<
         }
         rightPartSlot={
           <div className={layouts['snackbar--medium']}>
-            <Feature
-              isActive={Actions.features(
-                this.props.planStatus ?? 'UNPAID'
-              ).PUBLISH_PALETTE.isActive()}
-            >
-              <Button
-                type="secondary"
-                label={this.publicationLabel()}
-                feature="PUBLISH_PALETTE"
-                isBlocked={Actions.features(
-                  this.props.planStatus ?? 'UNPAID'
-                ).PUBLISH_PALETTE.isBlocked()}
-                isNew={Actions.features(
-                  this.props.planStatus ?? 'UNPAID'
-                ).PUBLISH_PALETTE.isNew()}
-                action={this.props.onPublishPalette}
-              />
-            </Feature>
             <Menu
               id="local-styles-variables"
               label={locals[this.props.lang].actions.sync}
