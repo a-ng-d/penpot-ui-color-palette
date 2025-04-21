@@ -29,6 +29,7 @@ import Feature from '../components/Feature'
 interface ActionsProps {
   service: Service
   sourceColors: Array<SourceColorConfiguration> | []
+  id: string
   scale: ScaleConfiguration
   name?: string
   creatorIdentity?: CreatorConfiguration
@@ -55,7 +56,10 @@ interface ActionsStates {
   isTooltipVisible: boolean
 }
 
-export default class Actions extends PureComponent<ActionsProps, ActionsStates> {
+export default class Actions extends PureComponent<
+  ActionsProps,
+  ActionsStates
+> {
   private palette: typeof $palette
 
   static defaultProps = {
@@ -120,6 +124,22 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
       this.props.onChangeSettings({
         name: e.currentTarget.value,
       })
+    if (this.props.service === 'EDIT')
+      parent.postMessage(
+        {
+          pluginMessage: {
+            type: 'UPDATE_PALETTE',
+            id: this.props.id,
+            items: [
+              {
+                key: 'base.name',
+                value: e.currentTarget.value,
+              },
+            ],
+          },
+        },
+        '*'
+      )
   }
 
   // Direct Actions
@@ -280,7 +300,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
             />
           </Feature>
         }
-        border={['TOP']}
+        border={[]}
         padding="var(--size-xxsmall) var(--size-xsmall)"
       />
     )
@@ -289,6 +309,25 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
   Deploy = () => {
     return (
       <Bar
+        leftPartSlot={
+          <Input
+            id="update-palette-name"
+            type="TEXT"
+            placeholder={locals[this.props.lang].name}
+            value={this.props.name !== '' ? this.props.name : ''}
+            charactersLimit={64}
+            isBlocked={Actions.features(
+              this.props.planStatus
+            ).SETTINGS_NAME.isBlocked()}
+            isNew={Actions.features(
+              this.props.planStatus
+            ).SETTINGS_NAME.isNew()}
+            feature="RENAME_PALETTE"
+            onChange={this.nameHandler}
+            onFocus={this.nameHandler}
+            onBlur={this.nameHandler}
+          />
+        }
         rightPartSlot={
           <div className={layouts['snackbar--medium']}>
             <Feature
@@ -336,7 +375,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
             />
           </div>
         }
-        border={['TOP']}
+        border={[]}
         padding="var(--size-xxsmall) var(--size-xsmall)"
       />
     )
