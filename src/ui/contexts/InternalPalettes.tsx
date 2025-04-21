@@ -1,14 +1,23 @@
-import { ActionsItem, Button, List, SemanticMessage } from '@a_ng_d/figmug-ui'
+import {
+  ActionsItem,
+  Button,
+  Dialog,
+  List,
+  SemanticMessage,
+  texts,
+} from '@a_ng_d/figmug-ui'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
+import { createPortal } from 'react-dom'
 import { FullConfiguration } from 'src/types/configurations'
 import features from '../../config'
 import { locals } from '../../content/locals'
 import { Language, PlanStatus } from '../../types/app'
 import { ActionsList } from '../../types/models'
 import getPaletteMeta from '../../utils/setPaletteMeta'
+import Feature from '../components/Feature'
 
 interface InternalPalettesProps {
   planStatus: PlanStatus
@@ -19,6 +28,8 @@ interface InternalPalettesStates {
   paletteListsStatus: 'LOADING' | 'LOADED' | 'EMPTY'
   paletteLists: Array<FullConfiguration>
   isDeleteDialogOpen: boolean
+  targetedPaletteId: string
+  targetedPaletteName: string
 }
 
 export default class InternalPalettes extends PureComponent<
@@ -39,6 +50,8 @@ export default class InternalPalettes extends PureComponent<
       paletteListsStatus: 'LOADING',
       paletteLists: [],
       isDeleteDialogOpen: false,
+      targetedPaletteId: '',
+      targetedPaletteName: '',
     }
   }
 
@@ -92,8 +105,25 @@ export default class InternalPalettes extends PureComponent<
     )
   }
 
+  onDeletePalette = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: 'DELETE_PALETTE',
+          id: this.state.targetedPaletteId,
+        },
+      },
+      '*'
+    )
+    this.setState({
+      isDeleteDialogOpen: false,
+      targetedPaletteId: '',
+      targetedPaletteName: '',
+    })
+  }
+
   // Templates
-  /*Modals = () => {
+  Modals = () => {
     return (
       <>
         <Feature
@@ -106,33 +136,40 @@ export default class InternalPalettes extends PureComponent<
           {document.getElementById('modal') &&
             createPortal(
               <Dialog
-                title={
-                  locals[this.props.lang].settings.deleteActivityDialog.title
-                }
+                title={locals[this.props.lang].browse.deletePaletteDialog.title}
                 actions={{
                   destructive: {
                     label:
-                      locals[this.props.lang].settings.deleteActivityDialog
-                        .delete,
+                      locals[this.props.lang].browse.deletePaletteDialog.delete,
                     feature: 'DELETE_PALETTE',
-                    action: this.props.onChangeActivities,
+                    action: this.onDeletePalette,
                   },
                   secondary: {
                     label:
-                      locals[this.props.lang].settings.deleteActivityDialog
-                        .cancel,
-                    action: () => this.setState({ isDeleteDialogOpen: false }),
+                      locals[this.props.lang].browse.deletePaletteDialog.cancel,
+                    action: () =>
+                      this.setState({
+                        isDeleteDialogOpen: false,
+                        targetedPaletteId: '',
+                        targetedPaletteName: '',
+                      }),
                   },
                 }}
-                onClose={() => this.setState({ isDeleteDialogOpen: false })}
+                onClose={() =>
+                  this.setState({
+                    isDeleteDialogOpen: false,
+                    targetedPaletteId: '',
+                    targetedPaletteName: '',
+                  })
+                }
               >
                 <div className="dialog__text">
                   <p className={texts.type}>
                     {locals[
                       this.props.lang
-                    ].settings.deleteActivityDialog.message.replace(
+                    ].browse.deletePaletteDialog.message.replace(
                       '$1',
-                      this.props.activity.name
+                      this.state.targetedPaletteName
                     )}
                   </p>
                 </div>
@@ -142,7 +179,7 @@ export default class InternalPalettes extends PureComponent<
         </Feature>
       </>
     )
-  }*/
+  }
 
   InternalPalettesList = () => {
     return (
@@ -179,19 +216,22 @@ export default class InternalPalettes extends PureComponent<
                         icon="trash"
                         helper={{
                           label:
-                            locals[this.props.lang].palettes.actions
-                              .selectPalette,
+                            locals[this.props.lang].browse.actions
+                              .deletePalette,
                         }}
-                        action={() => null}
+                        action={() =>
+                          this.setState({
+                            isDeleteDialogOpen: true,
+                            targetedPaletteId: palette.meta.id,
+                            targetedPaletteName: palette.base.name,
+                          })
+                        }
                       />
                       <Button
                         type="secondary"
-                        helper={{
-                          label:
-                            locals[this.props.lang].palettes.actions
-                              .selectPalette,
-                        }}
-                        label="Edit palette"
+                        label={
+                          locals[this.props.lang].browse.actions.editPalette
+                        }
                         action={() => this.onEditPalette(palette.meta.id)}
                       />
                     </>
@@ -212,6 +252,11 @@ export default class InternalPalettes extends PureComponent<
 
   // Render
   render() {
-    return <this.InternalPalettesList />
+    return (
+      <>
+        <this.InternalPalettesList />
+        <this.Modals />
+      </>
+    )
   }
 }

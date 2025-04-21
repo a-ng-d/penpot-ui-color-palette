@@ -58,6 +58,19 @@ export const locals: { [key: string]: any } = {
       export: 'Export',
       settings: 'Settings',
     },
+    browse: {
+      actions: {
+        deletePalette: 'Delete palette',
+        editPalette: 'Edit palette',
+      },
+      deletePaletteDialog: {
+        title: 'Delete palette',
+        message:
+          'You\'re about to delete the "$1" palette. This action is irreversible.',
+        delete: 'Delete palette',
+        cancel: 'Cancel',
+      },
+    },
     palettes: {
       contexts: {
         page: 'This page',

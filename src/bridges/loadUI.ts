@@ -171,6 +171,8 @@ const loadUI = async () => {
             data: JSON.parse(palette),
           })
       },
+      DELETE_PALETTE: () =>
+        penpot.currentPage?.setPluginData(`palette_${path.id}`, ''),
       //
       GET_PRO_PLAN: async () => await getProPlan(),
     }
