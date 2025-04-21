@@ -396,6 +396,9 @@ export const locals: { [key: string]: any } = {
       closest: {
         tag: 'Closest',
       },
+      source: {
+        tag: 'Source',
+      },
     },
     publication: {
       titlePublish: 'Publish palette',

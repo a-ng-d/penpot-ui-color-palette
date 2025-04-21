@@ -37,6 +37,7 @@ import { trackPreviewManagementEvent } from '../../utils/eventsTracker'
 import { AppStates } from '../App'
 import Feature from '../components/Feature'
 import Shade from '../components/Shade'
+import Source from '../components/Source'
 
 interface PreviewProps {
   service: Service
@@ -893,6 +894,11 @@ export default class Preview extends PureComponent<
         {!this.state.isDrawerCollapsed && (
           <div className="preview__palette">
             <div className="preview__header">
+              <div className="preview__cell preview__cell--no-height">
+                <this.stopTag
+                  stop={locals[this.props.lang].preview.source.tag}
+                />
+              </div>
               {Object.keys(this.props.scale)
                 .reverse()
                 .map((scale, index) => {
@@ -926,9 +932,16 @@ export default class Preview extends PureComponent<
                       className="preview__row"
                       key={index}
                     >
+                      <Source
+                        {...this.props}
+                        key="source"
+                        name={color.name}
+                        color={color.rgb}
+                      />
                       {Object.values(scaledColors).map((scaledColor, index) => {
                         return (
                           <Shade
+                            {...this.props}
                             key={index}
                             index={index}
                             color={scaledColor}
@@ -936,7 +949,6 @@ export default class Preview extends PureComponent<
                             scaledColors={scaledColors}
                             isWCAGDisplayed={this.state.isWCAGDisplayed}
                             isAPCADisplayed={this.state.isAPCADisplayed}
-                            {...this.props}
                           />
                         )
                       })}

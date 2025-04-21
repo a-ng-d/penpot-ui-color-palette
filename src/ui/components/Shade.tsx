@@ -68,7 +68,7 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
       rightSlot={
         <span
           style={{
-            fontSize: this.theme === 'figma-ui3' ? '10px' : '11px',
+            fontSize: '10px',
           }}
         >
           {score <= 4.5 ? '✘' : '✔'}
