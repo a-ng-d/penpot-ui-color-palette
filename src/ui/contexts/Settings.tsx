@@ -450,22 +450,6 @@ export default class Settings extends PureComponent<
         '*'
       )
 
-    const updateVariablesDeepSync = () =>
-      parent.postMessage(
-        {
-          pluginMessage: {
-            type: 'SET_ITEMS',
-            items: [
-              {
-                key: 'can_deep_sync_variables',
-                value: target.checked,
-              },
-            ],
-          },
-        },
-        '*'
-      )
-
     const updateStylesDeepSync = () =>
       parent.postMessage(
         {
@@ -492,7 +476,6 @@ export default class Settings extends PureComponent<
       UPDATE_TEXT_LIGHT_COLOR: () => updateTextLightColor(),
       UPDATE_TEXT_DARK_COLOR: () => updateTextDarkColor(),
       UPDATE_PALETTE_DEEP_SYNC: () => updatePaletteDeepSync(),
-      UPDATE_VARIABLES_DEEP_SYNC: () => updateVariablesDeepSync(),
       UPDATE_STYLES_DEEP_SYNC: () => updateStylesDeepSync(),
       DEFAULT: () => null,
     }

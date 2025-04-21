@@ -11,7 +11,6 @@ import React from 'react'
 import {
   $canPaletteDeepSync,
   $canStylesDeepSync,
-  $canVariablesDeepSync,
 } from '../../stores/preferences'
 
 import features from '../../config'
@@ -32,7 +31,6 @@ interface SyncPreferencesProps {
 
 interface SyncPreferencesStates {
   canPaletteDeepSync: boolean
-  canVariablesDeepSync: boolean
   canStylesDeepSync: boolean
 }
 
@@ -41,18 +39,12 @@ export default class SyncPreferences extends PureComponent<
   SyncPreferencesStates
 > {
   private unsubscribePalette: (() => void) | undefined
-  private unsubscribeVariables: (() => void) | undefined
   private unsubscribeStyles: (() => void) | undefined
 
   static features = (planStatus: PlanStatus) => ({
     SETTINGS_SYNC_DEEP_PALETTE: new FeatureStatus({
       features: features,
       featureName: 'SETTINGS_SYNC_DEEP_PALETTE',
-      planStatus: planStatus,
-    }),
-    SETTINGS_SYNC_DEEP_VARIABLES: new FeatureStatus({
-      features: features,
-      featureName: 'SETTINGS_SYNC_DEEP_VARIABLES',
       planStatus: planStatus,
     }),
     SETTINGS_SYNC_DEEP_STYLES: new FeatureStatus({
@@ -70,7 +62,6 @@ export default class SyncPreferences extends PureComponent<
     super(props)
     this.state = {
       canPaletteDeepSync: false,
-      canVariablesDeepSync: false,
       canStylesDeepSync: false,
     }
   }
@@ -80,9 +71,6 @@ export default class SyncPreferences extends PureComponent<
     this.unsubscribePalette = $canPaletteDeepSync.subscribe((value) => {
       this.setState({ canPaletteDeepSync: value })
     })
-    this.unsubscribeVariables = $canVariablesDeepSync.subscribe((value) => {
-      this.setState({ canVariablesDeepSync: value })
-    })
     this.unsubscribeStyles = $canStylesDeepSync.subscribe((value) => {
       this.setState({ canStylesDeepSync: value })
     })
@@ -90,7 +78,6 @@ export default class SyncPreferences extends PureComponent<
 
   componentWillUnmount() {
     if (this.unsubscribePalette) this.unsubscribePalette()
-    if (this.unsubscribeVariables) this.unsubscribeVariables()
     if (this.unsubscribeStyles) this.unsubscribeStyles()
   }
 
@@ -119,37 +106,6 @@ export default class SyncPreferences extends PureComponent<
           feature="UPDATE_PALETTE_DEEP_SYNC"
           action={(e) => {
             $canPaletteDeepSync.set(!this.state.canPaletteDeepSync)
-            this.props.onChangeSettings(e)
-          }}
-        />
-      </Feature>
-    )
-  }
-
-  VariablesDeepSync = () => {
-    return (
-      <Feature
-        isActive={SyncPreferences.features(
-          this.props.planStatus
-        ).SETTINGS_SYNC_DEEP_VARIABLES.isActive()}
-      >
-        <Select
-          id="update-variables-deep-sync"
-          type="SWITCH_BUTTON"
-          name="update-variables-deep-sync"
-          label={
-            locals[this.props.lang].settings.preferences.sync.variables.label
-          }
-          isChecked={this.state.canVariablesDeepSync}
-          isBlocked={SyncPreferences.features(
-            this.props.planStatus
-          ).SETTINGS_SYNC_DEEP_VARIABLES.isBlocked()}
-          isNew={SyncPreferences.features(
-            this.props.planStatus
-          ).SETTINGS_SYNC_DEEP_VARIABLES.isNew()}
-          feature="UPDATE_VARIABLES_DEEP_SYNC"
-          action={(e) => {
-            $canVariablesDeepSync.set(!this.state.canVariablesDeepSync)
             this.props.onChangeSettings(e)
           }}
         />
@@ -214,9 +170,6 @@ export default class SyncPreferences extends PureComponent<
                 }
               />
             ),
-          },
-          {
-            node: <this.VariablesDeepSync />,
           },
           {
             node: <this.StylesDeepSync />,

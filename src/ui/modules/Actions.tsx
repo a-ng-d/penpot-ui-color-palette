@@ -43,9 +43,6 @@ interface ActionsProps {
   onSyncLocalStyles?: (
     e: React.MouseEvent<HTMLLIElement> | React.KeyboardEvent<HTMLLIElement>
   ) => void
-  onSyncLocalVariables?: (
-    e: React.MouseEvent<HTMLLIElement> | React.KeyboardEvent<HTMLLIElement>
-  ) => void
   onPublishPalette?: (
     e: React.MouseEvent<Element> | React.KeyboardEvent<Element>
   ) => void
@@ -58,10 +55,7 @@ interface ActionsStates {
   isTooltipVisible: boolean
 }
 
-export default class Actions extends PureComponent<
-  ActionsProps,
-  ActionsStates
-> {
+export default class Actions extends PureComponent<ActionsProps, ActionsStates> {
   private palette: typeof $palette
 
   static defaultProps = {
@@ -88,11 +82,6 @@ export default class Actions extends PureComponent<
     SYNC_LOCAL_STYLES: new FeatureStatus({
       features: features,
       featureName: 'SYNC_LOCAL_STYLES',
-      planStatus: planStatus,
-    }),
-    SYNC_LOCAL_VARIABLES: new FeatureStatus({
-      features: features,
-      featureName: 'SYNC_LOCAL_VARIABLES',
       planStatus: planStatus,
     }),
     PUBLISH_PALETTE: new FeatureStatus({
@@ -340,22 +329,6 @@ export default class Actions extends PureComponent<
                     this.props.planStatus ?? 'UNPAID'
                   ).SYNC_LOCAL_STYLES.isNew(),
                   action: (e) => this.props.onSyncLocalStyles?.(e),
-                },
-                {
-                  label: locals[this.props.lang].actions.createLocalVariables,
-                  value: 'LOCAL_VARIABLES',
-                  feature: 'SYNC_LOCAL_VARIABLES',
-                  type: 'OPTION',
-                  isActive: Actions.features(
-                    this.props.planStatus ?? 'UNPAID'
-                  ).SYNC_LOCAL_VARIABLES.isActive(),
-                  isBlocked: Actions.features(
-                    this.props.planStatus ?? 'UNPAID'
-                  ).SYNC_LOCAL_VARIABLES.isBlocked(),
-                  isNew: Actions.features(
-                    this.props.planStatus ?? 'UNPAID'
-                  ).SYNC_LOCAL_VARIABLES.isNew(),
-                  action: (e) => this.props.onSyncLocalVariables?.(e),
                 },
               ]}
               alignment="TOP_RIGHT"

@@ -14,7 +14,6 @@ import { $palette } from '../stores/palette'
 import {
   $canPaletteDeepSync,
   $canStylesDeepSync,
-  $canVariablesDeepSync,
   $isAPCADisplayed,
   $isVsCodeMessageDisplayed,
   $isWCAGDisplayed,
@@ -295,7 +294,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
           $isWCAGDisplayed.set(path.data.isWCAGDisplayed)
           $isAPCADisplayed.set(path.data.isAPCADisplayed)
           $canPaletteDeepSync.set(path.data.canDeepSyncPalette)
-          $canVariablesDeepSync.set(path.data.canDeepSyncVariables)
           $canStylesDeepSync.set(path.data.canDeepSyncStyles)
           $isVsCodeMessageDisplayed.set(path.data.isVsCodeMessageDisplayed)
         }

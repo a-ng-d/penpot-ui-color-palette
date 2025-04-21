@@ -117,22 +117,6 @@ const loadUI = async () => {
             /*figma.notify(locals[lang].error.generic)*/
             throw error
           }),
-      SYNC_LOCAL_VARIABLES: () => null,
-      /*createLocalVariables(palette)
-          .then(async (message) => [
-            message,
-            await updateLocalVariables(palette),
-          ])
-          .then((messages) =>
-            figma.notify(messages.join(locals[lang].separator), {
-              timeout: 10000,
-            })
-          )
-          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
-          .catch((error) => {
-            figma.notify(locals[lang].error.generic)
-            throw error
-          }),*/
       //
       EXPORT_PALETTE: () => {
         path.export === 'TOKENS_GLOBAL' && exportJson(path.id)
@@ -187,38 +171,8 @@ const loadUI = async () => {
             data: JSON.parse(palette),
           })
       },
-      GET_VARIABLES_COLLECTIONS: async () => {
-        /*const collections =
-          await figma.variables.getLocalVariableCollectionsAsync()
-        const collectionId = JSON.parse(
-          palette.getPluginData('data')
-        ).collectionId
-        penpot.ui.sendMessage({
-          type: 'GET_VARIABLES_COLLECTIONS',
-          data: {
-            collections: collections.map((collections) => ({
-              id: collections.id,
-              name: collections.name,
-            })),
-            collectionId: collectionId,
-          },
-        })*/
-      },
       //
       GET_PRO_PLAN: async () => await getProPlan(),
-      //
-      SIGN_OUT: () =>
-        penpot.ui.sendMessage({
-          type: 'SIGN_OUT',
-          data: {
-            connectionStatus: 'UNCONNECTED',
-            userFullName: '',
-            userAvatar: '',
-            userId: undefined,
-            accessToken: undefined,
-            refreshToken: undefined,
-          },
-        }),
     }
 
     return actions[path.type]?.()

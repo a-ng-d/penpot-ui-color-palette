@@ -353,13 +353,9 @@ export const locals: { [key: string]: any } = {
         sync: {
           title: 'Synchronization',
           message:
-            'A deep synchronization means that the local variables and styles are synchronized with the palette (if a variable or style is not in the palette, it will be removed).',
+            'A deep synchronization means that the local styles are synchronized with the palette (if a style is not in the palette, it will be removed).',
           palette: {
             label: 'Synchronize your changes in real time with the palette',
-          },
-          variables: {
-            label:
-              'Deeply synchronize the local variables in the collection with the palette',
           },
           styles: {
             label:
@@ -463,7 +459,6 @@ export const locals: { [key: string]: any } = {
       createPalette: `Save the ${glossary.name}`,
       sync: 'Sync',
       createLocalStyles: 'Sync with the local styles',
-      createLocalVariables: 'Sync with the local variables',
       publishOrSyncPalette: 'Publish or Synchronize palette',
       publishPalette: 'Publish palette',
       syncPalette: 'Synchronize palette',
@@ -523,7 +518,7 @@ export const locals: { [key: string]: any } = {
       trial: {
         title: `Would you like to upgrade to the Pro plan within the next ${trialTime} hours?`,
         message:
-          'Explore the potential of simulating a vision impairment, synchronizing your color palette with variables and styles, exporting design tokens, and more.',
+          'Explore the potential of simulating a vision impairment, synchronizing your color palette with styles, exporting design tokens, and more.',
         cta: `Enable the ${trialTime}-hour trial`,
         option: 'Purchase',
       },
@@ -611,39 +606,7 @@ export const locals: { [key: string]: any } = {
         single: '1 style removed',
         plural: 'styles removed',
       },
-      createdVariablesAndModes: {
-        noneNone: 'No variable and mode created',
-        noneSingle: '1 mode created',
-        singleNone: '1 variable created',
-        nonePlural: '$1 modes created',
-        pluralNone: '$1 variables created',
-        singleSingle: '1 variable and mode created',
-        singlePlural: '1 variable and $1 modes created',
-        pluralSingle: '$1 variables and 1 mode created',
-        pluralPlural: '$1 variables and $2 modes created',
-      },
-      updatedVariablesAndModes: {
-        noneNone: 'No variable and mode updated',
-        noneSingle: '1 mode updated',
-        singleNone: '1 variable updated',
-        nonePlural: '$1 modes updated',
-        pluralNone: '$1 variables updated',
-        singleSingle: '1 variable and mode updated',
-        singlePlural: '1 variable and $1 modes updated',
-        pluralSingle: '$1 variables and 1 mode updated',
-        pluralPlural: '$1 variables and $2 modes updated',
-      },
-      removedVariablesAndModes: {
-        noneNone: 'No variable and mode removed',
-        noneSingle: '1 mode removed',
-        singleNone: '1 variable removed',
-        nonePlural: '$1 modes removed',
-        pluralNone: '$1 variables removed',
-        singleSingle: '1 variable and mode removed',
-        singlePlural: '1 variable and $1 modes removed',
-        pluralSingle: '$1 variables and 1 mode removed',
-        pluralPlural: '$1 variables and $2 modes removed',
-      },
+
       signOut: '☻ See you later',
       noResult: 'No palette matches your search',
       maxNumberOfSourceColors: 'You cannot add more than $1 source colors',
@@ -652,8 +615,6 @@ export const locals: { [key: string]: any } = {
       paletteCreated: '$1 palette created',
     },
     warning: {
-      tooManyThemesToCreateModes:
-        'You must upgrade your plan to create more variable modes',
       emptySourceColors:
         'There is no source color. Add them manually in the Colors section.',
       hslColorSpace:
@@ -676,7 +637,6 @@ export const locals: { [key: string]: any } = {
       export:
         'The code cannot be generated because the palette has not been found',
       styles: '✕ The styles cannot be generated',
-      variables: '✕ The variables cannot be generated',
       badResponse: '✕ The response is not valid',
       authentication: '✕ The authentication has failed',
       timeout: '✕ The authentication has been timed out',

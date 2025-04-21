@@ -2,9 +2,6 @@ const checkUserPreferences = async () => {
   const isWCAGDisplayed = penpot.root?.getPluginData('is_wcag_displayed')
   const isAPCADisplayed = penpot.root?.getPluginData('is_apca_displayed')
   const canDeepSyncPalette = penpot.root?.getPluginData('can_deep_sync_palette')
-  const canDeepSyncVariables = penpot.root?.getPluginData(
-    'can_deep_sync_variables'
-  )
   const canDeepSyncStyles = penpot.root?.getPluginData('can_deep_sync_styles')
 
   if (isWCAGDisplayed === null)
@@ -16,9 +13,6 @@ const checkUserPreferences = async () => {
   if (canDeepSyncPalette === null)
     penpot.root?.setPluginData('can_deep_sync_palette', 'false')
 
-  if (canDeepSyncVariables === null)
-    penpot.root?.setPluginData('can_deep_sync_variables', 'false')
-
   if (canDeepSyncStyles === null)
     penpot.root?.setPluginData('can_deep_sync_styles', 'false')
 
@@ -28,7 +22,6 @@ const checkUserPreferences = async () => {
       isWCAGDisplayed: isWCAGDisplayed === 'true',
       isAPCADisplayed: isAPCADisplayed === 'true',
       canDeepSyncPalette: canDeepSyncPalette === 'true',
-      canDeepSyncVariables: canDeepSyncVariables === 'true',
       canDeepSyncStyles: canDeepSyncStyles === 'true',
     },
   })

@@ -104,10 +104,7 @@ interface EditPaletteStates {
   canPaletteDeepSync: boolean
 }
 
-export default class EditPalette extends PureComponent<
-  EditPaletteProps,
-  EditPaletteStates
-> {
+export default class EditPalette extends PureComponent<EditPaletteProps, EditPaletteStates> {
   private colorsMessage: ColorsMessage
   private themesMessage: ThemesMessage
   private dispatch: { [key: string]: DispatchProcess }
@@ -346,27 +343,6 @@ export default class EditPalette extends PureComponent<
     )
   }
 
-  onSyncVariables = () => {
-    this.setState({
-      selectedElement: {
-        id: '',
-        position: null,
-      },
-      isPrimaryLoading: true,
-    })
-
-    parent.postMessage({ pluginMessage: { type: 'SYNC_LOCAL_VARIABLES' } }, '*')
-
-    trackActionEvent(
-      this.props.userIdentity.id,
-      this.props.userConsent.find((consent) => consent.id === 'mixpanel')
-        ?.isConsented ?? false,
-      {
-        feature: 'SYNC_VARIABLES',
-      }
-    )
-  }
-
   onExport = () => {
     const blob = new Blob([this.props.export.data], {
       type: this.props.export.mimeType,
@@ -588,7 +564,6 @@ export default class EditPalette extends PureComponent<
             {...this.state}
             service="EDIT"
             onSyncLocalStyles={this.onSyncStyles}
-            onSyncLocalVariables={this.onSyncVariables}
             onPublishPalette={this.props.onPublishPalette}
           />
         </Feature>
