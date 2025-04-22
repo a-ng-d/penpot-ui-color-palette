@@ -9,4 +9,4 @@ declare module '*.gif' {
 declare module 'jszip'
 declare module 'react-dom/client'
 declare module 'apca-w3'
-declare module 'color-blind'
+declare module '@hexorialstudio/color-blinder'

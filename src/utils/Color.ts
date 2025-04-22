@@ -1,5 +1,5 @@
 import chroma from 'chroma-js'
-//import * as blinder from 'color-blind'
+import blinder from '@hexorialstudio/color-blinder'
 import { Hsluv } from 'hsluv'
 
 import { HexModel } from '@a_ng_d/figmug-ui'
@@ -212,25 +212,24 @@ export default class Color {
   simulateColorBlindRgb = (
     sourceColor: [number, number, number]
   ): [number, number, number] => {
-    const v3Color = this.algorithmVersion === 'v3' ? sourceColor : sourceColor
     const actions: ActionsList = {
-      NONE: () => v3Color,
-      /*PROTANOMALY: () =>
-        chroma(blinder.protanomaly(chroma(v3Color).hex())).rgb(false),
+      NONE: () => sourceColor,
+      PROTANOMALY: () =>
+        chroma(blinder.protanomaly(chroma(sourceColor).hex())).rgb(false),
       PROTANOPIA: () =>
-        chroma(blinder.protanopia(chroma(v3Color).hex())).rgb(false),
+        chroma(blinder.protanopia(chroma(sourceColor).hex())).rgb(false),
       DEUTERANOMALY: () =>
-        chroma(blinder.deuteranomaly(chroma(v3Color).hex())).rgb(false),
+        chroma(blinder.deuteranomaly(chroma(sourceColor).hex())).rgb(false),
       DEUTERANOPIA: () =>
-        chroma(blinder.deuteranopia(chroma(v3Color).hex())).rgb(false),
+        chroma(blinder.deuteranopia(chroma(sourceColor).hex())).rgb(false),
       TRITANOMALY: () =>
-        chroma(blinder.tritanomaly(chroma(v3Color).hex())).rgb(false),
+        chroma(blinder.tritanomaly(chroma(sourceColor).hex())).rgb(false),
       TRITANOPIA: () =>
-        chroma(blinder.tritanopia(chroma(v3Color).hex())).rgb(false),
+        chroma(blinder.tritanopia(chroma(sourceColor).hex())).rgb(false),
       ACHROMATOMALY: () =>
-        chroma(blinder.achromatomaly(chroma(v3Color).hex())).rgb(false),
+        chroma(blinder.achromatomaly(chroma(sourceColor).hex())).rgb(false),
       ACHROMATOPSIA: () =>
-        chroma(blinder.achromatopsia(chroma(v3Color).hex())).rgb(false),*/
+        chroma(blinder.achromatopsia(chroma(sourceColor).hex())).rgb(false),
     }
 
     const result = actions[this.visionSimulationMode]?.()
@@ -238,17 +237,16 @@ export default class Color {
   }
 
   simulateColorBlindHex = (sourceColor: [number, number, number]): HexModel => {
-    const v3Color = this.algorithmVersion === 'v3' ? sourceColor : sourceColor
     const actions: ActionsList = {
-      NONE: () => chroma(v3Color).hex(),
-      /*PROTANOMALY: () => blinder.protanomaly(chroma(v3Color).hex()),
-      PROTANOPIA: () => blinder.protanopia(chroma(v3Color).hex()),
-      DEUTERANOMALY: () => blinder.deuteranomaly(chroma(v3Color).hex()),
-      DEUTERANOPIA: () => blinder.deuteranopia(chroma(v3Color).hex()),
-      TRITANOMALY: () => blinder.tritanomaly(chroma(v3Color).hex()),
-      TRITANOPIA: () => blinder.tritanopia(chroma(v3Color).hex()),
-      ACHROMATOMALY: () => blinder.achromatomaly(chroma(v3Color).hex()),
-      ACHROMATOPSIA: () => blinder.achromatopsia(chroma(v3Color).hex()),*/
+      NONE: () => chroma(sourceColor).hex(),
+      PROTANOMALY: () => blinder.protanomaly(chroma(sourceColor).hex()),
+      PROTANOPIA: () => blinder.protanopia(chroma(sourceColor).hex()),
+      DEUTERANOMALY: () => blinder.deuteranomaly(chroma(sourceColor).hex()),
+      DEUTERANOPIA: () => blinder.deuteranopia(chroma(sourceColor).hex()),
+      TRITANOMALY: () => blinder.tritanomaly(chroma(sourceColor).hex()),
+      TRITANOPIA: () => blinder.tritanopia(chroma(sourceColor).hex()),
+      ACHROMATOMALY: () => blinder.achromatomaly(chroma(sourceColor).hex()),
+      ACHROMATOPSIA: () => blinder.achromatopsia(chroma(sourceColor).hex()),
     }
 
     const result = actions[this.visionSimulationMode]?.()
