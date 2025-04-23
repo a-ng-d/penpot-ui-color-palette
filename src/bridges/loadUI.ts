@@ -102,7 +102,7 @@ const loadUI = async () => {
             .catch(() => null),
         }),
       UPDATE_DOCUMENT: () =>
-        updateDocument()
+        updateDocument(path.view)
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             throw error

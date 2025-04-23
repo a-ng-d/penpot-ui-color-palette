@@ -96,6 +96,7 @@ interface EditPaletteProps {
   onLockSourceColors: React.Dispatch<Partial<AppStates>>
   onGetProPlan: (context: { priorityContainerContext: PriorityContext }) => void
   onUnloadPalette: () => void
+  onChangeDocument: React.Dispatch<Partial<AppStates>>
 }
 
 interface EditPaletteStates {
@@ -109,10 +110,7 @@ interface EditPaletteStates {
   canPaletteDeepSync: boolean
 }
 
-export default class EditPalette extends PureComponent<
-  EditPaletteProps,
-  EditPaletteStates
-> {
+export default class EditPalette extends PureComponent<EditPaletteProps, EditPaletteStates> {
   private colorsMessage: ColorsMessage
   private themesMessage: ThemesMessage
   private dispatch: { [key: string]: DispatchProcess }
@@ -353,10 +351,17 @@ export default class EditPalette extends PureComponent<
     )
   }
 
-  onChangeDocument = () => {
+  onChangeDocument = (view?: ViewConfiguration) => {
     this.setState({
       isSecondaryLoading: true,
     })
+    if (view !== undefined)
+      this.props.onChangeDocument({
+        document: {
+          ...this.props.document,
+          view: view,
+        },
+      })
   }
 
   onExport = () => {

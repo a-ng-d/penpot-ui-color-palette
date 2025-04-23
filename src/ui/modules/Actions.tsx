@@ -1,6 +1,7 @@
 import {
   Bar,
   Button,
+  Dropdown,
   DropdownOption,
   Icon,
   Input,
@@ -24,6 +25,7 @@ import {
   DocumentConfiguration,
   ScaleConfiguration,
   SourceColorConfiguration,
+  ViewConfiguration,
 } from '../../types/configurations'
 import { AppStates } from '../App'
 import Feature from '../components/Feature'
@@ -49,7 +51,7 @@ interface ActionsProps {
   onSyncLocalStyles?: (
     e: React.MouseEvent<HTMLLIElement> | React.KeyboardEvent<HTMLLIElement>
   ) => void
-  onChangeDocument?: () => void
+  onChangeDocument?: (view?: ViewConfiguration) => void
   onExportPalette?: React.MouseEventHandler<HTMLButtonElement> &
     React.KeyboardEventHandler<HTMLButtonElement>
   onChangeSettings?: React.Dispatch<Partial<AppStates>>
@@ -57,6 +59,7 @@ interface ActionsProps {
 
 interface ActionsStates {
   isTooltipVisible: boolean
+  canUpdateDocument: boolean
 }
 
 export default class Actions extends PureComponent<ActionsProps, ActionsStates> {
@@ -104,6 +107,26 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
       featureName: 'PRESETS_CUSTOM_ADD',
       planStatus: planStatus,
     }),
+    VIEWS: new FeatureStatus({
+      features: features,
+      featureName: 'VIEWS',
+      planStatus: planStatus,
+    }),
+    VIEWS_PALETTE: new FeatureStatus({
+      features: features,
+      featureName: 'VIEWS_PALETTE',
+      planStatus: planStatus,
+    }),
+    VIEWS_PALETTE_WITH_PROPERTIES: new FeatureStatus({
+      features: features,
+      featureName: 'VIEWS_PALETTE_WITH_PROPERTIES',
+      planStatus: planStatus,
+    }),
+    VIEWS_SHEET: new FeatureStatus({
+      features: features,
+      featureName: 'VIEWS_SHEET',
+      planStatus: planStatus,
+    }),
   })
 
   constructor(props: ActionsProps) {
@@ -111,7 +134,25 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
     this.palette = $palette
     this.state = {
       isTooltipVisible: false,
+      canUpdateDocument: false,
     }
+  }
+
+  // Lifecycle
+  componentDidUpdate = () => {
+    if (
+      this.props.document &&
+      Object.entries(this.props.document).length > 0 &&
+      this.props.document.updatedAt !== this.props.dates?.updatedAt &&
+      this.props.document.id === this.props.id
+    )
+      this.setState({
+        canUpdateDocument: true,
+      })
+    else
+      this.setState({
+        canUpdateDocument: false,
+      })
   }
 
   // Handlers
@@ -141,6 +182,28 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
         },
         '*'
       )
+  }
+
+  onChangeView = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const currentElement = e.currentTarget as HTMLInputElement
+
+    this.props.onChangeDocument?.(
+      currentElement.dataset.value as ViewConfiguration
+    )
+
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: 'UPDATE_DOCUMENT',
+          view: currentElement.dataset.value,
+        },
+      },
+      '*'
+    )
   }
 
   documentHandler = (e: Event) => {
@@ -194,6 +257,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
         {
           pluginMessage: {
             type: 'UPDATE_DOCUMENT',
+            view: this.props.document?.view ?? 'PALETTE',
           },
         },
         '*'
@@ -239,12 +303,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
       },
     ] as Array<DropdownOption>
 
-    if (
-      this.props.document &&
-      Object.entries(this.props.document).length > 0 &&
-      this.props.document.updatedAt !== this.props.dates?.updatedAt &&
-      this.props.document.id === this.props.id
-    )
+    if (this.state.canUpdateDocument)
       options.push({
         label: 'Push changes to the document',
         feature: 'PUSH_UPDATES',
@@ -373,23 +432,86 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
     return (
       <Bar
         leftPartSlot={
-          <Input
-            id="update-palette-name"
-            type="TEXT"
-            placeholder={locals[this.props.lang].name}
-            value={this.props.name !== '' ? this.props.name : ''}
-            charactersLimit={64}
-            isBlocked={Actions.features(
-              this.props.planStatus
-            ).SETTINGS_NAME.isBlocked()}
-            isNew={Actions.features(
-              this.props.planStatus
-            ).SETTINGS_NAME.isNew()}
-            feature="RENAME_PALETTE"
-            onChange={this.nameHandler}
-            onFocus={this.nameHandler}
-            onBlur={this.nameHandler}
-          />
+          <div className={layouts['snackbar--medium']}>
+            <Input
+              id="update-palette-name"
+              type="TEXT"
+              placeholder={locals[this.props.lang].name}
+              value={this.props.name !== '' ? this.props.name : ''}
+              charactersLimit={64}
+              isBlocked={Actions.features(
+                this.props.planStatus
+              ).SETTINGS_NAME.isBlocked()}
+              isNew={Actions.features(
+                this.props.planStatus
+              ).SETTINGS_NAME.isNew()}
+              feature="RENAME_PALETTE"
+              onChange={this.nameHandler}
+              onFocus={this.nameHandler}
+              onBlur={this.nameHandler}
+            />
+            {this.props.document &&
+              Object.keys(this.props.document).length > 0 && (
+                <Dropdown
+                  id="views"
+                  options={[
+                    {
+                      label:
+                        locals[this.props.lang].settings.global.views.detailed,
+                      value: 'PALETTE_WITH_PROPERTIES',
+                      type: 'OPTION',
+                      isActive: Actions.features(
+                        this.props.planStatus
+                      ).VIEWS_PALETTE_WITH_PROPERTIES.isActive(),
+                      isBlocked: Actions.features(
+                        this.props.planStatus
+                      ).VIEWS_PALETTE_WITH_PROPERTIES.isBlocked(),
+                      isNew: Actions.features(
+                        this.props.planStatus
+                      ).VIEWS_PALETTE_WITH_PROPERTIES.isNew(),
+                      action: this.onChangeView,
+                    },
+                    {
+                      label:
+                        locals[this.props.lang].settings.global.views.simple,
+                      value: 'PALETTE',
+                      type: 'OPTION',
+                      isActive: Actions.features(
+                        this.props.planStatus
+                      ).VIEWS_PALETTE.isActive(),
+                      isBlocked: Actions.features(
+                        this.props.planStatus
+                      ).VIEWS_PALETTE.isBlocked(),
+                      isNew: Actions.features(
+                        this.props.planStatus
+                      ).VIEWS_PALETTE.isNew(),
+                      action: this.onChangeView,
+                    },
+                    {
+                      label:
+                        locals[this.props.lang].settings.global.views.sheet,
+                      value: 'SHEET',
+                      type: 'OPTION',
+                      isActive: Actions.features(
+                        this.props.planStatus
+                      ).VIEWS_SHEET.isActive(),
+                      isBlocked: Actions.features(
+                        this.props.planStatus
+                      ).VIEWS_SHEET.isBlocked(),
+                      isNew: Actions.features(
+                        this.props.planStatus
+                      ).VIEWS_SHEET.isNew(),
+                      action: this.onChangeView,
+                    },
+                  ]}
+                  selected={this.props.document.view}
+                  isBlocked={Actions.features(
+                    this.props.planStatus
+                  ).VIEWS.isBlocked()}
+                  isNew={Actions.features(this.props.planStatus).VIEWS.isNew()}
+                />
+              )}
+          </div>
         }
         rightPartSlot={
           <div className={layouts['snackbar--medium']}>

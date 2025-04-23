@@ -146,11 +146,7 @@ export type VisionSimulationModeConfiguration =
   | 'ACHROMATOMALY'
   | 'ACHROMATOPSIA'
 
-export type ViewConfiguration =
-  | 'PALETTE_WITH_PROPERTIES'
-  | 'PALETTE'
-  | 'SHEET'
-  | 'SHEET_SAFE_MODE'
+export type ViewConfiguration = 'PALETTE_WITH_PROPERTIES' | 'PALETTE' | 'SHEET'
 
 export type AlgorithmVersionConfiguration = 'v1' | 'v2' | 'v3'
 

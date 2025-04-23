@@ -8,11 +8,10 @@ import {
 } from '../../types/configurations'
 import { PaletteDataThemeItem } from '../../types/data'
 
-const updateDocument = async () => {
+const updateDocument = async (view: ViewConfiguration) => {
   const document = penpot.selection[0] as Board
   const id = document.getPluginData('id')
   const themeId = document.getPluginData('themeId')
-  const view = document.getPluginData('view') as ViewConfiguration
 
   const palette = JSON.parse(
     penpot.currentPage?.getPluginData(`palette_${id}`) ?? '{}'
@@ -51,6 +50,7 @@ const updateDocument = async () => {
   ]
 
   // Update
+  document.setPluginData('view', view)
   document.setPluginData('updatedAt', palette.meta.dates.updatedAt.toString())
   document.setPluginData('backup', JSON.stringify(palette))
 

@@ -862,6 +862,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
               onLockSourceColors={(e) => this.setState({ ...e })}
               onGetProPlan={(e) => this.setState({ ...e })}
               onUnloadPalette={this.onReset}
+              onChangeDocument={(e) => this.setState({ ...e })}
             />
           </Feature>
           <Feature isActive={this.state.priorityContainerContext !== 'EMPTY'}>
