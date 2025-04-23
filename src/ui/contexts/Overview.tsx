@@ -206,6 +206,14 @@ export default class Overview extends PureComponent<
               g: gl[1],
               b: gl[2],
             },
+            hue: {
+              shift: 0,
+              isLocked: false,
+            },
+            chroma: {
+              shift: 0,
+              isLocked: false,
+            },
             source: 'COOLORS',
             id: uid(),
             isRemovable: false,
@@ -257,6 +265,14 @@ export default class Overview extends PureComponent<
               r: gl[0],
               g: gl[1],
               b: gl[2],
+            },
+            hue: {
+              shift: 0,
+              isLocked: false,
+            },
+            chroma: {
+              shift: 100,
+              isLocked: false,
             },
             source: 'REALTIME_COLORS',
             id: uid(),

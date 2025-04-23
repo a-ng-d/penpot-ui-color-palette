@@ -227,6 +227,14 @@ export default class Explore extends PureComponent<
                               g: gl[1],
                               b: gl[2],
                             },
+                            hue: {
+                              shift: 0,
+                              isLocked: false,
+                            },
+                            chroma: {
+                              shift: 100,
+                              isLocked: false,
+                            },
                             id: uid(),
                             source: 'COLOUR_LOVERS',
                             isRemovable: true,

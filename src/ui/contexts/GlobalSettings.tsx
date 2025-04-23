@@ -1,5 +1,4 @@
 import {
-  Dropdown,
   FormItem,
   Input,
   Section,
@@ -18,7 +17,6 @@ import Feature from '../components/Feature'
 interface GlobalSettingsProps {
   name: string
   description: string
-  view: string
   isLast?: boolean
   planStatus: PlanStatus
   lang: Language
@@ -39,26 +37,6 @@ export default class GlobalSettings extends PureComponent<GlobalSettingsProps> {
     SETTINGS_DESCRIPTION: new FeatureStatus({
       features: features,
       featureName: 'SETTINGS_DESCRIPTION',
-      planStatus: planStatus,
-    }),
-    VIEWS: new FeatureStatus({
-      features: features,
-      featureName: 'VIEWS',
-      planStatus: planStatus,
-    }),
-    VIEWS_PALETTE_WITH_PROPERTIES: new FeatureStatus({
-      features: features,
-      featureName: 'VIEWS_PALETTE_WITH_PROPERTIES',
-      planStatus: planStatus,
-    }),
-    VIEWS_PALETTE: new FeatureStatus({
-      features: features,
-      featureName: 'VIEWS_PALETTE',
-      planStatus: planStatus,
-    }),
-    VIEWS_SHEET: new FeatureStatus({
-      features: features,
-      featureName: 'VIEWS_SHEET',
       planStatus: planStatus,
     }),
   })
@@ -139,83 +117,6 @@ export default class GlobalSettings extends PureComponent<GlobalSettingsProps> {
     )
   }
 
-  View = () => {
-    return (
-      <Feature
-        isActive={GlobalSettings.features(
-          this.props.planStatus
-        ).VIEWS.isActive()}
-      >
-        <FormItem
-          id="update-view"
-          label={locals[this.props.lang].settings.global.views.label}
-          isBlocked={GlobalSettings.features(
-            this.props.planStatus
-          ).VIEWS.isBlocked()}
-        >
-          <Dropdown
-            id="views"
-            options={[
-              {
-                label: locals[this.props.lang].settings.global.views.detailed,
-                value: 'PALETTE_WITH_PROPERTIES',
-                feature: 'UPDATE_VIEW',
-                type: 'OPTION',
-                isActive: GlobalSettings.features(
-                  this.props.planStatus
-                ).VIEWS_PALETTE_WITH_PROPERTIES.isActive(),
-                isBlocked: GlobalSettings.features(
-                  this.props.planStatus
-                ).VIEWS_PALETTE_WITH_PROPERTIES.isBlocked(),
-                isNew: GlobalSettings.features(
-                  this.props.planStatus
-                ).VIEWS_PALETTE_WITH_PROPERTIES.isNew(),
-                action: this.props.onChangeSettings,
-              },
-              {
-                label: locals[this.props.lang].settings.global.views.simple,
-                value: 'PALETTE',
-                feature: 'UPDATE_VIEW',
-                type: 'OPTION',
-                isActive: GlobalSettings.features(
-                  this.props.planStatus
-                ).VIEWS_PALETTE.isActive(),
-                isBlocked: GlobalSettings.features(
-                  this.props.planStatus
-                ).VIEWS_PALETTE.isBlocked(),
-                isNew: GlobalSettings.features(
-                  this.props.planStatus
-                ).VIEWS_PALETTE.isNew(),
-                action: this.props.onChangeSettings,
-              },
-              {
-                label: locals[this.props.lang].settings.global.views.sheet,
-                value: 'SHEET',
-                feature: 'UPDATE_VIEW',
-                type: 'OPTION',
-                isActive: GlobalSettings.features(
-                  this.props.planStatus
-                ).VIEWS_SHEET.isActive(),
-                isBlocked: GlobalSettings.features(
-                  this.props.planStatus
-                ).VIEWS_SHEET.isBlocked(),
-                isNew: GlobalSettings.features(
-                  this.props.planStatus
-                ).VIEWS_SHEET.isNew(),
-                action: this.props.onChangeSettings,
-              },
-            ]}
-            selected={this.props.view}
-            isBlocked={GlobalSettings.features(
-              this.props.planStatus
-            ).VIEWS.isBlocked()}
-            isNew={GlobalSettings.features(this.props.planStatus).VIEWS.isNew()}
-          />
-        </FormItem>
-      </Feature>
-    )
-  }
-
   // Render
   render() {
     return (
@@ -237,9 +138,6 @@ export default class GlobalSettings extends PureComponent<GlobalSettingsProps> {
           },
           {
             node: <this.Description />,
-          },
-          {
-            node: <this.View />,
           },
         ]}
         border={!this.props.isLast ? ['BOTTOM'] : undefined}

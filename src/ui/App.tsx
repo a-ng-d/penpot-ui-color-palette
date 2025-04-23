@@ -383,7 +383,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
             'visionSimulationMode',
             path.data.base.visionSimulationMode
           )
-          this.palette.setKey('view', path.data.base.view)
           this.palette.setKey(
             'algorithmVersion',
             path.data.base.algorithmVersion

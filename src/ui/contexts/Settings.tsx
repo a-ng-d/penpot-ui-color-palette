@@ -49,7 +49,6 @@ interface SettingsProps {
   sourceColors?: Array<SourceColorConfiguration>
   name: string
   description: string
-  view: ViewConfiguration
   colorSpace: ColorSpaceConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
   textColorsTheme: TextColorsThemeHexModel
@@ -224,34 +223,6 @@ export default class Settings extends PureComponent<
           feature: 'DESCRIBE_PALETTE',
         }
       )
-    }
-
-    const updateView = () => {
-      if (target.dataset.isBlocked === 'false') {
-        this.palette.setKey('view', target.dataset.value as ViewConfiguration)
-
-        this.props.onChangeSettings({
-          view: target.dataset.value as ViewConfiguration,
-          onGoingStep: 'view changed',
-        })
-
-        if (this.props.service === 'EDIT')
-          parent.postMessage(
-            {
-              pluginMessage: { type: 'UPDATE_VIEW', data: this.palette.value },
-            },
-            '*'
-          )
-
-        trackSettingsManagementEvent(
-          this.props.userIdentity.id,
-          this.props.userConsent.find((consent) => consent.id === 'mixpanel')
-            ?.isConsented ?? false,
-          {
-            feature: 'UPDATE_VIEW',
-          }
-        )
-      }
     }
 
     const updateColorSpace = () => {
@@ -469,7 +440,6 @@ export default class Settings extends PureComponent<
     const actions: ActionsList = {
       RENAME_PALETTE: () => renamePalette(),
       UPDATE_DESCRIPTION: () => updateDescription(),
-      UPDATE_VIEW: () => updateView(),
       UPDATE_COLOR_SPACE: () => updateColorSpace(),
       UPDATE_COLOR_BLIND_MODE: () => updatevisionSimulationMode(),
       UPDATE_ALGORITHM_VERSION: () => updateAlgorithmVersion(),

@@ -5,7 +5,6 @@ import { isDev, userConsentVersion } from '../config'
 import {
   ActionEvent,
   ColorThemeEvent,
-  EditorEvent,
   ExportEvent,
   ImportEvent,
   PreviewEvent,
@@ -36,16 +35,14 @@ export const trackUserConsentEvent = (consent: Array<ConsentConfiguration>) => {
   })
 }
 
-export const trackEditorEvent = (
-  id: string,
-  consent: boolean,
-  options: EditorEvent
-) => {
+export const trackEditorEvent = (id: string, consent: boolean) => {
   if (!consent) return
   mixpanel.identify(id)
   mixpanel.track('Editor Run', {
-    Editor: options.editor,
-    ...eventsRecurringProperties,
+    Editor: {
+      Editor: 'penpot',
+      ...eventsRecurringProperties,
+    },
   })
 }
 

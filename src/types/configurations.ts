@@ -6,7 +6,6 @@ import { PaletteData } from './data'
 
 export interface SourceColorConfiguration {
   name: string
-  description: string
   rgb: RgbModel
   source: 'CANVAS' | 'REMOTE' | ThirdParty
   id: string
@@ -35,7 +34,6 @@ export interface BaseConfiguration {
   themes: Array<ThemeConfiguration>
   colorSpace: ColorSpaceConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
-  view: ViewConfiguration
   algorithmVersion: AlgorithmVersionConfiguration
   textColorsTheme: TextColorsThemeHexModel
 }

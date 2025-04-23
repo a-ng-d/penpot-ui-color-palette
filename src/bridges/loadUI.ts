@@ -22,13 +22,11 @@ import getPalettesOnCurrentPage from './getPalettesOnCurrentPage'
 import getProPlan from './getProPlan'
 import processSelection from './processSelection'
 import updateColors from './updates/updateColors'
-import updateGlobal from './updates/updateGlobal'
 import updateLocalStyles from './updates/updateLocalStyles'
 import updatePalette from './updates/updatePalette'
 import updateScale from './updates/updateScale'
 import updateSettings from './updates/updateSettings'
 import updateThemes from './updates/updateThemes'
-import updateView from './updates/updateView'
 import createDocument from './creations/createDocument'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
 import updateDocument from './updates/updateDocument'
@@ -85,11 +83,9 @@ const loadUI = async () => {
       CHECK_HIGHLIGHT_STATUS: () => checkHighlightStatus(path.version),
       //
       UPDATE_SCALE: () => updateScale(path),
-      UPDATE_VIEW: () => updateView(path),
       UPDATE_COLORS: () => updateColors(path),
       UPDATE_THEMES: () => updateThemes(path),
       UPDATE_SETTINGS: () => updateSettings(path),
-      UPDATE_GLOBAL: () => updateGlobal(path),
       UPDATE_PALETTE: () => updatePalette(path),
       UPDATE_SCREENSHOT: async () =>
         penpot.ui.sendMessage({

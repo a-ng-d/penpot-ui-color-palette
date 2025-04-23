@@ -55,7 +55,7 @@ export default class Header {
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
         visionSimulationMode: this.base.visionSimulationMode,
-        view: this.base.view,
+        view: this.view,
         textColorsTheme: this.base.textColorsTheme,
       }).makeNodeName({
         mode: 'FIXED',

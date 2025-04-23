@@ -95,7 +95,6 @@ const processSelection = () => {
           const hexToGl = chroma(color.fillColor as HexModel).gl()
           viableSelection.push({
             name: element.name,
-            description: '',
             rgb: {
               r: hexToGl[0],
               g: hexToGl[1],
