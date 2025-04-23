@@ -6,13 +6,13 @@ export default class Signature {
   private nodeInfo: Board | null
   private nodeLogotype: Board | null
   private nodeVector: Group | null
-  private node: Board | null
+  node: Board
 
   constructor() {
     this.nodeInfo = null
     this.nodeLogotype = null
     this.nodeVector = null
-    this.node = null
+    this.node = this.makeNode()
   }
 
   makeNodeInfo = () => {

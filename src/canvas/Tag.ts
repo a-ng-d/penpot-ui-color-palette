@@ -19,7 +19,21 @@ export default class Tag {
   private nodeIndicator: Ellipse | null
   private nodeAvatar: Ellipse | null
 
-  constructor(options: {
+  constructor({
+    name,
+    content,
+    fontSize = 8,
+    backgroundColor = {
+      rgb: {
+        r: 1,
+        g: 1,
+        b: 1,
+      },
+      alpha: 0.5,
+    },
+    isCompact = false,
+    url = null,
+  }: {
     name: string
     content: string
     fontSize?: number
@@ -30,19 +44,12 @@ export default class Tag {
     isCompact?: boolean
     url?: string | null
   }) {
-    this.name = options.name
-    this.content = options.content
-    this.fontSize = options.fontSize ?? 8
-    this.url = options.url ?? (null as string | null)
-    this.backgroundColor = options.backgroundColor ?? {
-      rgb: {
-        r: 1,
-        g: 1,
-        b: 1,
-      },
-      alpha: 0.5,
-    }
-    this.isCompact = options.isCompact ?? false
+    this.name = name
+    this.content = content
+    this.fontSize = fontSize
+    this.url = url
+    this.backgroundColor = backgroundColor
+    this.isCompact = isCompact
     this.nodeTag = null
     this.nodeTagwithIndicator = null
     this.nodeTagWithAvatar = null

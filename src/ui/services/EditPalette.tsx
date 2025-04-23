@@ -101,6 +101,7 @@ interface EditPaletteStates {
     position: number | null
   }
   isPrimaryLoading: boolean
+  isSecondaryLoading: boolean
   canPaletteDeepSync: boolean
 }
 
@@ -157,6 +158,7 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
         position: null,
       },
       isPrimaryLoading: false,
+      isSecondaryLoading: false,
       canPaletteDeepSync: false,
     }
     this.dispatch = {
@@ -187,6 +189,7 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
       STOP_LOADER: () =>
         this.setState({
           isPrimaryLoading: false,
+          isSecondaryLoading: false,
         }),
       DEFAULT: () => null,
     }
@@ -343,6 +346,12 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
     )
   }
 
+  onGenerateDocument = () => {
+    this.setState({
+      isSecondaryLoading: true,
+    })
+  }
+
   onExport = () => {
     const blob = new Blob([this.props.export.data], {
       type: this.props.export.mimeType,
@@ -449,10 +458,6 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
       return this.props.themes.filter((theme) => theme.type === 'default theme')
   }
 
-  onUnloadPalette = () => {
-    this.props.onUnloadPalette()
-  }
-
   // Render
   render() {
     let fragment
@@ -518,7 +523,7 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
               <Button
                 type="icon"
                 icon="back"
-                action={this.onUnloadPalette}
+                action={this.props.onUnloadPalette}
               />
               <Tabs
                 tabs={this.contexts}
@@ -575,7 +580,7 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
             {...this.state}
             service="EDIT"
             onSyncLocalStyles={this.onSyncStyles}
-            onPublishPalette={this.props.onPublishPalette}
+            onGenerateDocument={this.onGenerateDocument}
           />
         </Feature>
       </>

@@ -29,6 +29,7 @@ import updateScale from './updates/updateScale'
 import updateSettings from './updates/updateSettings'
 import updateThemes from './updates/updateThemes'
 import updateView from './updates/updateView'
+import createDocument from './creations/createDocument'
 
 const loadUI = async () => {
   const windowSize: windowSize = {
@@ -117,6 +118,12 @@ const loadUI = async () => {
             /*figma.notify(locals[lang].error.generic)*/
             throw error
           }),
+      CREATE_DOCUMENT: () =>
+        createDocument(path.id, path.view)
+          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
+          .catch((error) => {
+            throw error
+          }),
       //
       EXPORT_PALETTE: () => {
         path.export === 'TOKENS_GLOBAL' && exportJson(path.id)
@@ -175,9 +182,15 @@ const loadUI = async () => {
         penpot.currentPage?.setPluginData(`palette_${path.id}`, ''),
       //
       GET_PRO_PLAN: async () => await getProPlan(),
+      //
+      DEFAULT: () => null,
     }
 
-    return actions[path.type]?.()
+    try {
+      return actions[path.type]?.()
+    } catch {
+      return actions['DEFAULT']?.()
+    }
   })
 
   // Listeners

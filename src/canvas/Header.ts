@@ -1,21 +1,36 @@
 import { Board } from '@penpot/plugin-types'
 import { lang, locals } from '../content/locals'
-import { ScaleConfiguration } from '../types/configurations'
-import { PaletteNode } from '../types/nodes'
+import {
+  BaseConfiguration,
+  ThemeConfiguration,
+  ViewConfiguration,
+} from '../types/configurations'
+import { PaletteDataThemeItem } from '../types/data'
 import Sample from './Sample'
 
 export default class Header {
-  private parent: PaletteNode
-  private currentScale: ScaleConfiguration
+  private base: BaseConfiguration
+  private view: ViewConfiguration
   private sampleSize: number
-  private node: Board | null
+  private currentTheme?: ThemeConfiguration
+  node: Board
 
-  constructor(parent: PaletteNode, size: number) {
-    this.parent = parent
-    this.currentScale =
-      this.parent.themes.find((theme) => theme.isEnabled)?.scale ?? {}
+  constructor({
+    base,
+    data,
+    view,
+    size,
+  }: {
+    base: BaseConfiguration
+    data: PaletteDataThemeItem
+    view: ViewConfiguration
+    size: number
+  }) {
+    this.base = base
+    this.view = view
     this.sampleSize = size
-    this.node = null
+    this.currentTheme = this.base.themes.find((theme) => theme.id === data.id)
+    this.node = this.makeNode()
   }
 
   makeNode = () => {
@@ -35,34 +50,36 @@ export default class Header {
 
     // Insert
     this.node.appendChild(
-      new Sample(
-        locals[lang].paletteProperties.sourceColors,
-        null,
-        null,
-        [255, 255, 255],
-        this.parent.colorSpace,
-        this.parent.visionSimulationMode,
-        this.parent.view,
-        this.parent.textColorsTheme
-      ).makeNodeName('FIXED', this.sampleSize, 48)
+      new Sample({
+        name: locals[lang].paletteProperties.sourceColors,
+        rgb: [255, 255, 255],
+        colorSpace: this.base.colorSpace,
+        visionSimulationMode: this.base.visionSimulationMode,
+        view: this.base.view,
+        textColorsTheme: this.base.textColorsTheme,
+      }).makeNodeName({
+        mode: 'FIXED',
+        width: this.sampleSize,
+        height: 48,
+      })
     )
-    if (this.parent.view.includes('PALETTE'))
-      Object.values(this.currentScale)
+    if (this.view === 'PALETTE' || this.view === 'PALETTE_WITH_PROPERTIES')
+      Object.keys(this.currentTheme?.scale ?? {})
         .reverse()
-        .forEach((lightness) => {
+        .forEach((key) => {
           this.node?.appendChild(
-            new Sample(
-              Object.keys(this.currentScale)
-                .find((key) => this.currentScale[key] === lightness)
-                ?.substr(10) ?? '0',
-              null,
-              null,
-              [255, 255, 255],
-              this.parent.colorSpace,
-              this.parent.visionSimulationMode,
-              this.parent.view,
-              this.parent.textColorsTheme
-            ).makeNodeName('FIXED', this.sampleSize, 48)
+            new Sample({
+              name: key.replace('lightness-', ''),
+              rgb: [255, 255, 255],
+              colorSpace: this.base.colorSpace,
+              visionSimulationMode: this.base.visionSimulationMode,
+              view: this.view,
+              textColorsTheme: this.base.textColorsTheme,
+            }).makeNodeName({
+              mode: 'FIXED',
+              width: this.sampleSize,
+              height: 48,
+            })
           )
         })
 

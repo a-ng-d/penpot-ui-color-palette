@@ -1,5 +1,5 @@
 import { Board } from '@penpot/plugin-types'
-import Colors from '../../canvas/Colors'
+import Colors from '../../canvas/Palette'
 import {
   ColorConfiguration,
   CreatorConfiguration,

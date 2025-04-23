@@ -25,6 +25,10 @@ export default class Properties {
   private oklab: Array<number>
   private hsl: Array<number>
   private hsluv: Array<number>
+  private lightTextColor: [number, number, number]
+  private darkTextColor: [number, number, number]
+  private lightTextColorContrast: Contrast
+  private darkTextColorContrast: Contrast
   private nodeTopProps: Board | null
   private nodeBottomProps: Board | null
   private nodeBaseProps: Board | null
@@ -36,18 +40,20 @@ export default class Properties {
   private nodeLeftColumn: Board | null
   private nodeRightColumn: Board | null
   private node: Board | null
-  private lightTextColor: [number, number, number]
-  private darkTextColor: [number, number, number]
-  private lightTextColorContrast: Contrast
-  private darkTextColorContrast: Contrast
 
-  constructor(
-    name: string,
-    rgb: [number, number, number],
-    colorSpace: ColorSpaceConfiguration,
-    visionSimulationMode: VisionSimulationModeConfiguration,
+  constructor({
+    name,
+    rgb,
+    colorSpace,
+    visionSimulationMode,
+    textColorsTheme,
+  }: {
+    name: string
+    rgb: [number, number, number]
+    colorSpace: ColorSpaceConfiguration
+    visionSimulationMode: VisionSimulationModeConfiguration
     textColorsTheme: TextColorsThemeHexModel
-  ) {
+  }) {
     this.name = name
     this.rgb = rgb
     this.colorSpace = colorSpace
@@ -63,17 +69,6 @@ export default class Properties {
       sourceColor: rgb,
       visionSimulationMode: this.visionSimulationMode,
     }).getHsluv()
-    this.nodeTopProps = null
-    this.nodeBottomProps = null
-    this.nodeBaseProps = null
-    this.nodeContrastScoresProps = null
-    this.nodeDetailedBaseProps = null
-    this.nodeDetailedWCAGScoresProps = null
-    this.nodeDetailedAPCAScoresProps = null
-    this.nodeColumns = null
-    this.nodeLeftColumn = null
-    this.nodeRightColumn = null
-    this.node = null
     this.lightTextColor = new Color({
       visionSimulationMode: this.visionSimulationMode,
     }).simulateColorBlindRgb(chroma(this.textColorsTheme.lightColor).rgb())
@@ -88,6 +83,17 @@ export default class Properties {
       backgroundColor: this.rgb,
       textColor: chroma(this.darkTextColor).hex(),
     })
+    this.nodeTopProps = null
+    this.nodeBottomProps = null
+    this.nodeBaseProps = null
+    this.nodeContrastScoresProps = null
+    this.nodeDetailedBaseProps = null
+    this.nodeDetailedWCAGScoresProps = null
+    this.nodeDetailedAPCAScoresProps = null
+    this.nodeColumns = null
+    this.nodeLeftColumn = null
+    this.nodeRightColumn = null
+    this.node = null
   }
 
   makeNodeTopProps = () => {
@@ -513,72 +519,74 @@ export default class Properties {
         fontSize: 10,
       }).makeNodeTag()
     )
-    this.nodeDetailedAPCAScoresProps.appendChild(
-      this.makeNodeColumns(
-        [
-          nodeAPCALightProp,
-          new Tag({
-            name: '_minimum-font-sizes',
-            content: locals[lang].paletteProperties.fontSize,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_200-light',
-            content: `${minimumLightFontSize[2]}pt (Extra-Light 200)`,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_300-light',
-            content: `${minimumLightFontSize[3]}pt (Light 300)`,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_400-light',
-            content: `${minimumLightFontSize[4]}pt (Regular 400)`,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_500-light',
-            content: `${minimumLightFontSize[5]}pt (Medium 500)`,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_500-light',
-            content: `${minimumLightFontSize[6]}pt (Semi-Bold 600)`,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_700-light',
-            content: `${minimumLightFontSize[7]}pt (Bold 700)`,
-          }).makeNodeTag(),
-        ],
-        [
-          nodeAPCADarkProp,
-          new Tag({
-            name: '_minimum-font-sizes',
-            content: locals[lang].paletteProperties.fontSize,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_200-dark',
-            content: `${minimumDarkFontSize[2]}pt (Extra-Light 200)`,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_300-dark',
-            content: `${minimumDarkFontSize[3]}pt (Light 300)`,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_400-dark',
-            content: `${minimumDarkFontSize[4]}pt (Regular 400)`,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_500-dark',
-            content: `${minimumDarkFontSize[5]}pt (Medium 500)`,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_600-dark',
-            content: `${minimumDarkFontSize[6]}pt (Semi-Bold 600)`,
-          }).makeNodeTag(),
-          new Tag({
-            name: '_700-dark',
-            content: `${minimumDarkFontSize[7]}pt (Bold 700)`,
-          }).makeNodeTag(),
-        ]
-      )
+    const columnsNode = this.makeNodeColumns(
+      [
+        nodeAPCALightProp,
+        new Tag({
+          name: '_minimum-font-sizes',
+          content: locals[lang].paletteProperties.fontSize,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_200-light',
+          content: `${minimumLightFontSize[2]}pt (Extra-Light 200)`,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_300-light',
+          content: `${minimumLightFontSize[3]}pt (Light 300)`,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_400-light',
+          content: `${minimumLightFontSize[4]}pt (Regular 400)`,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_500-light',
+          content: `${minimumLightFontSize[5]}pt (Medium 500)`,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_500-light',
+          content: `${minimumLightFontSize[6]}pt (Semi-Bold 600)`,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_700-light',
+          content: `${minimumLightFontSize[7]}pt (Bold 700)`,
+        }).makeNodeTag(),
+      ],
+      [
+        nodeAPCADarkProp,
+        new Tag({
+          name: '_minimum-font-sizes',
+          content: locals[lang].paletteProperties.fontSize,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_200-dark',
+          content: `${minimumDarkFontSize[2]}pt (Extra-Light 200)`,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_300-dark',
+          content: `${minimumDarkFontSize[3]}pt (Light 300)`,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_400-dark',
+          content: `${minimumDarkFontSize[4]}pt (Regular 400)`,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_500-dark',
+          content: `${minimumDarkFontSize[5]}pt (Medium 500)`,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_600-dark',
+          content: `${minimumDarkFontSize[6]}pt (Semi-Bold 600)`,
+        }).makeNodeTag(),
+        new Tag({
+          name: '_700-dark',
+          content: `${minimumDarkFontSize[7]}pt (Bold 700)`,
+        }).makeNodeTag(),
+      ]
     )
+    this.nodeDetailedAPCAScoresProps.appendChild(columnsNode)
+
+    if (columnsNode.layoutChild)
+      columnsNode.layoutChild.horizontalSizing = 'fill'
 
     return this.nodeDetailedAPCAScoresProps
   }
@@ -594,31 +602,42 @@ export default class Properties {
       this.nodeLeftColumn.fills =
       this.nodeRightColumn.fills =
         []
+    this.nodeColumns.horizontalSizing = 'fix'
+    this.nodeLeftColumn.horizontalSizing = 'fix'
+    this.nodeRightColumn.horizontalSizing = 'fix'
+    this.nodeColumns.verticalSizing = 'auto'
+    this.nodeLeftColumn.verticalSizing = 'auto'
+    this.nodeRightColumn.verticalSizing = 'auto'
 
     // Layout
     const flex = this.nodeColumns.addFlexLayout()
     flex.dir = 'row'
     flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
-    flex.rowGap = 8
+    flex.columnGap = 8
 
     const flexLeft = this.nodeRightColumn.addFlexLayout()
     flexLeft.dir = 'column'
     flexLeft.horizontalSizing = 'fill'
     flexLeft.verticalSizing = 'fit-content'
-    flexLeft.columnGap = 4
+    flexLeft.rowGap = 4
 
     const flexRight = this.nodeLeftColumn.addFlexLayout()
     flexRight.dir = 'column'
     flexRight.horizontalSizing = 'fill'
     flexRight.verticalSizing = 'fit-content'
-    flexRight.columnGap = 4
+    flexRight.rowGap = 4
 
     // Insert
     leftNodes.forEach((node) => this.nodeLeftColumn?.appendChild(node))
     rightNodes.forEach((node) => this.nodeRightColumn?.appendChild(node))
     this.nodeColumns.appendChild(this.nodeLeftColumn)
     this.nodeColumns.appendChild(this.nodeRightColumn)
+
+    if (this.nodeLeftColumn?.layoutChild)
+      this.nodeLeftColumn.layoutChild.horizontalSizing = 'fill'
+    if (this.nodeRightColumn?.layoutChild)
+      this.nodeRightColumn.layoutChild.horizontalSizing = 'fill'
 
     return this.nodeColumns
   }
@@ -637,6 +656,11 @@ export default class Properties {
     flex.columnGap = 16
 
     // Insert
+    const columnsNode = this.makeNodeColumns(
+      [this.makeNodeDetailedBaseProps()],
+      [this.makeDetailedWCAGScoresProps()]
+    )
+
     this.node.appendChild(
       this.makeNodeColumns(
         [this.makeNodeDetailedBaseProps()],
@@ -644,6 +668,9 @@ export default class Properties {
       )
     )
     this.node.appendChild(this.makeNodeDetailedAPCAScoresProps())
+
+    if (columnsNode.layoutChild)
+      columnsNode.layoutChild.horizontalSizing = 'fill'
 
     return this.node
   }

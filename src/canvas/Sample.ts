@@ -14,8 +14,8 @@ import Status from './Status'
 
 export default class Sample {
   private name: string
-  private source: RgbModel | null
-  private scale: string | null
+  private source?: RgbModel
+  private scale?: string
   private rgb: [number, number, number]
   private colorSpace: ColorSpaceConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
@@ -29,20 +29,30 @@ export default class Sample {
   private node: Board | null
   private children: Board | null
 
-  constructor(
-    name: string,
-    source: RgbModel | null,
-    scale: string | null,
-    rgb: [number, number, number],
-    colorSpace: ColorSpaceConfiguration,
-    visionSimulationMode: VisionSimulationModeConfiguration,
-    view: ViewConfiguration,
-    textColorsTheme: TextColorsThemeHexModel,
-    status: { isClosestToRef: boolean; isLocked: boolean } = {
+  constructor({
+    name,
+    source,
+    scale,
+    rgb,
+    colorSpace,
+    visionSimulationMode,
+    view,
+    textColorsTheme,
+    status = {
       isClosestToRef: false,
       isLocked: false,
-    }
-  ) {
+    },
+  }: {
+    name: string
+    source?: RgbModel
+    scale?: string
+    rgb: [number, number, number]
+    colorSpace: ColorSpaceConfiguration
+    visionSimulationMode: VisionSimulationModeConfiguration
+    view: ViewConfiguration
+    textColorsTheme: TextColorsThemeHexModel
+    status?: { isClosestToRef: boolean; isLocked: boolean }
+  }) {
     this.name = name
     this.source = source
     this.scale = scale
@@ -57,7 +67,15 @@ export default class Sample {
     this.children = null
   }
 
-  makeNodeName = (mode: string, width: number, height: number) => {
+  makeNodeName = ({
+    mode,
+    width,
+    height,
+  }: {
+    mode: string
+    width: number
+    height: number
+  }) => {
     // Base
     this.node = penpot.createBoard()
     this.node.name = this.name
@@ -73,9 +91,17 @@ export default class Sample {
 
     if (mode === 'FILL') {
       this.node.horizontalSizing = 'fix'
-      this.children = new Property('_large-label', this.name, 16).makeNode()
+      this.children = new Property({
+        name: '_large-label',
+        content: this.name,
+        size: 16,
+      }).makeNode()
     } else if (mode === 'FIXED')
-      this.children = new Property('_label', this.name, 10).makeNode()
+      this.children = new Property({
+        name: '_label',
+        content: this.name,
+        size: 10,
+      }).makeNode()
 
     // Insert
     this.node.appendChild(this.children as Board)
@@ -83,12 +109,17 @@ export default class Sample {
     return this.node
   }
 
-  makeNodeShade = (
-    width: number,
-    height: number,
-    name: string,
-    isColorName = false
-  ) => {
+  makeNodeShade = ({
+    width,
+    height,
+    name,
+    isColorName = false,
+  }: {
+    width: number
+    height: number
+    name: string
+    isColorName?: boolean
+  }) => {
     // Base
     this.node = penpot.createBoard()
     this.node.name = name
@@ -109,14 +140,14 @@ export default class Sample {
     flex.verticalSizing = 'fill'
 
     // Insert
-    if (this.view.includes('PALETTE_WITH_PROPERTIES') && !isColorName) {
-      const propertiesNode = new Properties(
-        this.scale ?? '0',
-        this.rgb,
-        this.colorSpace,
-        this.visionSimulationMode,
-        this.textColorsTheme
-      ).makeNode()
+    if (this.view === 'PALETTE_WITH_PROPERTIES' && !isColorName) {
+      const propertiesNode = new Properties({
+        name: this.scale ?? '0',
+        rgb: this.rgb,
+        colorSpace: this.colorSpace,
+        visionSimulationMode: this.visionSimulationMode,
+        textColorsTheme: this.textColorsTheme,
+      }).makeNode()
 
       this.node.appendChild(propertiesNode)
 
@@ -125,7 +156,11 @@ export default class Sample {
         propertiesNode.layoutChild.verticalSizing = 'fill'
       }
     } else if (isColorName) {
-      const propertyNode = new Property('_label', this.name, 10).makeNode()
+      const propertyNode = new Property({
+        name: '_label',
+        content: this.name,
+        size: 10,
+      }).makeNode()
 
       this.node.appendChild(propertyNode)
 
@@ -136,12 +171,12 @@ export default class Sample {
     }
 
     if (this.status.isClosestToRef || this.status.isLocked) {
-      const statusNode = new Status(
-        this.status,
-        this.source
+      const statusNode = new Status({
+        status: this.status,
+        source: this.source
           ? { r: this.source.r, g: this.source.g, b: this.source.b }
-          : {}
-      ).makeNode()
+          : {},
+      }).node
 
       this.node.appendChild(statusNode)
 
@@ -154,13 +189,19 @@ export default class Sample {
     return this.node
   }
 
-  makeNodeRichShade = (
-    width: number,
-    height: number,
-    name: string,
+  makeNodeRichShade = ({
+    width,
+    height,
+    name,
+    description = '',
     isColorName = false,
-    description = ''
-  ) => {
+  }: {
+    width: number
+    height: number
+    name: string
+    description?: string
+    isColorName?: boolean
+  }) => {
     // Base
     this.node = penpot.createBoard()
     this.node.name = name
@@ -172,19 +213,21 @@ export default class Sample {
     // Layout
     const flex = this.node.addFlexLayout()
     flex.dir = 'column'
-    flex.verticalPadding = flex.horizontalPadding = 8
+    flex.horizontalPadding = 8
+    flex.verticalPadding = 8
+    flex.rowGap = 8
 
     // color
     this.nodeColor = penpot.createBoard()
     this.nodeColor.name = '_color'
     this.nodeColor.resize(96, 96)
-    this.nodeColor.horizontalSizing = 'fix'
-    this.nodeColor.verticalSizing = 'auto'
+    this.nodeColor.horizontalSizing = 'auto'
+    this.nodeColor.verticalSizing = 'fix'
 
     const flexColor = this.nodeColor.addFlexLayout()
     flexColor.dir = 'column'
-    flexColor.horizontalPadding = flex.verticalPadding = 8
-    flexColor.rowGap = 8
+    flexColor.horizontalPadding = 8
+    flex.verticalPadding = 8
 
     this.nodeColor.fills = [
       {
@@ -194,17 +237,21 @@ export default class Sample {
     this.nodeColor.borderRadius = 16
 
     // Insert
-    const propertyNode = new Property('_label', name, 10).makeNode()
+    const propertyNode = new Property({
+      name: '_label',
+      content: name,
+      size: 10,
+    }).makeNode()
 
     this.nodeColor.appendChild(propertyNode)
 
     if (this.status.isClosestToRef) {
-      const statusNode = new Status(
-        this.status,
-        this.source
+      const statusNode = new Status({
+        status: this.status,
+        source: this.source
           ? { r: this.source.r, g: this.source.g, b: this.source.b }
-          : {}
-      ).makeNode()
+          : {},
+      }).node
 
       this.nodeColor.appendChild(statusNode)
 
@@ -214,27 +261,29 @@ export default class Sample {
 
     this.node.appendChild(this.nodeColor)
 
+    if (this.nodeColor.layoutChild)
+      this.nodeColor.layoutChild.horizontalSizing = 'fill'
+
     if (isColorName && description !== '') {
-      const paragraphNode = new Paragraph(
-        '_description',
-        description,
-        'FILL',
-        undefined,
-        8
-      ).makeNode()
+      const paragraphNode = new Paragraph({
+        name: '_description',
+        content: description,
+        type: 'FILL',
+        fontSize: 8,
+      }).node
 
       this.node.appendChild(paragraphNode)
 
       if (paragraphNode.layoutChild)
         paragraphNode.layoutChild.horizontalSizing = 'fill'
-    } else if (!this.view.includes('SHEET_SAFE_MODE') && !isColorName) {
-      const propertiesNode = new Properties(
-        this.scale ?? '0',
-        this.rgb,
-        this.colorSpace,
-        this.visionSimulationMode,
-        this.textColorsTheme
-      ).makeNode()
+    } else if (!isColorName) {
+      const propertiesNode = new Properties({
+        name: this.scale ?? '0',
+        rgb: this.rgb,
+        colorSpace: this.colorSpace,
+        visionSimulationMode: this.visionSimulationMode,
+        textColorsTheme: this.textColorsTheme,
+      }).makeNodeDetailed()
 
       this.node.appendChild(propertiesNode)
 

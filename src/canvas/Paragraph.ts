@@ -7,22 +7,28 @@ export default class Paragraph {
   private type: 'FILL' | 'FIXED'
   private width?: number
   private nodeText: Text | null
-  private node: Board | null
+  node: Board
 
-  constructor(
-    name: string,
-    content: string,
-    type: 'FILL' | 'FIXED',
-    width?: number,
-    fontSize = 12
-  ) {
+  constructor({
+    name,
+    content,
+    type,
+    width,
+    fontSize = 12,
+  }: {
+    name: string
+    content: string
+    type: 'FILL' | 'FIXED'
+    width?: number
+    fontSize?: number
+  }) {
     this.name = name
     this.content = content
     this.fontSize = fontSize
     this.type = type
     this.width = width
     this.nodeText = null
-    this.node = null
+    this.node = this.makeNode()
   }
 
   makeNodeText = () => {

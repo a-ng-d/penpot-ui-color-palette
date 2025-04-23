@@ -1,22 +1,30 @@
 import { Board } from '@penpot/plugin-types'
 import { lang, locals } from '../content/locals'
-import { PaletteNode } from '../types/nodes'
 import Paragraph from './Paragraph'
 import Tag from './Tag'
+import { BaseConfiguration, MetaConfiguration } from 'src/types/configurations'
 
 export default class Title {
-  private parent: PaletteNode
+  private base: BaseConfiguration
+  private meta: MetaConfiguration
   private nodeGlobalInfo: Board | null
   private nodeDescriptions: Board | null
   private nodeProps: Board | null
-  private node: Board | null
+  node: Board
 
-  constructor(parent: PaletteNode) {
-    this.parent = parent
+  constructor({
+    base,
+    meta,
+  }: {
+    base: BaseConfiguration
+    meta: MetaConfiguration
+  }) {
+    this.base = base
+    this.meta = meta
     this.nodeGlobalInfo = null
     this.nodeDescriptions = null
     this.nodeProps = null
-    this.node = null
+    this.node = this.makeNode()
   }
 
   makeNodeGlobalInfo = () => {
@@ -38,13 +46,13 @@ export default class Title {
     this.nodeGlobalInfo.appendChild(
       new Tag({
         name: '_name',
-        content: this.parent.name === '' ? locals[lang].name : this.parent.name,
+        content: this.base.name === '' ? locals[lang].name : this.base.name,
         fontSize: 20,
       }).makeNodeTag()
     )
     if (
-      this.parent.description !== '' ||
-      this.parent.themes.find((theme) => theme.isEnabled)?.description !== ''
+      this.base.description !== '' ||
+      this.base.themes.find((theme) => theme.isEnabled)?.description !== ''
     )
       this.nodeGlobalInfo.appendChild(this.makeNodeDescriptions())
 
@@ -67,27 +75,28 @@ export default class Title {
     flex.verticalSizing = 'fit-content'
 
     // Insert
-    if (this.parent.description !== '')
+    if (this.base.description !== '')
       this.nodeDescriptions.appendChild(
-        new Paragraph(
-          '_palette-description',
-          this.parent.description,
-          'FIXED',
-          644,
-          12
-        ).makeNode()
+        new Paragraph({
+          name: '_palette-description',
+          content: this.base.description,
+          type: 'FIXED',
+          width: 644,
+          fontSize: 12,
+        }).node
       )
 
-    if (this.parent.themes.find((theme) => theme.isEnabled)?.description !== '')
+    if (this.base.themes.find((theme) => theme.isEnabled)?.description !== '')
       this.nodeDescriptions.appendChild(
-        new Paragraph(
-          '_theme-description',
-          'Theme description: ' +
-            this.parent.themes.find((theme) => theme.isEnabled)?.description,
-          'FIXED',
-          644,
-          12
-        ).makeNode()
+        new Paragraph({
+          name: '_theme-description',
+          content:
+            'Theme description: ' +
+            this.base.themes.find((theme) => theme.isEnabled)?.description,
+          type: 'FIXED',
+          width: 644,
+          fontSize: 12,
+        }).node
       )
 
     return this.nodeDescriptions
@@ -109,51 +118,51 @@ export default class Title {
 
     // Insert
     if (
-      this.parent.creatorFullName !== undefined &&
-      this.parent.creatorFullName !== ''
+      this.base.creatorFullName !== undefined &&
+      this.base.creatorFullName !== ''
     )
-      this.nodeProps.appendChild(
+      if (
+        this.base.themes.find((theme) => theme.isEnabled)?.type !==
+        'default theme'
+      )
+        /*this.nodeProps.appendChild(
         new Tag({
           name: '_creator_id',
-          content: `${locals[lang].paletteProperties.provider}${this.parent.creatorFullName}`,
+          content: `${locals[lang].paletteProperties.provider}${this.base.creatorFullName}`,
           fontSize: 12,
-        }).makeNodeTagWithAvatar(this.parent.creatorAvatarImg)
-      )
+        }).makeNodeTagWithAvatar(this.base.creatorAvatarImg)
+      )*/
 
-    if (
-      this.parent.themes.find((theme) => theme.isEnabled)?.type !==
-      'default theme'
-    )
-      this.nodeProps.appendChild(
-        new Tag({
-          name: '_theme',
-          content: `${locals[lang].paletteProperties.theme}${
-            this.parent.themes.find((theme) => theme.isEnabled)?.name
-          }`,
-          fontSize: 12,
-        }).makeNodeTag()
-      )
+        this.nodeProps.appendChild(
+          new Tag({
+            name: '_theme',
+            content: `${locals[lang].paletteProperties.theme}${
+              this.base.themes.find((theme) => theme.isEnabled)?.name
+            }`,
+            fontSize: 12,
+          }).makeNodeTag()
+        )
     this.nodeProps.appendChild(
       new Tag({
         name: '_preset',
-        content: `${locals[lang].paletteProperties.preset}${this.parent.preset.name}`,
+        content: `${locals[lang].paletteProperties.preset}${this.base.preset.name}`,
         fontSize: 12,
       }).makeNodeTag()
     )
     this.nodeProps.appendChild(
       new Tag({
         name: '_color-space',
-        content: `${locals[lang].paletteProperties.colorSpace}${this.parent.colorSpace}`,
+        content: `${locals[lang].paletteProperties.colorSpace}${this.base.colorSpace}`,
         fontSize: 12,
       }).makeNodeTag()
     )
-    if (this.parent.visionSimulationMode !== 'NONE')
+    if (this.base.visionSimulationMode !== 'NONE')
       this.nodeProps.appendChild(
         new Tag({
           name: '_vision-simulation',
           content: `${locals[lang].paletteProperties.visionSimulation}${
-            this.parent.visionSimulationMode.charAt(0) +
-            this.parent.visionSimulationMode.toLocaleLowerCase().slice(1)
+            this.base.visionSimulationMode.charAt(0) +
+            this.base.visionSimulationMode.toLocaleLowerCase().slice(1)
           }`,
           fontSize: 12,
         }).makeNodeTag()

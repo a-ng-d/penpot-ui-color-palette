@@ -26,7 +26,7 @@ const processSelection = () => {
   const selectionHandler = (state: string) => {
     const actions: ActionsList = {
       PALETTE_SELECTED: async () => {
-        penpot.ui.sendMessage({
+        /*penpot.ui.sendMessage({
           type: 'PALETTE_SELECTED',
           data: {
             id: palette.getPluginData('id'),
@@ -57,7 +57,7 @@ const processSelection = () => {
             updatedAt: palette.getPluginData('updatedAt'),
             publishedAt: palette.getPluginData('publishedAt'),
           },
-        })
+        })*/
 
         await palette
           .export({

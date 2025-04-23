@@ -24,6 +24,7 @@ import {
 } from '../../types/configurations'
 import { AppStates } from '../App'
 import Feature from '../components/Feature'
+import { ActionsList } from 'src/types/models'
 
 interface ActionsProps {
   service: Service
@@ -43,9 +44,7 @@ interface ActionsProps {
   onSyncLocalStyles?: (
     e: React.MouseEvent<HTMLLIElement> | React.KeyboardEvent<HTMLLIElement>
   ) => void
-  onPublishPalette?: (
-    e: React.MouseEvent<Element> | React.KeyboardEvent<Element>
-  ) => void
+  onGenerateDocument?: () => void
   onExportPalette?: React.MouseEventHandler<HTMLButtonElement> &
     React.KeyboardEventHandler<HTMLButtonElement>
   onChangeSettings?: React.Dispatch<Partial<AppStates>>
@@ -55,10 +54,7 @@ interface ActionsStates {
   isTooltipVisible: boolean
 }
 
-export default class Actions extends PureComponent<
-  ActionsProps,
-  ActionsStates
-> {
+export default class Actions extends PureComponent<ActionsProps, ActionsStates> {
   private palette: typeof $palette
 
   static defaultProps = {
@@ -139,6 +135,60 @@ export default class Actions extends PureComponent<
         },
         '*'
       )
+  }
+
+  documentHandler = (e: Event) => {
+    const currentElement = e.currentTarget as HTMLInputElement
+
+    const generateSheet = () => {
+      this.props.onGenerateDocument?.()
+      parent.postMessage(
+        {
+          pluginMessage: {
+            type: 'CREATE_DOCUMENT',
+            id: this.props.id,
+            view: 'SHEET',
+          },
+        },
+        '*'
+      )
+    }
+
+    const generatePaletteWithProperties = () => {
+      this.props.onGenerateDocument?.()
+      parent.postMessage(
+        {
+          pluginMessage: {
+            type: 'CREATE_DOCUMENT',
+            id: this.props.id,
+            view: 'PALETTE_WITH_PROPERTIES',
+          },
+        },
+        '*'
+      )
+    }
+
+    const generatePalette = () => {
+      this.props.onGenerateDocument?.()
+      parent.postMessage(
+        {
+          pluginMessage: {
+            type: 'CREATE_DOCUMENT',
+            id: this.props.id,
+            view: 'PALETTE',
+          },
+        },
+        '*'
+      )
+    }
+
+    const actions: ActionsList = {
+      GENERATE_SHEET: () => generateSheet(),
+      GENERATE_PALETTE_WITH_PROPERTIES: () => generatePaletteWithProperties(),
+      GENERATE_PALETTE: () => generatePalette(),
+    }
+
+    return actions[currentElement.dataset.feature ?? 'DEFAULT']?.()
   }
 
   // Templates
@@ -280,30 +330,61 @@ export default class Actions extends PureComponent<
         rightPartSlot={
           <div className={layouts['snackbar--medium']}>
             <Menu
-              id="local-styles-variables"
-              label={locals[this.props.lang].actions.sync}
-              type="PRIMARY"
+              id="display-more-actions"
+              type="ICON"
+              icon="ellipses"
               options={[
                 {
-                  label: locals[this.props.lang].actions.createLocalStyles,
-                  value: 'EDIT',
-                  feature: 'SYNC_LOCAL_STYLES',
+                  label: 'Generate a document',
+                  value: 'DOCUMENT',
                   type: 'OPTION',
-                  isActive: Actions.features(
-                    this.props.planStatus ?? 'UNPAID'
-                  ).SYNC_LOCAL_STYLES.isActive(),
-                  isBlocked: Actions.features(
-                    this.props.planStatus ?? 'UNPAID'
-                  ).SYNC_LOCAL_STYLES.isBlocked(),
-                  isNew: Actions.features(
-                    this.props.planStatus ?? 'UNPAID'
-                  ).SYNC_LOCAL_STYLES.isNew(),
+                  children: [
+                    {
+                      label: 'Generate a color sheet document',
+                      value: 'DOCUMENT_SHEET',
+                      feature: 'GENERATE_SHEET',
+                      type: 'OPTION',
+                      action: this.documentHandler,
+                    },
+                    {
+                      label: 'Generate a color palette with properties',
+                      value: 'DOCUMENT_PALETTE_WITH_PROPERTIES',
+                      feature: 'GENERATE_PALETTE_WITH_PROPERTIES',
+                      type: 'OPTION',
+                      action: this.documentHandler,
+                    },
+                    {
+                      label: 'Generate a color palette',
+                      value: 'DOCUMENT_PALETTE',
+                      feature: 'GENERATE_PALETTE',
+                      type: 'OPTION',
+                      action: this.documentHandler,
+                    },
+                  ],
                   action: (e) => this.props.onSyncLocalStyles?.(e),
                 },
               ]}
               alignment="TOP_RIGHT"
-              state={this.props.isPrimaryLoading ? 'LOADING' : 'DEFAULT'}
+              state={this.props.isSecondaryLoading ? 'LOADING' : 'DEFAULT'}
             />
+            <Feature
+              isActive={Actions.features(
+                this.props.planStatus ?? 'UNPAID'
+              ).SYNC_LOCAL_STYLES.isActive()}
+            >
+              <Button
+                type="primary"
+                label={locals[this.props.lang].actions.createLocalStyles}
+                isBlocked={Actions.features(
+                  this.props.planStatus ?? 'UNPAID'
+                ).SYNC_LOCAL_STYLES.isBlocked()}
+                isNew={Actions.features(
+                  this.props.planStatus ?? 'UNPAID'
+                ).SYNC_LOCAL_STYLES.isNew()}
+                action={this.props.onSyncLocalStyles}
+                isLoading={this.props.isPrimaryLoading}
+              />
+            </Feature>
           </div>
         }
         border={[]}

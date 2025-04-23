@@ -5,15 +5,25 @@ import Tag from './Tag'
 export default class Status {
   private status: { isClosestToRef: boolean; isLocked: boolean }
   private source: { [key: string]: number }
-  private node: Board | null
+  node: Board
 
-  constructor(
-    status: { isClosestToRef: boolean; isLocked: boolean },
+  constructor({
+    status = {
+      isClosestToRef: false,
+      isLocked: false,
+    },
+    source = {
+      r: 0,
+      g: 0,
+      b: 0,
+    },
+  }: {
+    status: { isClosestToRef: boolean; isLocked: boolean }
     source: { [key: string]: number }
-  ) {
+  }) {
     this.status = status
     this.source = source
-    this.node = null
+    this.node = this.makeNode()
   }
 
   makeNode = () => {
