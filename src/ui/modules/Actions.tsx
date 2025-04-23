@@ -39,7 +39,7 @@ interface ActionsProps {
   creatorIdentity?: CreatorConfiguration
   userSession?: UserSession
   exportType?: string
-  document: DocumentConfiguration
+  document?: DocumentConfiguration
   planStatus: PlanStatus
   lang: Language
   isPrimaryLoading?: boolean
@@ -59,15 +59,13 @@ interface ActionsStates {
   isTooltipVisible: boolean
 }
 
-export default class Actions extends PureComponent<
-  ActionsProps,
-  ActionsStates
-> {
+export default class Actions extends PureComponent<ActionsProps, ActionsStates> {
   private palette: typeof $palette
 
   static defaultProps = {
     sourceColors: [],
     scale: {},
+    document: {},
   }
 
   static features = (planStatus: PlanStatus) => ({
@@ -242,6 +240,7 @@ export default class Actions extends PureComponent<
     ] as Array<DropdownOption>
 
     if (
+      this.props.document &&
       Object.entries(this.props.document).length > 0 &&
       this.props.document.updatedAt !== this.props.dates?.updatedAt &&
       this.props.document.id === this.props.id
