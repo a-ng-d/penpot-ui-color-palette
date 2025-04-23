@@ -95,11 +95,18 @@ export default class Documents {
     document.setPluginData('type', 'UI_COLOR_PALETTE')
     document.setPluginData('view', this.view)
     document.setPluginData('id', this.meta.id)
-    document.setPluginData('name', this.base.name)
     document.setPluginData('themeId', theme.id)
     document.setPluginData('createdAt', new Date().toISOString())
     document.setPluginData('updatedAt', this.meta.dates.updatedAt as string)
-    document.setPluginData('backup', JSON.stringify(this.base))
+    document.setPluginData(
+      'backup',
+      JSON.stringify({
+        base: this.base,
+        data: this.data,
+        meta: this.meta,
+        type: 'UI_COLOR_PALETTE',
+      })
+    )
 
     // Insert
     if (this.view === 'PALETTE' || this.view === 'PALETTE_WITH_PROPERTIES')

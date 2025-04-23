@@ -192,6 +192,7 @@ export interface FullConfiguration {
 
 export interface DocumentConfiguration {
   view?: ViewConfiguration
-  name?: string
+  id?: string
+  isLinkedToPalette?: boolean
   updatedAt?: Date | string
 }

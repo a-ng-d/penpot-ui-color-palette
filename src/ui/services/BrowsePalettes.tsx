@@ -1,13 +1,20 @@
-import { Bar, Button, ConsentConfiguration, Tabs } from '@a_ng_d/figmug-ui'
+import {
+  Bar,
+  Button,
+  ConsentConfiguration,
+  layouts,
+  Tabs,
+} from '@a_ng_d/figmug-ui'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
+import { ActionsList } from 'src/types/models'
 import features from '../../config'
 import { $palette } from '../../stores/palette'
 import { Context, ContextItem, Language, PlanStatus } from '../../types/app'
 import {
-  ExtractOfBaseConfiguration,
+  DocumentConfiguration,
   UserConfiguration,
 } from '../../types/configurations'
 import { UserSession } from '../../types/user'
@@ -16,10 +23,10 @@ import { AppStates } from '../App'
 import InternalPalettes from '../contexts/InternalPalettes'
 
 interface BrowsePalettesProps {
+  document: DocumentConfiguration
   userIdentity: UserConfiguration
   userSession: UserSession
   userConsent: Array<ConsentConfiguration>
-  palettesList: Array<ExtractOfBaseConfiguration>
   planStatus: PlanStatus
   lang: Language
   onCreatePalette: React.Dispatch<Partial<AppStates>>
@@ -28,6 +35,7 @@ interface BrowsePalettesProps {
 interface BrowsePalettesStates {
   context: Context | ''
   isPrimaryLoading: boolean
+  isSecondaryLoading: boolean
 }
 
 export default class BrowsePalettes extends PureComponent<
@@ -60,10 +68,35 @@ export default class BrowsePalettes extends PureComponent<
     this.state = {
       context: this.contexts[0].id,
       isPrimaryLoading: false,
+      isSecondaryLoading: false,
     }
   }
 
+  // Lifecycle
+  componentDidMount = () => {
+    parent.postMessage({ pluginMessage: { type: 'GET_PALETTES' } }, '*')
+
+    window.addEventListener('message', this.handleMessage)
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener('message', this.handleMessage)
+  }
+
   // Handlers
+  handleMessage = (e: MessageEvent) => {
+    const actions: ActionsList = {
+      STOP_LOADER: () =>
+        this.setState({
+          isPrimaryLoading: false,
+          isSecondaryLoading: false,
+        }),
+      DEFAULT: () => null,
+    }
+
+    return actions[e.data.type ?? 'DEFAULT']?.()
+  }
+
   navHandler = (e: Event) =>
     this.setState({
       context: (e.target as HTMLElement).dataset.feature as Context,
@@ -74,6 +107,29 @@ export default class BrowsePalettes extends PureComponent<
     this.props.onCreatePalette({
       service: 'CREATE',
     })
+  }
+
+  onEditPalette = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: 'JUMP_TO_PALETTE',
+          id: this.props.document.id,
+        },
+      },
+      '*'
+    )
+  }
+
+  onCreateFromDocument = () => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: 'CREATE_PALETTE_FROM_DOCUMENT',
+        },
+      },
+      '*'
+    )
   }
 
   // Renders
@@ -98,12 +154,30 @@ export default class BrowsePalettes extends PureComponent<
             />
           }
           rightPartSlot={
-            <Button
-              type="primary"
-              icon="plus"
-              label="New UI Color Palette"
-              action={this.onCreatePalette}
-            />
+            <div className={layouts['snackbar--medium']}>
+              {this.props.document.isLinkedToPalette !== undefined &&
+                this.props.document.isLinkedToPalette && (
+                  <Button
+                    type="secondary"
+                    label="Open document"
+                    action={this.onEditPalette}
+                  />
+                )}
+              {this.props.document.isLinkedToPalette !== undefined &&
+                !this.props.document.isLinkedToPalette && (
+                  <Button
+                    type="secondary"
+                    label="Create from the document"
+                    action={this.onCreateFromDocument}
+                  />
+                )}
+              <Button
+                type="primary"
+                icon="plus"
+                label="New UI Color Palette"
+                action={this.onCreatePalette}
+              />
+            </div>
           }
         />
         <section className="context">{fragment}</section>

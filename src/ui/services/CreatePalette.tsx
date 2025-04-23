@@ -88,6 +88,7 @@ interface CreatePaletteProps {
 interface CreatePaletteStates {
   context: Context | ''
   isPrimaryLoading: boolean
+  isSecondaryLoading: boolean
 }
 
 export default class CreatePalette extends PureComponent<
@@ -123,6 +124,7 @@ export default class CreatePalette extends PureComponent<
           ? this.contexts[this.props.sourceColors.length === 0 ? 0 : 1].id
           : '',
       isPrimaryLoading: false,
+      isSecondaryLoading: false,
     }
   }
 
@@ -141,6 +143,7 @@ export default class CreatePalette extends PureComponent<
       STOP_LOADER: () => {
         this.setState({
           isPrimaryLoading: false,
+          isSecondaryLoading: false,
         })
       },
       DEFAULT: () => null,

@@ -356,9 +356,10 @@ export default class App extends Component<Record<string, never>, AppStates> {
 
         const updateWhileDocumentSelected = () => {
           this.setState({
-            service: 'EDIT',
             document: {
               view: path.data.view,
+              id: path.data.id,
+              isLinkedToPalette: path.data.isLinkedToPalette,
               updatedAt: path.data.updatedAt,
             },
           })
@@ -675,10 +676,8 @@ export default class App extends Component<Record<string, never>, AppStates> {
           PUSH_HIGHLIGHT_STATUS: () => handleHighlight(),
           PUSH_ONBOARDING_STATUS: () => handleOnboarding(),
           CHECK_PLAN_STATUS: () => checkPlanStatus(),
-          EMPTY_SELECTION: () =>
-            this.state.service === 'CREATE' && updateWhileEmptySelection(),
-          COLOR_SELECTED: () =>
-            this.state.service === 'CREATE' && updateWhileColorSelected(),
+          EMPTY_SELECTION: () => updateWhileEmptySelection(),
+          COLOR_SELECTED: () => updateWhileColorSelected(),
           DOCUMENT_SELECTED: () => updateWhileDocumentSelected(),
           LOAD_PALETTE: () => loadPalette(),
           EXPORT_PALETTE_JSON: () => exportPaletteToJson(),

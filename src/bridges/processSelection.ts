@@ -27,8 +27,12 @@ const processSelection = () => {
           type: 'DOCUMENT_SELECTED',
           data: {
             view: document.getPluginData('view'),
-            name: document.getPluginData('name'),
+            id: document.getPluginData('id'),
             updatedAt: document.getPluginData('updatedAt'),
+            isLinkedToPalette:
+              penpot.currentPage?.getPluginData(
+                `palette_${document.getPluginData('id')}`
+              ) !== '',
           },
         })
       },
