@@ -65,6 +65,7 @@ export default class Paragraph {
       {
         strokeColor: '#000000',
         strokeOpacity: 0.05,
+        strokeAlignment: 'inner',
       },
     ]
     this.node.borderRadius = 16

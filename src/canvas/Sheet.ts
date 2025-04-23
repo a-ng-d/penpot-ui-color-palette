@@ -42,8 +42,8 @@ export default class Sheet {
     this.data = data
     this.meta = meta
     this.view = view
-    this.sampleScale = 1.75
-    this.sampleRatio = 3 / 2
+    this.sampleScale = 1.25
+    this.sampleRatio = 2
     this.sampleSize = 184
     this.gap = 32
     this.nodeRow = null

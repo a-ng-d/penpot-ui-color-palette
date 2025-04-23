@@ -318,13 +318,15 @@ export default class Properties {
     this.nodeDetailedBaseProps = penpot.createBoard()
     this.nodeDetailedBaseProps.name = '_base'
     this.nodeDetailedBaseProps.fills = []
+    this.nodeDetailedBaseProps.horizontalSizing = 'auto'
+    this.nodeDetailedBaseProps.verticalSizing = 'auto'
 
     // Layout
     const flex = this.nodeDetailedBaseProps.addFlexLayout()
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
-    flex.columnGap = 4
+    flex.rowGap = 4
 
     let basePropViaColorSpace
 
@@ -394,13 +396,15 @@ export default class Properties {
     this.nodeDetailedWCAGScoresProps = penpot.createBoard()
     this.nodeDetailedWCAGScoresProps.name = '_wcag-scores'
     this.nodeDetailedWCAGScoresProps.fills = []
+    this.nodeDetailedWCAGScoresProps.horizontalSizing = 'auto'
+    this.nodeDetailedWCAGScoresProps.verticalSizing = 'auto'
 
     // Layout
     const flex = this.nodeDetailedWCAGScoresProps.addFlexLayout()
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
-    flex.columnGap = 4
+    flex.rowGap = 4
 
     // Insert
     const wcagLightContrast = this.lightTextColorContrast
@@ -459,6 +463,9 @@ export default class Properties {
     this.nodeDetailedAPCAScoresProps = penpot.createBoard()
     this.nodeDetailedAPCAScoresProps.name = '_apca-scores'
     this.nodeDetailedAPCAScoresProps.fills = []
+    this.nodeDetailedAPCAScoresProps.horizontalSizing = 'auto'
+    this.nodeDetailedAPCAScoresProps.verticalSizing = 'auto'
+
     const minimumDarkFontSize: Array<string | number> =
         this.darkTextColorContrast.getMinFontSizes(),
       minimumLightFontSize: Array<string | number> =
@@ -469,7 +476,7 @@ export default class Properties {
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
-    flex.columnGap = 4
+    flex.rowGap = 4
 
     // Insert
     const apcaLightContrast = this.lightTextColorContrast
@@ -602,9 +609,9 @@ export default class Properties {
       this.nodeLeftColumn.fills =
       this.nodeRightColumn.fills =
         []
-    this.nodeColumns.horizontalSizing = 'fix'
-    this.nodeLeftColumn.horizontalSizing = 'fix'
-    this.nodeRightColumn.horizontalSizing = 'fix'
+    this.nodeColumns.horizontalSizing = 'auto'
+    this.nodeLeftColumn.horizontalSizing = 'auto'
+    this.nodeRightColumn.horizontalSizing = 'auto'
     this.nodeColumns.verticalSizing = 'auto'
     this.nodeLeftColumn.verticalSizing = 'auto'
     this.nodeRightColumn.verticalSizing = 'auto'
@@ -656,21 +663,27 @@ export default class Properties {
     flex.columnGap = 16
 
     // Insert
+    const detailedBaseProps = this.makeNodeDetailedBaseProps()
+    const detailedWCAGScoresProps = this.makeDetailedWCAGScoresProps()
+    const detailedAPCAScoresProps = this.makeNodeDetailedAPCAScoresProps()
     const columnsNode = this.makeNodeColumns(
-      [this.makeNodeDetailedBaseProps()],
-      [this.makeDetailedWCAGScoresProps()]
+      [detailedBaseProps],
+      [detailedWCAGScoresProps]
     )
 
     this.node.appendChild(
-      this.makeNodeColumns(
-        [this.makeNodeDetailedBaseProps()],
-        [this.makeDetailedWCAGScoresProps()]
-      )
+      columnsNode
     )
-    this.node.appendChild(this.makeNodeDetailedAPCAScoresProps())
+    this.node.appendChild(detailedAPCAScoresProps)
 
     if (columnsNode.layoutChild)
       columnsNode.layoutChild.horizontalSizing = 'fill'
+    if (detailedBaseProps.layoutChild)
+      detailedBaseProps.layoutChild.horizontalSizing = 'fill'
+    if (detailedWCAGScoresProps.layoutChild)
+      detailedWCAGScoresProps.layoutChild.horizontalSizing = 'fill'
+    if (detailedAPCAScoresProps.layoutChild)
+      detailedAPCAScoresProps.layoutChild.horizontalSizing = 'fill'
 
     return this.node
   }

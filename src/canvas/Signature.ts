@@ -63,6 +63,7 @@ export default class Signature {
       {
         strokeColor: '#000',
         strokeOpacity: 0.05,
+        strokeAlignment: 'inner',
       },
     ]
     this.nodeLogotype.borderRadius = 8

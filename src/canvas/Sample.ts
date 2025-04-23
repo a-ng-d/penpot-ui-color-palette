@@ -235,13 +235,13 @@ export default class Sample {
     this.nodeColor = penpot.createBoard()
     this.nodeColor.name = '_color'
     this.nodeColor.resize(96, 96)
-    this.nodeColor.horizontalSizing = 'auto'
+    this.nodeColor.horizontalSizing = 'fix'
     this.nodeColor.verticalSizing = 'fix'
 
     const flexColor = this.nodeColor.addFlexLayout()
     flexColor.dir = 'column'
     flexColor.horizontalPadding = 8
-    flex.verticalPadding = 8
+    flexColor.verticalPadding = 8
 
     this.nodeColor.fills = [
       libraryColor !== undefined

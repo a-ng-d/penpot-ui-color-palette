@@ -76,6 +76,7 @@ export default class Tag {
       {
         strokeColor: '#000000',
         strokeOpacity: 0.05,
+        strokeAlignment: 'inner',
       },
     ]
     this.nodeTag.borderRadius = 16
@@ -118,6 +119,7 @@ export default class Tag {
       {
         strokeColor: '#000000',
         strokeOpacity: 0.05,
+        strokeAlignment: 'inner',
       },
     ]
     this.nodeTagwithIndicator.borderRadius = 16
@@ -163,6 +165,7 @@ export default class Tag {
       {
         strokeColor: '#000000',
         strokeOpacity: 0.05,
+        strokeAlignment: 'inner',
       },
     ]
     this.nodeTagWithAvatar.borderRadius = 16
@@ -228,6 +231,7 @@ export default class Tag {
       {
         strokeColor: '#000000',
         strokeOpacity: 0.1,
+        strokeAlignment: 'inner',
       },
     ]
 
