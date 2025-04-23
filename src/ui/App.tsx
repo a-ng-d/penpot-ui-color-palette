@@ -61,7 +61,7 @@ import { userConsent } from '../utils/userConsent'
 import Feature from './components/Feature'
 import PriorityContainer from './modules/PriorityContainer'
 import Shortcuts from './modules/Shortcuts'
-import BrowsePalette from './services/BrowsePalette'
+import BrowsePalettes from './services/BrowsePalettes'
 import CreatePalette from './services/CreatePalette'
 import EditPalette from './services/EditPalette'
 import './stylesheets/app-components.css'
@@ -359,7 +359,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
             service: 'EDIT',
             document: {
               view: path.data.view,
-              name: path.data.backup.name,
               updatedAt: path.data.updatedAt,
             },
           })
@@ -817,7 +816,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
               this.state.service === 'BROWSE'
             }
           >
-            <BrowsePalette
+            <BrowsePalettes
               {...this.state}
               onCreatePalette={(e) => this.setState({ ...e })}
             />

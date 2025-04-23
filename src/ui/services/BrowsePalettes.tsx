@@ -12,10 +12,10 @@ import {
 } from '../../types/configurations'
 import { UserSession } from '../../types/user'
 import { setContexts } from '../../utils/setContexts'
-import InternalPalettes from '../contexts/InternalPalettes'
 import { AppStates } from '../App'
+import InternalPalettes from '../contexts/InternalPalettes'
 
-interface BrowsePaletteProps {
+interface BrowsePalettesProps {
   userIdentity: UserConfiguration
   userSession: UserSession
   userConsent: Array<ConsentConfiguration>
@@ -25,14 +25,14 @@ interface BrowsePaletteProps {
   onCreatePalette: React.Dispatch<Partial<AppStates>>
 }
 
-interface BrowsePaletteStates {
+interface BrowsePalettesStates {
   context: Context | ''
   isPrimaryLoading: boolean
 }
 
-export default class BrowsePalette extends PureComponent<
-  BrowsePaletteProps,
-  BrowsePaletteStates
+export default class BrowsePalettes extends PureComponent<
+  BrowsePalettesProps,
+  BrowsePalettesStates
 > {
   private contexts: Array<ContextItem>
   private palette: typeof $palette
@@ -50,7 +50,7 @@ export default class BrowsePalette extends PureComponent<
     }),
   })
 
-  constructor(props: BrowsePaletteProps) {
+  constructor(props: BrowsePalettesProps) {
     super(props)
     this.palette = $palette
     this.contexts = setContexts(
