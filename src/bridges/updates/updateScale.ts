@@ -26,6 +26,7 @@ const updateScale = async (msg: ScaleMessage) => {
     })
 
   palette.base.scale = msg.data.scale
+  palette.base.preset = msg.data.preset
   palette.base.shift = msg.data.shift
 
   // Update
