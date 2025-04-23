@@ -24,7 +24,6 @@ import {
   ColorSpaceConfiguration,
   SourceColorConfiguration,
   UserConfiguration,
-  ViewConfiguration,
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
 import { SettingsMessage } from '../../types/messages'
