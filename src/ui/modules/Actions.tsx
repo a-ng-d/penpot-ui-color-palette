@@ -1,6 +1,7 @@
 import {
   Bar,
   Button,
+  DropdownOption,
   Icon,
   Input,
   layouts,
@@ -19,6 +20,8 @@ import { $palette } from '../../stores/palette'
 import { Language, PlanStatus, Service } from '../../types/app'
 import {
   CreatorConfiguration,
+  DatesConfiguration,
+  DocumentConfiguration,
   ScaleConfiguration,
   SourceColorConfiguration,
 } from '../../types/configurations'
@@ -32,9 +35,11 @@ interface ActionsProps {
   id: string
   scale: ScaleConfiguration
   name?: string
+  dates?: DatesConfiguration
   creatorIdentity?: CreatorConfiguration
   userSession?: UserSession
   exportType?: string
+  document: DocumentConfiguration
   planStatus: PlanStatus
   lang: Language
   isPrimaryLoading?: boolean
@@ -44,7 +49,7 @@ interface ActionsProps {
   onSyncLocalStyles?: (
     e: React.MouseEvent<HTMLLIElement> | React.KeyboardEvent<HTMLLIElement>
   ) => void
-  onGenerateDocument?: () => void
+  onChangeDocument?: () => void
   onExportPalette?: React.MouseEventHandler<HTMLButtonElement> &
     React.KeyboardEventHandler<HTMLButtonElement>
   onChangeSettings?: React.Dispatch<Partial<AppStates>>
@@ -54,7 +59,10 @@ interface ActionsStates {
   isTooltipVisible: boolean
 }
 
-export default class Actions extends PureComponent<ActionsProps, ActionsStates> {
+export default class Actions extends PureComponent<
+  ActionsProps,
+  ActionsStates
+> {
   private palette: typeof $palette
 
   static defaultProps = {
@@ -141,7 +149,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
     const currentElement = e.currentTarget as HTMLInputElement
 
     const generateSheet = () => {
-      this.props.onGenerateDocument?.()
+      this.props.onChangeDocument?.()
       parent.postMessage(
         {
           pluginMessage: {
@@ -155,7 +163,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
     }
 
     const generatePaletteWithProperties = () => {
-      this.props.onGenerateDocument?.()
+      this.props.onChangeDocument?.()
       parent.postMessage(
         {
           pluginMessage: {
@@ -169,7 +177,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
     }
 
     const generatePalette = () => {
-      this.props.onGenerateDocument?.()
+      this.props.onChangeDocument?.()
       parent.postMessage(
         {
           pluginMessage: {
@@ -182,13 +190,70 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
       )
     }
 
+    const pushUpdates = () => {
+      this.props.onChangeDocument?.()
+      parent.postMessage(
+        {
+          pluginMessage: {
+            type: 'UPDATE_DOCUMENT',
+          },
+        },
+        '*'
+      )
+    }
+
     const actions: ActionsList = {
       GENERATE_SHEET: () => generateSheet(),
       GENERATE_PALETTE_WITH_PROPERTIES: () => generatePaletteWithProperties(),
       GENERATE_PALETTE: () => generatePalette(),
+      PUSH_UPDATES: () => pushUpdates(),
     }
 
     return actions[currentElement.dataset.feature ?? 'DEFAULT']?.()
+  }
+
+  optionsHandler = () => {
+    const options = [
+      {
+        label: 'Generate a document',
+        value: 'DOCUMENT',
+        type: 'OPTION',
+        children: [
+          {
+            label: 'Generate a color sheet document',
+            feature: 'GENERATE_SHEET',
+            type: 'OPTION',
+            action: this.documentHandler,
+          },
+          {
+            label: 'Generate a color palette with properties',
+            feature: 'GENERATE_PALETTE_WITH_PROPERTIES',
+            type: 'OPTION',
+            action: this.documentHandler,
+          },
+          {
+            label: 'Generate a color palette',
+            feature: 'GENERATE_PALETTE',
+            type: 'OPTION',
+            action: this.documentHandler,
+          },
+        ],
+      },
+    ] as Array<DropdownOption>
+
+    if (
+      Object.entries(this.props.document).length > 0 &&
+      this.props.document.updatedAt !== this.props.dates?.updatedAt &&
+      this.props.document.id === this.props.id
+    )
+      options.push({
+        label: 'Push changes to the document',
+        feature: 'PUSH_UPDATES',
+        type: 'OPTION',
+        action: this.documentHandler,
+      })
+
+    return options
   }
 
   // Templates
@@ -333,37 +398,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
               id="display-more-actions"
               type="ICON"
               icon="ellipses"
-              options={[
-                {
-                  label: 'Generate a document',
-                  value: 'DOCUMENT',
-                  type: 'OPTION',
-                  children: [
-                    {
-                      label: 'Generate a color sheet document',
-                      value: 'DOCUMENT_SHEET',
-                      feature: 'GENERATE_SHEET',
-                      type: 'OPTION',
-                      action: this.documentHandler,
-                    },
-                    {
-                      label: 'Generate a color palette with properties',
-                      value: 'DOCUMENT_PALETTE_WITH_PROPERTIES',
-                      feature: 'GENERATE_PALETTE_WITH_PROPERTIES',
-                      type: 'OPTION',
-                      action: this.documentHandler,
-                    },
-                    {
-                      label: 'Generate a color palette',
-                      value: 'DOCUMENT_PALETTE',
-                      feature: 'GENERATE_PALETTE',
-                      type: 'OPTION',
-                      action: this.documentHandler,
-                    },
-                  ],
-                  action: (e) => this.props.onSyncLocalStyles?.(e),
-                },
-              ]}
+              options={this.optionsHandler()}
               alignment="TOP_RIGHT"
               state={this.props.isSecondaryLoading ? 'LOADING' : 'DEFAULT'}
             />

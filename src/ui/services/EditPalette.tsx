@@ -28,6 +28,8 @@ import {
   AlgorithmVersionConfiguration,
   ColorConfiguration,
   ColorSpaceConfiguration,
+  DatesConfiguration,
+  DocumentConfiguration,
   ExportConfiguration,
   LockedSourceColorsConfiguration,
   PresetConfiguration,
@@ -78,6 +80,8 @@ interface EditPaletteProps {
   algorithmVersion: AlgorithmVersionConfiguration
   textColorsTheme: TextColorsThemeHexModel
   export: ExportConfiguration
+  document: DocumentConfiguration
+  dates: DatesConfiguration
   userIdentity: UserConfiguration
   userConsent: Array<ConsentConfiguration>
   planStatus: PlanStatus
@@ -105,7 +109,10 @@ interface EditPaletteStates {
   canPaletteDeepSync: boolean
 }
 
-export default class EditPalette extends PureComponent<EditPaletteProps, EditPaletteStates> {
+export default class EditPalette extends PureComponent<
+  EditPaletteProps,
+  EditPaletteStates
+> {
   private colorsMessage: ColorsMessage
   private themesMessage: ThemesMessage
   private dispatch: { [key: string]: DispatchProcess }
@@ -346,7 +353,7 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
     )
   }
 
-  onGenerateDocument = () => {
+  onChangeDocument = () => {
     this.setState({
       isSecondaryLoading: true,
     })
@@ -580,7 +587,7 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
             {...this.state}
             service="EDIT"
             onSyncLocalStyles={this.onSyncStyles}
-            onGenerateDocument={this.onGenerateDocument}
+            onChangeDocument={this.onChangeDocument}
           />
         </Feature>
       </>

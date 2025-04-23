@@ -31,6 +31,7 @@ import updateThemes from './updates/updateThemes'
 import updateView from './updates/updateView'
 import createDocument from './creations/createDocument'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
+import updateDocument from './updates/updateDocument'
 
 const loadUI = async () => {
   const windowSize: windowSize = {
@@ -100,6 +101,12 @@ const loadUI = async () => {
             })
             .catch(() => null),
         }),
+      UPDATE_DOCUMENT: () =>
+        updateDocument()
+          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
+          .catch((error) => {
+            throw error
+          }),
       //
       CREATE_PALETTE: () =>
         createPalette(path).finally(() =>
