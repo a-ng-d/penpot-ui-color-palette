@@ -13,6 +13,7 @@ import Property from './Property'
 import Status from './Status'
 
 export default class Sample {
+  private id: string
   private name: string
   private source?: RgbModel
   private scale?: string
@@ -30,6 +31,7 @@ export default class Sample {
   private children: Board | null
 
   constructor({
+    id = '',
     name,
     source,
     scale,
@@ -43,6 +45,7 @@ export default class Sample {
       isLocked: false,
     },
   }: {
+    id?: string
     name: string
     source?: RgbModel
     scale?: string
@@ -53,6 +56,7 @@ export default class Sample {
     textColorsTheme: TextColorsThemeHexModel
     status?: { isClosestToRef: boolean; isLocked: boolean }
   }) {
+    this.id = id
     this.name = name
     this.source = source
     this.scale = scale
@@ -120,14 +124,20 @@ export default class Sample {
     name: string
     isColorName?: boolean
   }) => {
+    const libraryColor = penpot.library.local.colors.find(
+      (color) => color.id === this.id
+    )
+
     // Base
     this.node = penpot.createBoard()
     this.node.name = name
     this.node.resize(width, height)
     this.node.fills = [
-      {
-        fillColor: chroma([this.rgb[0], this.rgb[1], this.rgb[2]]).hex(),
-      },
+      libraryColor !== undefined
+        ? libraryColor.asFill()
+        : {
+            fillColor: chroma([this.rgb[0], this.rgb[1], this.rgb[2]]).hex(),
+          },
     ]
     this.node.horizontalSizing = 'fix'
     this.node.verticalSizing = 'fix'
@@ -202,6 +212,10 @@ export default class Sample {
     description?: string
     isColorName?: boolean
   }) => {
+    const libraryColor = penpot.library.local.colors.find(
+      (color) => color.id === this.id
+    )
+
     // Base
     this.node = penpot.createBoard()
     this.node.name = name
@@ -230,6 +244,11 @@ export default class Sample {
     flex.verticalPadding = 8
 
     this.nodeColor.fills = [
+      libraryColor !== undefined
+        ? libraryColor.asFill()
+        : {
+            fillColor: chroma([this.rgb[0], this.rgb[1], this.rgb[2]]).hex(),
+          },
       {
         fillColor: chroma([this.rgb[0], this.rgb[1], this.rgb[2]]).hex(),
       },

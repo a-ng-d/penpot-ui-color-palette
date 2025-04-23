@@ -35,6 +35,7 @@ import {
   ColorSpaceConfiguration,
   CreatorConfiguration,
   DatesConfiguration,
+  DocumentConfiguration,
   ExportConfiguration,
   ExtractOfBaseConfiguration,
   LockedSourceColorsConfiguration,
@@ -60,11 +61,11 @@ import { userConsent } from '../utils/userConsent'
 import Feature from './components/Feature'
 import PriorityContainer from './modules/PriorityContainer'
 import Shortcuts from './modules/Shortcuts'
+import BrowsePalette from './services/BrowsePalette'
 import CreatePalette from './services/CreatePalette'
 import EditPalette from './services/EditPalette'
 import './stylesheets/app-components.css'
 import './stylesheets/app.css'
-import BrowsePalette from './services/BrowsePalette'
 
 export interface AppStates {
   service: Service
@@ -89,6 +90,7 @@ export interface AppStates {
   dates: DatesConfiguration
   export: ExportConfiguration
   palettesList: Array<ExtractOfBaseConfiguration>
+  document: DocumentConfiguration
   planStatus: PlanStatus
   trialStatus: TrialStatus
   trialRemainingTime: number
@@ -179,6 +181,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
         data: '',
       },
       palettesList: [],
+      document: {},
       planStatus: 'UNPAID',
       trialStatus: 'UNUSED',
       trialRemainingTime: trialTime,
@@ -333,6 +336,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
               (sourceColor: SourceColorConfiguration) =>
                 sourceColor.source !== 'CANVAS'
             ),
+            document: {},
             onGoingStep: 'selection empty',
           })
         }
@@ -345,7 +349,19 @@ export default class App extends Component<Record<string, never>, AppStates> {
                   sourceColor.source !== 'CANVAS'
               )
               .concat(path.data.selection),
+            document: {},
             onGoingStep: 'colors selected',
+          })
+        }
+
+        const updateWhileDocumentSelected = () => {
+          this.setState({
+            service: 'EDIT',
+            document: {
+              view: path.data.view,
+              name: path.data.backup.name,
+              updatedAt: path.data.updatedAt,
+            },
           })
         }
 
@@ -664,7 +680,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
             this.state.service === 'CREATE' && updateWhileEmptySelection(),
           COLOR_SELECTED: () =>
             this.state.service === 'CREATE' && updateWhileColorSelected(),
-          //PALETTE_SELECTED: () => updateWhilePaletteSelected(),
+          DOCUMENT_SELECTED: () => updateWhileDocumentSelected(),
           LOAD_PALETTE: () => loadPalette(),
           EXPORT_PALETTE_JSON: () => exportPaletteToJson(),
           EXPORT_PALETTE_CSS: () => exportPaletteToCss(),

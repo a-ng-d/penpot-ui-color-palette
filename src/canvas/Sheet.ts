@@ -157,6 +157,8 @@ export default class Sheet {
 
       // Insert
       const sampleNode = new Sample({
+        id: color.shades.find((color) => color.type === 'source color')
+          ?.styleId,
         name: color.name,
         rgb: sourceColor.rgb,
         colorSpace: this.base.colorSpace,
@@ -186,6 +188,7 @@ export default class Sheet {
           flexShades.horizontalSizing = 'fit-content'
           this.nodeRowShades?.appendChild(
             new Sample({
+              id: shade.styleId,
               name: color.name,
               source: {
                 r: sourceColor.rgb[0] / 255,
@@ -239,6 +242,7 @@ export default class Sheet {
     // Insert
     const titleNode = new Title({
       base: this.base,
+      data: this.data,
       meta: this.meta,
     }).node
     const signatureNode = new Signature().node

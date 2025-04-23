@@ -3,10 +3,7 @@ import { uid } from 'uid'
 import { HexModel } from '@a_ng_d/figmug-ui'
 import { Board, Fill, Shape } from '@penpot/plugin-types'
 import chroma from 'chroma-js'
-import {
-  SourceColorConfiguration,
-  ThemeConfiguration,
-} from '../types/configurations'
+import { SourceColorConfiguration } from '../types/configurations'
 import { ActionsList } from '../types/models'
 
 export let currentSelection: Array<Shape> = []
@@ -22,60 +19,18 @@ const processSelection = () => {
 
   const viableSelection: Array<SourceColorConfiguration> = []
 
-  const palette = selection[0] as Board
+  const document = selection[0] as Board
   const selectionHandler = (state: string) => {
     const actions: ActionsList = {
-      PALETTE_SELECTED: async () => {
-        /*penpot.ui.sendMessage({
-          type: 'PALETTE_SELECTED',
+      DOCUMENT_SELECTED: async () => {
+        penpot.ui.sendMessage({
+          type: 'DOCUMENT_SELECTED',
           data: {
-            id: palette.getPluginData('id'),
-            name: palette.getPluginData('name'),
-            description: palette.getPluginData('description'),
-            preset: JSON.parse(palette.getPluginData('preset')),
-            scale: JSON.parse(palette.getPluginData('themes')).find(
-              (theme: ThemeConfiguration) => theme.isEnabled
-            ).scale,
-            shift: JSON.parse(palette.getPluginData('shift')),
-            areSourceColorsLocked:
-              palette.getPluginData('areSourceColorsLocked') === 'true',
-            colors: JSON.parse(palette.getPluginData('colors')),
-            colorSpace: palette.getPluginData('colorSpace'),
-            visionSimulationMode: palette.getPluginData('visionSimulationMode'),
-            themes: JSON.parse(palette.getPluginData('themes')),
-            view: palette.getPluginData('view'),
-            algorithmVersion: palette.getPluginData('algorithmVersion'),
-            textColorsTheme: JSON.parse(
-              palette.getPluginData('textColorsTheme')
-            ),
-            isPublished: palette.getPluginData('isPublished') === 'true',
-            isShared: palette.getPluginData('isShared') === 'true',
-            creatorFullName: palette.getPluginData('creatorFullName'),
-            creatorAvatar: palette.getPluginData('creatorAvatar'),
-            creatorId: palette.getPluginData('creatorId'),
-            createdAt: palette.getPluginData('createdAt'),
-            updatedAt: palette.getPluginData('updatedAt'),
-            publishedAt: palette.getPluginData('publishedAt'),
+            view: document.getPluginData('view'),
+            name: document.getPluginData('name'),
+            updatedAt: document.getPluginData('updatedAt'),
           },
-        })*/
-
-        await palette
-          .export({
-            type: 'png',
-            scale: 0.25,
-          })
-          .then((image) =>
-            penpot.ui.sendMessage({
-              type: 'UPDATE_SCREENSHOT',
-              data: image,
-            })
-          )
-          .catch(() =>
-            penpot.ui.sendMessage({
-              type: 'UPDATE_SCREENSHOT',
-              data: null,
-            })
-          )
+        })
       },
       EMPTY_SELECTION: () =>
         penpot.ui.sendMessage({
@@ -97,18 +52,18 @@ const processSelection = () => {
 
   if (
     selection.length === 1 &&
-    palette.getPluginData('type') === 'UI_COLOR_PALETTE' &&
-    !(palette.isComponentInstance() || palette.isComponentMainInstance())
+    document.getPluginData('type') === 'UI_COLOR_PALETTE' &&
+    !(document.isComponentInstance() || document.isComponentMainInstance())
   )
-    selectionHandler('PALETTE_SELECTED')
+    selectionHandler('DOCUMENT_SELECTED')
   else if (
     selection.length === 1 &&
-    palette.getPluginDataKeys().length > 0 &&
-    !(palette.isComponentInstance() || palette.isComponentMainInstance())
+    document.getPluginDataKeys().length > 0 &&
+    !(document.isComponentInstance() || document.isComponentMainInstance())
   )
-    selectionHandler('PALETTE_SELECTED')
+    selectionHandler('DOCUMENT_SELECTED')
   else if (selection.length === 0) selectionHandler('EMPTY_SELECTION')
-  else if (selection.length > 1 && palette.getPluginDataKeys().length !== 0)
+  else if (selection.length > 1 && document.getPluginDataKeys().length !== 0)
     selectionHandler('EMPTY_SELECTION')
   else if (
     selection[0].isComponentInstance() ||

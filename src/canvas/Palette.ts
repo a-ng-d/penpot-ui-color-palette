@@ -149,6 +149,8 @@ export default class Palette {
 
       // Insert
       const sampleNode = new Sample({
+        id: color.shades.find((color) => color.type === 'source color')
+          ?.styleId,
         name: color.name,
         rgb: sourceColor.rgb,
         colorSpace: this.base.colorSpace,
@@ -160,8 +162,7 @@ export default class Palette {
         height: this.sampleSize * this.sampleRatio,
         name: color.name,
         isColorName: true,
-      }
-      )
+      })
 
       this.nodeRowSource.appendChild(sampleNode)
 
@@ -170,6 +171,7 @@ export default class Palette {
         .forEach((shade) => {
           this.nodeRowShades?.appendChild(
             new Sample({
+              id: shade.styleId,
               name: color.name,
               source: {
                 r: sourceColor.rgb[0] / 255,
@@ -190,8 +192,7 @@ export default class Palette {
               width: this.sampleSize,
               height: this.sampleSize * this.sampleRatio,
               name: shade.name,
-            }
-            )
+            })
           )
         })
 
@@ -224,6 +225,7 @@ export default class Palette {
     // Insert
     const titleNode = new Title({
       base: this.base,
+      data: this.data,
       meta: this.meta,
     }).node
     const signatureNode = new Signature().node

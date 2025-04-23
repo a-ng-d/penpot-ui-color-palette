@@ -188,4 +188,10 @@ export interface FullConfiguration {
   base: BaseConfiguration
   meta: MetaConfiguration
   data: PaletteData
-} 
+}
+
+export interface DocumentConfiguration {
+  view?: ViewConfiguration
+  name?: string
+  updatedAt?: Date | string
+}

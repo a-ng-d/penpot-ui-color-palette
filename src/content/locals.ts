@@ -579,6 +579,7 @@ export const locals: { [key: string]: any } = {
       preset: 'Preset: ',
       colorSpace: 'Color space: ',
       visionSimulation: 'Vision simulation: ',
+      updatedAt: 'Updated at: ',
     },
     vendors: {
       functional: {
