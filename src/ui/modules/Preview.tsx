@@ -28,6 +28,7 @@ import {
   ScaleConfiguration,
   ShiftConfiguration,
   SourceColorConfiguration,
+  ThemeConfiguration,
   UserConfiguration,
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
@@ -48,6 +49,7 @@ interface PreviewProps {
   areSourceColorsLocked: LockedSourceColorsConfiguration
   colorSpace: ColorSpaceConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
+  themes: Array<ThemeConfiguration>
   algorithmVersion: AlgorithmVersionConfiguration
   textColorsTheme: TextColorsThemeHexModel
   userIdentity: UserConfiguration
@@ -299,6 +301,7 @@ export default class Preview extends PureComponent<
 
     const updateColorBlindMode = () => {
       const target = e.target as HTMLLIElement
+
       this.palette.setKey(
         'visionSimulationMode',
         target.dataset.value as VisionSimulationModeConfiguration
@@ -317,8 +320,13 @@ export default class Preview extends PureComponent<
               id: this.props.id,
               items: [
                 {
-                  key: 'base.visionSimulationMode',
-                  value: target.dataset.value,
+                  key: 'base.themes',
+                  value: this.props.themes.map((theme) => {
+                    if (theme.isEnabled)
+                      theme.visionSimulationMode = target.dataset
+                        .value as VisionSimulationModeConfiguration
+                    return theme
+                  }),
                 },
               ],
             },

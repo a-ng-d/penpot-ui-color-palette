@@ -141,16 +141,27 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
         ),
         paletteBackground: '#FFFFFF',
         visionSimulationMode: 'NONE',
-        textColorsTheme: this.props.textColorsTheme,
+        textColorsTheme: {
+          lightColor: '#000000',
+          darkColor: '#FFFFFF',
+        },
         isEnabled: true,
         id: uid(),
         type: 'custom theme',
       })
 
+      const enabledTheme = this.themesMessage.data.find(
+        (theme) => theme.isEnabled
+      )
+
       this.props.onChangeThemes({
-        scale:
-          this.themesMessage.data.find((theme) => theme.isEnabled)?.scale ?? {},
+        scale: enabledTheme?.scale ?? {},
         themes: this.themesMessage.data,
+        visionSimulationMode: enabledTheme?.visionSimulationMode ?? 'NONE',
+        textColorsTheme: enabledTheme?.textColorsTheme ?? {
+          lightColor: '#000000',
+          darkColor: '#FFFFFF',
+        },
         onGoingStep: 'themes changed',
       })
 
@@ -283,10 +294,18 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
         if (result !== undefined) result.isEnabled = true
       }
 
+      const enabledTheme = this.themesMessage.data.find(
+        (theme) => theme.isEnabled
+      )
+
       this.props.onChangeThemes({
-        scale:
-          this.themesMessage.data.find((theme) => theme.isEnabled)?.scale ?? {},
+        scale: enabledTheme?.scale ?? {},
         themes: this.themesMessage.data,
+        visionSimulationMode: enabledTheme?.visionSimulationMode ?? 'NONE',
+        textColorsTheme: enabledTheme?.textColorsTheme ?? {
+          lightColor: '#000000',
+          darkColor: '#FFFFFF',
+        },
         onGoingStep: 'themes changed',
       })
 
