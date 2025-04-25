@@ -2,7 +2,6 @@ import {
   Bar,
   Button,
   Chip,
-  ConsentConfiguration,
   Drawer,
   Dropdown,
   HexModel,
@@ -19,7 +18,7 @@ import lsc from '../../content/images/lock_source_colors.gif'
 import { locals } from '../../content/locals'
 import { $palette } from '../../stores/palette'
 import { $isAPCADisplayed, $isWCAGDisplayed } from '../../stores/preferences'
-import { Language, PlanStatus, Service } from '../../types/app'
+import { BaseProps, PlanStatus, Service } from '../../types/app'
 import {
   AlgorithmVersionConfiguration,
   ColorConfiguration,
@@ -29,7 +28,6 @@ import {
   ShiftConfiguration,
   SourceColorConfiguration,
   ThemeConfiguration,
-  UserConfiguration,
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
 import { ActionsList, TextColorsThemeHexModel } from '../../types/models'
@@ -40,22 +38,18 @@ import Feature from '../components/Feature'
 import Shade from '../components/Shade'
 import Source from '../components/Source'
 
-interface PreviewProps {
+interface PreviewProps extends BaseProps {
   service: Service
   id: string
   colors: Array<SourceColorConfiguration> | Array<ColorConfiguration> | []
   scale: ScaleConfiguration
   shift?: ShiftConfiguration
   areSourceColorsLocked: LockedSourceColorsConfiguration
+  themes?: Array<ThemeConfiguration>
   colorSpace: ColorSpaceConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
-  themes: Array<ThemeConfiguration>
   algorithmVersion: AlgorithmVersionConfiguration
   textColorsTheme: TextColorsThemeHexModel
-  userIdentity: UserConfiguration
-  userConsent: Array<ConsentConfiguration>
-  planStatus: PlanStatus
-  lang: Language
   onLockSourceColors: React.Dispatch<Partial<AppStates>>
   onResetSourceColors?: () => void
   onChangeSettings: React.Dispatch<Partial<AppStates>>
@@ -312,7 +306,7 @@ export default class Preview extends PureComponent<
           .value as VisionSimulationModeConfiguration,
       })
 
-      if (this.props.service === 'EDIT')
+      if (this.props.service === 'EDIT' && this.props.themes !== undefined)
         parent.postMessage(
           {
             pluginMessage: {

@@ -10,15 +10,13 @@ import features, {
   repositoryUrl,
 } from '../../config'
 import { locals } from '../../content/locals'
-import { Language, PlanStatus, TrialStatus } from '../../types/app'
+import { BaseProps, PlanStatus, TrialStatus } from '../../types/app'
 import Feature from '../components/Feature'
 import package_json from './../../../package.json'
 import Icon from './Icon'
 
-interface AboutProps {
-  planStatus: PlanStatus
+interface AboutProps extends BaseProps {
   trialStatus: TrialStatus
-  lang: Language
 }
 
 export default class About extends PureComponent<AboutProps> {

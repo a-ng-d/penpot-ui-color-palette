@@ -11,15 +11,13 @@ import React from 'react'
 
 import features from '../../config'
 import { locals } from '../../content/locals'
-import { Language, PlanStatus } from '../../types/app'
+import { BaseProps, PlanStatus } from '../../types/app'
 import Feature from '../components/Feature'
 
-interface GlobalSettingsProps {
+interface GlobalSettingsProps extends BaseProps {
   name: string
   description: string
   isLast?: boolean
-  planStatus: PlanStatus
-  lang: Language
   onChangeSettings: (
     e:
       | React.ChangeEvent<HTMLInputElement>

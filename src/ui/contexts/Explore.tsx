@@ -2,7 +2,6 @@ import {
   ActionsItem,
   Bar,
   Button,
-  ConsentConfiguration,
   Dropdown,
   DropdownOption,
   FormItem,
@@ -19,24 +18,18 @@ import { uid } from 'uid'
 import { pageSize } from '../../config'
 import { locals } from '../../content/locals'
 import {
+  BaseProps,
   FetchStatus,
   FilterOptions,
-  Language,
   ThirdParty,
 } from '../../types/app'
-import {
-  SourceColorConfiguration,
-  UserConfiguration,
-} from '../../types/configurations'
+import { SourceColorConfiguration } from '../../types/configurations'
 import { ColourLovers } from '../../types/data'
 import { trackImportEvent } from '../../utils/eventsTracker'
 
-interface ExploreProps {
+interface ExploreProps extends BaseProps {
   colourLoversPaletteList: Array<ColourLovers>
   activeFilters: Array<FilterOptions>
-  userIdentity: UserConfiguration
-  userConsent: Array<ConsentConfiguration>
-  lang: Language
   onChangeColorsFromImport: (
     onChangeColorsFromImport: Array<SourceColorConfiguration>,
     source: ThirdParty

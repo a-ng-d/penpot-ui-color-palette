@@ -1,10 +1,4 @@
-import {
-  Bar,
-  Button,
-  ConsentConfiguration,
-  layouts,
-  Menu,
-} from '@a_ng_d/figmug-ui'
+import { Bar, Button, layouts, Menu } from '@a_ng_d/figmug-ui'
 import { doClassnames, FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
@@ -20,24 +14,17 @@ import features, {
 } from '../../config'
 import { locals } from '../../content/locals'
 import {
+  BaseProps,
   HighlightDigest,
-  Language,
   PlanStatus,
   TrialStatus,
 } from '../../types/app'
-import { UserConfiguration } from '../../types/configurations'
-import { UserSession } from '../../types/user'
 import Feature from '../components/Feature'
 import PlanControls from './PlanControls'
 
-interface ShortcutsProps {
-  planStatus: PlanStatus
+interface ShortcutsProps extends BaseProps {
   trialStatus: TrialStatus
   trialRemainingTime: number
-  userIdentity: UserConfiguration
-  userSession: UserSession
-  userConsent: Array<ConsentConfiguration>
-  lang: Language
   highlight: HighlightDigest
   onReOpenHighlight: () => void
   onReOpenOnboarding: () => void

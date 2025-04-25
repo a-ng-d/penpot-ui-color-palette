@@ -2,7 +2,6 @@ import {
   Accordion,
   Button,
   ColorItem,
-  ConsentConfiguration,
   FormItem,
   Input,
   Layout,
@@ -21,25 +20,18 @@ import { uid } from 'uid'
 import features from '../../config'
 import { locals } from '../../content/locals'
 import {
+  BaseProps,
   ImportUrl,
-  Language,
   PlanStatus,
   PriorityContext,
   ThirdParty,
 } from '../../types/app'
-import {
-  SourceColorConfiguration,
-  UserConfiguration,
-} from '../../types/configurations'
+import { SourceColorConfiguration } from '../../types/configurations'
 import { trackImportEvent } from '../../utils/eventsTracker'
 import Feature from '../components/Feature'
 
-interface OverviewProps {
+interface OverviewProps extends BaseProps {
   sourceColors: Array<SourceColorConfiguration>
-  userIdentity: UserConfiguration
-  userConsent: Array<ConsentConfiguration>
-  planStatus: PlanStatus
-  lang: Language
   onChangeColorsFromImport: (
     onChangeColorsFromImport: Array<SourceColorConfiguration>,
     source: ThirdParty

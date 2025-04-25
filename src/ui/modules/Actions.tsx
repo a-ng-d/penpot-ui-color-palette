@@ -14,11 +14,10 @@ import { doClassnames, FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 
-import { UserSession } from 'src/types/user'
 import features from '../../config'
 import { locals } from '../../content/locals'
 import { $palette } from '../../stores/palette'
-import { Language, PlanStatus, Service } from '../../types/app'
+import { BaseProps, PlanStatus, Service } from '../../types/app'
 import {
   CreatorConfiguration,
   DatesConfiguration,
@@ -31,7 +30,7 @@ import { AppStates } from '../App'
 import Feature from '../components/Feature'
 import { ActionsList } from 'src/types/models'
 
-interface ActionsProps {
+interface ActionsProps extends BaseProps {
   service: Service
   sourceColors: Array<SourceColorConfiguration> | []
   id: string
@@ -39,11 +38,8 @@ interface ActionsProps {
   name?: string
   dates?: DatesConfiguration
   creatorIdentity?: CreatorConfiguration
-  userSession?: UserSession
   exportType?: string
   document?: DocumentConfiguration
-  planStatus: PlanStatus
-  lang: Language
   isPrimaryLoading?: boolean
   isSecondaryLoading?: boolean
   onCreatePalette?: React.MouseEventHandler<HTMLButtonElement> &

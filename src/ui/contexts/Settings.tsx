@@ -1,10 +1,4 @@
-import {
-  Bar,
-  ConsentConfiguration,
-  HexModel,
-  Layout,
-  Tabs,
-} from '@a_ng_d/figmug-ui'
+import { Bar, HexModel, Layout, Tabs } from '@a_ng_d/figmug-ui'
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
@@ -13,9 +7,9 @@ import features, { algorithmVersion } from '../../config'
 import { $palette } from '../../stores/palette'
 import { $canPaletteDeepSync } from '../../stores/preferences'
 import {
+  BaseProps,
   Context,
   ContextItem,
-  Language,
   PlanStatus,
   Service,
 } from '../../types/app'
@@ -24,7 +18,6 @@ import {
   ColorSpaceConfiguration,
   SourceColorConfiguration,
   ThemeConfiguration,
-  UserConfiguration,
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
 import { SettingsMessage } from '../../types/messages'
@@ -43,21 +36,17 @@ import ContrastSettings from './ContrastSettings'
 import GlobalSettings from './GlobalSettings'
 import SyncPreferences from './SyncPreferences'
 
-interface SettingsProps {
+interface SettingsProps extends BaseProps {
   service: Service
   id: string
   sourceColors?: Array<SourceColorConfiguration>
   name: string
   description: string
-  themes: Array<ThemeConfiguration>
+  themes?: Array<ThemeConfiguration>
   colorSpace: ColorSpaceConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
   textColorsTheme: TextColorsThemeHexModel
   algorithmVersion?: AlgorithmVersionConfiguration
-  userIdentity: UserConfiguration
-  userConsent: Array<ConsentConfiguration>
-  planStatus: PlanStatus
-  lang: Language
   onChangeSettings: React.Dispatch<Partial<AppStates>>
 }
 
@@ -276,7 +265,7 @@ export default class Settings extends PureComponent<
         this.props.algorithmVersion ?? algorithmVersion
 
       this.props.onChangeSettings({
-        themes: this.props.themes.map((theme) => {
+        themes: this.props.themes?.map((theme) => {
           if (theme.isEnabled)
             theme.visionSimulationMode =
               this.settingsMessage.data.visionSimulationMode
@@ -351,7 +340,7 @@ export default class Settings extends PureComponent<
       }
 
       this.props.onChangeSettings({
-        themes: this.props.themes.map((theme) => {
+        themes: this.props.themes?.map((theme) => {
           if (theme.isEnabled)
             theme.textColorsTheme = this.settingsMessage.data.textColorsTheme
           return theme
@@ -396,7 +385,7 @@ export default class Settings extends PureComponent<
       }
 
       this.props.onChangeSettings({
-        themes: this.props.themes.map((theme) => {
+        themes: this.props.themes?.map((theme) => {
           if (theme.isEnabled)
             theme.textColorsTheme = this.settingsMessage.data.textColorsTheme
           return theme

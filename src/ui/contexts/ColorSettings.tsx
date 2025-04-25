@@ -12,7 +12,7 @@ import React from 'react'
 
 import features from '../../config'
 import { locals } from '../../content/locals'
-import { Language, PlanStatus, Service } from '../../types/app'
+import { BaseProps, PlanStatus, Service } from '../../types/app'
 import {
   AlgorithmVersionConfiguration,
   ColorSpaceConfiguration,
@@ -20,14 +20,12 @@ import {
 } from '../../types/configurations'
 import Feature from '../components/Feature'
 
-interface ColorSettingsProps {
+interface ColorSettingsProps extends BaseProps {
   service: Service
   colorSpace: ColorSpaceConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
   algorithmVersion?: AlgorithmVersionConfiguration
   isLast?: boolean
-  planStatus: PlanStatus
-  lang: Language
   onChangeSettings: (
     e:
       | React.ChangeEvent<HTMLInputElement>

@@ -15,13 +15,11 @@ import {
 
 import features from '../../config'
 import { locals } from '../../content/locals'
-import { Language, PlanStatus } from '../../types/app'
+import { BaseProps, PlanStatus } from '../../types/app'
 import Feature from '../components/Feature'
 
-interface SyncPreferencesProps {
+interface SyncPreferencesProps extends BaseProps {
   isLast?: boolean
-  planStatus: PlanStatus
-  lang: Language
   onChangeSettings: (
     e:
       | React.ChangeEvent<HTMLInputElement>

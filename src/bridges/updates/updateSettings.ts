@@ -11,7 +11,7 @@ const updateSettings = async (msg: SettingsMessage) => {
   const theme = palette.base.themes.find((theme) => theme.isEnabled)
   if (theme !== undefined) {
     theme.visionSimulationMode = msg.data.visionSimulationMode
-    palette.base.textColorsTheme = msg.data.textColorsTheme
+    theme.textColorsTheme = msg.data.textColorsTheme
   }
 
   palette.base.name = msg.data.name

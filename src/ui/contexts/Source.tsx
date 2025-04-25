@@ -1,33 +1,26 @@
-import { Bar, ConsentConfiguration, Tabs } from '@a_ng_d/figmug-ui'
+import { Bar, Tabs } from '@a_ng_d/figmug-ui'
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 
 import features from '../../config'
 import {
+  BaseProps,
   Context,
   ContextItem,
   FilterOptions,
-  Language,
   PlanStatus,
   PriorityContext,
   ThirdParty,
 } from '../../types/app'
-import {
-  SourceColorConfiguration,
-  UserConfiguration,
-} from '../../types/configurations'
+import { SourceColorConfiguration } from '../../types/configurations'
 import { ColourLovers } from '../../types/data'
 import { setContexts } from '../../utils/setContexts'
 import Explore from './Explore'
 import Overview from './Overview'
 
-interface SourceProps {
+interface SourceProps extends BaseProps {
   sourceColors: Array<SourceColorConfiguration>
-  userIdentity: UserConfiguration
-  userConsent: Array<ConsentConfiguration>
-  planStatus: PlanStatus
-  lang: Language
   onChangeColorsFromImport: (
     onChangeColorsFromImport: Array<SourceColorConfiguration>,
     source: ThirdParty

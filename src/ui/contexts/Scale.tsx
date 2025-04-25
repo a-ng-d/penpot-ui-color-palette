@@ -1,6 +1,5 @@
 import {
   Button,
-  ConsentConfiguration,
   Dialog,
   Dropdown,
   DropdownOption,
@@ -26,8 +25,8 @@ import { $palette } from '../../stores/palette'
 import { $canPaletteDeepSync } from '../../stores/preferences'
 import { defaultPreset, presets } from '../../stores/presets'
 import {
+  BaseProps,
   Easing,
-  Language,
   NamingConvention,
   PlanStatus,
   Service,
@@ -38,7 +37,7 @@ import {
   ScaleConfiguration,
   ShiftConfiguration,
   SourceColorConfiguration,
-  UserConfiguration,
+  ThemeConfiguration,
 } from '../../types/configurations'
 import { ScaleMessage } from '../../types/messages'
 import { ActionsList, DispatchProcess } from '../../types/models'
@@ -49,7 +48,7 @@ import Feature from '../components/Feature'
 import Slider from '../components/Slider'
 import Dispatcher from '../modules/Dispatcher'
 
-interface ScaleProps {
+interface ScaleProps extends BaseProps {
   service: Service
   id: string
   sourceColors?: Array<SourceColorConfiguration>
@@ -58,11 +57,8 @@ interface ScaleProps {
   distributionEasing: Easing
   scale?: ScaleConfiguration
   shift: ShiftConfiguration
+  themes: Array<ThemeConfiguration>
   actions?: string
-  userIdentity: UserConfiguration
-  userConsent: Array<ConsentConfiguration>
-  planStatus: PlanStatus
-  lang: Language
   onChangePreset?: React.Dispatch<Partial<AppStates>>
   onChangeScale: () => void
   onChangeStop?: () => void

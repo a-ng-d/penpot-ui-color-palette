@@ -3,14 +3,12 @@ import { doClassnames, FeatureStatus } from '@a_ng_d/figmug-utils'
 import React, { PureComponent } from 'react'
 import features, { trialFeedbackUrl } from '../../config'
 import { locals } from '../../content/locals'
-import { Language, PlanStatus, TrialStatus } from '../../types/app'
+import { BaseProps, PlanStatus, TrialStatus } from '../../types/app'
 import Feature from '../components/Feature'
 
-interface PlanControlsProps {
-  planStatus: PlanStatus
+interface PlanControlsProps extends BaseProps {
   trialStatus: TrialStatus
   trialRemainingTime: number
-  lang: Language
   onGetProPlan: () => void
 }
 

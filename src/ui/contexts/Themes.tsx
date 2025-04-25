@@ -1,6 +1,5 @@
 import {
   Button,
-  ConsentConfiguration,
   FormItem,
   HexModel,
   Input,
@@ -18,12 +17,11 @@ import { uid } from 'uid'
 import features from '../../config'
 import { locals } from '../../content/locals'
 import { $canPaletteDeepSync } from '../../stores/preferences'
-import { Language, PlanStatus, PriorityContext } from '../../types/app'
+import { BaseProps, PlanStatus, PriorityContext } from '../../types/app'
 import {
   PresetConfiguration,
   ScaleConfiguration,
   ThemeConfiguration,
-  UserConfiguration,
 } from '../../types/configurations'
 import { ThemesMessage } from '../../types/messages'
 import {
@@ -37,16 +35,12 @@ import type { AppStates } from '../App'
 import Feature from '../components/Feature'
 import Dispatcher from '../modules/Dispatcher'
 
-interface ThemesProps {
+interface ThemesProps extends BaseProps {
   id: string
   preset: PresetConfiguration
   scale: ScaleConfiguration
   themes: Array<ThemeConfiguration>
   textColorsTheme: TextColorsThemeHexModel
-  userIdentity: UserConfiguration
-  userConsent: Array<ConsentConfiguration>
-  planStatus: PlanStatus
-  lang: Language
   onChangeThemes: React.Dispatch<Partial<AppStates>>
   onGetProPlan: (context: { priorityContainerContext: PriorityContext }) => void
 }

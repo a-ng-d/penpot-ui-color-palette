@@ -1,4 +1,4 @@
-import type { ConsentConfiguration, DropdownOption } from '@a_ng_d/figmug-ui'
+import type { DropdownOption } from '@a_ng_d/figmug-ui'
 import {
   Bar,
   Button,
@@ -17,10 +17,11 @@ import features from '../../config'
 import { locals } from '../../content/locals'
 import { $palette } from '../../stores/palette'
 import { $canPaletteDeepSync } from '../../stores/preferences'
+import { defaultPreset } from '../../stores/presets'
 import {
+  BaseProps,
   Context,
   ContextItem,
-  Language,
   PlanStatus,
   PriorityContext,
 } from '../../types/app'
@@ -36,7 +37,6 @@ import {
   ScaleConfiguration,
   ShiftConfiguration,
   ThemeConfiguration,
-  UserConfiguration,
   ViewConfiguration,
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
@@ -63,9 +63,8 @@ import Themes from '../contexts/Themes'
 import Actions from '../modules/Actions'
 import Dispatcher from '../modules/Dispatcher'
 import Preview from '../modules/Preview'
-import { defaultPreset } from '../../stores/presets'
 
-interface EditPaletteProps {
+interface EditPaletteProps extends BaseProps {
   id: string
   name: string
   description: string
@@ -83,10 +82,6 @@ interface EditPaletteProps {
   export: ExportConfiguration
   document: DocumentConfiguration
   dates: DatesConfiguration
-  userIdentity: UserConfiguration
-  userConsent: Array<ConsentConfiguration>
-  planStatus: PlanStatus
-  lang: Language
   onChangeScale: React.Dispatch<Partial<AppStates>>
   onChangeStop?: React.Dispatch<Partial<AppStates>>
   onChangeDistributionEasing?: React.Dispatch<Partial<AppStates>>

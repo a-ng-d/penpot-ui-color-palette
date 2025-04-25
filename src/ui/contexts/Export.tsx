@@ -14,17 +14,15 @@ import React from 'react'
 
 import features from '../../config'
 import { locals } from '../../content/locals'
-import { Language, PlanStatus } from '../../types/app'
+import { BaseProps, PlanStatus } from '../../types/app'
 import { ColorSpaceConfiguration } from '../../types/configurations'
 import { ActionsList } from '../../types/models'
 import Actions from '../modules/Actions'
 
-interface ExportProps {
+interface ExportProps extends BaseProps {
   id: string
   exportPreview: string
-  planStatus: PlanStatus
   exportType: string
-  lang: Language
   onExportPalette: () => void
 }
 

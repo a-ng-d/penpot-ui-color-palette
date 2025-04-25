@@ -1,11 +1,4 @@
-import {
-  Bar,
-  Button,
-  ConsentConfiguration,
-  HexModel,
-  layouts,
-  Tabs,
-} from '@a_ng_d/figmug-ui'
+import { Bar, Button, HexModel, layouts, Tabs } from '@a_ng_d/figmug-ui'
 import chroma from 'chroma-js'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
@@ -15,10 +8,10 @@ import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import features from '../../config'
 import { $palette } from '../../stores/palette'
 import {
+  BaseProps,
   Context,
   ContextItem,
   Easing,
-  Language,
   NamingConvention,
   PlanStatus,
   PriorityContext,
@@ -33,12 +26,10 @@ import {
   ScaleConfiguration,
   ShiftConfiguration,
   SourceColorConfiguration,
-  UserConfiguration,
   ViewConfiguration,
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
 import { ActionsList, TextColorsThemeHexModel } from '../../types/models'
-import { UserSession } from '../../types/user'
 import { trackActionEvent } from '../../utils/eventsTracker'
 import { setContexts } from '../../utils/setContexts'
 import type { AppStates } from '../App'
@@ -49,7 +40,7 @@ import Source from '../contexts/Source'
 import Actions from '../modules/Actions'
 import Preview from '../modules/Preview'
 
-interface CreatePaletteProps {
+interface CreatePaletteProps extends BaseProps {
   sourceColors: Array<SourceColorConfiguration> | []
   id: string
   name: string
@@ -65,12 +56,7 @@ interface CreatePaletteProps {
   view: ViewConfiguration
   algorithmVersion: AlgorithmVersionConfiguration
   textColorsTheme: TextColorsThemeHexModel
-  userIdentity: UserConfiguration
-  userSession: UserSession
-  userConsent: Array<ConsentConfiguration>
   palettesList: Array<ExtractOfBaseConfiguration>
-  planStatus: PlanStatus
-  lang: Language
   onChangeColorsFromImport: React.Dispatch<Partial<AppStates>>
   onChangeScale: React.Dispatch<Partial<AppStates>>
   onChangePreset: React.Dispatch<Partial<AppStates>>

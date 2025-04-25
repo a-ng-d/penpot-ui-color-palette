@@ -1,10 +1,4 @@
-import {
-  Bar,
-  Button,
-  ConsentConfiguration,
-  layouts,
-  Tabs,
-} from '@a_ng_d/figmug-ui'
+import { Bar, Button, layouts, Tabs } from '@a_ng_d/figmug-ui'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 
@@ -12,23 +6,14 @@ import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { ActionsList } from 'src/types/models'
 import features from '../../config'
 import { $palette } from '../../stores/palette'
-import { Context, ContextItem, Language, PlanStatus } from '../../types/app'
-import {
-  DocumentConfiguration,
-  UserConfiguration,
-} from '../../types/configurations'
-import { UserSession } from '../../types/user'
+import { BaseProps, Context, ContextItem, PlanStatus } from '../../types/app'
+import { DocumentConfiguration } from '../../types/configurations'
 import { setContexts } from '../../utils/setContexts'
 import { AppStates } from '../App'
 import InternalPalettes from '../contexts/InternalPalettes'
 
-interface BrowsePalettesProps {
+interface BrowsePalettesProps extends BaseProps {
   document: DocumentConfiguration
-  userIdentity: UserConfiguration
-  userSession: UserSession
-  userConsent: Array<ConsentConfiguration>
-  planStatus: PlanStatus
-  lang: Language
   onCreatePalette: React.Dispatch<Partial<AppStates>>
 }
 

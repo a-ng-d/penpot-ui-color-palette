@@ -1,7 +1,6 @@
 import {
   Button,
   Card,
-  ConsentConfiguration,
   Dialog,
   FormItem,
   Input,
@@ -13,7 +12,6 @@ import { PureComponent } from 'preact/compat'
 import React from 'react'
 
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
-import { UserConfiguration } from 'src/types/configurations'
 import features, { isbUrl } from '../../config'
 import cp from '../../content/images/choose_plan.webp'
 import isb from '../../content/images/isb_product_thumbnail.webp'
@@ -21,29 +19,24 @@ import pp from '../../content/images/pro_plan.webp'
 import t from '../../content/images/trial.webp'
 import { locals } from '../../content/locals'
 import {
+  BaseProps,
   HighlightDigest,
-  Language,
   PlanStatus,
   PriorityContext,
   TrialStatus,
 } from '../../types/app'
-import { UserSession } from '../../types/user'
 import type { AppStates } from '../App'
 import Feature from '../components/Feature'
 import About from './About'
 import Highlight from './Highlight'
 import Onboarding from './Onboarding'
 
-interface PriorityContainerProps {
+interface PriorityContainerProps extends BaseProps {
   context: PriorityContext
   rawData: AppStates
   planStatus: PlanStatus
   trialStatus: TrialStatus
-  userIdentity: UserConfiguration
-  userConsent: Array<ConsentConfiguration>
-  userSession: UserSession
   highlight: HighlightDigest
-  lang: Language
   onChangePublication: React.Dispatch<Partial<AppStates>>
   onClose: React.ChangeEventHandler<HTMLInputElement> & (() => void)
 }
@@ -471,11 +464,7 @@ export default class PriorityContainer extends PureComponent<
           title={locals[this.props.lang].about.title}
           onClose={this.props.onClose}
         >
-          <About
-            planStatus={this.props.planStatus}
-            trialStatus={this.props.trialStatus}
-            lang={this.props.lang}
-          />
+          <About {...this.props} />
         </Dialog>
       </Feature>
     )

@@ -14,15 +14,10 @@ import { createPortal } from 'react-dom'
 import { FullConfiguration } from 'src/types/configurations'
 import features from '../../config'
 import { locals } from '../../content/locals'
-import { Language, PlanStatus } from '../../types/app'
+import { BaseProps, PlanStatus } from '../../types/app'
 import { ActionsList } from '../../types/models'
 import getPaletteMeta from '../../utils/setPaletteMeta'
 import Feature from '../components/Feature'
-
-interface InternalPalettesProps {
-  planStatus: PlanStatus
-  lang: Language
-}
 
 interface InternalPalettesStates {
   paletteListsStatus: 'LOADING' | 'LOADED' | 'EMPTY'
@@ -33,7 +28,7 @@ interface InternalPalettesStates {
 }
 
 export default class InternalPalettes extends PureComponent<
-  InternalPalettesProps,
+  BaseProps,
   InternalPalettesStates
 > {
   static features = (planStatus: PlanStatus) => ({
@@ -44,7 +39,7 @@ export default class InternalPalettes extends PureComponent<
     }),
   })
 
-  constructor(props: InternalPalettesProps) {
+  constructor(props: BaseProps) {
     super(props)
     this.state = {
       paletteListsStatus: 'LOADING',

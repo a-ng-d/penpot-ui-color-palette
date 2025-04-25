@@ -3,11 +3,10 @@ import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { announcementsWorkerUrl } from '../../config'
 import { locals } from '../../content/locals'
-import { HighlightDigest, Language } from '../../types/app'
+import { BaseProps, HighlightDigest } from '../../types/app'
 
-interface HighlightProps {
+interface HighlightProps extends BaseProps {
   highlight: HighlightDigest
-  lang: Language
   onCloseHighlight: (e: MouseEvent) => void
 }
 

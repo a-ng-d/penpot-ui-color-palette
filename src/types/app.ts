@@ -1,3 +1,7 @@
+import { ConsentConfiguration } from '@a_ng_d/figmug-ui'
+import { UserConfiguration } from './configurations'
+import { UserSession } from './user'
+
 export type Service = 'BROWSE' | 'CREATE' | 'EDIT' | 'TRANSFER'
 
 export type Context =
@@ -102,4 +106,12 @@ export interface ContextItem {
   id: Context
   isUpdated: boolean
   isActive: boolean
+}
+
+export interface BaseProps {
+  userIdentity: UserConfiguration
+  userSession: UserSession
+  userConsent: Array<ConsentConfiguration>
+  planStatus: PlanStatus
+  lang: Language
 }

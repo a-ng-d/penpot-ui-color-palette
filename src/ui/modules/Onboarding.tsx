@@ -3,10 +3,9 @@ import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { announcementsWorkerUrl } from '../../config'
 import { locals } from '../../content/locals'
-import { Language } from '../../types/app'
+import { BaseProps } from '../../types/app'
 
-interface OnboardingProps {
-  lang: Language
+interface OnboardingProps extends BaseProps {
   onCloseOnboarding: (e: MouseEvent) => void
 }
 
