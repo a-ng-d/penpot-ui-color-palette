@@ -8,12 +8,16 @@ const updateSettings = async (msg: SettingsMessage) => {
     penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
   )
 
+  const theme = palette.base.themes.find((theme) => theme.isEnabled)
+  if (theme !== undefined) {
+    theme.visionSimulationMode = msg.data.visionSimulationMode
+    palette.base.textColorsTheme = msg.data.textColorsTheme
+  }
+
   palette.base.name = msg.data.name
   palette.base.description = msg.data.description
   palette.base.colorSpace = msg.data.colorSpace
-  palette.base.visionSimulationMode = msg.data.visionSimulationMode
   palette.base.algorithmVersion = msg.data.algorithmVersion
-  palette.base.textColorsTheme = msg.data.textColorsTheme
 
   palette.meta.dates.updatedAt = now
   penpot.ui.sendMessage({

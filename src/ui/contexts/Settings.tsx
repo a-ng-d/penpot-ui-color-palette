@@ -23,6 +23,7 @@ import {
   AlgorithmVersionConfiguration,
   ColorSpaceConfiguration,
   SourceColorConfiguration,
+  ThemeConfiguration,
   UserConfiguration,
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
@@ -48,6 +49,7 @@ interface SettingsProps {
   sourceColors?: Array<SourceColorConfiguration>
   name: string
   description: string
+  themes: Array<ThemeConfiguration>
   colorSpace: ColorSpaceConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
   textColorsTheme: TextColorsThemeHexModel
@@ -274,6 +276,12 @@ export default class Settings extends PureComponent<
         this.props.algorithmVersion ?? algorithmVersion
 
       this.props.onChangeSettings({
+        themes: this.props.themes.map((theme) => {
+          if (theme.isEnabled)
+            theme.visionSimulationMode =
+              this.settingsMessage.data.visionSimulationMode
+          return theme
+        }),
         visionSimulationMode: this.settingsMessage.data.visionSimulationMode,
         onGoingStep: 'settings changed',
       })
@@ -343,6 +351,11 @@ export default class Settings extends PureComponent<
       }
 
       this.props.onChangeSettings({
+        themes: this.props.themes.map((theme) => {
+          if (theme.isEnabled)
+            theme.textColorsTheme = this.settingsMessage.data.textColorsTheme
+          return theme
+        }),
         textColorsTheme: this.settingsMessage.data.textColorsTheme,
         onGoingStep: 'settings changed',
       })
@@ -383,6 +396,11 @@ export default class Settings extends PureComponent<
       }
 
       this.props.onChangeSettings({
+        themes: this.props.themes.map((theme) => {
+          if (theme.isEnabled)
+            theme.textColorsTheme = this.settingsMessage.data.textColorsTheme
+          return theme
+        }),
         textColorsTheme: this.settingsMessage.data.textColorsTheme,
         onGoingStep: 'settings changed',
       })
@@ -508,6 +526,7 @@ export default class Settings extends PureComponent<
 
   // Render
   render() {
+    console.log(this.props.textColorsTheme, this.props.visionSimulationMode)
     return (
       <>
         {this.contexts.length > 1 && (

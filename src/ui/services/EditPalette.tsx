@@ -63,6 +63,7 @@ import Themes from '../contexts/Themes'
 import Actions from '../modules/Actions'
 import Dispatcher from '../modules/Dispatcher'
 import Preview from '../modules/Preview'
+import { defaultPreset } from '../../stores/presets'
 
 interface EditPaletteProps {
   id: string
@@ -110,7 +111,10 @@ interface EditPaletteStates {
   canPaletteDeepSync: boolean
 }
 
-export default class EditPalette extends PureComponent<EditPaletteProps, EditPaletteStates> {
+export default class EditPalette extends PureComponent<
+  EditPaletteProps,
+  EditPaletteStates
+> {
   private colorsMessage: ColorsMessage
   private themesMessage: ThemesMessage
   private dispatch: { [key: string]: DispatchProcess }
@@ -215,11 +219,26 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
 
       return theme
     })
+
     parent.postMessage({ pluginMessage: this.themesMessage }, '*')
+
     this.props.onChangeThemes({
       scale:
-        this.themesMessage.data.find((theme) => theme.isEnabled)?.scale ?? {},
+        this.themesMessage.data.find((theme) => theme.isEnabled)?.scale ??
+        doLightnessScale(
+          defaultPreset.scale,
+          defaultPreset.min,
+          defaultPreset.max
+        ),
       themes: this.themesMessage.data,
+      visionSimulationMode:
+        this.themesMessage.data.find((theme) => theme.isEnabled)
+          ?.visionSimulationMode ?? 'NONE',
+      textColorsTheme: this.themesMessage.data.find((theme) => theme.isEnabled)
+        ?.textColorsTheme ?? {
+        lightColor: '#000000',
+        darkColor: '#FFFFFF',
+      },
       onGoingStep: 'themes changed',
     })
   }

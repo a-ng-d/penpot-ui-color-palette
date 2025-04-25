@@ -366,11 +366,16 @@ export default class App extends Component<Record<string, never>, AppStates> {
         }
 
         const loadPalette = () => {
+          console.log('load palette', path.data.base.themes)
+          const theme: ThemeConfiguration = path.data.base.themes.find(
+            (theme: ThemeConfiguration) => theme.isEnabled
+          )
+
           this.palette.setKey('id', path.data.meta.id)
           this.palette.setKey('name', path.data.base.name)
           this.palette.setKey('description', path.data.base.description)
           this.palette.setKey('preset', path.data.base.preset)
-          this.palette.setKey('scale', path.data.base.scale)
+          this.palette.setKey('scale', theme?.scale)
           this.palette.setKey('shift', path.data.base.shift)
           this.palette.setKey(
             'areSourceColorsLocked',
@@ -381,13 +386,19 @@ export default class App extends Component<Record<string, never>, AppStates> {
           this.palette.setKey('colorSpace', path.data.base.colorSpace)
           this.palette.setKey(
             'visionSimulationMode',
-            path.data.base.visionSimulationMode
+            theme?.visionSimulationMode ?? 'NONE'
           )
           this.palette.setKey(
             'algorithmVersion',
             path.data.base.algorithmVersion
           )
-          this.palette.setKey('textColorsTheme', path.data.base.textColorsTheme)
+          this.palette.setKey(
+            'textColorsTheme',
+            theme?.textColorsTheme ?? {
+              lightColor: '#FFFFFF',
+              darkColor: '#000000',
+            }
+          )
 
           parent.postMessage(
             {
@@ -413,11 +424,14 @@ export default class App extends Component<Record<string, never>, AppStates> {
             areSourceColorsLocked: path.data.base.areSourceColorsLocked,
             colors: path.data.base.colors,
             colorSpace: path.data.base.colorSpace,
-            visionSimulationMode: path.data.base.visionSimulationMode,
+            visionSimulationMode: theme?.visionSimulationMode ?? 'NONE',
             themes: path.data.base.themes,
             view: path.data.base.view,
             algorithmVersion: path.data.base.algorithmVersion,
-            textColorsTheme: path.data.base.textColorsTheme,
+            textColorsTheme: theme?.textColorsTheme ?? {
+              lightColor: '#FFFFFF',
+              darkColor: '#000000',
+            },
             screenshot: null,
             dates: {
               createdAt: path.data.meta.dates.createdAt,
