@@ -3,14 +3,13 @@ import { ColorsMessage } from '../../types/messages'
 import Data from '../../utils/Data'
 
 const updateColors = async (msg: ColorsMessage) => {
+  const now = new Date().toISOString()
   const palette: FullConfiguration = JSON.parse(
     penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
   )
 
   palette.base.colors = msg.data
 
-  // Update
-  const now = new Date().toISOString()
   palette.meta.dates.updatedAt = now
   penpot.ui.sendMessage({
     type: 'UPDATE_PALETTE_DATE',

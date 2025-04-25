@@ -4,6 +4,7 @@ import Data from '../../utils/Data'
 import doLightnessScale from '../../utils/doLightnessScale'
 
 const updateScale = async (msg: ScaleMessage) => {
+  const now = new Date().toISOString()
   const palette: FullConfiguration = JSON.parse(
     penpot.currentPage?.getPluginData(`palette_${msg.data.id}`) ?? '{}'
   )
@@ -29,8 +30,6 @@ const updateScale = async (msg: ScaleMessage) => {
   palette.base.preset = msg.data.preset
   palette.base.shift = msg.data.shift
 
-  // Update
-  const now = new Date().toISOString()
   palette.meta.dates.updatedAt = now
   penpot.ui.sendMessage({
     type: 'UPDATE_PALETTE_DATE',
