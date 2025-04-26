@@ -86,7 +86,7 @@ export default class Data {
               chromaShifting:
                 color.chroma.shift !== undefined ? color.chroma.shift : 100,
               algorithmVersion: this.base.algorithmVersion,
-              visionSimulationMode: this.base.visionSimulationMode,
+              visionSimulationMode: theme.visionSimulationMode,
             })
 
             if (this.base.colorSpace === 'LCH')

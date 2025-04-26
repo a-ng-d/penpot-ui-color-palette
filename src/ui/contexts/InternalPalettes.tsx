@@ -180,69 +180,77 @@ export default class InternalPalettes extends PureComponent<
                   new Date(b.meta.dates.updatedAt).getTime() -
                   new Date(a.meta.dates.updatedAt).getTime()
               )
-              .map((palette, index) => (
-                <ActionsItem
-                  id={palette.meta.id}
-                  key={`palette-${index}`}
-                  name={
-                    palette.base.name === ''
-                      ? locals[this.props.lang].name
-                      : palette.base.name
-                  }
-                  description={palette.base.preset.name}
-                  subdescription={setPaletteMeta(
-                    palette.base.colors,
-                    palette.base.themes
-                  )}
-                  actionsSlot={
-                    <>
-                      <Button
-                        type="icon"
-                        icon="trash"
-                        helper={{
-                          label:
-                            locals[this.props.lang].browse.actions
-                              .deletePalette,
-                        }}
-                        action={() =>
-                          this.setState({
-                            isDeleteDialogOpen: true,
-                            targetedPaletteId: palette.meta.id,
-                            targetedPaletteName: palette.base.name,
-                          })
-                        }
-                      />
-                      <Button
-                        type="secondary"
-                        label={
-                          locals[this.props.lang].browse.actions.editPalette
-                        }
-                        action={() => this.onEditPalette(palette.meta.id)}
-                      />
-                    </>
-                  }
-                  complementSlot={
-                    <div className="preview__rows">
-                      {palette.data.themes[0].colors.map((color, index) => (
-                        <div
-                          key={`color-${index}`}
-                          className="preview__row"
-                        >
-                          {color.shades.map((shade, shadeIndex) => (
+              .map((palette, index) => {
+                const enabledThemeIndex = palette.base.themes.findIndex(
+                  (theme) => theme.isEnabled
+                )
+
+                return (
+                  <ActionsItem
+                    id={palette.meta.id}
+                    key={`palette-${index}`}
+                    name={
+                      palette.base.name === ''
+                        ? locals[this.props.lang].name
+                        : palette.base.name
+                    }
+                    description={palette.base.preset.name}
+                    subdescription={setPaletteMeta(
+                      palette.base.colors,
+                      palette.base.themes
+                    )}
+                    actionsSlot={
+                      <>
+                        <Button
+                          type="icon"
+                          icon="trash"
+                          helper={{
+                            label:
+                              locals[this.props.lang].browse.actions
+                                .deletePalette,
+                          }}
+                          action={() =>
+                            this.setState({
+                              isDeleteDialogOpen: true,
+                              targetedPaletteId: palette.meta.id,
+                              targetedPaletteName: palette.base.name,
+                            })
+                          }
+                        />
+                        <Button
+                          type="secondary"
+                          label={
+                            locals[this.props.lang].browse.actions.editPalette
+                          }
+                          action={() => this.onEditPalette(palette.meta.id)}
+                        />
+                      </>
+                    }
+                    complementSlot={
+                      <div className="preview__rows">
+                        {palette.data.themes[enabledThemeIndex].colors.map(
+                          (color, index) => (
                             <div
-                              key={`color-${index}-${shadeIndex}`}
-                              className="preview__cell"
-                              style={{
-                                backgroundColor: shade.hex,
-                              }}
-                            />
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  }
-                />
-              ))}
+                              key={`color-${index}`}
+                              className="preview__row"
+                            >
+                              {color.shades.map((shade, shadeIndex) => (
+                                <div
+                                  key={`color-${index}-${shadeIndex}`}
+                                  className="preview__cell"
+                                  style={{
+                                    backgroundColor: shade.hex,
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          )
+                        )}
+                      </div>
+                    }
+                  />
+                )
+              })}
           </>
         )}
         {this.state.paletteListsStatus === 'EMPTY' && (
