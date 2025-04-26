@@ -3,6 +3,7 @@ import { lang, locals } from '../content/locals'
 import {
   BaseConfiguration,
   MetaConfiguration,
+  ThemeConfiguration,
   ViewConfiguration,
 } from '../types/configurations'
 import { PaletteDataThemeItem } from '../types/data'
@@ -13,6 +14,7 @@ import Title from './Title'
 
 export default class Sheet {
   private base: BaseConfiguration
+  private theme: ThemeConfiguration
   private data: PaletteDataThemeItem
   private meta: MetaConfiguration
   private view: ViewConfiguration
@@ -29,16 +31,19 @@ export default class Sheet {
 
   constructor({
     base,
+    theme,
     data,
     meta,
     view,
   }: {
     base: BaseConfiguration
+    theme: ThemeConfiguration
     data: PaletteDataThemeItem
     meta: MetaConfiguration
     view: ViewConfiguration
   }) {
     this.base = base
+    this.theme = theme
     this.data = data
     this.meta = meta
     this.view = view
@@ -75,9 +80,9 @@ export default class Sheet {
         name: locals[lang].warning.emptySourceColors,
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
-        visionSimulationMode: this.base.visionSimulationMode,
+        visionSimulationMode: this.theme.visionSimulationMode,
         view: this.view,
-        textColorsTheme: this.base.textColorsTheme,
+        textColorsTheme: this.theme.textColorsTheme,
       }).makeNodeName({
         mode: 'FILL',
         width: 48,
@@ -106,7 +111,7 @@ export default class Sheet {
     this.nodeShades.appendChild(
       new Header({
         base: this.base,
-        data: this.data,
+        theme: this.theme,
         view: this.view,
         size:
           this.sampleSize * this.sampleScale * 4 +
@@ -162,9 +167,9 @@ export default class Sheet {
         name: color.name,
         rgb: sourceColor.rgb,
         colorSpace: this.base.colorSpace,
-        visionSimulationMode: this.base.visionSimulationMode,
+        visionSimulationMode: this.theme.visionSimulationMode,
         view: this.view,
-        textColorsTheme: this.base.textColorsTheme,
+        textColorsTheme: this.theme.textColorsTheme,
       }).makeNodeRichShade({
         width: this.sampleSize * this.sampleRatio,
         height: this.sampleSize * this.sampleRatio * this.sampleScale,
@@ -198,9 +203,9 @@ export default class Sheet {
               scale: shade.name,
               rgb: shade.rgb,
               colorSpace: this.base.colorSpace,
-              visionSimulationMode: this.base.visionSimulationMode,
+              visionSimulationMode: this.theme.visionSimulationMode,
               view: this.view,
-              textColorsTheme: this.base.textColorsTheme,
+              textColorsTheme: this.theme.textColorsTheme,
               status: {
                 isClosestToRef: shade.isClosestToRef ?? false,
                 isLocked: shade.isSourceColorLocked ?? false,
@@ -242,6 +247,7 @@ export default class Sheet {
     // Insert
     const titleNode = new Title({
       base: this.base,
+      theme: this.theme,
       data: this.data,
       meta: this.meta,
     }).node

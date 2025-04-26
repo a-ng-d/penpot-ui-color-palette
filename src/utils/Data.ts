@@ -7,6 +7,8 @@ import {
   MetaConfiguration,
   BaseConfiguration,
   ScaleConfiguration,
+  ThemeConfiguration,
+  FullConfiguration,
 } from '../types/configurations'
 import {
   PaletteData,
@@ -14,21 +16,26 @@ import {
   PaletteDataThemeItem,
 } from '../types/data'
 import Color from './Color'
+import defaultTheme from '../stores/theme'
 
 export default class Data {
   private base: BaseConfiguration
+  private themes: Array<ThemeConfiguration>
   private meta: MetaConfiguration
   private paletteData: PaletteData
   private currentScale: ScaleConfiguration
 
   constructor({
     base,
+    themes,
     meta,
   }: {
     base: BaseConfiguration
+    themes: Array<ThemeConfiguration>
     meta: MetaConfiguration
   }) {
     this.base = base
+    this.themes = themes
     this.meta = meta
     this.paletteData = {
       name: base.name ?? locals[lang].name,
@@ -38,7 +45,7 @@ export default class Data {
       type: 'palette',
     }
     this.currentScale =
-      base.themes?.find((theme) => theme.isEnabled)?.scale ?? {}
+      themes.find((theme) => theme.isEnabled)?.scale ?? defaultTheme.scale
   }
 
   searchForShadeStyleId = (
@@ -62,7 +69,7 @@ export default class Data {
   }
 
   makePaletteData = (previousData?: PaletteData) => {
-    this.base.themes.forEach((theme) => {
+    this.themes.forEach((theme) => {
       const paletteDataThemeItem: PaletteDataThemeItem = {
         name: theme.name,
         description: theme.description,
@@ -235,10 +242,11 @@ export default class Data {
   makePaletteFullData = () => {
     const fullPaletteData = {
       base: this.base,
+      themes: this.themes,
       meta: this.meta,
       data: this.makePaletteData(),
       type: 'UI_COLOR_PALETTE',
-    }
+    } as FullConfiguration
 
     penpot.currentPage?.setPluginData(
       `palette_${this.meta.id}`,

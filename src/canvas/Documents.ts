@@ -3,15 +3,16 @@ import { PaletteData, PaletteDataThemeItem } from 'src/types/data'
 import {
   BaseConfiguration,
   MetaConfiguration,
+  ThemeConfiguration,
   ViewConfiguration,
 } from '../types/configurations'
 import setPaletteName from '../utils/setPaletteName'
 import Palette from './Palette'
 import Sheet from './Sheet'
-import { HexModel } from '@a_ng_d/figmug-ui'
 
 export default class Documents {
   private base: BaseConfiguration
+  private themes: Array<ThemeConfiguration>
   private data: PaletteData
   private meta: MetaConfiguration
   private view: ViewConfiguration
@@ -19,16 +20,19 @@ export default class Documents {
 
   constructor({
     base,
+    themes,
     data,
     meta,
     view,
   }: {
     base: BaseConfiguration
+    themes: Array<ThemeConfiguration>
     data: PaletteData
     meta: MetaConfiguration
     view: ViewConfiguration
   }) {
     this.base = base
+    this.themes = themes
     this.data = data
     this.meta = meta
     this.view = view
@@ -44,16 +48,12 @@ export default class Documents {
         ? this.data.themes.filter((theme) => theme.type === 'default theme')
         : this.data.themes.filter((theme) => theme.type === 'custom theme')
     const workingThemes =
-      this.base.themes.filter((theme) => theme.type === 'custom theme')
-        .length === 0
-        ? this.base.themes.filter((theme) => theme.type === 'default theme')
-        : this.base.themes.filter((theme) => theme.type === 'custom theme')
+      this.themes.filter((theme) => theme.type === 'custom theme').length === 0
+        ? this.themes.filter((theme) => theme.type === 'default theme')
+        : this.themes.filter((theme) => theme.type === 'custom theme')
 
     workingThemesData.forEach((theme, index) => {
-      const document = this.makeDocument(
-        theme,
-        workingThemes[index].paletteBackground
-      )
+      const document = this.makeDocument(workingThemes[index], theme)
 
       x = x + 32 + document.width
       document.x = x
@@ -64,7 +64,10 @@ export default class Documents {
     return documents
   }
 
-  makeDocument = (theme: PaletteDataThemeItem, background: HexModel): Board => {
+  makeDocument = (
+    theme: ThemeConfiguration,
+    data: PaletteDataThemeItem
+  ): Board => {
     // Base
     const document = penpot.createBoard()
     document.name = setPaletteName(
@@ -72,7 +75,7 @@ export default class Documents {
       theme.name,
       this.base.preset.name,
       this.base.colorSpace,
-      this.base.visionSimulationMode
+      theme.visionSimulationMode
     )
     document.resize(1640, 100)
     document.borderRadius = 16
@@ -80,7 +83,7 @@ export default class Documents {
     document.verticalSizing = 'auto'
     document.fills = [
       {
-        fillColor: background,
+        fillColor: theme.paletteBackground,
       },
     ]
 
@@ -113,7 +116,8 @@ export default class Documents {
       document.appendChild(
         new Palette({
           base: this.base,
-          data: theme,
+          theme: theme,
+          data: data,
           meta: this.meta,
           view: this.view,
         }).node
@@ -122,7 +126,8 @@ export default class Documents {
       document.appendChild(
         new Sheet({
           base: this.base,
-          data: theme,
+          theme: theme,
+          data: data,
           meta: this.meta,
           view: this.view,
         }).node

@@ -31,6 +31,10 @@ import createDocument from './creations/createDocument'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
 import updateDocument from './updates/updateDocument'
 
+/*penpot.currentPage?.getPluginDataKeys().forEach((key) => {
+  if (key.startsWith('palette_')) penpot.currentPage?.setPluginData(key, '')
+})*/
+
 const loadUI = async () => {
   const windowSize: windowSize = {
     w: parseFloat(penpot.root?.getPluginData('plugin_window_width') ?? '640'),

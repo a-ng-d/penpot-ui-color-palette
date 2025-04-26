@@ -3,16 +3,16 @@ import { lang, locals } from '../../content/locals'
 import {
   ColorConfiguration,
   MetaConfiguration,
-  BaseConfiguration,
   SourceColorConfiguration,
   ThemeConfiguration,
+  ExchangeConfiguration,
 } from '../../types/configurations'
 import Data from '../../utils/Data'
 
 interface Msg {
   data: {
     sourceColors: Array<SourceColorConfiguration>
-    palette: BaseConfiguration
+    exchange: ExchangeConfiguration
     themes?: Array<ThemeConfiguration>
     isRemote?: boolean
     paletteMeta?: MetaConfiguration
@@ -32,7 +32,7 @@ const createPalette = async (msg: Msg) => {
           isLocked: false,
         },
         chroma: {
-          shift: msg.data.palette.shift.chroma,
+          shift: msg.data.exchange.shift.chroma,
           isLocked: false,
         },
       }
@@ -47,10 +47,10 @@ const createPalette = async (msg: Msg) => {
     {
       name: locals[lang].themes.switchTheme.defaultTheme,
       description: '',
-      scale: msg.data.palette.scale,
+      scale: msg.data.exchange.scale,
       paletteBackground: '#FFFFFF',
       visionSimulationMode: 'NONE',
-      textColorsTheme: msg.data.palette.textColorsTheme,
+      textColorsTheme: msg.data.exchange.textColorsTheme,
       isEnabled: true,
       id: '00000000000',
       type: 'default theme',
@@ -59,20 +59,16 @@ const createPalette = async (msg: Msg) => {
 
   const palette = new Data({
     base: {
-      name: msg.data.palette.name,
-      description: msg.data.palette.description,
-      preset: msg.data.palette.preset,
-      scale: msg.data.palette.scale,
-      shift: msg.data.palette.shift,
-      areSourceColorsLocked: msg.data.palette.areSourceColorsLocked,
+      name: msg.data.exchange.name,
+      description: msg.data.exchange.description,
+      preset: msg.data.exchange.preset,
+      shift: msg.data.exchange.shift,
+      areSourceColorsLocked: msg.data.exchange.areSourceColorsLocked,
       colors: colors,
-      themes: themes,
-      colorSpace: msg.data.palette.colorSpace,
-      visionSimulationMode: msg.data.palette.visionSimulationMode,
-      view: msg.data.palette.view,
-      textColorsTheme: msg.data.palette.textColorsTheme,
-      algorithmVersion: msg.data.palette.algorithmVersion,
+      colorSpace: msg.data.exchange.colorSpace,
+      algorithmVersion: msg.data.exchange.algorithmVersion,
     },
+    themes: themes,
     meta: {
       id: uid(),
       dates: {

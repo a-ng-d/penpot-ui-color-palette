@@ -5,11 +5,11 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '../types/configurations'
-import { PaletteDataThemeItem } from '../types/data'
 import Sample from './Sample'
 
 export default class Header {
   private base: BaseConfiguration
+  private theme: ThemeConfiguration
   private view: ViewConfiguration
   private sampleSize: number
   private currentTheme?: ThemeConfiguration
@@ -17,19 +17,20 @@ export default class Header {
 
   constructor({
     base,
-    data,
+    theme,
     view,
     size,
   }: {
     base: BaseConfiguration
-    data: PaletteDataThemeItem
+    theme: ThemeConfiguration
     view: ViewConfiguration
     size: number
   }) {
     this.base = base
+    this.theme = theme
     this.view = view
     this.sampleSize = size
-    this.currentTheme = this.base.themes.find((theme) => theme.id === data.id)
+    this.currentTheme = theme
     this.node = this.makeNode()
   }
 
@@ -54,9 +55,9 @@ export default class Header {
         name: locals[lang].paletteProperties.sourceColors,
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
-        visionSimulationMode: this.base.visionSimulationMode,
+        visionSimulationMode: this.theme.visionSimulationMode,
         view: this.view,
-        textColorsTheme: this.base.textColorsTheme,
+        textColorsTheme: this.theme.textColorsTheme,
       }).makeNodeName({
         mode: 'FIXED',
         width: this.sampleSize,
@@ -64,7 +65,7 @@ export default class Header {
       })
     )
     if (this.view === 'PALETTE' || this.view === 'PALETTE_WITH_PROPERTIES')
-      Object.keys(this.currentTheme?.scale ?? {})
+      Object.keys(this.theme)
         .reverse()
         .forEach((key) => {
           this.node?.appendChild(
@@ -72,9 +73,9 @@ export default class Header {
               name: key,
               rgb: [255, 255, 255],
               colorSpace: this.base.colorSpace,
-              visionSimulationMode: this.base.visionSimulationMode,
+              visionSimulationMode: this.theme.visionSimulationMode,
               view: this.view,
-              textColorsTheme: this.base.textColorsTheme,
+              textColorsTheme: this.theme.textColorsTheme,
             }).makeNodeName({
               mode: 'FIXED',
               width: this.sampleSize,

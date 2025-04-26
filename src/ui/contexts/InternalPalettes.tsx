@@ -181,7 +181,7 @@ export default class InternalPalettes extends PureComponent<
                   new Date(a.meta.dates.updatedAt).getTime()
               )
               .map((palette, index) => {
-                const enabledThemeIndex = palette.base.themes.findIndex(
+                const enabledThemeIndex = palette.themes.findIndex(
                   (theme) => theme.isEnabled
                 )
 
@@ -197,7 +197,7 @@ export default class InternalPalettes extends PureComponent<
                     description={palette.base.preset.name}
                     subdescription={setPaletteMeta(
                       palette.base.colors,
-                      palette.base.themes
+                      palette.themes
                     )}
                     actionsSlot={
                       <>

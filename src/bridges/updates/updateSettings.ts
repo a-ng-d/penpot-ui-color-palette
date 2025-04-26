@@ -8,7 +8,7 @@ const updateSettings = async (msg: SettingsMessage) => {
     penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
   )
 
-  const theme = palette.base.themes.find((theme) => theme.isEnabled)
+  const theme = palette.themes.find((theme) => theme.isEnabled)
   if (theme !== undefined) {
     theme.visionSimulationMode = msg.data.visionSimulationMode
     theme.textColorsTheme = msg.data.textColorsTheme

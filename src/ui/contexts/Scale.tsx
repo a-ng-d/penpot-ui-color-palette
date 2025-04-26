@@ -32,7 +32,7 @@ import {
   Service,
 } from '../../types/app'
 import {
-  BaseConfiguration,
+  ExchangeConfiguration,
   PresetConfiguration,
   ScaleConfiguration,
   ShiftConfiguration,
@@ -202,7 +202,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     this.scaleMessage = {
       type: 'UPDATE_SCALE',
       id: this.props.id,
-      data: this.palette.value as BaseConfiguration,
+      data: this.palette.value as ExchangeConfiguration,
       isEditedInRealTime: true,
     }
     this.dispatch = {
@@ -223,7 +223,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       this.setState({ canPaletteDeepSync: value })
     })
     this.unsubscribePalette = $palette.subscribe((value) => {
-      this.scaleMessage.data = value as BaseConfiguration
+      this.scaleMessage.data = value as ExchangeConfiguration
     })
   }
 
@@ -236,7 +236,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   slideHandler = (state: string, feature?: string) => {
     const onReleaseStop = () => {
       this.dispatch.scale.on.status = false
-      this.scaleMessage.data = this.palette.value as BaseConfiguration
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
       this.scaleMessage.isEditedInRealTime = false
       this.props.onChangeScale()
       if (this.props.service === 'EDIT')
@@ -244,7 +244,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     }
 
     const onChangeStop = () => {
-      this.scaleMessage.data = this.palette.value as BaseConfiguration
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
       this.scaleMessage.isEditedInRealTime = false
       this.scaleMessage.feature = feature
       this.props.onChangeStop?.()
@@ -254,7 +254,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     }
 
     const onTypeStopValue = () => {
-      this.scaleMessage.data = this.palette.value as BaseConfiguration
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
       this.scaleMessage.isEditedInRealTime = false
       this.props.onChangeStop?.()
       this.props.onChangeScale()

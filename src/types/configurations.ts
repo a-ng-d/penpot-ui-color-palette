@@ -24,18 +24,28 @@ export interface BaseConfiguration {
   [key: string]: string | number | boolean | object | undefined
   name: string
   description: string
-  min?: number
-  max?: number
+  preset: PresetConfiguration
+  shift: ShiftConfiguration
+  areSourceColorsLocked: LockedSourceColorsConfiguration
+  colors: Array<ColorConfiguration>
+  colorSpace: ColorSpaceConfiguration
+  algorithmVersion: AlgorithmVersionConfiguration
+}
+
+export interface ExchangeConfiguration {
+  [key: string]: string | number | boolean | object | undefined
+  name: string
+  description: string
+  min: number
+  max: number
   preset: PresetConfiguration
   scale: ScaleConfiguration
   shift: ShiftConfiguration
   areSourceColorsLocked: LockedSourceColorsConfiguration
-  colors: Array<ColorConfiguration>
-  themes: Array<ThemeConfiguration>
   colorSpace: ColorSpaceConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
-  algorithmVersion: AlgorithmVersionConfiguration
   textColorsTheme: TextColorsThemeHexModel
+  algorithmVersion: AlgorithmVersionConfiguration
 }
 
 export interface ExtractOfBaseConfiguration {
@@ -180,8 +190,10 @@ export interface MetaConfiguration {
 
 export interface FullConfiguration {
   base: BaseConfiguration
+  themes: Array<ThemeConfiguration>
   meta: MetaConfiguration
   data: PaletteData
+  type: 'UI_COLOR_PALETTE'
 }
 
 export interface DocumentConfiguration {

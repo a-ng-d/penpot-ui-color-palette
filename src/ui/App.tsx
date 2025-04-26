@@ -366,7 +366,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
         }
 
         const loadPalette = () => {
-          const theme: ThemeConfiguration = path.data.base.themes.find(
+          const theme: ThemeConfiguration = path.data.themes.find(
             (theme: ThemeConfiguration) => theme.isEnabled
           )
 
@@ -381,7 +381,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
             path.data.base.areSourceColorsLocked
           )
           this.palette.setKey('colors', path.data.base.colors)
-          this.palette.setKey('themes', path.data.base.themes)
           this.palette.setKey('colorSpace', path.data.base.colorSpace)
           this.palette.setKey(
             'visionSimulationMode',
@@ -424,7 +423,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
             colors: path.data.base.colors,
             colorSpace: path.data.base.colorSpace,
             visionSimulationMode: theme?.visionSimulationMode ?? 'NONE',
-            themes: path.data.base.themes,
+            themes: path.data.themes,
             view: path.data.base.view,
             algorithmVersion: path.data.base.algorithmVersion,
             textColorsTheme: theme?.textColorsTheme ?? {

@@ -3,6 +3,7 @@ import { lang, locals } from '../content/locals'
 import {
   BaseConfiguration,
   MetaConfiguration,
+  ThemeConfiguration,
   ViewConfiguration,
 } from '../types/configurations'
 import { PaletteDataThemeItem } from '../types/data'
@@ -13,6 +14,7 @@ import Title from './Title'
 
 export default class Palette {
   private base: BaseConfiguration
+  private theme: ThemeConfiguration
   private data: PaletteDataThemeItem
   private meta: MetaConfiguration
   private view: ViewConfiguration
@@ -28,16 +30,19 @@ export default class Palette {
 
   constructor({
     base,
+    theme,
     data,
     meta,
     view,
   }: {
     base: BaseConfiguration
+    theme: ThemeConfiguration
     data: PaletteDataThemeItem
     meta: MetaConfiguration
     view: ViewConfiguration
   }) {
     this.base = base
+    this.theme = theme
     this.data = data
     this.meta = meta
     this.view = view
@@ -73,11 +78,14 @@ export default class Palette {
         name: locals[lang].warning.emptySourceColors,
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
-        visionSimulationMode: this.base.visionSimulationMode,
+        visionSimulationMode: this.theme.visionSimulationMode,
         view: this.view,
-        textColorsTheme: this.base.textColorsTheme,
+        textColorsTheme: this.theme.textColorsTheme,
       }).makeNodeName({
-        mode: 'FILL', width: 48, height: 48})
+        mode: 'FILL',
+        width: 48,
+        height: 48,
+      })
     )
 
     return this.nodeEmpty
@@ -101,7 +109,7 @@ export default class Palette {
     this.nodeShades.appendChild(
       new Header({
         base: this.base,
-        data: this.data,
+        theme: this.theme,
         view: this.view,
         size: this.sampleSize,
       }).node
@@ -154,9 +162,9 @@ export default class Palette {
         name: color.name,
         rgb: sourceColor.rgb,
         colorSpace: this.base.colorSpace,
-        visionSimulationMode: this.base.visionSimulationMode,
+        visionSimulationMode: this.theme.visionSimulationMode,
         view: this.view,
-        textColorsTheme: this.base.textColorsTheme,
+        textColorsTheme: this.theme.textColorsTheme,
       }).makeNodeShade({
         width: this.sampleSize,
         height: this.sampleSize * this.sampleRatio,
@@ -181,9 +189,9 @@ export default class Palette {
               scale: shade.name,
               rgb: shade.rgb,
               colorSpace: this.base.colorSpace,
-              visionSimulationMode: this.base.visionSimulationMode,
+              visionSimulationMode: this.theme.visionSimulationMode,
               view: this.view,
-              textColorsTheme: this.base.textColorsTheme,
+              textColorsTheme: this.theme.textColorsTheme,
               status: {
                 isClosestToRef: shade.isClosestToRef ?? false,
                 isLocked: shade.isSourceColorLocked ?? false,
@@ -225,6 +233,7 @@ export default class Palette {
     // Insert
     const titleNode = new Title({
       base: this.base,
+      theme: this.theme,
       data: this.data,
       meta: this.meta,
     }).node

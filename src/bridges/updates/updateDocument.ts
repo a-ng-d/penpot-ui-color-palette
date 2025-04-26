@@ -19,7 +19,7 @@ const updateDocument = async (view: ViewConfiguration) => {
   const themeData = palette.data.themes.find(
     (theme: PaletteDataThemeItem) => theme.id === themeId
   )
-  const currentTheme = palette.base.themes.find(
+  const currentTheme = palette.themes.find(
     (theme: ThemeConfiguration) => theme.id === themeId
   )
 
@@ -30,12 +30,14 @@ const updateDocument = async (view: ViewConfiguration) => {
     view === 'PALETTE_WITH_PROPERTIES' || view === 'PALETTE'
       ? new Palette({
           base: palette.base,
+          theme: currentTheme,
           data: themeData,
           meta: palette.meta,
           view: view,
         }).node
       : new Sheet({
           base: palette.base,
+          theme: currentTheme,
           data: themeData,
           meta: palette.meta,
           view: view,

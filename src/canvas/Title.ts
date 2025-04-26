@@ -1,12 +1,17 @@
 import { Board } from '@penpot/plugin-types'
+import {
+  BaseConfiguration,
+  MetaConfiguration,
+  ThemeConfiguration,
+} from 'src/types/configurations'
+import { PaletteDataThemeItem } from 'src/types/data'
 import { lang, locals } from '../content/locals'
 import Paragraph from './Paragraph'
 import Tag from './Tag'
-import { BaseConfiguration, MetaConfiguration } from 'src/types/configurations'
-import { PaletteDataThemeItem } from 'src/types/data'
 
 export default class Title {
   private base: BaseConfiguration
+  private theme: ThemeConfiguration
   private data: PaletteDataThemeItem
   private meta: MetaConfiguration
   private nodeGlobalInfo: Board | null
@@ -16,14 +21,17 @@ export default class Title {
 
   constructor({
     base,
+    theme,
     data,
     meta,
   }: {
     base: BaseConfiguration
+    theme: ThemeConfiguration
     data: PaletteDataThemeItem
     meta: MetaConfiguration
   }) {
     this.base = base
+    this.theme = theme
     this.data = data
     this.meta = meta
     this.nodeGlobalInfo = null
@@ -55,10 +63,7 @@ export default class Title {
         fontSize: 20,
       }).makeNodeTag()
     )
-    if (
-      this.base.description !== '' ||
-      this.base.themes.find((theme) => theme.isEnabled)?.description !== ''
-    )
+    if (this.base.description !== '' || this.theme.description !== '')
       this.nodeGlobalInfo.appendChild(this.makeNodeDescriptions())
 
     return this.nodeGlobalInfo
@@ -91,13 +96,11 @@ export default class Title {
         }).node
       )
 
-    if (this.base.themes.find((theme) => theme.isEnabled)?.description !== '')
+    if (this.theme.description !== '')
       this.nodeDescriptions.appendChild(
         new Paragraph({
           name: '_theme-description',
-          content:
-            'Theme description: ' +
-            this.base.themes.find((theme) => theme.isEnabled)?.description,
+          content: 'Theme description: ' + this.theme.description,
           type: 'FIXED',
           width: 644,
           fontSize: 12,
@@ -149,8 +152,8 @@ export default class Title {
         new Tag({
           name: '_vision-simulation',
           content: `${locals[lang].paletteProperties.visionSimulation}${
-            this.base.visionSimulationMode.charAt(0) +
-            this.base.visionSimulationMode.toLocaleLowerCase().slice(1)
+            this.theme.visionSimulationMode.charAt(0) +
+            this.theme.visionSimulationMode.toLocaleLowerCase().slice(1)
           }`,
           fontSize: 12,
         }).makeNodeTag()

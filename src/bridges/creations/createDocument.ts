@@ -11,6 +11,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
 
   const documents = new Documents({
     base: palette.base,
+    themes: palette.themes,
     data: palette.data,
     meta: palette.meta,
     view: view,

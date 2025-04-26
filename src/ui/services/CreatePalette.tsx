@@ -190,7 +190,7 @@ export default class CreatePalette extends PureComponent<
           type: 'CREATE_PALETTE',
           data: {
             sourceColors: this.props.sourceColors,
-            palette: {
+            exchange: {
               ...this.palette.value,
             },
           },

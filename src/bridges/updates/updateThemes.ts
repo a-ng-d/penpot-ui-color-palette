@@ -8,7 +8,7 @@ const updateThemes = async (msg: ThemesMessage) => {
     penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
   )
 
-  palette.base.themes = msg.data
+  palette.themes = msg.data
 
   palette.meta.dates.updatedAt = now
   penpot.ui.sendMessage({

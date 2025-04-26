@@ -314,7 +314,7 @@ export default class Preview extends PureComponent<
               id: this.props.id,
               items: [
                 {
-                  key: 'base.themes',
+                  key: 'themes',
                   value: this.props.themes.map((theme) => {
                     if (theme.isEnabled)
                       theme.visionSimulationMode = target.dataset

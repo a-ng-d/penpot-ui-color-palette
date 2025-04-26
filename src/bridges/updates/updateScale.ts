@@ -9,11 +9,11 @@ const updateScale = async (msg: ScaleMessage) => {
     penpot.currentPage?.getPluginData(`palette_${msg.data.id}`) ?? '{}'
   )
 
-  const theme = palette.base.themes.find((theme) => theme.isEnabled)
+  const theme = palette.themes.find((theme) => theme.isEnabled)
   if (theme !== undefined) theme.scale = msg.data.scale
 
   if (msg.feature === 'ADD_STOP' || msg.feature === 'DELETE_STOP')
-    palette.base.themes.forEach((theme) => {
+    palette.themes.forEach((theme) => {
       if (!theme.isEnabled)
         theme.scale = doLightnessScale(
           Object.keys(msg.data.scale).map((stop) => {
