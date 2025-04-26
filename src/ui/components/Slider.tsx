@@ -76,10 +76,10 @@ export default class Slider extends Component<SliderProps, SliderStates> {
     if (target.value !== '') {
       this.palette.setKey('scale', this.props.scale ?? {})
       if (parseFloat(target.value) < parseFloat(target.min))
-        scale[`lightness-${stopId}`] = parseFloat(target.min)
+        scale[stopId] = parseFloat(target.min)
       else if (parseFloat(target.value) > parseFloat(target.max))
-        scale[`lightness-${stopId}`] = parseFloat(target.max)
-      else scale[`lightness-${stopId}`] = parseFloat(target.value)
+        scale[stopId] = parseFloat(target.max)
+      else scale[stopId] = parseFloat(target.value)
 
       this.palette.setKey('scale', scale)
       this.props.onChange('TYPED')
@@ -365,7 +365,7 @@ export default class Slider extends Component<SliderProps, SliderStates> {
             <Knob
               key={lightness[0]}
               id={lightness[0]}
-              shortId={lightness[0].replace('lightness-', '')}
+              shortId={lightness[0]}
               value={lightness[1]}
               offset={lightness[1]}
               min={
@@ -438,7 +438,7 @@ export default class Slider extends Component<SliderProps, SliderStates> {
             <Knob
               key={lightness[0]}
               id={lightness[0]}
-              shortId={lightness[0].replace('lightness-', '')}
+              shortId={lightness[0]}
               value={lightness[1]}
               offset={lightness[1]}
               min={

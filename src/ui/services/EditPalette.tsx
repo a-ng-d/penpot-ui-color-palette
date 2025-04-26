@@ -260,7 +260,7 @@ export default class EditPalette extends PureComponent<
         else
           theme.scale = doLightnessScale(
             Object.keys(this.palette.get().scale).map((stop) => {
-              return parseFloat(stop.replace('lightness-', ''))
+              return parseFloat(stop)
             }),
             theme.scale[
               Object.keys(theme.scale)[Object.keys(theme.scale).length - 1]

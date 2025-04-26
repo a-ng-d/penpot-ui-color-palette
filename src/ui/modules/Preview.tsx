@@ -909,7 +909,7 @@ export default class Preview extends PureComponent<
                       className="preview__cell preview__cell--no-height"
                       key={index}
                     >
-                      <this.stopTag stop={scale.replace('lightness-', '')} />
+                      <this.stopTag stop={scale} />
                     </div>
                   )
                 })}

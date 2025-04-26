@@ -17,7 +17,7 @@ const updateScale = async (msg: ScaleMessage) => {
       if (!theme.isEnabled)
         theme.scale = doLightnessScale(
           Object.keys(msg.data.scale).map((stop) => {
-            return parseFloat(stop.replace('lightness-', ''))
+            return parseFloat(stop)
           }),
           theme.scale[
             Object.keys(theme.scale)[Object.keys(theme.scale).length - 1]

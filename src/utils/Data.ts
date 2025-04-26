@@ -165,9 +165,9 @@ export default class Data {
           )
 
           const scaleName: string =
-            Object.keys(this.currentScale)
-              .find((key) => key === scaledColor[0][0])
-              ?.replace('lightness-', '') ?? '0'
+            Object.keys(this.currentScale).find(
+              (key) => key === scaledColor[0][0]
+            ) ?? '0'
 
           const newHsluv = new Hsluv()
           newHsluv.rgb_r = scaledColor[1][0] / 255

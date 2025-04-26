@@ -69,7 +69,7 @@ export default class Header {
         .forEach((key) => {
           this.node?.appendChild(
             new Sample({
-              name: key.replace('lightness-', ''),
+              name: key,
               rgb: [255, 255, 255],
               colorSpace: this.base.colorSpace,
               visionSimulationMode: this.base.visionSimulationMode,

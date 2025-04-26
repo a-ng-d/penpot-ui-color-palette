@@ -32,8 +32,7 @@ const addStop = (
   newScale.length < 25 && newScale.push(parseFloat(offset.toFixed(1)))
   newScale.sort((a, b) => b - a)
   newScale.forEach(
-    (scale, index) =>
-      (newLightnessScale[`lightness-${(index + 1) * factor}`] = scale)
+    (scale, index) => (newLightnessScale[(index + 1) * factor] = scale)
   )
 
   palette.setKey('scale', newLightnessScale)

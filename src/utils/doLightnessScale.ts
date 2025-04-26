@@ -13,7 +13,7 @@ const doLightnessScale = (
   const scale: ScaleConfiguration = {}
 
   stops.map((index) => {
-    scale[`lightness-${index}`] =
+    scale[index] =
       mode !== 'NONE'
         ? parseFloat(doMap(applyEase(mode, x), 0, 1, min, max).toFixed(1))
         : index

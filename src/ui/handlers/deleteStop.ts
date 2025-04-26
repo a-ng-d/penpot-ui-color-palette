@@ -19,16 +19,13 @@ const deleteStop = (
     scale === parseFloat(selectedKnob.style.left) ? null : newScale.push(scale)
   })
   newScale.forEach(
-    (scale, index) =>
-      (newLightnessScale[`lightness-${(index + 1) * factor}`] = scale)
+    (scale, index) => (newLightnessScale[(index + 1) * factor] = scale)
   )
 
   palette.setKey('scale', newLightnessScale)
   palette.setKey('preset', {
     name: presetName,
-    scale: Object.keys(palette.get().scale).map((key) =>
-      parseFloat(key.replace('lightness-', ''))
-    ),
+    scale: Object.keys(palette.get().scale).map((key) => parseFloat(key)),
     min: presetMin,
     max: presetMax,
     easing: 'NONE',
