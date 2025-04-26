@@ -49,7 +49,7 @@ const getPaletteMeta = (
         shadeNumber
       )
 
-    return `${colorLabel}${locals[lang].separator}${themeLabel}${locals[lang].separator}${shadeLabel}`
+    return `${colorLabel}${locals[lang].separator}${shadeLabel}${locals[lang].separator}${themeLabel}`
 }
 
 export default getPaletteMeta
