@@ -11,9 +11,10 @@ const getPaletteMeta = (
   const colorsNumber = colors.length,
     themesNumber = themes.filter(
       (theme) => theme.type === 'custom theme'
-    ).length
+    ).length,
+    shadeNumber = Object.values(themes[0].scale).length
 
-  let colorLabel: string, themeLabel: string
+  let colorLabel: string, themeLabel: string, shadeLabel: string
 
   if (colorsNumber > 1)
     colorLabel = locals[lang].actions.sourceColorsNumber.several.replace(
@@ -37,7 +38,18 @@ const getPaletteMeta = (
       themesNumber
     )
 
-  return `${colorLabel}${locals[lang].separator}${themeLabel}`
+    if (shadeNumber > 1)
+      shadeLabel = locals[lang].actions.shadesNumber.several.replace(
+        '$1',
+        shadeNumber
+      )
+    else
+      shadeLabel = locals[lang].actions.shadesNumber.single.replace(
+        '$1',
+        shadeNumber
+      )
+
+    return `${colorLabel}${locals[lang].separator}${themeLabel}${locals[lang].separator}${shadeLabel}`
 }
 
 export default getPaletteMeta

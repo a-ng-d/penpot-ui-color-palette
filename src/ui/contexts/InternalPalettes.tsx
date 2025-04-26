@@ -16,7 +16,7 @@ import features from '../../config'
 import { locals } from '../../content/locals'
 import { BaseProps, PlanStatus } from '../../types/app'
 import { ActionsList } from '../../types/models'
-import getPaletteMeta from '../../utils/setPaletteMeta'
+import setPaletteMeta from '../../utils/setPaletteMeta'
 import Feature from '../components/Feature'
 
 interface InternalPalettesStates {
@@ -76,16 +76,6 @@ export default class InternalPalettes extends PureComponent<
     }
 
     return actions[path.type ?? 'DEFAULT']?.()
-  }
-
-  // Direct Actions
-  getImageSrc = (screenshot: Uint8Array | null) => {
-    if (screenshot !== null) {
-      const blob = new Blob([screenshot], {
-        type: 'image/png',
-      })
-      return URL.createObjectURL(blob)
-    } else return ''
   }
 
   onEditPalette = (id: string) => {
@@ -200,7 +190,7 @@ export default class InternalPalettes extends PureComponent<
                       : palette.base.name
                   }
                   description={palette.base.preset.name}
-                  subdescription={getPaletteMeta(
+                  subdescription={setPaletteMeta(
                     palette.base.colors,
                     palette.base.themes
                   )}
@@ -230,6 +220,26 @@ export default class InternalPalettes extends PureComponent<
                         action={() => this.onEditPalette(palette.meta.id)}
                       />
                     </>
+                  }
+                  complementSlot={
+                    <div className="preview__rows">
+                      {palette.data.themes[0].colors.map((color, index) => (
+                        <div
+                          key={`color-${index}`}
+                          className="preview__row"
+                        >
+                          {color.shades.map((shade, shadeIndex) => (
+                            <div
+                              key={`color-${index}-${shadeIndex}`}
+                              className="preview__cell"
+                              style={{
+                                backgroundColor: shade.hex,
+                              }}
+                            />
+                          ))}
+                        </div>
+                      ))}
+                    </div>
                   }
                 />
               ))}

@@ -490,6 +490,10 @@ export const locals: { [key: string]: any } = {
         single: '$1 color theme',
         several: '$1 color themes',
       },
+      shadesNumber: {
+        single: '$1 shade',
+        several: '$1 shades',
+      },
     },
     highlight: {
       cta: {
