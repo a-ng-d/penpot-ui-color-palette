@@ -366,7 +366,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
         }
 
         const loadPalette = () => {
-          console.log('load palette', path.data.base.themes)
           const theme: ThemeConfiguration = path.data.base.themes.find(
             (theme: ThemeConfiguration) => theme.isEnabled
           )
@@ -419,7 +418,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
             name: path.data.base.name,
             description: path.data.base.description,
             preset: path.data.base.preset,
-            scale: path.data.base.scale,
+            scale: theme?.scale,
             shift: path.data.base.shift,
             areSourceColorsLocked: path.data.base.areSourceColorsLocked,
             colors: path.data.base.colors,
