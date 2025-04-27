@@ -10,7 +10,7 @@ const exportJson = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'TOKENS_GLOBAL',
-        code: locals[lang].export,
+        code: locals[lang].error.export,
       },
     })
 

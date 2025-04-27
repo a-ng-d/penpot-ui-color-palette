@@ -14,7 +14,7 @@ const exportJsonAmznStyleDictionary = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'TOKENS_AMZN_STYLE_DICTIONARY',
-        code: locals[lang].export,
+        code: locals[lang].error.export,
       },
     })
 

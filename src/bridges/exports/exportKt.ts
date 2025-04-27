@@ -11,7 +11,7 @@ const exportKt = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'ANDROID_COMPOSE',
-        code: locals[lang].export,
+        code: locals[lang].error.export,
       },
     })
 

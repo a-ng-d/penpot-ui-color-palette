@@ -13,7 +13,7 @@ const exportCss = (id: string, colorSpace: 'RGB' | 'LCH' | 'P3') => {
         id: penpot.currentUser.id,
         context: 'CSS',
         colorSpace: colorSpace,
-        code: locals[lang].export,
+        code: locals[lang].error.export,
       },
     })
 

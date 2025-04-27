@@ -11,7 +11,7 @@ const exportTailwind = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'TAILWIND',
-        code: locals[lang].export,
+        code: locals[lang].error.export,
       },
     })
 

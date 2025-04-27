@@ -14,7 +14,7 @@ const exportJsonTokensStudio = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'TOKENS_TOKENS_STUDIO',
-        code: locals[lang].export,
+        code: locals[lang].error.export,
       },
     })
 

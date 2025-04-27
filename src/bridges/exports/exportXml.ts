@@ -11,7 +11,7 @@ const exportXml = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'ANDROID_XML',
-        code: locals[lang].export,
+        code: locals[lang].error.export,
       },
     })
 

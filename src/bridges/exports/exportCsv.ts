@@ -21,7 +21,7 @@ const exportCsv = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'CSV',
-        code: locals[lang].export,
+        code: locals[lang].error.export,
       },
     })
 

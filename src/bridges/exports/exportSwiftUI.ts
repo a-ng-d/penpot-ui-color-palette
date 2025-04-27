@@ -11,7 +11,7 @@ const exportSwiftUI = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'APPLE_SWIFTUI',
-        code: locals[lang].export,
+        code: locals[lang].error.export,
       },
     })
 
