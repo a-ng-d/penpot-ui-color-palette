@@ -31,11 +31,13 @@ export default class Status {
     this.node = penpot.createBoard()
     this.node.name = '_status'
     this.node.fills = []
+    this.node.horizontalSizing = 'auto'
+    this.node.verticalSizing = 'auto'
 
     // Layout
     const flex = this.node.addFlexLayout()
     flex.dir = 'row'
-    flex.horizontalSizing = 'fit-content'
+    flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
 
     if (this.status.isClosestToRef)

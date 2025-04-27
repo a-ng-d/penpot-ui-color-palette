@@ -659,7 +659,7 @@ export default class Properties {
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
-    flex.columnGap = 16
+    flex.rowGap = 16
 
     // Insert
     const detailedBaseProps = this.makeNodeDetailedBaseProps()

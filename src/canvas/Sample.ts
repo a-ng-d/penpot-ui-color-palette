@@ -145,7 +145,9 @@ export default class Sample {
     // Layout
     const flex = this.node.addFlexLayout()
     flex.dir = 'column'
+    flex.justifyContent = 'end'
     flex.verticalPadding = flex.horizontalPadding = 8
+    flex.rowGap = 8
     flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fill'
 
@@ -190,10 +192,8 @@ export default class Sample {
 
       this.node.appendChild(statusNode)
 
-      if (statusNode.layoutChild) {
+      if (statusNode.layoutChild)
         statusNode.layoutChild.horizontalSizing = 'fill'
-        statusNode.layoutChild.verticalSizing = 'fill'
-      }
     }
 
     return this.node
@@ -242,6 +242,7 @@ export default class Sample {
     flexColor.dir = 'column'
     flexColor.horizontalPadding = 8
     flexColor.verticalPadding = 8
+    flexColor.rowGap = 8
 
     this.nodeColor.fills = [
       libraryColor !== undefined
@@ -264,7 +265,7 @@ export default class Sample {
 
     this.nodeColor.appendChild(propertyNode)
 
-    if (this.status.isClosestToRef) {
+    if (this.status.isClosestToRef || this.status.isLocked) {
       const statusNode = new Status({
         status: this.status,
         source: this.source

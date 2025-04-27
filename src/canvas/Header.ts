@@ -12,7 +12,6 @@ export default class Header {
   private theme: ThemeConfiguration
   private view: ViewConfiguration
   private sampleSize: number
-  private currentTheme?: ThemeConfiguration
   node: Board
 
   constructor({
@@ -30,7 +29,6 @@ export default class Header {
     this.theme = theme
     this.view = view
     this.sampleSize = size
-    this.currentTheme = theme
     this.node = this.makeNode()
   }
 
@@ -65,7 +63,7 @@ export default class Header {
       })
     )
     if (this.view === 'PALETTE' || this.view === 'PALETTE_WITH_PROPERTIES')
-      Object.keys(this.theme)
+      Object.keys(this.theme.scale)
         .reverse()
         .forEach((key) => {
           this.node?.appendChild(
