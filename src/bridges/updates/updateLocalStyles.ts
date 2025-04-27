@@ -1,11 +1,11 @@
-import { lang, locals } from '../../content/locals'
+import { locals } from '../../content/locals'
 import { PaletteData, PaletteDataThemeItem } from '../../types/data'
 
 const updateLocalStyles = async (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locals[lang].error.styles)
+    throw new Error(locals.get().error.styles)
 
   const paletteData: PaletteData = JSON.parse(rawPalette).data,
     workingThemes =
@@ -116,20 +116,20 @@ const updateLocalStyles = async (id: string) => {
       })
 
       if (i > 1)
-        messages.push(`${i} ${locals[lang].info.updatedLocalStyles.plural}`)
+        messages.push(`${i} ${locals.get().info.updatedLocalStyles.plural}`)
       else if (i === 1)
-        messages.push(locals[lang].info.updatedLocalStyles.single)
-      else messages.push(locals[lang].info.updatedLocalStyles.none)
+        messages.push(locals.get().info.updatedLocalStyles.single)
+      else messages.push(locals.get().info.updatedLocalStyles.none)
 
       if (k > 1)
-        messages.push(`${k} ${locals[lang].info.removedLocalStyles.plural}`)
+        messages.push(`${k} ${locals.get().info.removedLocalStyles.plural}`)
       else if (k === 1)
-        messages.push(locals[lang].info.removedLocalStyles.single)
-      else messages.push(locals[lang].info.removedLocalStyles.none)
+        messages.push(locals.get().info.removedLocalStyles.single)
+      else messages.push(locals.get().info.removedLocalStyles.none)
 
-      return messages.join(locals[lang].separator)
+      return messages.join(locals.get().separator)
     })
-    .catch(() => locals[lang].error.generic)
+    .catch(() => locals.get().error.generic)
 
   return await updatedLocalStylesStatusMessage
 }

@@ -1,5 +1,5 @@
 import { uid } from 'uid'
-import { lang, locals } from '../../content/locals'
+import { locals } from '../../content/locals'
 import {
   ColorConfiguration,
   MetaConfiguration,
@@ -45,7 +45,7 @@ const createPalette = async (msg: Msg) => {
 
   const themes: Array<ThemeConfiguration> = [
     {
-      name: locals[lang].themes.switchTheme.defaultTheme,
+      name: locals.get().themes.switchTheme.defaultTheme,
       description: '',
       scale: msg.data.exchange.scale,
       paletteBackground: '#FFFFFF',

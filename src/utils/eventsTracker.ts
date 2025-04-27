@@ -1,6 +1,5 @@
 import { ConsentConfiguration } from '@a_ng_d/figmug-ui'
 import mixpanel from 'mixpanel-figma'
-
 import { isDev, userConsentVersion } from '../config'
 import {
   ActionEvent,

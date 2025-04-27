@@ -1,5 +1,5 @@
 import { Board } from '@penpot/plugin-types'
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -75,7 +75,7 @@ export default class Palette {
     // Insert
     this.nodeEmpty.appendChild(
       new Sample({
-        name: locals[lang].warning.emptySourceColors,
+        name: locals.get().warning.emptySourceColors,
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
         visionSimulationMode: this.theme.visionSimulationMode,
@@ -217,7 +217,7 @@ export default class Palette {
   makeNode = () => {
     // Base
     this.node = penpot.createBoard()
-    this.node.name = `_colors${locals[lang].separator}do not edit any layer`
+    this.node.name = `_colors${locals.get().separator}do not edit any layer`
     this.node.fills = []
     this.node.blocked = true
     this.node.horizontalSizing = 'auto'

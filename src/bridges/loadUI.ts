@@ -1,5 +1,5 @@
 import { Board } from '@penpot/plugin-types'
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 import { windowSize } from '../types/app'
 import { ActionsList } from '../types/models'
 import checkHighlightStatus from './checks/checkHighlightStatus'
@@ -42,7 +42,7 @@ const loadUI = async () => {
   }
 
   penpot.ui.open(
-    `${locals[lang].name}${locals[lang].separator}${locals[lang].tagline}`,
+    `${locals.get().name}${locals.get().separator}${locals.get().tagline}`,
     '',
     {
       width: windowSize.w,
@@ -84,7 +84,7 @@ const loadUI = async () => {
 
     const actions: ActionsList = {
       CHECK_USER_CONSENT: () => checkUserConsent(),
-      CHECK_HIGHLIGHT_STATUS: () => checkHighlightStatus(path.version),
+      CHECK_HIGHLIGHT_STATUS: () => checkHighlightStatus(path.data.version),
       //
       UPDATE_SCALE: () => updateScale(path),
       UPDATE_COLORS: () => updateColors(path),
@@ -107,6 +107,10 @@ const loadUI = async () => {
           .catch((error) => {
             throw error
           }),
+      UPDATE_LANGUAGE: () => {
+        penpot.root?.setPluginData('user_language', path.data.lang)
+        locals.set(path.data.lang)
+      },
       //
       CREATE_PALETTE: () =>
         createPalette(path).finally(() =>
@@ -121,13 +125,13 @@ const loadUI = async () => {
           .then(async (message) => [message, await updateLocalStyles(path.id)])
           .then(
             (messages) =>
-              null /*figma.notify(messages.join(locals[lang].separator), {
+              null /*figma.notify(messages.join(locals.get().separator), {
               timeout: 10000,
             })*/
           )
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            /*figma.notify(locals[lang].error.generic)*/
+            /*figma.notify(locals.get().error.generic)*/
             throw error
           }),
       CREATE_DOCUMENT: () =>

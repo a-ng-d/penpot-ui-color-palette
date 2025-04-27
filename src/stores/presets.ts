@@ -1,4 +1,4 @@
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 import { PresetConfiguration } from '../types/configurations'
 
 export const presets: Array<PresetConfiguration> = [
@@ -60,7 +60,7 @@ export const presets: Array<PresetConfiguration> = [
     min: 24,
     max: 96,
     easing: 'LINEAR',
-    family: locals[lang].scale.presets.more,
+    family: locals.get().scale.presets.more,
     id: 'CARBON',
   },
   {
@@ -69,7 +69,7 @@ export const presets: Array<PresetConfiguration> = [
     min: 24,
     max: 96,
     easing: 'LINEAR',
-    family: locals[lang].scale.presets.more,
+    family: locals.get().scale.presets.more,
     id: 'BASE',
   },
   {
@@ -78,7 +78,7 @@ export const presets: Array<PresetConfiguration> = [
     min: 16,
     max: 100,
     easing: 'EASE_OUT',
-    family: locals[lang].scale.presets.more,
+    family: locals.get().scale.presets.more,
     id: 'POLARIS',
   },
 

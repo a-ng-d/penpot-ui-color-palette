@@ -1,12 +1,12 @@
 import { deepMap } from 'nanostores'
 import { ExchangeConfiguration } from 'src/types/configurations'
 import { algorithmVersion } from '../config'
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 import { presets } from './presets'
 
 export const $palette = deepMap<ExchangeConfiguration>({
   id: '',
-  name: locals[lang].settings.global.name.default,
+  name: locals.get().settings.global.name.default,
   description: '',
   min: 0,
   max: 100,

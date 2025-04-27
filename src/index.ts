@@ -1,4 +1,4 @@
 import loadUI from './bridges/loadUI'
 
-// Loader
+// UI
 loadUI()

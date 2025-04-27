@@ -1,4 +1,4 @@
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 
 const setPaletteName = (
   name: string,
@@ -9,19 +9,19 @@ const setPaletteName = (
 ): string => {
   const parameters: Array<string> = []
 
-  name === '' ? parameters.push(locals[lang].name) : parameters.push(name)
+  name === '' ? parameters.push(locals.get().name) : parameters.push(name)
   theme === 'None' || theme === undefined ? null : parameters.push(theme)
   parameters.push(preset)
   parameters.push(colorSpace)
   visionSimulationMode === 'NONE'
     ? null
     : parameters.push(
-        locals[lang].settings.color.visionSimulationMode[
+        locals.get().settings.color.visionSimulationMode[
           visionSimulationMode.toLowerCase()
         ]
       )
 
-  return parameters.join(locals[lang].separator)
+  return parameters.join(locals.get().separator)
 }
 
 export default setPaletteName

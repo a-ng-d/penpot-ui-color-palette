@@ -1,4 +1,4 @@
-import { lang, locals } from '../../content/locals'
+import { locals } from '../../content/locals'
 import {
   PaletteData,
   PaletteDataColorItem,
@@ -14,7 +14,7 @@ const exportJsonTokensStudio = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'TOKENS_TOKENS_STUDIO',
-        code: locals[lang].error.export,
+        code: locals.get().error.export,
       },
     })
 
@@ -25,7 +25,7 @@ const exportJsonTokensStudio = (id: string) => {
         ? paletteData.themes.filter((theme) => theme.type === 'default theme')
         : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
     name: string =
-      paletteData.name === '' ? locals[lang].name : paletteData.name,
+      paletteData.name === '' ? locals.get().name : paletteData.name,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     json: { [key: string]: any } = {}
 
@@ -34,7 +34,7 @@ const exportJsonTokensStudio = (id: string) => {
       value: shade.hex,
       description:
         color.description !== ''
-          ? color.description + locals[lang].separator + shade.description
+          ? color.description + locals.get().separator + shade.description
           : shade.description,
       type: 'color',
     }

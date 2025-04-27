@@ -1,4 +1,4 @@
-import { lang, locals } from '../../content/locals'
+import { locals } from '../../content/locals'
 import {
   PaletteData,
   PaletteDataColorItem,
@@ -14,7 +14,7 @@ const exportJsonAmznStyleDictionary = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'TOKENS_AMZN_STYLE_DICTIONARY',
-        code: locals[lang].error.export,
+        code: locals.get().error.export,
       },
     })
 
@@ -34,7 +34,7 @@ const exportJsonAmznStyleDictionary = (id: string) => {
       value: shade.hex,
       comment:
         color.description !== ''
-          ? color.description + locals[lang].separator + shade.description
+          ? color.description + locals.get().separator + shade.description
           : shade.description,
     }
   }

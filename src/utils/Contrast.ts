@@ -1,8 +1,7 @@
 import { HexModel, RgbModel } from '@a_ng_d/figmug-ui'
 import { APCAcontrast, fontLookupAPCA, sRGBtoY } from 'apca-w3'
 import chroma from 'chroma-js'
-
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 
 export default class Contrast {
   private backgroundColor: [number, number, number]
@@ -53,7 +52,7 @@ export default class Contrast {
   }
 
   getAPCAScoreColor = (): RgbModel => {
-    if (this.getRecommendedUsage() !== locals[lang].paletteProperties.avoid)
+    if (this.getRecommendedUsage() !== locals.get().paletteProperties.avoid)
       return {
         r: 0.5294117647,
         g: 0.8156862745,
@@ -73,19 +72,19 @@ export default class Contrast {
 
   getRecommendedUsage = (): string => {
     if (this.getAPCAContrast() >= 90)
-      return locals[lang].paletteProperties.fluentText
+      return locals.get().paletteProperties.fluentText
     if (this.getAPCAContrast() >= 75 && this.getAPCAContrast() < 90)
-      return locals[lang].paletteProperties.contentText
+      return locals.get().paletteProperties.contentText
     if (this.getAPCAContrast() >= 60 && this.getAPCAContrast() < 75)
-      return locals[lang].paletteProperties.bodyText
+      return locals.get().paletteProperties.bodyText
     if (this.getAPCAContrast() >= 45 && this.getAPCAContrast() < 60)
-      return locals[lang].paletteProperties.headlines
+      return locals.get().paletteProperties.headlines
     if (this.getAPCAContrast() >= 30 && this.getAPCAContrast() < 45)
-      return locals[lang].paletteProperties.spotText
+      return locals.get().paletteProperties.spotText
     if (this.getAPCAContrast() >= 15 && this.getAPCAContrast() < 30)
-      return locals[lang].paletteProperties.nonText
-    if (this.getAPCAContrast() < 15) return locals[lang].paletteProperties.avoid
+      return locals.get().paletteProperties.nonText
+    if (this.getAPCAContrast() < 15) return locals.get().paletteProperties.avoid
 
-    return locals[lang].paletteProperties.unknown
+    return locals.get().paletteProperties.unknown
   }
 }

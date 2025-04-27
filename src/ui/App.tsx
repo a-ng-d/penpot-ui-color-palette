@@ -2,14 +2,12 @@ import { Consent, ConsentConfiguration, Icon, layouts } from '@a_ng_d/figmug-ui'
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { Component, createPortal } from 'preact/compat'
 import React from 'react'
-
 import features, {
   algorithmVersion,
   privacyUrl,
   trialTime,
   userConsentVersion,
 } from '../config'
-import { lang, locals } from '../content/locals'
 import { $palette } from '../stores/palette'
 import {
   $canPaletteDeepSync,
@@ -17,6 +15,7 @@ import {
   $isAPCADisplayed,
   $isVsCodeMessageDisplayed,
   $isWCAGDisplayed,
+  $userLanguage,
 } from '../stores/preferences'
 import { defaultPreset, presets } from '../stores/presets'
 import {
@@ -57,7 +56,6 @@ import {
   trackPurchaseEvent,
   trackUserConsentEvent,
 } from '../utils/eventsTracker'
-import { loadTranslations } from '../utils/loadTranslations'
 import { userConsent } from '../utils/userConsent'
 import Feature from './components/Feature'
 import PriorityContainer from './modules/PriorityContainer'
@@ -67,6 +65,7 @@ import CreatePalette from './services/CreatePalette'
 import EditPalette from './services/EditPalette'
 import './stylesheets/app-components.css'
 import './stylesheets/app.css'
+import { locals } from '../content/locals'
 
 export interface AppStates {
   service: Service
@@ -111,6 +110,7 @@ export interface AppStates {
 
 export default class App extends Component<Record<string, never>, AppStates> {
   private palette: typeof $palette
+  private subscribeLanguage: (() => void) | undefined
 
   static features = (planStatus: PlanStatus) => ({
     BROWSE: new FeatureStatus({
@@ -147,7 +147,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
       service: 'BROWSE',
       sourceColors: [],
       id: '',
-      name: locals[lang].settings.global.name.default,
+      name: '',
       description: '',
       preset:
         presets.find((preset) => preset.id === 'MATERIAL') ?? defaultPreset,
@@ -198,7 +198,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
       },
       priorityContainerContext: 'EMPTY',
       locals: {},
-      lang: lang,
+      lang: $userLanguage.get(),
       userSession: {
         connectionStatus: 'UNCONNECTED',
         userFullName: '',
@@ -223,7 +223,24 @@ export default class App extends Component<Record<string, never>, AppStates> {
     }
   }
 
+  // Lifecycle
   componentDidMount = async () => {
+    this.subscribeLanguage = $userLanguage.subscribe(async (value) => {
+      this.setState({
+        lang: value,
+        locals: locals.set(value),
+      })
+
+      parent.postMessage({
+        pluginMessage: {
+          type: 'UPDATE_LANGUAGE',
+          data: {
+            lang: value,
+          },
+        },
+      })
+    })
+
     this.setState({
       scale: doLightnessScale(
         this.state.preset.scale,
@@ -243,9 +260,9 @@ export default class App extends Component<Record<string, never>, AppStates> {
     )
 
     // Locals
-    const locals = await loadTranslations(lang)
     this.setState({
-      locals: locals,
+      locals: locals.get(),
+      name: locals.get().settings.global.name.default,
     })
 
     // Announcements
@@ -259,7 +276,9 @@ export default class App extends Component<Record<string, never>, AppStates> {
             {
               pluginMessage: {
                 type: 'CHECK_HIGHLIGHT_STATUS',
+                data: {
                 version: data.version,
+  }
               },
             },
             '*'
@@ -310,6 +329,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
           $canPaletteDeepSync.set(path.data.canDeepSyncPalette)
           $canStylesDeepSync.set(path.data.canDeepSyncStyles)
           $isVsCodeMessageDisplayed.set(path.data.isVsCodeMessageDisplayed)
+          $userLanguage.set(path.data.userLanguage)
         }
 
         const handleHighlight = () => {
@@ -465,8 +485,8 @@ export default class App extends Component<Record<string, never>, AppStates> {
             export: {
               format: 'JSON',
               context: path.data.context,
-              label: `${locals[this.state.lang].actions.export} ${
-                locals[this.state.lang].export.tokens.label
+              label: `${this.state.locals.actions.export} ${
+                this.state.locals.export.tokens.label
               }`,
               colorSpace: 'RGB',
               mimeType: 'application/json',
@@ -492,8 +512,8 @@ export default class App extends Component<Record<string, never>, AppStates> {
               format: 'CSS',
               colorSpace: path.data.colorSpace,
               context: path.data.context,
-              label: `${locals[this.state.lang].actions.export} ${
-                locals[this.state.lang].export.css.customProperties
+              label: `${this.state.locals.actions.export} ${
+                this.state.locals.export.css.customProperties
               }`,
               mimeType: 'text/css',
               data: path.data.code,
@@ -516,8 +536,8 @@ export default class App extends Component<Record<string, never>, AppStates> {
             export: {
               format: 'TAILWIND',
               context: path.data.context,
-              label: `${locals[this.state.lang].actions.export} ${
-                locals[this.state.lang].export.tailwind.config
+              label: `${this.state.locals.actions.export} ${
+                this.state.locals.export.tailwind.config
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/javascript',
@@ -544,8 +564,8 @@ export default class App extends Component<Record<string, never>, AppStates> {
             export: {
               format: 'SWIFT',
               context: path.data.context,
-              label: `${locals[this.state.lang].actions.export} ${
-                locals[this.state.lang].export.apple.swiftui
+              label: `${this.state.locals.actions.export} ${
+                this.state.locals.export.apple.swiftui
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/swift',
@@ -568,8 +588,8 @@ export default class App extends Component<Record<string, never>, AppStates> {
             export: {
               format: 'SWIFT',
               context: path.data.context,
-              label: `${locals[this.state.lang].actions.export} ${
-                locals[this.state.lang].export.apple.uikit
+              label: `${this.state.locals.actions.export} ${
+                this.state.locals.export.apple.uikit
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/swift',
@@ -592,8 +612,8 @@ export default class App extends Component<Record<string, never>, AppStates> {
             export: {
               format: 'KT',
               context: path.data.context,
-              label: `${locals[this.state.lang].actions.export} ${
-                locals[this.state.lang].export.android.compose
+              label: `${this.state.locals.actions.export} ${
+                this.state.locals.export.android.compose
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/x-kotlin',
@@ -616,8 +636,8 @@ export default class App extends Component<Record<string, never>, AppStates> {
             export: {
               format: 'XML',
               context: path.data.context,
-              label: `${locals[this.state.lang].actions.export} ${
-                locals[this.state.lang].export.android.resources
+              label: `${this.state.locals.actions.export} ${
+                this.state.locals.export.android.resources
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/xml',
@@ -640,8 +660,8 @@ export default class App extends Component<Record<string, never>, AppStates> {
             export: {
               format: 'CSV',
               context: path.data.context,
-              label: `${locals[this.state.lang].actions.export} ${
-                locals[this.state.lang].export.csv.spreadsheet
+              label: `${this.state.locals.actions.export} ${
+                this.state.locals.export.csv.spreadsheet
               }`,
               colorSpace: 'HEX',
               mimeType: 'text/csv',
@@ -724,6 +744,10 @@ export default class App extends Component<Record<string, never>, AppStates> {
     })
   }
 
+  componentWillUnmount = () => {
+    if (this.subscribeLanguage) this.subscribeLanguage()
+  }
+
   // Handlers
   userConsentHandler = (e: Array<ConsentConfiguration>) => {
     this.setState({
@@ -773,7 +797,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
     this.setState({
       service: 'BROWSE',
       id: '',
-      name: locals[lang].settings.global.name.default,
+      name: this.state.locals.settings.global.name.default,
       description: '',
       preset: preset,
       scale: scale,
@@ -806,10 +830,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
       },
     })
 
-    this.palette.setKey(
-      'name',
-      locals[this.state.lang].settings.global.name.default
-    )
+    this.palette.setKey('name', this.state.locals.settings.global.name.default)
     this.palette.setKey('description', '')
     this.palette.setKey('preset', preset)
     this.palette.setKey('scale', scale)
@@ -916,34 +937,33 @@ export default class App extends Component<Record<string, never>, AppStates> {
             }
           >
             <Consent
-              welcomeMessage={locals[this.state.lang].user.cookies.welcome}
-              vendorsMessage={locals[this.state.lang].user.cookies.vendors}
+              welcomeMessage={this.state.locals.user.cookies.welcome}
+              vendorsMessage={this.state.locals.user.cookies.vendors}
               privacyPolicy={{
-                label: locals[this.state.lang].user.cookies.privacyPolicy,
+                label: this.state.locals.user.cookies.privacyPolicy,
                 action: () => window.open(privacyUrl, '_blank'),
               }}
-              moreDetailsLabel={locals[this.state.lang].user.cookies.customize}
-              lessDetailsLabel={locals[this.state.lang].user.cookies.back}
+              moreDetailsLabel={this.state.locals.user.cookies.customize}
+              lessDetailsLabel={this.state.locals.user.cookies.back}
               consentActions={{
                 consent: {
-                  label: locals[this.state.lang].user.cookies.consent,
+                  label: this.state.locals.user.cookies.consent,
                   action: this.userConsentHandler,
                 },
                 deny: {
-                  label: locals[this.state.lang].user.cookies.deny,
+                  label: this.state.locals.user.cookies.deny,
                   action: this.userConsentHandler,
                 },
                 save: {
-                  label: locals[this.state.lang].user.cookies.save,
+                  label: this.state.locals.user.cookies.save,
                   action: this.userConsentHandler,
                 },
               }}
               validVendor={{
-                name: locals[this.state.lang].vendors.functional.name,
+                name: this.state.locals.vendors.functional.name,
                 id: 'functional',
                 icon: '',
-                description:
-                  locals[this.state.lang].vendors.functional.description,
+                description: this.state.locals.vendors.functional.description,
                 isConsented: true,
               }}
               vendorsList={this.state.userConsent}

@@ -2,7 +2,7 @@ import {
   ColorConfiguration,
   ThemeConfiguration,
 } from 'src/types/configurations'
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 
 const getPaletteMeta = (
   colors: Array<ColorConfiguration>,
@@ -17,39 +17,33 @@ const getPaletteMeta = (
   let colorLabel: string, themeLabel: string, shadeLabel: string
 
   if (colorsNumber > 1)
-    colorLabel = locals[lang].actions.sourceColorsNumber.several.replace(
-      '$1',
-      colorsNumber
-    )
+    colorLabel = locals
+      .get()
+      .actions.sourceColorsNumber.several.replace('$1', colorsNumber)
   else
-    colorLabel = locals[lang].actions.sourceColorsNumber.single.replace(
-      '$1',
-      colorsNumber
-    )
+    colorLabel = locals
+      .get()
+      .actions.sourceColorsNumber.single.replace('$1', colorsNumber)
 
   if (themesNumber > 1)
-    themeLabel = locals[lang].actions.colorThemesNumber.several.replace(
-      '$1',
-      themesNumber
-    )
+    themeLabel = locals
+      .get()
+      .actions.colorThemesNumber.several.replace('$1', themesNumber)
   else
-    themeLabel = locals[lang].actions.colorThemesNumber.single.replace(
-      '$1',
-      themesNumber
-    )
+    themeLabel = locals
+      .get()
+      .actions.colorThemesNumber.single.replace('$1', themesNumber)
 
-    if (shadeNumber > 1)
-      shadeLabel = locals[lang].actions.shadesNumber.several.replace(
-        '$1',
-        shadeNumber
-      )
-    else
-      shadeLabel = locals[lang].actions.shadesNumber.single.replace(
-        '$1',
-        shadeNumber
-      )
+  if (shadeNumber > 1)
+    shadeLabel = locals
+      .get()
+      .actions.shadesNumber.several.replace('$1', shadeNumber)
+  else
+    shadeLabel = locals
+      .get()
+      .actions.shadesNumber.single.replace('$1', shadeNumber)
 
-    return `${colorLabel}${locals[lang].separator}${shadeLabel}${locals[lang].separator}${themeLabel}`
+  return `${colorLabel}${locals.get().separator}${shadeLabel}${locals.get().separator}${themeLabel}`
 }
 
 export default getPaletteMeta

@@ -1,4 +1,4 @@
-import { lang, locals } from '../../content/locals'
+import { locals } from '../../content/locals'
 import { PaletteData } from '../../types/data'
 
 interface colorCsv {
@@ -21,22 +21,22 @@ const exportCsv = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'CSV',
-        code: locals[lang].error.export,
+        code: locals.get().error.export,
       },
     })
 
-    const paletteData: PaletteData = JSON.parse(rawPalette).data,
-      workingThemes =
-        paletteData.themes.filter((theme) => theme.type === 'custom theme')
-          .length === 0
-          ? paletteData.themes.filter((theme) => theme.type === 'default theme')
-          : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
-      colorCsv: Array<colorCsv> = [],
-      themeCsv: Array<themeCsv> = [],
-      lightness: Array<string> = [],
-      l: Array<number | string> = [],
-      c: Array<number | string> = [],
-      h: Array<number | string> = []
+  const paletteData: PaletteData = JSON.parse(rawPalette).data,
+    workingThemes =
+      paletteData.themes.filter((theme) => theme.type === 'custom theme')
+        .length === 0
+        ? paletteData.themes.filter((theme) => theme.type === 'default theme')
+        : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
+    colorCsv: Array<colorCsv> = [],
+    themeCsv: Array<themeCsv> = [],
+    lightness: Array<string> = [],
+    l: Array<number | string> = [],
+    c: Array<number | string> = [],
+    h: Array<number | string> = []
 
   workingThemes.forEach((theme) => {
     theme.colors.forEach((color) => {
@@ -77,7 +77,7 @@ const exportCsv = (id: string) => {
           ? [
               {
                 name: 'empty',
-                colors: [{ csv: locals[lang].warning.emptySourceColors }],
+                colors: [{ csv: locals.get().warning.emptySourceColors }],
               },
             ]
           : themeCsv,

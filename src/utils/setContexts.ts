@@ -1,6 +1,6 @@
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import features from '../config'
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 import { Context, PlanStatus } from '../types/app'
 
 export const setContexts = (
@@ -72,73 +72,73 @@ export const setContexts = (
     isActive: boolean
   }> = [
     {
-      label: locals[lang].palettes.contexts.page,
+      label: locals.get().palettes.contexts.page,
       id: 'LIBRARY_PAGE',
       isUpdated: featuresList.LIBRARY_PAGE.isNew(),
       isActive: featuresList.LIBRARY_PAGE.isActive(),
     },
     {
-      label: locals[lang].palettes.contexts.file,
+      label: locals.get().palettes.contexts.file,
       id: 'LIBRARY_FILE',
       isUpdated: featuresList.LIBRARY_FILE.isNew(),
       isActive: featuresList.LIBRARY_FILE.isActive(),
     },
     {
-      label: locals[lang].contexts.source,
+      label: locals.get().contexts.source,
       id: 'SOURCE',
       isUpdated: featuresList.SOURCE.isNew(),
       isActive: featuresList.SOURCE.isActive(),
     },
     {
-      label: locals[lang].source.contexts.overview,
+      label: locals.get().source.contexts.overview,
       id: 'SOURCE_OVERVIEW',
       isUpdated: featuresList.SOURCE_EXPLORE.isNew(),
       isActive: featuresList.SOURCE_EXPLORE.isActive(),
     },
     {
-      label: locals[lang].source.contexts.explore,
+      label: locals.get().source.contexts.explore,
       id: 'SOURCE_EXPLORE',
       isUpdated: featuresList.SOURCE_EXPLORE.isNew(),
       isActive: featuresList.SOURCE_EXPLORE.isActive(),
     },
     {
-      label: locals[lang].contexts.scale,
+      label: locals.get().contexts.scale,
       id: 'SCALE',
       isUpdated: featuresList.SCALE.isNew(),
       isActive: featuresList.SCALE.isActive(),
     },
     {
-      label: locals[lang].contexts.colors,
+      label: locals.get().contexts.colors,
       id: 'COLORS',
       isUpdated: featuresList.COLORS.isNew(),
       isActive: featuresList.COLORS.isActive(),
     },
     {
-      label: locals[lang].contexts.themes,
+      label: locals.get().contexts.themes,
       id: 'THEMES',
       isUpdated: featuresList.THEMES.isNew(),
       isActive: featuresList.THEMES.isActive(),
     },
     {
-      label: locals[lang].contexts.export,
+      label: locals.get().contexts.export,
       id: 'EXPORT',
       isUpdated: featuresList.EXPORT.isNew(),
       isActive: featuresList.EXPORT.isActive(),
     },
     {
-      label: locals[lang].contexts.settings,
+      label: locals.get().contexts.settings,
       id: 'SETTINGS',
       isUpdated: featuresList.SETTINGS.isNew(),
       isActive: featuresList.SETTINGS.isActive(),
     },
     {
-      label: locals[lang].settings.contexts.palette,
+      label: locals.get().settings.contexts.palette,
       id: 'SETTINGS_PALETTE',
       isUpdated: featuresList.SETTINGS_PALETTE.isNew(),
       isActive: featuresList.SETTINGS_PALETTE.isActive(),
     },
     {
-      label: locals[lang].settings.contexts.preferences,
+      label: locals.get().settings.contexts.preferences,
       id: 'SETTINGS_PREFERENCES',
       isUpdated: featuresList.SETTINGS_PREFERENCES.isNew(),
       isActive: featuresList.SETTINGS_PREFERENCES.isActive(),

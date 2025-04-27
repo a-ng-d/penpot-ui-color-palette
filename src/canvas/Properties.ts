@@ -1,8 +1,7 @@
 import { HexModel } from '@a_ng_d/figmug-ui'
 import chroma from 'chroma-js'
-
 import { Board } from '@penpot/plugin-types'
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 import {
   ColorSpaceConfiguration,
   VisionSimulationModeConfiguration,
@@ -377,7 +376,7 @@ export default class Properties {
     this.nodeDetailedBaseProps.appendChild(
       new Tag({
         name: '_title',
-        content: locals[lang].paletteProperties.base,
+        content: locals.get().paletteProperties.base,
         fontSize: 10,
       }).makeNodeTag()
     )
@@ -449,7 +448,7 @@ export default class Properties {
     this.nodeDetailedWCAGScoresProps.appendChild(
       new Tag({
         name: '_title',
-        content: locals[lang].paletteProperties.wcag,
+        content: locals.get().paletteProperties.wcag,
         fontSize: 10,
       }).makeNodeTag()
     )
@@ -522,7 +521,7 @@ export default class Properties {
     this.nodeDetailedAPCAScoresProps.appendChild(
       new Tag({
         name: '_title',
-        content: locals[lang].paletteProperties.apca,
+        content: locals.get().paletteProperties.apca,
         fontSize: 10,
       }).makeNodeTag()
     )
@@ -531,7 +530,7 @@ export default class Properties {
         nodeAPCALightProp,
         new Tag({
           name: '_minimum-font-sizes',
-          content: locals[lang].paletteProperties.fontSize,
+          content: locals.get().paletteProperties.fontSize,
         }).makeNodeTag(),
         new Tag({
           name: '_200-light',
@@ -562,7 +561,7 @@ export default class Properties {
         nodeAPCADarkProp,
         new Tag({
           name: '_minimum-font-sizes',
-          content: locals[lang].paletteProperties.fontSize,
+          content: locals.get().paletteProperties.fontSize,
         }).makeNodeTag(),
         new Tag({
           name: '_200-dark',
@@ -671,9 +670,7 @@ export default class Properties {
       [detailedWCAGScoresProps]
     )
 
-    this.node.appendChild(
-      columnsNode
-    )
+    this.node.appendChild(columnsNode)
     this.node.appendChild(detailedAPCAScoresProps)
 
     if (columnsNode.layoutChild)

@@ -1,4 +1,4 @@
-import { lang, locals } from '../../content/locals'
+import { locals } from '../../content/locals'
 import { PaletteData, PaletteDataShadeItem } from '../../types/data'
 
 const exportJson = (id: string) => {
@@ -10,18 +10,18 @@ const exportJson = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'TOKENS_GLOBAL',
-        code: locals[lang].error.export,
+        code: locals.get().error.export,
       },
     })
 
-    const paletteData: PaletteData = JSON.parse(rawPalette).data,
-      workingThemes =
-        paletteData.themes.filter((theme) => theme.type === 'custom theme')
-          .length === 0
-          ? paletteData.themes.filter((theme) => theme.type === 'default theme')
-          : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      json: { [key: string]: any } = {}
+  const paletteData: PaletteData = JSON.parse(rawPalette).data,
+    workingThemes =
+      paletteData.themes.filter((theme) => theme.type === 'custom theme')
+        .length === 0
+        ? paletteData.themes.filter((theme) => theme.type === 'default theme')
+        : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    json: { [key: string]: any } = {}
 
   const model = (shade: PaletteDataShadeItem) => {
     return {

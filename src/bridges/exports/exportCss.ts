@@ -1,5 +1,5 @@
 import { Case } from '@a_ng_d/figmug-utils'
-import { lang, locals } from '../../content/locals'
+import { locals } from '../../content/locals'
 import { PaletteData, PaletteDataShadeItem } from '../../types/data'
 import { ActionsList } from '../../types/models'
 
@@ -13,7 +13,7 @@ const exportCss = (id: string, colorSpace: 'RGB' | 'LCH' | 'P3') => {
         id: penpot.currentUser.id,
         context: 'CSS',
         colorSpace: colorSpace,
-        code: locals[lang].error.export,
+        code: locals.get().error.export,
       },
     })
 

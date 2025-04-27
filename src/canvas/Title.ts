@@ -5,7 +5,7 @@ import {
   ThemeConfiguration,
 } from 'src/types/configurations'
 import { PaletteDataThemeItem } from 'src/types/data'
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 import Paragraph from './Paragraph'
 import Tag from './Tag'
 
@@ -59,7 +59,7 @@ export default class Title {
     this.nodeGlobalInfo.appendChild(
       new Tag({
         name: '_name',
-        content: this.base.name === '' ? locals[lang].name : this.base.name,
+        content: this.base.name === '' ? locals.get().name : this.base.name,
         fontSize: 20,
       }).makeNodeTag()
     )
@@ -129,21 +129,21 @@ export default class Title {
       this.nodeProps.appendChild(
         new Tag({
           name: '_theme',
-          content: `${locals[lang].paletteProperties.theme}${this.data.name}`,
+          content: `${locals.get().paletteProperties.theme}${this.data.name}`,
           fontSize: 12,
         }).makeNodeTag()
       )
     this.nodeProps.appendChild(
       new Tag({
         name: '_preset',
-        content: `${locals[lang].paletteProperties.preset}${this.base.preset.name}`,
+        content: `${locals.get().paletteProperties.preset}${this.base.preset.name}`,
         fontSize: 12,
       }).makeNodeTag()
     )
     this.nodeProps.appendChild(
       new Tag({
         name: '_color-space',
-        content: `${locals[lang].paletteProperties.colorSpace}${this.base.colorSpace}`,
+        content: `${locals.get().paletteProperties.colorSpace}${this.base.colorSpace}`,
         fontSize: 12,
       }).makeNodeTag()
     )
@@ -151,7 +151,7 @@ export default class Title {
       this.nodeProps.appendChild(
         new Tag({
           name: '_vision-simulation',
-          content: `${locals[lang].paletteProperties.visionSimulation}${
+          content: `${locals.get().paletteProperties.visionSimulation}${
             this.theme.visionSimulationMode.charAt(0) +
             this.theme.visionSimulationMode.toLocaleLowerCase().slice(1)
           }`,
@@ -161,7 +161,7 @@ export default class Title {
     this.nodeProps.appendChild(
       new Tag({
         name: '_updated_at',
-        content: `${locals[lang].paletteProperties.updatedAt}${new Date(
+        content: `${locals.get().paletteProperties.updatedAt}${new Date(
           this.meta.dates.updatedAt
         ).toDateString()}`,
         fontSize: 12,

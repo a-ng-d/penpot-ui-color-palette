@@ -1,8 +1,7 @@
 import chroma from 'chroma-js'
 import { Hsluv } from 'hsluv'
-
 import { paletteDataVersion } from '../config'
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 import {
   MetaConfiguration,
   BaseConfiguration,
@@ -38,7 +37,7 @@ export default class Data {
     this.themes = themes
     this.meta = meta
     this.paletteData = {
-      name: base.name ?? locals[lang].name,
+      name: base.name ?? locals.get().name,
       description: base.description,
       themes: [],
       version: paletteDataVersion,

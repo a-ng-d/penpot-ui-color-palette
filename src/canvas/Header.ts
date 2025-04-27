@@ -1,5 +1,5 @@
 import { Board } from '@penpot/plugin-types'
-import { lang, locals } from '../content/locals'
+import { locals } from '../content/locals'
 import {
   BaseConfiguration,
   ThemeConfiguration,
@@ -52,7 +52,7 @@ export default class Header {
     // Insert
     this.node.appendChild(
       new Sample({
-        name: locals[lang].paletteProperties.sourceColors,
+        name: locals.get().paletteProperties.sourceColors,
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
         visionSimulationMode: this.theme.visionSimulationMode,

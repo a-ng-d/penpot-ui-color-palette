@@ -1,5 +1,5 @@
 import { Case } from '@a_ng_d/figmug-utils'
-import { lang, locals } from '../../content/locals'
+import { locals } from '../../content/locals'
 import { PaletteData } from '../../types/data'
 
 const exportXml = (id: string) => {
@@ -11,7 +11,7 @@ const exportXml = (id: string) => {
       data: {
         id: penpot.currentUser.id,
         context: 'ANDROID_XML',
-        code: locals[lang].error.export,
+        code: locals.get().error.export,
       },
     })
 
