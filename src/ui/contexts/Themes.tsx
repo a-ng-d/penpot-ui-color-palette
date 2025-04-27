@@ -13,9 +13,7 @@ import {
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import React, { PureComponent } from 'react'
 import { uid } from 'uid'
-
 import features from '../../config'
-import { locals } from '../../content/locals'
 import { $canPaletteDeepSync } from '../../stores/preferences'
 import { BaseProps, PlanStatus, PriorityContext } from '../../types/app'
 import {
@@ -118,7 +116,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
 
     const addTheme = () => {
       const hasAlreadyNewUITheme = this.props.themes.filter((color) =>
-        color.name.includes(locals[this.props.lang].themes.new)
+        color.name.includes(this.props.locals.themes.new)
       )
 
       this.themesMessage.data = this.props.themes.map((theme) => {
@@ -126,7 +124,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
         return theme
       })
       this.themesMessage.data.push({
-        name: `${locals[this.props.lang].themes.new} ${hasAlreadyNewUITheme.length + 1}`,
+        name: `${this.props.locals.themes.new} ${hasAlreadyNewUITheme.length + 1}`,
         description: '',
         scale: doLightnessScale(
           this.props.preset.scale,
@@ -330,14 +328,14 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
   // Direct Actions
   onAddTheme = () => {
     const hasAlreadyNewUITheme = this.props.themes.filter((color) =>
-      color.name.includes(locals[this.props.lang].themes.new)
+      color.name.includes(this.props.locals.themes.new)
     )
     this.themesMessage.data = this.props.themes.map((theme) => {
       theme.isEnabled = false
       return theme
     })
     this.themesMessage.data.push({
-      name: `${locals[this.props.lang].themes.new} ${hasAlreadyNewUITheme.length + 1}`,
+      name: `${this.props.locals.themes.new} ${hasAlreadyNewUITheme.length + 1}`,
       description: '',
       scale: doLightnessScale(
         this.props.preset.scale,
@@ -413,7 +411,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                   id="add-theme"
                   leftPartSlot={
                     <SectionTitle
-                      label={locals[this.props.lang].themes.title}
+                      label={this.props.locals.themes.title}
                       indicator={customThemes.length.toString()}
                     />
                   }
@@ -422,7 +420,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                       type="icon"
                       icon="plus"
                       helper={{
-                        label: locals[this.props.lang].themes.new,
+                        label: this.props.locals.themes.new,
                       }}
                       isBlocked={Themes.features(
                         this.props.planStatus
@@ -437,7 +435,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                   <div className={layouts.centered}>
                     <SemanticMessage
                       type="NEUTRAL"
-                      message={locals[this.props.lang].themes.callout.message}
+                      message={this.props.locals.themes.callout.message}
                       orientation="VERTICAL"
                       actionsSlot={
                         <>
@@ -446,7 +444,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                           ).THEMES.isBlocked() && (
                             <Button
                               type="secondary"
-                              label={locals[this.props.lang].plan.getPro}
+                              label={this.props.locals.plan.getPro}
                               action={() =>
                                 parent.postMessage(
                                   { pluginMessage: { type: 'GET_PRO_PLAN' } },
@@ -458,7 +456,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                           <Button
                             type="primary"
                             feature="ADD_THEME"
-                            label={locals[this.props.lang].themes.callout.cta}
+                            label={this.props.locals.themes.callout.cta}
                             isBlocked={Themes.features(
                               this.props.planStatus
                             ).THEMES.isBlocked()}
@@ -480,11 +478,11 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                       >
                         <SemanticMessage
                           type="INFO"
-                          message={locals[this.props.lang].info.themesOnFree}
+                          message={this.props.locals.info.themesOnFree}
                           actionsSlot={
                             <Button
                               type="secondary"
-                              label={locals[this.props.lang].plan.getPro}
+                              label={this.props.locals.plan.getPro}
                               action={() =>
                                 parent.postMessage(
                                   { pluginMessage: { type: 'GET_PRO_PLAN' } },
@@ -531,7 +529,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                                 <FormItem
                                   id="update-palette-background-color"
                                   label={
-                                    locals[this.props.lang].themes
+                                    this.props.locals.themes
                                       .paletteBackgroundColor.label
                                   }
                                   shouldFill={false}
@@ -561,9 +559,11 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                       })}
                       secondarySlot={customThemes.map((theme) => {
                         return {
-                          title: locals[
-                            this.props.lang
-                          ].themes.moreParameters.replace('$1', theme.name),
+                          title:
+                            this.props.locals.themes.moreParameters.replace(
+                              '$1',
+                              theme.name
+                            ),
                           node: (() => (
                             <>
                               <Feature
@@ -575,8 +575,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                                   <FormItem
                                     id="update-theme-description"
                                     label={
-                                      locals[this.props.lang].global.description
-                                        .label
+                                      this.props.locals.global.description.label
                                     }
                                     isBlocked={Themes.features(
                                       this.props.planStatus
@@ -587,8 +586,8 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                                       type="LONG_TEXT"
                                       value={theme.description}
                                       placeholder={
-                                        locals[this.props.lang].global
-                                          .description.placeholder
+                                        this.props.locals.global.description
+                                          .placeholder
                                       }
                                       feature="UPDATE_DESCRIPTION"
                                       isBlocked={Themes.features(
@@ -608,10 +607,8 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
                         }
                       })}
                       helpers={{
-                        remove:
-                          locals[this.props.lang].themes.actions.removeColor,
-                        more: locals[this.props.lang].themes.actions
-                          .moreParameters,
+                        remove: this.props.locals.themes.actions.removeColor,
+                        more: this.props.locals.themes.actions.moreParameters,
                       }}
                       isScrollable
                       isTopBorderEnabled

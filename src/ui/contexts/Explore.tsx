@@ -14,9 +14,7 @@ import chroma from 'chroma-js'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { uid } from 'uid'
-
 import { pageSize } from '../../config'
-import { locals } from '../../content/locals'
 import {
   BaseProps,
   FetchStatus,
@@ -118,7 +116,7 @@ export default class Explore extends PureComponent<
     )
       .then((response) => {
         if (response.ok) return response.json()
-        else throw new Error(locals[this.props.lang].error.badResponse)
+        else throw new Error(this.props.locals.error.badResponse)
       })
       .then((data) => {
         this.setState({
@@ -143,9 +141,7 @@ export default class Explore extends PureComponent<
     return this.filters.map((filter) => {
       return {
         label:
-          locals[this.props.lang].source.colourLovers.filters[
-            filter.toLowerCase()
-          ],
+          this.props.locals.source.colourLovers.filters[filter.toLowerCase()],
         value: filter,
         feature: 'EDIT_FILTER',
         type: 'OPTION',
@@ -197,7 +193,7 @@ export default class Explore extends PureComponent<
                     type="icon"
                     icon="link-connected"
                     helper={{
-                      label: locals[this.props.lang].source.actions.openPalette,
+                      label: this.props.locals.source.actions.openPalette,
                     }}
                     action={() =>
                       window
@@ -207,7 +203,7 @@ export default class Explore extends PureComponent<
                   />
                   <Button
                     type="secondary"
-                    label={locals[this.props.lang].actions.addToSource}
+                    label={this.props.locals.actions.addToSource}
                     action={() => {
                       this.props.onChangeContexts()
                       this.props.onChangeColorsFromImport(
@@ -255,7 +251,7 @@ export default class Explore extends PureComponent<
               this.state.colourLoversPalettesListStatus === 'LOADED' ? (
                 <Button
                   type="secondary"
-                  label={locals[this.props.lang].palettes.lazyLoad.loadMore}
+                  label={this.props.locals.palettes.lazyLoad.loadMore}
                   isLoading={this.state.isLoadMoreActionLoading}
                   action={() =>
                     this.setState({
@@ -266,7 +262,7 @@ export default class Explore extends PureComponent<
                 />
               ) : (
                 <div className={texts['type--secondary']}>
-                  {locals[this.props.lang].palettes.lazyLoad.completeList}
+                  {this.props.locals.palettes.lazyLoad.completeList}
                 </div>
               )
             }
@@ -278,7 +274,7 @@ export default class Explore extends PureComponent<
       fragment = (
         <SemanticMessage
           type="WARNING"
-          message={locals[this.props.lang].error.fetchPalette}
+          message={this.props.locals.error.fetchPalette}
         />
       )
     return (
@@ -305,8 +301,7 @@ export default class Explore extends PureComponent<
                     <FormItem
                       id="explore-filters"
                       label={
-                        locals[this.props.lang].source.colourLovers.filters
-                          .label
+                        this.props.locals.source.colourLovers.filters.label
                       }
                     >
                       <Dropdown

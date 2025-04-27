@@ -2,7 +2,6 @@ import { Dialog, Icon, SemanticMessage, texts } from '@a_ng_d/figmug-ui'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { announcementsWorkerUrl } from '../../config'
-import { locals } from '../../content/locals'
 import { BaseProps, HighlightDigest } from '../../types/app'
 
 interface HighlightProps extends BaseProps {
@@ -66,7 +65,7 @@ export default class Highlight extends PureComponent<
     if (this.state.status === 'LOADING')
       return (
         <Dialog
-          title={locals[this.props.lang].pending.announcements}
+          title={this.props.locals.pending.announcements}
           isLoading
           onClose={this.props.onCloseHighlight}
         />
@@ -74,13 +73,13 @@ export default class Highlight extends PureComponent<
     else if (this.state.status === 'ERROR')
       return (
         <Dialog
-          title={locals[this.props.lang].error.generic}
+          title={this.props.locals.error.generic}
           isMessage
           onClose={this.props.onCloseHighlight}
         >
           <SemanticMessage
             type="WARNING"
-            message={locals[this.props.lang].error.announcements}
+            message={this.props.locals.error.announcements}
           />
         </Dialog>
       )
@@ -99,8 +98,8 @@ export default class Highlight extends PureComponent<
             primary: {
               label:
                 this.state.position + 1 < this.state.announcements.length
-                  ? locals[this.props.lang].highlight.cta.next
-                  : locals[this.props.lang].highlight.cta.gotIt,
+                  ? this.props.locals.highlight.cta.next
+                  : this.props.locals.highlight.cta.gotIt,
               action: (e: MouseEvent) => this.goNextSlide(e),
             },
             secondary: (() => {
@@ -109,7 +108,7 @@ export default class Highlight extends PureComponent<
                   .url !== null
               )
                 return {
-                  label: locals[this.props.lang].highlight.cta.learnMore,
+                  label: this.props.locals.highlight.cta.learnMore,
                   action: () =>
                     window
                       .open(

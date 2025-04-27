@@ -12,9 +12,7 @@ import {
   $canPaletteDeepSync,
   $canStylesDeepSync,
 } from '../../stores/preferences'
-
 import features from '../../config'
-import { locals } from '../../content/locals'
 import { BaseProps, PlanStatus } from '../../types/app'
 import Feature from '../components/Feature'
 
@@ -91,9 +89,7 @@ export default class SyncPreferences extends PureComponent<
           id="update-palette-deep-sync"
           type="SWITCH_BUTTON"
           name="update-palette-deep-sync"
-          label={
-            locals[this.props.lang].settings.preferences.sync.palette.label
-          }
+          label={this.props.locals.settings.preferences.sync.palette.label}
           isChecked={this.state.canPaletteDeepSync}
           isBlocked={SyncPreferences.features(
             this.props.planStatus
@@ -122,7 +118,7 @@ export default class SyncPreferences extends PureComponent<
           id="update-styles-deep-sync"
           type="SWITCH_BUTTON"
           name="update-styles-deep-sync"
-          label={locals[this.props.lang].settings.preferences.sync.styles.label}
+          label={this.props.locals.settings.preferences.sync.styles.label}
           isChecked={this.state.canStylesDeepSync}
           isBlocked={SyncPreferences.features(
             this.props.planStatus
@@ -148,7 +144,7 @@ export default class SyncPreferences extends PureComponent<
           <SimpleItem
             leftPartSlot={
               <SectionTitle
-                label={locals[this.props.lang].settings.preferences.sync.title}
+                label={this.props.locals.settings.preferences.sync.title}
               />
             }
             isListItem={false}
@@ -163,9 +159,7 @@ export default class SyncPreferences extends PureComponent<
             node: (
               <SemanticMessage
                 type="INFO"
-                message={
-                  locals[this.props.lang].settings.preferences.sync.message
-                }
+                message={this.props.locals.settings.preferences.sync.message}
               />
             ),
           },

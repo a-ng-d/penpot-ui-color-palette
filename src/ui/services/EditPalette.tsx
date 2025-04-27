@@ -12,9 +12,7 @@ import FileSaver from 'file-saver'
 import JSZip from 'jszip'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-
 import features from '../../config'
-import { locals } from '../../content/locals'
 import { $palette } from '../../stores/palette'
 import { $canPaletteDeepSync } from '../../stores/preferences'
 import { defaultPreset } from '../../stores/presets'
@@ -410,11 +408,11 @@ export default class EditPalette extends PureComponent<
           FileSaver.saveAs(
             content,
             this.props.name === ''
-              ? new Case(locals[this.props.lang].name).doSnakeCase()
+              ? new Case(this.props.locals.name).doSnakeCase()
               : new Case(this.props.name).doSnakeCase()
           )
         )
-        .catch(() => locals[this.props.lang].error.generic)
+        .catch(() => this.props.locals.error.generic)
     } else if (this.props.export.format === 'TAILWIND')
       FileSaver.saveAs(blob, 'tailwind.config.js')
     else if (this.props.export.format === 'SWIFT')
@@ -422,7 +420,7 @@ export default class EditPalette extends PureComponent<
         blob,
         `${
           this.props.name === ''
-            ? new Case(locals[this.props.lang].name).doSnakeCase()
+            ? new Case(this.props.locals.name).doSnakeCase()
             : new Case(this.props.name).doSnakeCase()
         }.swift`
       )
@@ -431,7 +429,7 @@ export default class EditPalette extends PureComponent<
         blob,
         `${
           this.props.name === ''
-            ? new Case(locals[this.props.lang].name).doSnakeCase()
+            ? new Case(this.props.locals.name).doSnakeCase()
             : new Case(this.props.name).doSnakeCase()
         }.kt`
       )
@@ -439,7 +437,7 @@ export default class EditPalette extends PureComponent<
       FileSaver.saveAs(
         blob,
         this.props.name === ''
-          ? new Case(locals[this.props.lang].name).doSnakeCase()
+          ? new Case(this.props.locals.name).doSnakeCase()
           : new Case(this.props.name).doSnakeCase()
       )
   }
@@ -523,9 +521,7 @@ export default class EditPalette extends PureComponent<
                 ? this.props.export.data[0].colors[0].csv
                 : this.props.export.data
             }
-            planStatus={this.props.planStatus}
             exportType={this.props.export.label}
-            lang={this.props.lang}
             onExportPalette={this.onExport}
           />
         )
@@ -566,7 +562,7 @@ export default class EditPalette extends PureComponent<
             >
               <FormItem
                 id="switch-theme"
-                label={locals[this.props.lang].themes.switchTheme.label}
+                label={this.props.locals.themes.switchTheme.label}
                 shouldFill={false}
               >
                 <Dropdown

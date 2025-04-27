@@ -2,7 +2,6 @@ import { Button, layouts, texts } from '@a_ng_d/figmug-ui'
 import { doClassnames, FeatureStatus } from '@a_ng_d/figmug-utils'
 import React, { PureComponent } from 'react'
 import features, { trialFeedbackUrl } from '../../config'
-import { locals } from '../../content/locals'
 import { BaseProps, PlanStatus, TrialStatus } from '../../types/app'
 import Feature from '../components/Feature'
 
@@ -44,7 +43,7 @@ export default class PlanControls extends PureComponent<PlanControlsProps> {
     >
       {Math.ceil(this.props.trialRemainingTime) > 72 && (
         <span>
-          {locals[this.props.lang].plan.trialTimeDays.plural.replace(
+          {this.props.locals.plan.trialTimeDays.plural.replace(
             '$1',
             Math.ceil(this.props.trialRemainingTime) > 72
               ? Math.ceil(this.props.trialRemainingTime / 24)
@@ -55,14 +54,14 @@ export default class PlanControls extends PureComponent<PlanControlsProps> {
       {Math.ceil(this.props.trialRemainingTime) <= 72 &&
         Math.ceil(this.props.trialRemainingTime) > 1 && (
           <span>
-            {locals[this.props.lang].plan.trialTimeHours.plural.replace(
+            {this.props.locals.plan.trialTimeHours.plural.replace(
               '$1',
               Math.ceil(this.props.trialRemainingTime)
             )}
           </span>
         )}
       {Math.ceil(this.props.trialRemainingTime) <= 1 && (
-        <span>{locals[this.props.lang].plan.trialTimeHours.single}</span>
+        <span>{this.props.locals.plan.trialTimeHours.single}</span>
       )}
     </div>
   )
@@ -73,7 +72,7 @@ export default class PlanControls extends PureComponent<PlanControlsProps> {
         type="alternative"
         size="small"
         icon="lock-off"
-        label={locals[this.props.lang].plan.tryPro}
+        label={this.props.locals.plan.tryPro}
         action={this.props.onGetProPlan}
       />
     </>
@@ -87,11 +86,11 @@ export default class PlanControls extends PureComponent<PlanControlsProps> {
         type="alternative"
         size="small"
         icon="lock-off"
-        label={locals[this.props.lang].plan.getPro}
+        label={this.props.locals.plan.getPro}
         action={this.props.onGetProPlan}
       />
       <span className={doClassnames([texts.type, texts['type--secondary']])}>
-        {locals[this.props.lang].separator}
+        {this.props.locals.separator}
       </span>
       <div
         className={doClassnames([
@@ -100,7 +99,7 @@ export default class PlanControls extends PureComponent<PlanControlsProps> {
           texts['type--truncated'],
         ])}
       >
-        <span>{locals[this.props.lang].plan.trialEnded}</span>
+        <span>{this.props.locals.plan.trialEnded}</span>
       </div>
       <Feature
         isActive={PlanControls.features(
@@ -108,11 +107,11 @@ export default class PlanControls extends PureComponent<PlanControlsProps> {
         ).SHORTCUTS_FEEDBACK.isActive()}
       >
         <span className={doClassnames([texts.type, texts['type--secondary']])}>
-          {locals[this.props.lang].separator}
+          {this.props.locals.separator}
         </span>
         <Button
           type="tertiary"
-          label={locals[this.props.lang].plan.trialFeedback}
+          label={this.props.locals.plan.trialFeedback}
           isBlocked={PlanControls.features(
             this.props.planStatus
           ).SHORTCUTS_FEEDBACK.isBlocked()}

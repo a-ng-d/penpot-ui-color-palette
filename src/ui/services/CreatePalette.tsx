@@ -3,7 +3,6 @@ import chroma from 'chroma-js'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { uid } from 'uid'
-
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import features from '../../config'
 import { $palette } from '../../stores/palette'

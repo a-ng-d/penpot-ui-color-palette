@@ -12,7 +12,6 @@ import features, {
   requestsUrl,
   supportEmail,
 } from '../../config'
-import { locals } from '../../content/locals'
 import {
   BaseProps,
   HighlightDigest,
@@ -192,7 +191,7 @@ export default class Shortcuts extends PureComponent<
           type="alternative"
           size="small"
           icon="lock-off"
-          label={locals[this.props.lang].plan.getPro}
+          label={this.props.locals.plan.getPro}
           action={() =>
             parent.postMessage({ pluginMessage: { type: 'GET_PRO_PLAN' } }, '*')
           }
@@ -219,9 +218,7 @@ export default class Shortcuts extends PureComponent<
                     type="icon"
                     icon="library"
                     helper={{
-                      label:
-                        locals[this.props.lang].shortcuts.tooltips
-                          .documentation,
+                      label: this.props.locals.shortcuts.tooltips.documentation,
                       pin: 'TOP',
                     }}
                     isBlocked={Shortcuts.features(
@@ -246,9 +243,7 @@ export default class Shortcuts extends PureComponent<
                       icon="user"
                       options={[
                         {
-                          label: locals[
-                            this.props.lang
-                          ].user.welcomeMessage.replace(
+                          label: this.props.locals.user.welcomeMessage.replace(
                             '$[]',
                             this.props.userSession.userFullName
                           ),
@@ -259,7 +254,7 @@ export default class Shortcuts extends PureComponent<
                           type: 'SEPARATOR',
                         },
                         {
-                          label: locals[this.props.lang].user.updateConsent,
+                          label: this.props.locals.user.updateConsent,
                           type: 'OPTION',
                           isActive: Shortcuts.features(
                             this.props.planStatus
@@ -275,8 +270,7 @@ export default class Shortcuts extends PureComponent<
                       ]}
                       alignment="TOP_RIGHT"
                       helper={{
-                        label:
-                          locals[this.props.lang].shortcuts.tooltips.userMenu,
+                        label: this.props.locals.shortcuts.tooltips.userMenu,
                         pin: 'TOP',
                       }}
                     />
@@ -286,7 +280,7 @@ export default class Shortcuts extends PureComponent<
                       icon="user"
                       options={[
                         {
-                          label: locals[this.props.lang].user.updateConsent,
+                          label: this.props.locals.user.updateConsent,
                           type: 'OPTION',
                           isActive: Shortcuts.features(
                             this.props.planStatus
@@ -305,8 +299,7 @@ export default class Shortcuts extends PureComponent<
                       }
                       alignment="TOP_RIGHT"
                       helper={{
-                        label:
-                          locals[this.props.lang].shortcuts.tooltips.userMenu,
+                        label: this.props.locals.shortcuts.tooltips.userMenu,
                         pin: 'TOP',
                       }}
                     />
@@ -317,7 +310,7 @@ export default class Shortcuts extends PureComponent<
                   icon="ellipses"
                   options={[
                     {
-                      label: locals[this.props.lang].shortcuts.news,
+                      label: this.props.locals.shortcuts.news,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -333,7 +326,7 @@ export default class Shortcuts extends PureComponent<
                       action: () => this.props.onReOpenHighlight(),
                     },
                     {
-                      label: locals[this.props.lang].shortcuts.onboarding,
+                      label: this.props.locals.shortcuts.onboarding,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -347,7 +340,7 @@ export default class Shortcuts extends PureComponent<
                       action: () => this.props.onReOpenOnboarding(),
                     },
                     {
-                      label: locals[this.props.lang].shortcuts.repository,
+                      label: this.props.locals.shortcuts.repository,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -365,7 +358,7 @@ export default class Shortcuts extends PureComponent<
                       type: 'SEPARATOR',
                     },
                     {
-                      label: locals[this.props.lang].shortcuts.request,
+                      label: this.props.locals.shortcuts.request,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -379,7 +372,7 @@ export default class Shortcuts extends PureComponent<
                       action: () => window.open(requestsUrl, '_blank')?.focus(),
                     },
                     {
-                      label: locals[this.props.lang].shortcuts.feedback,
+                      label: this.props.locals.shortcuts.feedback,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -395,7 +388,7 @@ export default class Shortcuts extends PureComponent<
                       },
                     },
                     {
-                      label: locals[this.props.lang].report.title,
+                      label: this.props.locals.report.title,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -409,7 +402,7 @@ export default class Shortcuts extends PureComponent<
                       action: this.props.onReOpenReport,
                     },
                     {
-                      label: locals[this.props.lang].shortcuts.email,
+                      label: this.props.locals.shortcuts.email,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -427,7 +420,7 @@ export default class Shortcuts extends PureComponent<
                       type: 'SEPARATOR',
                     },
                     {
-                      label: locals[this.props.lang].shortcuts.store,
+                      label: this.props.locals.shortcuts.store,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -441,7 +434,7 @@ export default class Shortcuts extends PureComponent<
                       action: this.props.onReOpenStore,
                     },
                     {
-                      label: locals[this.props.lang].about.title,
+                      label: this.props.locals.about.title,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -455,7 +448,7 @@ export default class Shortcuts extends PureComponent<
                       action: this.props.onReOpenAbout,
                     },
                     {
-                      label: locals[this.props.lang].shortcuts.follow,
+                      label: this.props.locals.shortcuts.follow,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -469,7 +462,7 @@ export default class Shortcuts extends PureComponent<
                       action: () => window.open(networkUrl, '_blank')?.focus(),
                     },
                     {
-                      label: locals[this.props.lang].shortcuts.author,
+                      label: this.props.locals.shortcuts.author,
                       type: 'OPTION',
                       isActive: Shortcuts.features(
                         this.props.planStatus
@@ -485,7 +478,7 @@ export default class Shortcuts extends PureComponent<
                   ]}
                   alignment="TOP_RIGHT"
                   helper={{
-                    label: locals[this.props.lang].shortcuts.tooltips.helpMenu,
+                    label: this.props.locals.shortcuts.tooltips.helpMenu,
                     pin: 'TOP',
                   }}
                   isNew={

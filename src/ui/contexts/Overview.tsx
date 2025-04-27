@@ -16,9 +16,7 @@ import chroma from 'chroma-js'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { uid } from 'uid'
-
 import features from '../../config'
-import { locals } from '../../content/locals'
 import {
   BaseProps,
   ImportUrl,
@@ -151,7 +149,7 @@ export default class Overview extends PureComponent<
         )
           ? {
               type: 'INFO',
-              message: locals[this.props.lang].source.coolors.url.infoMessage,
+              message: this.props.locals.source.coolors.url.infoMessage,
             }
           : state.coolorsUrl.helper,
       },
@@ -176,8 +174,7 @@ export default class Overview extends PureComponent<
         )
           ? {
               type: 'INFO',
-              message:
-                locals[this.props.lang].source.realtimeColors.url.infoMessage,
+              message: this.props.locals.source.realtimeColors.url.infoMessage,
             }
           : state.realtimeColorsUrl.helper,
       },
@@ -237,7 +234,7 @@ export default class Overview extends PureComponent<
           canBeSubmitted: this.state.coolorsUrl.canBeSubmitted,
           helper: {
             type: 'ERROR',
-            message: locals[this.props.lang].source.coolors.url.errorMessage,
+            message: this.props.locals.source.coolors.url.errorMessage,
           },
         },
       })
@@ -297,8 +294,7 @@ export default class Overview extends PureComponent<
           canBeSubmitted: this.state.realtimeColorsUrl.canBeSubmitted,
           helper: {
             type: 'ERROR',
-            message:
-              locals[this.props.lang].source.realtimeColors.url.errorMessage,
+            message: this.props.locals.source.realtimeColors.url.errorMessage,
           },
         },
       })
@@ -312,7 +308,7 @@ export default class Overview extends PureComponent<
           id="watch-swatchs"
           leftPartSlot={
             <SectionTitle
-              label={locals[this.props.lang].source.canvas.title}
+              label={this.props.locals.source.canvas.title}
               indicator={
                 this.props.sourceColors.filter(
                   (sourceColor) => sourceColor.source === 'CANVAS'
@@ -332,16 +328,14 @@ export default class Overview extends PureComponent<
           >
             <SemanticMessage
               type="INFO"
-              message={locals[
-                this.props.lang
-              ].info.maxNumberOfSourceColors.replace(
+              message={this.props.locals.info.maxNumberOfSourceColors.replace(
                 '$1',
                 Overview.features(this.props.planStatus).SOURCE.limit
               )}
               actionsSlot={
                 <Button
                   type="secondary"
-                  label={locals[this.props.lang].plan.getPro}
+                  label={this.props.locals.plan.getPro}
                   action={() =>
                     parent.postMessage(
                       { pluginMessage: { type: 'GET_PRO_PLAN' } },
@@ -385,7 +379,7 @@ export default class Overview extends PureComponent<
         ) : (
           <Message
             icon="info"
-            messages={[locals[this.props.lang].source.canvas.tip]}
+            messages={[this.props.locals.source.canvas.tip]}
           />
         )}
       </>
@@ -396,14 +390,14 @@ export default class Overview extends PureComponent<
     return (
       <>
         <Accordion
-          label={locals[this.props.lang].source.coolors.title}
+          label={this.props.locals.source.coolors.title}
           indicator={this.props.sourceColors
             .filter((sourceColor) => sourceColor.source === 'COOLORS')
             .length.toString()}
-          helper={locals[this.props.lang].source.coolors.helper}
+          helper={this.props.locals.source.coolors.helper}
           helpers={{
-            add: locals[this.props.lang].source.coolors.add,
-            empty: locals[this.props.lang].source.coolors.empty,
+            add: this.props.locals.source.coolors.add,
+            empty: this.props.locals.source.coolors.empty,
           }}
           isExpanded={this.state.isCoolorsImportOpen}
           isBlocked={Overview.features(
@@ -437,9 +431,7 @@ export default class Overview extends PureComponent<
                 id="update-coolors-url"
                 type="TEXT"
                 state={this.state.coolorsUrl.state}
-                placeholder={
-                  locals[this.props.lang].source.coolors.url.placeholder
-                }
+                placeholder={this.props.locals.source.coolors.url.placeholder}
                 value={this.state.coolorsUrl.value}
                 isAutoFocus
                 onChange={this.isTypingCoolorsUrlHandler}
@@ -479,14 +471,14 @@ export default class Overview extends PureComponent<
     return (
       <>
         <Accordion
-          label={locals[this.props.lang].source.realtimeColors.title}
+          label={this.props.locals.source.realtimeColors.title}
           indicator={this.props.sourceColors
             .filter((sourceColor) => sourceColor.source === 'REALTIME_COLORS')
             .length.toString()}
-          helper={locals[this.props.lang].source.realtimeColors.helper}
+          helper={this.props.locals.source.realtimeColors.helper}
           helpers={{
-            add: locals[this.props.lang].source.realtimeColors.add,
-            empty: locals[this.props.lang].source.realtimeColors.empty,
+            add: this.props.locals.source.realtimeColors.add,
+            empty: this.props.locals.source.realtimeColors.empty,
           }}
           isExpanded={this.state.isRealtimeColorsImportOpen}
           isBlocked={Overview.features(
@@ -521,7 +513,7 @@ export default class Overview extends PureComponent<
                 type="TEXT"
                 state={this.state.realtimeColorsUrl.state}
                 placeholder={
-                  locals[this.props.lang].source.realtimeColors.url.placeholder
+                  this.props.locals.source.realtimeColors.url.placeholder
                 }
                 value={this.state.realtimeColorsUrl.value}
                 isAutoFocus
@@ -562,15 +554,15 @@ export default class Overview extends PureComponent<
     return (
       <>
         <Accordion
-          label={locals[this.props.lang].source.colourLovers.title}
+          label={this.props.locals.source.colourLovers.title}
           indicator={this.props.sourceColors
             .filter((sourceColor) => sourceColor.source === 'COLOUR_LOVERS')
             .length.toString()}
           icon="adjust"
-          helper={locals[this.props.lang].source.colourLovers.helper}
+          helper={this.props.locals.source.colourLovers.helper}
           helpers={{
-            add: locals[this.props.lang].source.colourLovers.add,
-            empty: locals[this.props.lang].source.colourLovers.empty,
+            add: this.props.locals.source.colourLovers.add,
+            empty: this.props.locals.source.colourLovers.empty,
           }}
           isExpanded={this.state.isColourLoversImportOpen}
           isBlocked={Overview.features(

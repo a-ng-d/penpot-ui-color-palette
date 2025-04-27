@@ -3,9 +3,8 @@ import { doClassnames, doMap, FeatureStatus } from '@a_ng_d/figmug-utils'
 import { Component } from 'preact/compat'
 import React from 'react'
 import features from '../../config'
-import { locals } from '../../content/locals'
 import { $palette } from '../../stores/palette'
-import { Easing, Language, PlanStatus, Service } from '../../types/app'
+import { BaseProps, Easing, PlanStatus, Service } from '../../types/app'
 import { ScaleConfiguration } from '../../types/configurations'
 import doLightnessScale from '../../utils/doLightnessScale'
 import addStop from './../handlers/addStop'
@@ -13,7 +12,7 @@ import deleteStop from './../handlers/deleteStop'
 import shiftLeftStop from './../handlers/shiftLeftStop'
 import shiftRightStop from './../handlers/shiftRightStop'
 
-interface SliderProps {
+interface SliderProps extends BaseProps {
   service: Service
   stops: Array<number>
   presetName: string
@@ -26,8 +25,6 @@ interface SliderProps {
     min: string
     max: string
   }
-  planStatus: PlanStatus
-  lang: Language
   onChange: (state: string, feature?: string) => void
 }
 
@@ -381,8 +378,7 @@ export default class Slider extends Component<SliderProps, SliderStates> {
               helper={
                 index === 0 || index === original.length - 1
                   ? {
-                      label:
-                        locals[this.props.lang].scale.tips.distributeAsTooltip,
+                      label: this.props.locals.scale.tips.distributeAsTooltip,
                       type: 'MULTI_LINE',
                     }
                   : undefined
@@ -454,8 +450,7 @@ export default class Slider extends Component<SliderProps, SliderStates> {
               helper={
                 index === 0 || index === original.length - 1
                   ? {
-                      label:
-                        locals[this.props.lang].scale.tips.distributeAsTooltip,
+                      label: this.props.locals.scale.tips.distributeAsTooltip,
                       type: 'MULTI_LINE',
                     }
                   : undefined

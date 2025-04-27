@@ -16,9 +16,7 @@ import chroma from 'chroma-js'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { uid } from 'uid'
-
 import features from '../../config'
-import { locals } from '../../content/locals'
 import { $canPaletteDeepSync } from '../../stores/preferences'
 import { BaseProps, PlanStatus, PriorityContext } from '../../types/app'
 import {
@@ -126,12 +124,12 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
 
     const addColor = () => {
       const hasAlreadyNewUIColor = this.props.colors.filter((color) =>
-        color.name.includes(locals[this.props.lang].colors.new)
+        color.name.includes(this.props.locals.colors.new)
       )
 
       this.colorsMessage.data = this.props.colors
       this.colorsMessage.data.push({
-        name: `${locals[this.props.lang].colors.new} ${hasAlreadyNewUIColor.length + 1}`,
+        name: `${this.props.locals.colors.new} ${hasAlreadyNewUIColor.length + 1}`,
         description: '',
         rgb: {
           r: 0.53,
@@ -554,7 +552,7 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                   id="add-color"
                   leftPartSlot={
                     <SectionTitle
-                      label={locals[this.props.lang].colors.title}
+                      label={this.props.locals.colors.title}
                       indicator={this.props.colors.length.toString()}
                     />
                   }
@@ -564,7 +562,7 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                       icon="plus"
                       feature="ADD_COLOR"
                       helper={{
-                        label: locals[this.props.lang].colors.new,
+                        label: this.props.locals.colors.new,
                       }}
                       isBlocked={Colors.features(
                         this.props.planStatus
@@ -584,16 +582,14 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                   >
                     <SemanticMessage
                       type="INFO"
-                      message={locals[
-                        this.props.lang
-                      ].info.maxNumberOfSourceColors.replace(
+                      message={this.props.locals.info.maxNumberOfSourceColors.replace(
                         '$1',
                         Colors.features(this.props.planStatus).COLORS.limit
                       )}
                       actionsSlot={
                         <Button
                           type="secondary"
-                          label={locals[this.props.lang].plan.getPro}
+                          label={this.props.locals.plan.getPro}
                           action={() =>
                             parent.postMessage(
                               { pluginMessage: { type: 'GET_PRO_PLAN' } },
@@ -609,13 +605,13 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                   <div className={layouts.centered}>
                     <SemanticMessage
                       type="NEUTRAL"
-                      message={locals[this.props.lang].colors.callout.message}
+                      message={this.props.locals.colors.callout.message}
                       orientation="VERTICAL"
                       actionsSlot={
                         <Button
                           type="primary"
                           feature="ADD_COLOR"
-                          label={locals[this.props.lang].colors.callout.cta}
+                          label={this.props.locals.colors.callout.cta}
                           action={(e: Event) => this.colorsHandler(e)}
                         />
                       }
@@ -732,9 +728,10 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                       ]).lch()
 
                       return {
-                        title: locals[
-                          this.props.lang
-                        ].colors.moreParameters.replace('$1', color.name),
+                        title: this.props.locals.colors.moreParameters.replace(
+                          '$1',
+                          color.name
+                        ),
                         node: (() => (
                           <>
                             <Feature
@@ -744,7 +741,7 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                             >
                               <FormItem
                                 id="shift-lch"
-                                label={locals[this.props.lang].colors.lch.label}
+                                label={this.props.locals.colors.lch.label}
                                 isBlocked={Colors.features(
                                   this.props.planStatus
                                 ).COLORS_PARAMS.isBlocked()}
@@ -802,8 +799,8 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                                 <FormItem
                                   id="shift-chroma"
                                   label={
-                                    locals[this.props.lang].colors
-                                      .chromaShifting.label
+                                    this.props.locals.colors.chromaShifting
+                                      .label
                                   }
                                   isBlocked={Colors.features(
                                     this.props.planStatus
@@ -856,8 +853,7 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                                 <FormItem
                                   id="update-color-description"
                                   label={
-                                    locals[this.props.lang].global.description
-                                      .label
+                                    this.props.locals.global.description.label
                                   }
                                   isBlocked={Colors.features(
                                     this.props.planStatus
@@ -868,7 +864,7 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                                     type="LONG_TEXT"
                                     value={color.description}
                                     placeholder={
-                                      locals[this.props.lang].global.description
+                                      this.props.locals.global.description
                                         .placeholder
                                     }
                                     feature="UPDATE_DESCRIPTION"
@@ -889,10 +885,8 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                       }
                     })}
                     helpers={{
-                      remove:
-                        locals[this.props.lang].colors.actions.removeColor,
-                      more: locals[this.props.lang].colors.actions
-                        .moreParameters,
+                      remove: this.props.locals.colors.actions.removeColor,
+                      more: this.props.locals.colors.actions.moreParameters,
                     }}
                     isScrollable
                     isTopBorderEnabled

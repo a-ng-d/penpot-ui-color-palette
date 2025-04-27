@@ -2,7 +2,6 @@ import { Bar, Tabs } from '@a_ng_d/figmug-ui'
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-
 import features from '../../config'
 import {
   BaseProps,

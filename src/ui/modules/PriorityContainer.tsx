@@ -10,14 +10,12 @@ import {
 import * as Sentry from '@sentry/browser'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import features, { isbUrl } from '../../config'
 import cp from '../../content/images/choose_plan.webp'
 import isb from '../../content/images/isb_product_thumbnail.webp'
 import pp from '../../content/images/pro_plan.webp'
 import t from '../../content/images/trial.webp'
-import { locals } from '../../content/locals'
 import {
   BaseProps,
   HighlightDigest,
@@ -125,7 +123,7 @@ export default class PriorityContainer extends PureComponent<
           {
             pluginMessage: {
               type: 'SEND_MESSAGE',
-              message: locals[this.props.lang].success.report,
+              message: this.props.locals.success.report,
             },
           },
           '*'
@@ -137,7 +135,7 @@ export default class PriorityContainer extends PureComponent<
           {
             pluginMessage: {
               type: 'SEND_MESSAGE',
-              message: locals[this.props.lang].error.generic,
+              message: this.props.locals.error.generic,
             },
           },
           '*'
@@ -220,10 +218,10 @@ export default class PriorityContainer extends PureComponent<
         ).GET_PRO_PLAN.isActive()}
       >
         <Dialog
-          title={locals[this.props.lang].proPlan.trial.title}
+          title={this.props.locals.proPlan.trial.title}
           actions={{
             primary: {
-              label: locals[this.props.lang].proPlan.trial.cta,
+              label: this.props.locals.proPlan.trial.cta,
               action: () =>
                 parent.postMessage(
                   { pluginMessage: { type: 'ENABLE_TRIAL' } },
@@ -231,7 +229,7 @@ export default class PriorityContainer extends PureComponent<
                 ),
             },
             secondary: {
-              label: locals[this.props.lang].proPlan.trial.option,
+              label: this.props.locals.proPlan.trial.option,
               action: () =>
                 parent.postMessage(
                   { pluginMessage: { type: 'GET_PRO_PLAN' } },
@@ -251,7 +249,7 @@ export default class PriorityContainer extends PureComponent<
           </div>
           <div className="dialog__text">
             <p className={texts.type}>
-              {locals[this.props.lang].proPlan.trial.message}
+              {this.props.locals.proPlan.trial.message}
             </p>
           </div>
         </Dialog>
@@ -267,10 +265,10 @@ export default class PriorityContainer extends PureComponent<
         ).GET_PRO_PLAN.isActive()}
       >
         <Dialog
-          title={locals[this.props.lang].proPlan.welcome.title}
+          title={this.props.locals.proPlan.welcome.title}
           actions={{
             primary: {
-              label: locals[this.props.lang].proPlan.welcome.cta,
+              label: this.props.locals.proPlan.welcome.cta,
               action: this.props.onClose,
             },
           }}
@@ -286,7 +284,7 @@ export default class PriorityContainer extends PureComponent<
           </div>
           <div className="dialog__text">
             <p className={texts.type}>
-              {locals[this.props.lang].proPlan.welcome.trial}
+              {this.props.locals.proPlan.welcome.trial}
             </p>
           </div>
         </Dialog>
@@ -302,10 +300,10 @@ export default class PriorityContainer extends PureComponent<
         ).GET_PRO_PLAN.isActive()}
       >
         <Dialog
-          title={locals[this.props.lang].proPlan.welcome.title}
+          title={this.props.locals.proPlan.welcome.title}
           actions={{
             primary: {
-              label: locals[this.props.lang].proPlan.welcome.cta,
+              label: this.props.locals.proPlan.welcome.cta,
               action: this.props.onClose,
             },
           }}
@@ -321,7 +319,7 @@ export default class PriorityContainer extends PureComponent<
           </div>
           <div className="dialog__text">
             <p className={texts.type}>
-              {locals[this.props.lang].proPlan.welcome.message}
+              {this.props.locals.proPlan.welcome.message}
             </p>
           </div>
         </Dialog>
@@ -337,10 +335,10 @@ export default class PriorityContainer extends PureComponent<
         ).REPORT.isActive()}
       >
         <Dialog
-          title={locals[this.props.lang].report.title}
+          title={this.props.locals.report.title}
           actions={{
             primary: {
-              label: locals[this.props.lang].report.cta,
+              label: this.props.locals.report.cta,
               state: (() => {
                 if (this.state.userMessage === '') return 'DISABLED'
                 if (this.state.isPrimaryActionLoading) return 'LOADING'
@@ -355,7 +353,7 @@ export default class PriorityContainer extends PureComponent<
           <div className="dialog__form">
             <div className="dialog__form__item">
               <FormItem
-                label={locals[this.props.lang].report.fullName.label}
+                label={this.props.locals.report.fullName.label}
                 id="type-fullname"
                 shouldFill
               >
@@ -364,9 +362,7 @@ export default class PriorityContainer extends PureComponent<
                   id="type-fullname"
                   value={this.state.userFullName}
                   isAutoFocus
-                  placeholder={
-                    locals[this.props.lang].report.fullName.placeholder
-                  }
+                  placeholder={this.props.locals.report.fullName.placeholder}
                   onChange={(e) =>
                     this.setState({
                       userFullName: (e.target as HTMLInputElement).value,
@@ -377,7 +373,7 @@ export default class PriorityContainer extends PureComponent<
             </div>
             <div className="dialog__form__item">
               <FormItem
-                label={locals[this.props.lang].report.email.label}
+                label={this.props.locals.report.email.label}
                 id="type-email"
                 shouldFill
               >
@@ -385,7 +381,7 @@ export default class PriorityContainer extends PureComponent<
                   type="TEXT"
                   id="type-email"
                   value={this.state.userEmail}
-                  placeholder={locals[this.props.lang].report.email.placeholder}
+                  placeholder={this.props.locals.report.email.placeholder}
                   onChange={(e) =>
                     this.setState({
                       userEmail: (e.target as HTMLInputElement).value,
@@ -396,16 +392,14 @@ export default class PriorityContainer extends PureComponent<
             </div>
             <div className="dialog__form__item">
               <FormItem
-                label={locals[this.props.lang].report.message.label}
+                label={this.props.locals.report.message.label}
                 id="type-message"
                 shouldFill
               >
                 <Input
                   type="LONG_TEXT"
                   id="type-message"
-                  placeholder={
-                    locals[this.props.lang].report.message.placeholder
-                  }
+                  placeholder={this.props.locals.report.message.placeholder}
                   value={this.state.userMessage}
                   isGrowing
                   onChange={(e) =>
@@ -430,18 +424,18 @@ export default class PriorityContainer extends PureComponent<
         ).SHORTCUTS_STORE.isActive()}
       >
         <Dialog
-          title={locals[this.props.lang].store.title}
+          title={this.props.locals.store.title}
           pin="RIGHT"
           onClose={this.props.onClose}
         >
           <List padding="var(--size-xsmall)">
             <Card
               src={isb}
-              label={locals[this.props.lang].store.isb.label}
+              label={this.props.locals.store.isb.label}
             >
               <Button
                 type="primary"
-                label={locals[this.props.lang].store.isb.cta}
+                label={this.props.locals.store.isb.cta}
                 action={() => {
                   window.open(isbUrl, '_blank')?.focus()
                 }}
@@ -461,7 +455,7 @@ export default class PriorityContainer extends PureComponent<
         ).SHORTCUTS_ABOUT.isActive()}
       >
         <Dialog
-          title={locals[this.props.lang].about.title}
+          title={this.props.locals.about.title}
           onClose={this.props.onClose}
         >
           <About {...this.props} />

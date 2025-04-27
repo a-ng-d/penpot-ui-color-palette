@@ -11,9 +11,7 @@ import {
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-
 import features from '../../config'
-import { locals } from '../../content/locals'
 import { BaseProps, PlanStatus } from '../../types/app'
 import { ColorSpaceConfiguration } from '../../types/configurations'
 import { ActionsList } from '../../types/models'
@@ -211,11 +209,11 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
             selected: 'RGB',
             options: [
               {
-                label: locals[this.props.lang].export.colorSpace.label,
+                label: this.props.locals.export.colorSpace.label,
                 type: 'TITLE',
               },
               {
-                label: locals[this.props.lang].export.colorSpace.rgb,
+                label: this.props.locals.export.colorSpace.rgb,
                 value: 'EXPORT_CSS_RGB',
                 feature: 'SELECT_COLOR_SPACE',
                 type: 'OPTION',
@@ -231,7 +229,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                 action: this.exportHandler,
               },
               {
-                label: locals[this.props.lang].export.colorSpace.hex,
+                label: this.props.locals.export.colorSpace.hex,
                 value: 'EXPORT_CSS_HEX',
                 feature: 'SELECT_COLOR_SPACE',
                 type: 'OPTION',
@@ -247,7 +245,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                 action: this.exportHandler,
               },
               {
-                label: locals[this.props.lang].export.colorSpace.hsl,
+                label: this.props.locals.export.colorSpace.hsl,
                 value: 'EXPORT_CSS_HSL',
                 feature: 'SELECT_COLOR_SPACE',
                 type: 'OPTION',
@@ -263,7 +261,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                 action: this.exportHandler,
               },
               {
-                label: locals[this.props.lang].export.colorSpace.lch,
+                label: this.props.locals.export.colorSpace.lch,
                 value: 'EXPORT_CSS_LCH',
                 feature: 'SELECT_COLOR_SPACE',
                 type: 'OPTION',
@@ -279,7 +277,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                 action: this.exportHandler,
               },
               {
-                label: locals[this.props.lang].export.colorSpace.p3,
+                label: this.props.locals.export.colorSpace.p3,
                 value: 'EXPORT_CSS_P3',
                 feature: 'SELECT_COLOR_SPACE',
                 type: 'OPTION',
@@ -537,7 +535,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                     id="export-palette"
                     leftPartSlot={
                       <SectionTitle
-                        label={locals[this.props.lang].export.format}
+                        label={this.props.locals.export.format}
                         indicator="10"
                       />
                     }
@@ -547,8 +545,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                           id="select-format"
                           options={[
                             {
-                              label:
-                                locals[this.props.lang].export.tokens.label,
+                              label: this.props.locals.export.tokens.label,
                               value: 'TOKENS_GROUP',
                               feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
@@ -563,9 +560,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                               ).EXPORT_TOKENS.isNew(),
                               children: [
                                 {
-                                  label:
-                                    locals[this.props.lang].export.tokens
-                                      .global,
+                                  label: this.props.locals.export.tokens.global,
                                   value: 'EXPORT_TOKENS_GLOBAL',
                                   feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
@@ -582,7 +577,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                 },
                                 {
                                   label:
-                                    locals[this.props.lang].export.tokens
+                                    this.props.locals.export.tokens
                                       .amznStyleDictionary,
                                   value: 'EXPORT_TOKENS_AMZN_STYLE_DICTIONARY',
                                   feature: 'SELECT_EXPORT_FILE',
@@ -600,7 +595,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                 },
                                 {
                                   label:
-                                    locals[this.props.lang].export.tokens
+                                    this.props.locals.export.tokens
                                       .tokensStudio,
                                   value: 'EXPORT_TOKENS_TOKENS_STUDIO',
                                   feature: 'SELECT_EXPORT_FILE',
@@ -621,8 +616,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                             },
                             {
                               label:
-                                locals[this.props.lang].export.css
-                                  .customProperties,
+                                this.props.locals.export.css.customProperties,
                               value: 'EXPORT_CSS',
                               feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
@@ -638,8 +632,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                               action: this.exportHandler,
                             },
                             {
-                              label:
-                                locals[this.props.lang].export.tailwind.config,
+                              label: this.props.locals.export.tailwind.config,
                               value: 'EXPORT_TAILWIND',
                               feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
@@ -655,7 +648,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                               action: this.exportHandler,
                             },
                             {
-                              label: locals[this.props.lang].export.apple.label,
+                              label: this.props.locals.export.apple.label,
                               value: 'APPLE_GROUP',
                               feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
@@ -670,9 +663,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                               ).EXPORT_APPLE.isNew(),
                               children: [
                                 {
-                                  label:
-                                    locals[this.props.lang].export.apple
-                                      .swiftui,
+                                  label: this.props.locals.export.apple.swiftui,
                                   value: 'EXPORT_APPLE_SWIFTUI',
                                   feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
@@ -688,8 +679,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                   action: this.exportHandler,
                                 },
                                 {
-                                  label:
-                                    locals[this.props.lang].export.apple.uikit,
+                                  label: this.props.locals.export.apple.uikit,
                                   value: 'EXPORT_APPLE_UIKIT',
                                   feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
@@ -708,8 +698,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                               action: this.exportHandler,
                             },
                             {
-                              label:
-                                locals[this.props.lang].export.android.label,
+                              label: this.props.locals.export.android.label,
                               value: 'ANDROID_GROUP',
                               feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
@@ -725,8 +714,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                               children: [
                                 {
                                   label:
-                                    locals[this.props.lang].export.android
-                                      .compose,
+                                    this.props.locals.export.android.compose,
                                   value: 'EXPORT_ANDROID_COMPOSE',
                                   feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
@@ -743,8 +731,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                 },
                                 {
                                   label:
-                                    locals[this.props.lang].export.android
-                                      .resources,
+                                    this.props.locals.export.android.resources,
                                   value: 'EXPORT_ANDROID_XML',
                                   feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
@@ -763,8 +750,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                               action: this.exportHandler,
                             },
                             {
-                              label:
-                                locals[this.props.lang].export.csv.spreadsheet,
+                              label: this.props.locals.export.csv.spreadsheet,
                               value: 'EXPORT_CSV',
                               feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
@@ -793,8 +779,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                             alignment="BOTTOM_RIGHT"
                             helper={{
                               label:
-                                locals[this.props.lang].export.css
-                                  .selectColorSpace,
+                                this.props.locals.export.css.selectColorSpace,
                             }}
                           />
                         )}

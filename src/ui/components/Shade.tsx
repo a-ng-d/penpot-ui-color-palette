@@ -3,8 +3,7 @@ import { PureComponent } from 'preact/compat'
 import React from 'react'
 
 import { Chip, ColorChip, HexModel, Icon } from '@a_ng_d/figmug-ui'
-import { locals } from '../../content/locals'
-import { Language } from '../../types/app'
+import { BaseProps } from '../../types/app'
 import {
   ColorConfiguration,
   LockedSourceColorsConfiguration,
@@ -15,7 +14,7 @@ import { TextColorsThemeHexModel } from '../../types/models'
 import Color from '../../utils/Color'
 import Contrast from '../../utils/Contrast'
 
-interface ShadeProps {
+interface ShadeProps extends BaseProps {
   index: number
   color: HexModel
   sourceColor: SourceColorConfiguration | ColorConfiguration
@@ -25,7 +24,6 @@ interface ShadeProps {
   areSourceColorsLocked: LockedSourceColorsConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
   textColorsTheme: TextColorsThemeHexModel
-  lang: Language
 }
 
 interface ShadeStates {
@@ -135,7 +133,7 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
         </div>
       }
     >
-      {locals[this.props.lang].preview.lock.tag}
+      {this.props.locals.preview.lock.tag}
     </Chip>
   )
 
@@ -160,7 +158,7 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
         </div>
       }
     >
-      {locals[this.props.lang].preview.closest.tag}
+      {this.props.locals.preview.closest.tag}
     </Chip>
   )
 

@@ -2,7 +2,6 @@ import { Bar, HexModel, Layout, Tabs } from '@a_ng_d/figmug-ui'
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-
 import features, { algorithmVersion } from '../../config'
 import { $palette } from '../../stores/palette'
 import { $canPaletteDeepSync } from '../../stores/preferences'

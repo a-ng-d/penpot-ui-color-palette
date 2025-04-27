@@ -13,9 +13,7 @@ import {
 import { doClassnames, FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-
 import features from '../../config'
-import { locals } from '../../content/locals'
 import { $palette } from '../../stores/palette'
 import { BaseProps, PlanStatus, Service } from '../../types/app'
 import {
@@ -58,7 +56,10 @@ interface ActionsStates {
   canUpdateDocument: boolean
 }
 
-export default class Actions extends PureComponent<ActionsProps, ActionsStates> {
+export default class Actions extends PureComponent<
+  ActionsProps,
+  ActionsStates
+> {
   private palette: typeof $palette
 
   static defaultProps = {
@@ -319,7 +320,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
             <Input
               id="update-palette-name"
               type="TEXT"
-              placeholder={locals[this.props.lang].name}
+              placeholder={this.props.locals.name}
               value={this.props.name !== '' ? this.props.name : ''}
               charactersLimit={64}
               isBlocked={Actions.features(
@@ -339,19 +340,15 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
                 texts['type--secondary'],
               ])}
             >
-              {locals[this.props.lang].separator}
+              {this.props.locals.separator}
             </span>
             <div className={texts.type}>
               {this.props.sourceColors.length > 1
-                ? locals[
-                    this.props.lang
-                  ].actions.sourceColorsNumber.several.replace(
+                ? this.props.locals.actions.sourceColorsNumber.several.replace(
                     '$1',
                     this.props.sourceColors.length
                   )
-                : locals[
-                    this.props.lang
-                  ].actions.sourceColorsNumber.single.replace(
+                : this.props.locals.actions.sourceColorsNumber.single.replace(
                     '$1',
                     this.props.sourceColors.length
                   )}
@@ -380,9 +377,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
                 />
                 {this.state.isTooltipVisible && (
                   <Tooltip>
-                    {locals[
-                      this.props.lang
-                    ].info.maxNumberOfSourceColors.replace(
+                    {this.props.locals.info.maxNumberOfSourceColors.replace(
                       '$1',
                       Actions.features(this.props.planStatus).SOURCE.limit
                     )}
@@ -400,7 +395,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
           >
             <Button
               type="primary"
-              label={locals[this.props.lang].actions.createPalette}
+              label={this.props.locals.actions.createPalette}
               feature="CREATE_PALETTE"
               isDisabled={this.props.sourceColors.length === 0}
               isBlocked={
@@ -432,7 +427,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
             <Input
               id="update-palette-name"
               type="TEXT"
-              placeholder={locals[this.props.lang].name}
+              placeholder={this.props.locals.name}
               value={this.props.name !== '' ? this.props.name : ''}
               charactersLimit={64}
               isBlocked={Actions.features(
@@ -452,8 +447,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
                   id="views"
                   options={[
                     {
-                      label:
-                        locals[this.props.lang].settings.global.views.detailed,
+                      label: this.props.locals.settings.global.views.detailed,
                       value: 'PALETTE_WITH_PROPERTIES',
                       type: 'OPTION',
                       isActive: Actions.features(
@@ -468,8 +462,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
                       action: this.onChangeView,
                     },
                     {
-                      label:
-                        locals[this.props.lang].settings.global.views.simple,
+                      label: this.props.locals.settings.global.views.simple,
                       value: 'PALETTE',
                       type: 'OPTION',
                       isActive: Actions.features(
@@ -484,8 +477,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
                       action: this.onChangeView,
                     },
                     {
-                      label:
-                        locals[this.props.lang].settings.global.views.sheet,
+                      label: this.props.locals.settings.global.views.sheet,
                       value: 'SHEET',
                       type: 'OPTION',
                       isActive: Actions.features(
@@ -526,7 +518,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
             >
               <Button
                 type="primary"
-                label={locals[this.props.lang].actions.createLocalStyles}
+                label={this.props.locals.actions.createLocalStyles}
                 isBlocked={Actions.features(
                   this.props.planStatus ?? 'UNPAID'
                 ).SYNC_LOCAL_STYLES.isBlocked()}

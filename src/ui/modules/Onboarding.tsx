@@ -2,7 +2,6 @@ import { Dialog, Icon, SemanticMessage, texts } from '@a_ng_d/figmug-ui'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { announcementsWorkerUrl } from '../../config'
-import { locals } from '../../content/locals'
 import { BaseProps } from '../../types/app'
 
 interface OnboardingProps extends BaseProps {
@@ -90,7 +89,7 @@ export default class Onboarding extends PureComponent<
     if (this.state.status === 'LOADING')
       return (
         <Dialog
-          title={locals[this.props.lang].pending.onboarding}
+          title={this.props.locals.pending.onboarding}
           isLoading
           onClose={this.props.onCloseOnboarding}
         />
@@ -98,13 +97,13 @@ export default class Onboarding extends PureComponent<
     else if (this.state.status === 'ERROR')
       return (
         <Dialog
-          title={locals[this.props.lang].error.generic}
+          title={this.props.locals.error.generic}
           isMessage
           onClose={this.props.onCloseOnboarding}
         >
           <SemanticMessage
             type="WARNING"
-            message={locals[this.props.lang].error.onboarding}
+            message={this.props.locals.error.onboarding}
           />
         </Dialog>
       )
@@ -123,8 +122,8 @@ export default class Onboarding extends PureComponent<
             primary: {
               label:
                 this.state.position + 1 < this.state.announcements.length
-                  ? locals[this.props.lang].onboarding.cta.next
-                  : locals[this.props.lang].onboarding.cta.gotIt,
+                  ? this.props.locals.onboarding.cta.next
+                  : this.props.locals.onboarding.cta.gotIt,
               action: (e: MouseEvent) => this.goNextSlide(e),
             },
             secondary: (() => {
@@ -133,7 +132,7 @@ export default class Onboarding extends PureComponent<
                   .url !== null
               )
                 return {
-                  label: locals[this.props.lang].onboarding.cta.learnMore,
+                  label: this.props.locals.onboarding.cta.learnMore,
                   action: () =>
                     window
                       .open(

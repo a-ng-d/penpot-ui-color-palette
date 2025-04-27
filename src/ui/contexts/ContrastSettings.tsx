@@ -9,9 +9,7 @@ import {
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-
 import features from '../../config'
-import { locals } from '../../content/locals'
 import { BaseProps, PlanStatus } from '../../types/app'
 import { TextColorsThemeHexModel } from '../../types/models'
 import Feature from '../components/Feature'
@@ -49,9 +47,7 @@ export default class ContrastSettings extends PureComponent<ContrastSettingsProp
       >
         <FormItem
           id="update-text-light-color"
-          label={
-            locals[this.props.lang].settings.contrast.textColors.textLightColor
-          }
+          label={this.props.locals.settings.contrast.textColors.textLightColor}
           isBlocked={ContrastSettings.features(
             this.props.planStatus
           ).SETTINGS_TEXT_COLORS_THEME.isBlocked()}
@@ -85,9 +81,7 @@ export default class ContrastSettings extends PureComponent<ContrastSettingsProp
       >
         <FormItem
           id="update-text-dark-color"
-          label={
-            locals[this.props.lang].settings.contrast.textColors.textDarkColor
-          }
+          label={this.props.locals.settings.contrast.textColors.textDarkColor}
           isBlocked={ContrastSettings.features(
             this.props.planStatus
           ).SETTINGS_TEXT_COLORS_THEME.isBlocked()}
@@ -119,9 +113,7 @@ export default class ContrastSettings extends PureComponent<ContrastSettingsProp
         title={
           <SimpleItem
             leftPartSlot={
-              <SectionTitle
-                label={locals[this.props.lang].settings.contrast.title}
-              />
+              <SectionTitle label={this.props.locals.settings.contrast.title} />
             }
             isListItem={false}
             alignment="CENTER"
@@ -139,7 +131,7 @@ export default class ContrastSettings extends PureComponent<ContrastSettingsProp
               <SemanticMessage
                 type="INFO"
                 message={
-                  locals[this.props.lang].settings.contrast.textColors
+                  this.props.locals.settings.contrast.textColors
                     .textThemeColorsDescription
                 }
               />

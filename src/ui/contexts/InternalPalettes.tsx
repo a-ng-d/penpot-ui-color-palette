@@ -8,12 +8,10 @@ import {
 } from '@a_ng_d/figmug-ui'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { createPortal } from 'react-dom'
 import { FullConfiguration } from 'src/types/configurations'
 import features from '../../config'
-import { locals } from '../../content/locals'
 import { BaseProps, PlanStatus } from '../../types/app'
 import { ActionsList } from '../../types/models'
 import setPaletteMeta from '../../utils/setPaletteMeta'
@@ -121,17 +119,15 @@ export default class InternalPalettes extends PureComponent<
           {document.getElementById('modal') &&
             createPortal(
               <Dialog
-                title={locals[this.props.lang].browse.deletePaletteDialog.title}
+                title={this.props.locals.browse.deletePaletteDialog.title}
                 actions={{
                   destructive: {
-                    label:
-                      locals[this.props.lang].browse.deletePaletteDialog.delete,
+                    label: this.props.locals.browse.deletePaletteDialog.delete,
                     feature: 'DELETE_PALETTE',
                     action: this.onDeletePalette,
                   },
                   secondary: {
-                    label:
-                      locals[this.props.lang].browse.deletePaletteDialog.cancel,
+                    label: this.props.locals.browse.deletePaletteDialog.cancel,
                     action: () =>
                       this.setState({
                         isDeleteDialogOpen: false,
@@ -150,9 +146,7 @@ export default class InternalPalettes extends PureComponent<
               >
                 <div className="dialog__text">
                   <p className={texts.type}>
-                    {locals[
-                      this.props.lang
-                    ].browse.deletePaletteDialog.message.replace(
+                    {this.props.locals.browse.deletePaletteDialog.message.replace(
                       '$1',
                       this.state.targetedPaletteName
                     )}
@@ -191,7 +185,7 @@ export default class InternalPalettes extends PureComponent<
                     key={`palette-${index}`}
                     name={
                       palette.base.name === ''
-                        ? locals[this.props.lang].name
+                        ? this.props.locals.name
                         : palette.base.name
                     }
                     description={palette.base.preset.name}
@@ -206,8 +200,7 @@ export default class InternalPalettes extends PureComponent<
                           icon="trash"
                           helper={{
                             label:
-                              locals[this.props.lang].browse.actions
-                                .deletePalette,
+                              this.props.locals.browse.actions.deletePalette,
                           }}
                           action={() =>
                             this.setState({
@@ -219,9 +212,7 @@ export default class InternalPalettes extends PureComponent<
                         />
                         <Button
                           type="secondary"
-                          label={
-                            locals[this.props.lang].browse.actions.editPalette
-                          }
+                          label={this.props.locals.browse.actions.editPalette}
                           action={() => this.onEditPalette(palette.meta.id)}
                         />
                       </>
@@ -256,7 +247,7 @@ export default class InternalPalettes extends PureComponent<
         {this.state.paletteListsStatus === 'EMPTY' && (
           <SemanticMessage
             type="NEUTRAL"
-            message={`${locals[this.props.lang].warning.noPaletteOnCurrrentPage}`}
+            message={`${this.props.locals.warning.noPaletteOnCurrrentPage}`}
           />
         )}
       </List>

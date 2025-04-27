@@ -8,9 +8,7 @@ import {
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-
 import features from '../../config'
-import { locals } from '../../content/locals'
 import { BaseProps, PlanStatus } from '../../types/app'
 import Feature from '../components/Feature'
 
@@ -52,7 +50,7 @@ export default class GlobalSettings extends PureComponent<GlobalSettingsProps> {
         ).SETTINGS_NAME.isActive()}
       >
         <FormItem
-          label={locals[this.props.lang].settings.global.name.label}
+          label={this.props.locals.settings.global.name.label}
           id="update-palette-name"
           isBlocked={GlobalSettings.features(
             this.props.planStatus
@@ -61,7 +59,7 @@ export default class GlobalSettings extends PureComponent<GlobalSettingsProps> {
           <Input
             id="update-palette-name"
             type="TEXT"
-            placeholder={locals[this.props.lang].name}
+            placeholder={this.props.locals.name}
             value={this.props.name !== '' ? this.props.name : ''}
             charactersLimit={64}
             isBlocked={GlobalSettings.features(
@@ -88,7 +86,7 @@ export default class GlobalSettings extends PureComponent<GlobalSettingsProps> {
         ).SETTINGS_DESCRIPTION.isActive()}
       >
         <FormItem
-          label={locals[this.props.lang].settings.global.description.label}
+          label={this.props.locals.settings.global.description.label}
           id="update-palette-description"
           isBlocked={GlobalSettings.features(
             this.props.planStatus
@@ -97,7 +95,7 @@ export default class GlobalSettings extends PureComponent<GlobalSettingsProps> {
           <Input
             id="update-palette-description"
             type="LONG_TEXT"
-            placeholder={locals[this.props.lang].global.description.placeholder}
+            placeholder={this.props.locals.global.description.placeholder}
             value={this.props.description}
             isBlocked={GlobalSettings.features(
               this.props.planStatus
@@ -122,9 +120,7 @@ export default class GlobalSettings extends PureComponent<GlobalSettingsProps> {
         title={
           <SimpleItem
             leftPartSlot={
-              <SectionTitle
-                label={locals[this.props.lang].settings.global.title}
-              />
+              <SectionTitle label={this.props.locals.settings.global.title} />
             }
             isListItem={false}
             alignment="CENTER"

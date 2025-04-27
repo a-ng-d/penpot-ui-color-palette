@@ -1,7 +1,6 @@
 import { Bar, Button, layouts, Tabs } from '@a_ng_d/figmug-ui'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { ActionsList } from 'src/types/models'
 import features from '../../config'

@@ -57,6 +57,7 @@ import {
   trackPurchaseEvent,
   trackUserConsentEvent,
 } from '../utils/eventsTracker'
+import { loadTranslations } from '../utils/loadTranslations'
 import { userConsent } from '../utils/userConsent'
 import Feature from './components/Feature'
 import PriorityContainer from './modules/PriorityContainer'
@@ -100,6 +101,7 @@ export interface AppStates {
   userSession: UserSession
   userConsent: Array<ConsentConfiguration>
   priorityContainerContext: PriorityContext
+  locals: any
   lang: Language
   mustUserConsent: boolean
   highlight: HighlightDigest
@@ -195,6 +197,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
         creatorId: '',
       },
       priorityContainerContext: 'EMPTY',
+      locals: {},
       lang: lang,
       userSession: {
         connectionStatus: 'UNCONNECTED',
@@ -239,6 +242,13 @@ export default class App extends Component<Record<string, never>, AppStates> {
       )
     )
 
+    // Locals
+    const locals = await loadTranslations(lang)
+    this.setState({
+      locals: locals,
+    })
+
+    // Announcements
     /*fetch(
       `${announcementsWorkerUrl}/?action=get_version&database_id=${process.env.REACT_APP_NOTION_ANNOUNCEMENTS_ID}`
     )
@@ -264,6 +274,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
       })
       .catch((error) => console.error(error))*/
 
+    // Listener
     window.addEventListener('message', (e: MessageEvent) => {
       const path = e.data
 

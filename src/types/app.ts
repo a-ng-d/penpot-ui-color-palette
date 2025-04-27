@@ -113,5 +113,6 @@ export interface BaseProps {
   userSession: UserSession
   userConsent: Array<ConsentConfiguration>
   planStatus: PlanStatus
+  locals: any
   lang: Language
 }
