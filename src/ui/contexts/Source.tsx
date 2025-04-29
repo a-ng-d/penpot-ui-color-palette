@@ -1,4 +1,4 @@
-import { Bar, Tabs } from '@a_ng_d/figmug-ui'
+import { Layout, Tabs } from '@a_ng_d/figmug-ui'
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
@@ -104,17 +104,29 @@ export default class Source extends PureComponent<SourceProps, SourceStates> {
 
     return (
       <>
-        <Bar
-          leftPartSlot={
-            <Tabs
-              tabs={this.contexts}
-              active={this.state.context ?? ''}
-              action={this.navHandler}
-            />
-          }
-          border={['BOTTOM']}
+        <Layout
+          id="source"
+          column={[
+            {
+              node: (
+                <Tabs
+                  tabs={this.contexts}
+                  active={this.state.context ?? ''}
+                  direction="VERTICAL"
+                  action={this.navHandler}
+                />
+              ),
+              typeModifier: 'FIXED',
+              fixedWidth: '148px',
+            },
+            {
+              node: fragment,
+              typeModifier: 'BLANK',
+            },
+          ]}
+          isFullHeight
+          isFullWidth
         />
-        {fragment}
       </>
     )
   }

@@ -648,7 +648,23 @@ export default class Overview extends PureComponent<
                 </Feature>
               </>
             ),
-            typeModifier: 'BLANK',
+            typeModifier: 'DRAWER',
+            drawerOptions: {
+              direction: 'HORIZONTAL',
+              pin: 'RIGHT',
+              defaultSize: {
+                value: 276,
+                unit: 'PIXEL',
+              },
+              maxSize: {
+                value: 400,
+                unit: 'PIXEL',
+              },
+              minSize: {
+                value: 276,
+                unit: 'PIXEL',
+              },
+            },
           },
         ]}
         isFullHeight
