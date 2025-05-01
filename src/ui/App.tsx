@@ -998,6 +998,9 @@ export default class App extends Component<Record<string, never>, AppStates> {
                 else this.setState({ priorityContainerContext: 'TRY' })
               }}
               onUpdateConsent={() => this.setState({ mustUserConsent: true })}
+              onOpenPreferences={() =>
+                this.setState({ priorityContainerContext: 'PREFERENCES' })
+              }
             />
           </Feature>
         </main>

@@ -28,6 +28,7 @@ import Feature from '../components/Feature'
 import About from './About'
 import Highlight from './Highlight'
 import Onboarding from './Onboarding'
+import SyncPreferences from '../contexts/SyncPreferences'
 
 interface PriorityContainerProps extends BaseProps {
   context: PriorityContext
@@ -464,6 +465,22 @@ export default class PriorityContainer extends PureComponent<
     )
   }
 
+  Preference = () => {
+    return (
+      <Feature isActive={true}>
+        <Dialog
+          title="Preferences"
+          pin="RIGHT"
+          onClose={this.props.onClose}
+        >
+          <List padding="var(--size-xsmall)">
+            <SyncPreferences {...this.props} />
+          </List>
+        </Dialog>
+      </Feature>
+    )
+  }
+
   // Render
   render() {
     return (
@@ -476,6 +493,7 @@ export default class PriorityContainer extends PureComponent<
         {this.props.context === 'REPORT' && <this.Report />}
         {this.props.context === 'STORE' && <this.Store />}
         {this.props.context === 'ABOUT' && <this.About />}
+        {this.props.context === 'PREFERENCES' && <this.Preference />}
       </>
     )
   }

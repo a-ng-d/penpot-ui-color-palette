@@ -71,6 +71,7 @@ export type PriorityContext =
   | 'REPORT'
   | 'STORE'
   | 'ABOUT'
+  | 'PREFERENCES'
 
 export type ThirdParty = 'COOLORS' | 'REALTIME_COLORS' | 'COLOUR_LOVERS'
 

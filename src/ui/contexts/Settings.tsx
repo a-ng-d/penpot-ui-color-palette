@@ -1,17 +1,11 @@
-import { Bar, HexModel, Layout, Tabs } from '@a_ng_d/figmug-ui'
+import { HexModel, Layout } from '@a_ng_d/figmug-ui'
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 import features, { algorithmVersion } from '../../config'
 import { $palette } from '../../stores/palette'
 import { $canPaletteDeepSync } from '../../stores/preferences'
-import {
-  BaseProps,
-  Context,
-  ContextItem,
-  PlanStatus,
-  Service,
-} from '../../types/app'
+import { BaseProps, Context, PlanStatus, Service } from '../../types/app'
 import {
   AlgorithmVersionConfiguration,
   ColorSpaceConfiguration,
@@ -26,14 +20,12 @@ import {
   TextColorsThemeHexModel,
 } from '../../types/models'
 import { trackSettingsManagementEvent } from '../../utils/eventsTracker'
-import { setContexts } from '../../utils/setContexts'
 import type { AppStates } from '../App'
 import Feature from '../components/Feature'
 import Dispatcher from '../modules/Dispatcher'
 import ColorSettings from './ColorSettings'
 import ContrastSettings from './ContrastSettings'
 import GlobalSettings from './GlobalSettings'
-import SyncPreferences from './SyncPreferences'
 
 interface SettingsProps extends BaseProps {
   service: Service
@@ -49,15 +41,9 @@ interface SettingsProps extends BaseProps {
   onChangeSettings: React.Dispatch<Partial<AppStates>>
 }
 
-interface SettingsStates {
-  context: Context | ''
-  canPaletteDeepSync: boolean
-}
-
-export default class Settings extends PureComponent<SettingsProps, SettingsStates> {
+export default class Settings extends PureComponent<SettingsProps> {
   private settingsMessage: SettingsMessage
   private dispatch: { [key: string]: DispatchProcess }
-  private contexts: Array<ContextItem>
   private unsubscribe: (() => void) | null = null
   private palette: typeof $palette
 
@@ -107,17 +93,6 @@ export default class Settings extends PureComponent<SettingsProps, SettingsState
         },
       },
       isEditedInRealTime: false,
-    }
-    this.contexts = setContexts(
-      [
-        'SETTINGS_PALETTE',
-        this.props.service === 'EDIT' ? 'SETTINGS_PREFERENCES' : null,
-      ].filter(Boolean) as Context[],
-      props.planStatus
-    )
-    this.state = {
-      context: this.contexts[0] !== undefined ? this.contexts[0].id : '',
-      canPaletteDeepSync: false,
     }
     this.dispatch = {
       textColorsTheme: new Dispatcher(
@@ -348,7 +323,7 @@ export default class Settings extends PureComponent<SettingsProps, SettingsState
       if (e.type === 'focusout' && this.props.service === 'EDIT') {
         this.dispatch.textColorsTheme.on.status = false
         parent.postMessage({ pluginMessage: this.settingsMessage }, '*')
-      } else if (this.props.service === 'EDIT' && this.state.canPaletteDeepSync)
+      } else if (this.props.service === 'EDIT')
         this.dispatch.textColorsTheme.on.status = true
 
       if (e.type === 'focusout')
@@ -393,7 +368,7 @@ export default class Settings extends PureComponent<SettingsProps, SettingsState
       if (e.type === 'focusout' && this.props.service === 'EDIT') {
         this.dispatch.textColorsTheme.on.status = false
         parent.postMessage({ pluginMessage: this.settingsMessage }, '*')
-      } else if (this.props.service === 'EDIT' && this.state.canPaletteDeepSync)
+      } else if (this.props.service === 'EDIT')
         this.dispatch.textColorsTheme.on.status = true
 
       if (e.type === 'focusout')
@@ -407,38 +382,6 @@ export default class Settings extends PureComponent<SettingsProps, SettingsState
         )
     }
 
-    const updatePaletteDeepSync = () =>
-      parent.postMessage(
-        {
-          pluginMessage: {
-            type: 'SET_ITEMS',
-            items: [
-              {
-                key: 'can_deep_sync_palette',
-                value: target.checked,
-              },
-            ],
-          },
-        },
-        '*'
-      )
-
-    const updateStylesDeepSync = () =>
-      parent.postMessage(
-        {
-          pluginMessage: {
-            type: 'SET_ITEMS',
-            items: [
-              {
-                key: 'can_deep_sync_styles',
-                value: target.checked,
-              },
-            ],
-          },
-        },
-        '*'
-      )
-
     const actions: ActionsList = {
       RENAME_PALETTE: () => renamePalette(),
       UPDATE_DESCRIPTION: () => updateDescription(),
@@ -447,8 +390,6 @@ export default class Settings extends PureComponent<SettingsProps, SettingsState
       UPDATE_ALGORITHM_VERSION: () => updateAlgorithmVersion(),
       UPDATE_TEXT_LIGHT_COLOR: () => updateTextLightColor(),
       UPDATE_TEXT_DARK_COLOR: () => updateTextDarkColor(),
-      UPDATE_PALETTE_DEEP_SYNC: () => updatePaletteDeepSync(),
-      UPDATE_STYLES_DEEP_SYNC: () => updateStylesDeepSync(),
       DEFAULT: () => null,
     }
 
@@ -494,51 +435,15 @@ export default class Settings extends PureComponent<SettingsProps, SettingsState
     )
   }
 
-  Preferences = () => {
-    return (
-      <Feature
-        isActive={Settings.features(
-          this.props.planStatus
-        ).SETTINGS_SYNC.isActive()}
-      >
-        <SyncPreferences
-          {...this.props}
-          onChangeSettings={this.settingsHandler}
-        />
-      </Feature>
-    )
-  }
-
   // Render
   render() {
     return (
       <>
-        {this.contexts.length > 1 && (
-          <Bar
-            leftPartSlot={
-              <Tabs
-                tabs={this.contexts}
-                active={this.state.context ?? ''}
-                action={this.navHandler}
-              />
-            }
-            border={['BOTTOM']}
-          />
-        )}
         <Layout
           id="settings"
           column={[
             {
-              node: (
-                <>
-                  {this.state.context === 'SETTINGS_PALETTE' && (
-                    <this.Palette />
-                  )}
-                  {this.state.context === 'SETTINGS_PREFERENCES' && (
-                    <this.Preferences />
-                  )}
-                </>
-              ),
+              node: <this.Palette />,
               typeModifier: 'BLANK',
             },
           ]}

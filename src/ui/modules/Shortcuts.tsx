@@ -32,6 +32,7 @@ interface ShortcutsProps extends BaseProps {
   onReOpenReport: () => void
   onGetProPlan: () => void
   onUpdateConsent: () => void
+  onOpenPreferences: () => void
 }
 
 interface ShortcutsStates {
@@ -267,6 +268,14 @@ export default class Shortcuts extends PureComponent<
                           ).CONSENT.isNew(),
                           action: this.props.onUpdateConsent,
                         },
+                        {
+                          label: 'Change your preferences',
+                          type: 'OPTION',
+                          isActive: true,
+                          isBlocked: false,
+                          isNew: false,
+                          action: this.props.onOpenPreferences,
+                        },
                       ]}
                       alignment="TOP_RIGHT"
                       helper={{
@@ -292,6 +301,14 @@ export default class Shortcuts extends PureComponent<
                             this.props.planStatus
                           ).CONSENT.isNew(),
                           action: this.props.onUpdateConsent,
+                        },
+                        {
+                          label: 'Change your preferences',
+                          type: 'OPTION',
+                          isActive: true,
+                          isBlocked: false,
+                          isNew: false,
+                          action: this.props.onOpenPreferences,
                         },
                       ]}
                       state={

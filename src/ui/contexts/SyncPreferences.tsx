@@ -18,11 +18,6 @@ import Feature from '../components/Feature'
 
 interface SyncPreferencesProps extends BaseProps {
   isLast?: boolean
-  onChangeSettings: (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void
 }
 
 interface SyncPreferencesStates {
@@ -78,35 +73,6 @@ export default class SyncPreferences extends PureComponent<
   }
 
   // Templates
-  PaletteDeepSync = () => {
-    return (
-      <Feature
-        isActive={SyncPreferences.features(
-          this.props.planStatus
-        ).SETTINGS_SYNC_DEEP_PALETTE.isActive()}
-      >
-        <Select
-          id="update-palette-deep-sync"
-          type="SWITCH_BUTTON"
-          name="update-palette-deep-sync"
-          label={this.props.locals.settings.preferences.sync.palette.label}
-          isChecked={this.state.canPaletteDeepSync}
-          isBlocked={SyncPreferences.features(
-            this.props.planStatus
-          ).SETTINGS_SYNC_DEEP_PALETTE.isBlocked()}
-          isNew={SyncPreferences.features(
-            this.props.planStatus
-          ).SETTINGS_SYNC_DEEP_PALETTE.isNew()}
-          feature="UPDATE_PALETTE_DEEP_SYNC"
-          action={(e) => {
-            $canPaletteDeepSync.set(!this.state.canPaletteDeepSync)
-            this.props.onChangeSettings(e)
-          }}
-        />
-      </Feature>
-    )
-  }
-
   StylesDeepSync = () => {
     return (
       <Feature
@@ -127,9 +93,22 @@ export default class SyncPreferences extends PureComponent<
             this.props.planStatus
           ).SETTINGS_SYNC_DEEP_STYLES.isNew()}
           feature="UPDATE_STYLES_DEEP_SYNC"
-          action={(e) => {
+          action={() => {
             $canStylesDeepSync.set(!this.state.canStylesDeepSync)
-            this.props.onChangeSettings(e)
+            parent.postMessage(
+              {
+                pluginMessage: {
+                  type: 'SET_ITEMS',
+                  items: [
+                    {
+                      key: 'can_deep_sync_styles',
+                      value: !this.state.canStylesDeepSync,
+                    },
+                  ],
+                },
+              },
+              '*'
+            )
           }}
         />
       </Feature>
@@ -153,7 +132,7 @@ export default class SyncPreferences extends PureComponent<
         }
         body={[
           {
-            node: <this.PaletteDeepSync />,
+            node: <this.StylesDeepSync />,
           },
           {
             node: (
@@ -162,9 +141,6 @@ export default class SyncPreferences extends PureComponent<
                 message={this.props.locals.settings.preferences.sync.message}
               />
             ),
-          },
-          {
-            node: <this.StylesDeepSync />,
           },
         ]}
         border={this.props.isLast ? ['BOTTOM'] : undefined}
