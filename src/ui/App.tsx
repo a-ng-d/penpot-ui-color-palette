@@ -906,6 +906,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
               onGetProPlan={(e) => this.setState({ ...e })}
               onUnloadPalette={this.onReset}
               onChangeDocument={(e) => this.setState({ ...e })}
+              onDeletePalette={this.onReset}
             />
           </Feature>
           <Feature isActive={this.state.priorityContainerContext !== 'EMPTY'}>

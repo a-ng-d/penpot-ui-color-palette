@@ -26,6 +26,7 @@ import Dispatcher from '../modules/Dispatcher'
 import ColorSettings from './ColorSettings'
 import ContrastSettings from './ContrastSettings'
 import GlobalSettings from './GlobalSettings'
+import DangerZone from './DangerZone'
 
 interface SettingsProps extends BaseProps {
   service: Service
@@ -39,6 +40,7 @@ interface SettingsProps extends BaseProps {
   textColorsTheme: TextColorsThemeHexModel
   algorithmVersion?: AlgorithmVersionConfiguration
   onChangeSettings: React.Dispatch<Partial<AppStates>>
+  onDeletePalette: () => void
 }
 
 export default class Settings extends PureComponent<SettingsProps> {
@@ -427,8 +429,14 @@ export default class Settings extends PureComponent<SettingsProps> {
         >
           <ContrastSettings
             {...this.props}
-            isLast
+            isLast={this.props.service === 'CREATE'}
             onChangeSettings={this.settingsHandler}
+          />
+        </Feature>
+        <Feature isActive={this.props.service === 'EDIT'}>
+          <DangerZone
+            {...this.props}
+            isLast
           />
         </Feature>
       </>

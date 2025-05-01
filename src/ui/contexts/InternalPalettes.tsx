@@ -89,6 +89,12 @@ export default class InternalPalettes extends PureComponent<
   }
 
   onDeletePalette = () => {
+    this.setState({
+      isDeleteDialogOpen: false,
+      targetedPaletteId: '',
+      targetedPaletteName: '',
+    })
+
     parent.postMessage(
       {
         pluginMessage: {
@@ -98,11 +104,6 @@ export default class InternalPalettes extends PureComponent<
       },
       '*'
     )
-    this.setState({
-      isDeleteDialogOpen: false,
-      targetedPaletteId: '',
-      targetedPaletteName: '',
-    })
   }
 
   // Templates

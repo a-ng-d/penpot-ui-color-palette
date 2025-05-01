@@ -91,6 +91,7 @@ interface EditPaletteProps extends BaseProps {
   onGetProPlan: (context: { priorityContainerContext: PriorityContext }) => void
   onUnloadPalette: () => void
   onChangeDocument: React.Dispatch<Partial<AppStates>>
+  onDeletePalette: () => void
 }
 
 interface EditPaletteStates {
