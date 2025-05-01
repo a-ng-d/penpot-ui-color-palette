@@ -49,16 +49,14 @@ const exportJsonDtcg = (id: string) => {
 
   if (workingThemes[0].type === 'custom theme')
     workingThemes.forEach((theme) => {
-      json[theme.name] = {}
       theme.colors.forEach((color) => {
-        json[theme.name][color.name] = {}
+        json[`${theme.name}/${color.name}`] = {}
         color.shades.reverse().forEach((shade) => {
-          json[theme.name][color.name][shade.name] = model(color, shade)
+          json[`${theme.name}/${color.name}`][shade.name] = model(color, shade)
         })
       })
     })
-  else {
-    json[paletteName] = {}
+  else
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
         json[`${paletteName}/${color.name}`] = {}
@@ -67,7 +65,6 @@ const exportJsonDtcg = (id: string) => {
         })
       })
     })
-  }
 
   penpot.ui.sendMessage({
     type: 'EXPORT_PALETTE_JSON',
