@@ -28,7 +28,7 @@ import Feature from '../components/Feature'
 import About from './About'
 import Highlight from './Highlight'
 import Onboarding from './Onboarding'
-import SyncPreferences from '../contexts/SyncPreferences'
+import SyncPreferences from './SyncPreferences'
 
 interface PriorityContainerProps extends BaseProps {
   context: PriorityContext

@@ -23,10 +23,10 @@ import { trackSettingsManagementEvent } from '../../utils/eventsTracker'
 import type { AppStates } from '../App'
 import Feature from '../components/Feature'
 import Dispatcher from '../modules/Dispatcher'
-import ColorSettings from './ColorSettings'
-import ContrastSettings from './ContrastSettings'
-import GlobalSettings from './GlobalSettings'
-import DangerZone from './DangerZone'
+import ColorSettings from '../modules/ColorSettings'
+import ContrastSettings from '../modules/ContrastSettings'
+import GlobalSettings from '../modules/GlobalSettings'
+import DangerZone from '../modules/DangerZone'
 
 interface SettingsProps extends BaseProps {
   service: Service
