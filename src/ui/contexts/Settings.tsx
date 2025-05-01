@@ -220,7 +220,7 @@ export default class Settings extends PureComponent<SettingsProps> {
       )
     }
 
-    const updatevisionSimulationMode = () => {
+    const updateVisionSimulationMode = () => {
       this.palette.setKey(
         'visionSimulationMode',
         target.dataset.value as VisionSimulationModeConfiguration
@@ -386,7 +386,7 @@ export default class Settings extends PureComponent<SettingsProps> {
       RENAME_PALETTE: () => renamePalette(),
       UPDATE_DESCRIPTION: () => updateDescription(),
       UPDATE_COLOR_SPACE: () => updateColorSpace(),
-      UPDATE_COLOR_BLIND_MODE: () => updatevisionSimulationMode(),
+      UPDATE_COLOR_BLIND_MODE: () => updateVisionSimulationMode(),
       UPDATE_ALGORITHM_VERSION: () => updateAlgorithmVersion(),
       UPDATE_TEXT_LIGHT_COLOR: () => updateTextLightColor(),
       UPDATE_TEXT_DARK_COLOR: () => updateTextDarkColor(),
