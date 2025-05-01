@@ -295,7 +295,7 @@
   },
   "publication": {
     "detach": "Detach",
-    "message": "Publish your palette as a single source of truth and reuse it in other Figma documents (like a component instance). You can also distribute your palettes by sharing them with the community.",
+    "message": "Publish your palette as a single source of truth and reuse it in other {$1} documents (like a component instance). You can also distribute your palettes by sharing them with the community.",
     "publish": "Publish…",
     "revert": "Revert",
     "share": "Share with the community",
@@ -494,7 +494,7 @@
       "openPalette": "Open palette"
     },
     "canvas": {
-      "tip": "Select a frame or a shape (filled with color) on the Figma/FigJam canvas, then create a UI Color Palette.",
+      "tip": "Select a {$1} (filled with color) on the {$2} canvas, then create a UI Color Palette.",
       "title": "Selected colors"
     },
     "colourLovers": {

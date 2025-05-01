@@ -379,7 +379,11 @@ export default class Overview extends PureComponent<
         ) : (
           <Message
             icon="info"
-            messages={[this.props.locals.source.canvas.tip]}
+            messages={[
+              this.props.locals.source.canvas.tip
+                .replace('$1', 'board/shape')
+                .replace('$2', 'Penpot'),
+            ]}
           />
         )}
       </>
