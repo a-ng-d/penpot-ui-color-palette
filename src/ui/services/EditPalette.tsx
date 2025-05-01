@@ -7,7 +7,7 @@ import {
   layouts,
   Tabs,
 } from '@a_ng_d/figmug-ui'
-import { Case, FeatureStatus } from '@a_ng_d/figmug-utils'
+import { Case, doClassnames, FeatureStatus } from '@a_ng_d/figmug-utils'
 import FileSaver from 'file-saver'
 import JSZip from 'jszip'
 import { PureComponent } from 'preact/compat'
@@ -540,8 +540,13 @@ export default class EditPalette extends PureComponent<
     return (
       <>
         <Bar
-          leftPartSlot={
-            <div className={layouts['snackbar--tight']}>
+          soloPartSlot={
+            <div
+              className={doClassnames([
+                layouts['snackbar--tight'],
+                'context-switcher',
+              ])}
+            >
               <Button
                 type="icon"
                 icon="back"
@@ -550,34 +555,33 @@ export default class EditPalette extends PureComponent<
               <Tabs
                 tabs={this.contexts}
                 active={this.state.context ?? ''}
+                isFlex
                 action={this.navHandler}
               />
+              <Feature
+                isActive={EditPalette.features(
+                  this.props.planStatus
+                ).THEMES.isActive()}
+              >
+                <FormItem
+                  id="switch-theme"
+                  label={this.props.locals.themes.switchTheme.label}
+                  shouldFill={false}
+                >
+                  <Dropdown
+                    id="switch-theme"
+                    options={this.setThemes()}
+                    selected={
+                      this.props.themes.find((theme) => theme.isEnabled)?.id
+                    }
+                    alignment="RIGHT"
+                    pin="TOP"
+                  />
+                </FormItem>
+              </Feature>
             </div>
           }
-          rightPartSlot={
-            <Feature
-              isActive={EditPalette.features(
-                this.props.planStatus
-              ).THEMES.isActive()}
-            >
-              <FormItem
-                id="switch-theme"
-                label={this.props.locals.themes.switchTheme.label}
-                shouldFill={false}
-              >
-                <Dropdown
-                  id="switch-theme"
-                  options={this.setThemes()}
-                  selected={
-                    this.props.themes.find((theme) => theme.isEnabled)?.id
-                  }
-                  alignment="RIGHT"
-                  pin="TOP"
-                />
-              </FormItem>
-            </Feature>
-          }
-          border={['BOTTOM']}
+          isFullWidth
         />
         <section className="context">{fragment}</section>
         <Feature

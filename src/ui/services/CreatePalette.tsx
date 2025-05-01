@@ -3,7 +3,7 @@ import chroma from 'chroma-js'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { uid } from 'uid'
-import { FeatureStatus } from '@a_ng_d/figmug-utils'
+import { doClassnames, FeatureStatus } from '@a_ng_d/figmug-utils'
 import features from '../../config'
 import { $palette } from '../../stores/palette'
 import {
@@ -290,8 +290,13 @@ export default class CreatePalette extends PureComponent<
     return (
       <>
         <Bar
-          leftPartSlot={
-            <div className={layouts['snackbar--tight']}>
+          soloPartSlot={
+            <div
+              className={doClassnames([
+                layouts['snackbar--tight'],
+                'context-switcher',
+              ])}
+            >
               <Button
                 type="icon"
                 icon="back"
@@ -300,11 +305,12 @@ export default class CreatePalette extends PureComponent<
               <Tabs
                 tabs={this.contexts}
                 active={this.state.context ?? ''}
+                isFlex
                 action={this.navHandler}
               />
             </div>
           }
-          border={[]}
+          isFullWidth
         />
         <section className="context">{fragment}</section>
         <Feature
