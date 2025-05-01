@@ -26,6 +26,7 @@ interface ExportProps extends BaseProps {
 
 interface ExportStates {
   format:
+    | 'EXPORT_TOKENS_DTCG'
     | 'EXPORT_TOKENS_GLOBAL'
     | 'EXPORT_TOKENS_AMZN_STYLE_DICTIONARY'
     | 'EXPORT_TOKENS_TOKENS_STUDIO'
@@ -146,7 +147,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
     super(props)
     this.counter = 0
     this.state = {
-      format: 'EXPORT_TOKENS_GLOBAL',
+      format: 'EXPORT_TOKENS_DTCG',
       colorSpace: {
         selected: 'RGB',
         options: [],
@@ -157,6 +158,21 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
   // Handlers
   exportHandler = (e: Event) => {
     const actions: ActionsList = {
+      EXPORT_TOKENS_DTCG: () => {
+        this.setState({
+          format: 'EXPORT_TOKENS_DTCG',
+        })
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'EXPORT_PALETTE',
+              id: this.props.id,
+              export: 'TOKENS_DTCG',
+            },
+          },
+          '*'
+        )
+      },
       EXPORT_TOKENS_GLOBAL: () => {
         this.setState({
           format: 'EXPORT_TOKENS_GLOBAL',
@@ -560,9 +576,17 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                               ).EXPORT_TOKENS.isNew(),
                               children: [
                                 {
+                                  label: 'DTCG (JSON)',
+                                  value: 'EXPORT_TOKENS_DTCG',
+                                  type: 'OPTION',
+                                  isActive: true,
+                                  isBlocked: false,
+                                  isNew: false,
+                                  action: this.exportHandler,
+                                },
+                                {
                                   label: this.props.locals.export.tokens.global,
                                   value: 'EXPORT_TOKENS_GLOBAL',
-                                  feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
                                   isActive: Export.features(
                                     this.props.planStatus
@@ -580,7 +604,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                     this.props.locals.export.tokens
                                       .amznStyleDictionary,
                                   value: 'EXPORT_TOKENS_AMZN_STYLE_DICTIONARY',
-                                  feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
                                   isActive: Export.features(
                                     this.props.planStatus
@@ -598,7 +621,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                     this.props.locals.export.tokens
                                       .tokensStudio,
                                   value: 'EXPORT_TOKENS_TOKENS_STUDIO',
-                                  feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
                                   isActive: Export.features(
                                     this.props.planStatus
@@ -618,7 +640,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                               label:
                                 this.props.locals.export.css.customProperties,
                               value: 'EXPORT_CSS',
-                              feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
                               isActive: Export.features(
                                 this.props.planStatus
@@ -634,7 +655,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                             {
                               label: this.props.locals.export.tailwind.config,
                               value: 'EXPORT_TAILWIND',
-                              feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
                               isActive: Export.features(
                                 this.props.planStatus
@@ -650,7 +670,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                             {
                               label: this.props.locals.export.apple.label,
                               value: 'APPLE_GROUP',
-                              feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
                               isActive: Export.features(
                                 this.props.planStatus
@@ -665,7 +684,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                 {
                                   label: this.props.locals.export.apple.swiftui,
                                   value: 'EXPORT_APPLE_SWIFTUI',
-                                  feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
                                   isActive: Export.features(
                                     this.props.planStatus
@@ -681,7 +699,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                 {
                                   label: this.props.locals.export.apple.uikit,
                                   value: 'EXPORT_APPLE_UIKIT',
-                                  feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
                                   isActive: Export.features(
                                     this.props.planStatus
@@ -700,7 +717,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                             {
                               label: this.props.locals.export.android.label,
                               value: 'ANDROID_GROUP',
-                              feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
                               isActive: Export.features(
                                 this.props.planStatus
@@ -716,7 +732,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                   label:
                                     this.props.locals.export.android.compose,
                                   value: 'EXPORT_ANDROID_COMPOSE',
-                                  feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
                                   isActive: Export.features(
                                     this.props.planStatus
@@ -733,7 +748,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                   label:
                                     this.props.locals.export.android.resources,
                                   value: 'EXPORT_ANDROID_XML',
-                                  feature: 'SELECT_EXPORT_FILE',
                                   type: 'OPTION',
                                   isActive: Export.features(
                                     this.props.planStatus
@@ -752,7 +766,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                             {
                               label: this.props.locals.export.csv.spreadsheet,
                               value: 'EXPORT_CSV',
-                              feature: 'SELECT_EXPORT_FILE',
                               type: 'OPTION',
                               isActive: Export.features(
                                 this.props.planStatus

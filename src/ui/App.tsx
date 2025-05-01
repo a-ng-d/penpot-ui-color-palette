@@ -176,7 +176,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
       },
       export: {
         format: 'JSON',
-        context: 'TOKENS_GLOBAL',
+        context: 'TOKENS_DTCG',
         label: '',
         colorSpace: 'RGB',
         mimeType: 'application/json',

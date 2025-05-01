@@ -10,6 +10,7 @@
     "library:write",
     "selection:read",
     "file:read",
-    "file:write"
+    "file:write",
+    "allow:downloads"
   ]
 }

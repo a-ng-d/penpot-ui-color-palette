@@ -76,6 +76,7 @@ export interface ColorThemeEvent {
 
 export interface ExportEvent {
   feature:
+    | 'TOKENS_DTCG'
     | 'TOKENS_GLOBAL'
     | 'TOKENS_AMZN_STYLE_DICTIONARY'
     | 'TOKENS_TOKENS_STUDIO'

@@ -108,6 +108,7 @@ export interface ThemeConfiguration {
 export interface ExportConfiguration {
   format: 'JSON' | 'CSS' | 'TAILWIND' | 'SWIFT' | 'KT' | 'XML' | 'CSV'
   context:
+    | 'TOKENS_DTCG'
     | 'TOKENS_GLOBAL'
     | 'TOKENS_AMZN_STYLE_DICTIONARY'
     | 'TOKENS_TOKENS_STUDIO'
