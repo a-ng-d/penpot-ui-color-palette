@@ -29,8 +29,8 @@ export default class SyncPreferences extends PureComponent<
   SyncPreferencesProps,
   SyncPreferencesStates
 > {
-  private unsubscribePalette: (() => void) | undefined
-  private unsubscribeStyles: (() => void) | undefined
+  private subscribePalette: (() => void) | undefined
+  private subscribeStyles: (() => void) | undefined
 
   static features = (planStatus: PlanStatus) => ({
     SETTINGS_SYNC_DEEP_PALETTE: new FeatureStatus({
@@ -59,17 +59,17 @@ export default class SyncPreferences extends PureComponent<
 
   // Lifecycle
   componentDidMount() {
-    this.unsubscribePalette = $canPaletteDeepSync.subscribe((value) => {
+    this.subscribePalette = $canPaletteDeepSync.subscribe((value) => {
       this.setState({ canPaletteDeepSync: value })
     })
-    this.unsubscribeStyles = $canStylesDeepSync.subscribe((value) => {
+    this.subscribeStyles = $canStylesDeepSync.subscribe((value) => {
       this.setState({ canStylesDeepSync: value })
     })
   }
 
   componentWillUnmount() {
-    if (this.unsubscribePalette) this.unsubscribePalette()
-    if (this.unsubscribeStyles) this.unsubscribeStyles()
+    if (this.subscribePalette) this.subscribePalette()
+    if (this.subscribeStyles) this.subscribeStyles()
   }
 
   // Templates
