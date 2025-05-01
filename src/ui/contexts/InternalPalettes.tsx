@@ -104,6 +104,7 @@ export default class InternalPalettes extends PureComponent<
       },
       '*'
     )
+    parent.postMessage({ pluginMessage: { type: 'GET_PALETTES' } }, '*')
   }
 
   // Templates
