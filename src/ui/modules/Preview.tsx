@@ -206,6 +206,7 @@ export default class Preview extends PureComponent<
   componentWillUnmount = (): void => {
     if (this.unsubscribeWCAG) this.unsubscribeWCAG()
     if (this.unsubscribeAPCA) this.unsubscribeAPCA()
+    console.log('unmounted')
   }
 
   // Handlers
@@ -389,7 +390,6 @@ export default class Preview extends PureComponent<
 
   // Render
   render() {
-    if (!this.props.colors.length) return null
     return (
       <Drawer
         id="preview"
@@ -414,24 +414,26 @@ export default class Preview extends PureComponent<
         <Bar
           leftPartSlot={
             <div className={layouts['snackbar--medium']}>
-              <Button
-                type="icon"
-                icon={
-                  this.state.isDrawerCollapsed
-                    ? 'toggle-sidebar-top'
-                    : 'toggle-sidebar-bottom'
-                }
-                helper={{
-                  label: this.state.isDrawerCollapsed
-                    ? this.props.locals.preview.actions.expandPreview
-                    : this.props.locals.preview.actions.collapsePreview,
-                }}
-                action={() => {
-                  if (!this.state.isDrawerCollapsed)
-                    this.drawerRef.current?.collapseDrawer()
-                  else this.drawerRef.current?.expandDrawer()
-                }}
-              />
+              {this.props.colors.length > 0 && (
+                <Button
+                  type="icon"
+                  icon={
+                    this.state.isDrawerCollapsed
+                      ? 'toggle-sidebar-top'
+                      : 'toggle-sidebar-bottom'
+                  }
+                  helper={{
+                    label: this.state.isDrawerCollapsed
+                      ? this.props.locals.preview.actions.expandPreview
+                      : this.props.locals.preview.actions.collapsePreview,
+                  }}
+                  action={() => {
+                    if (!this.state.isDrawerCollapsed)
+                      this.drawerRef.current?.collapseDrawer()
+                    else this.drawerRef.current?.expandDrawer()
+                  }}
+                />
+              )}
               <Menu
                 id="change-score-display"
                 type="ICON"

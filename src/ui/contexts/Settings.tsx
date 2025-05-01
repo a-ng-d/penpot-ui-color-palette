@@ -40,7 +40,7 @@ interface SettingsProps extends BaseProps {
   textColorsTheme: TextColorsThemeHexModel
   algorithmVersion?: AlgorithmVersionConfiguration
   onChangeSettings: React.Dispatch<Partial<AppStates>>
-  onDeletePalette: () => void
+  onDeletePalette?: () => void
 }
 
 export default class Settings extends PureComponent<SettingsProps> {
@@ -437,6 +437,7 @@ export default class Settings extends PureComponent<SettingsProps> {
           <DangerZone
             {...this.props}
             isLast
+            onDeletePalette={this.props.onDeletePalette as () => void}
           />
         </Feature>
       </>
