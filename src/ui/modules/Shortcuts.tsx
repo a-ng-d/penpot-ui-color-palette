@@ -517,7 +517,6 @@ export default class Shortcuts extends PureComponent<
               {fragment}
             </Feature>
           }
-          border={['TOP']}
         />
       </>
     )

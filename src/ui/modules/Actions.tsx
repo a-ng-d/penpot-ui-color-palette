@@ -413,7 +413,6 @@ export default class Actions extends PureComponent<
             />
           </Feature>
         }
-        border={[]}
         padding="var(--size-xxsmall) var(--size-xsmall)"
       />
     )
@@ -531,7 +530,6 @@ export default class Actions extends PureComponent<
             </Feature>
           </div>
         }
-        border={[]}
         padding="var(--size-xxsmall) var(--size-xsmall)"
       />
     )
@@ -550,7 +548,6 @@ export default class Actions extends PureComponent<
             <a></a>
           </Button>
         }
-        border={['TOP']}
         padding="var(--size-xxsmall) var(--size-xsmall)"
       />
     )
