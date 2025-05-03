@@ -7,12 +7,12 @@ export default class Contrast {
   private backgroundColor: [number, number, number]
   private textColor: HexModel
 
-  constructor(data: {
-    backgroundColor: [number, number, number]
-    textColor: HexModel
+  constructor(data?: {
+    backgroundColor?: [number, number, number]
+    textColor?: HexModel
   }) {
-    this.backgroundColor = data.backgroundColor
-    this.textColor = data.textColor
+    this.backgroundColor = data?.backgroundColor ?? [0, 0, 0]
+    this.textColor = data?.textColor ?? '#FFFFFF'
   }
 
   getWCAGContrast = (): number => {
@@ -86,5 +86,52 @@ export default class Contrast {
     if (this.getAPCAContrast() < 15) return locals.get().paletteProperties.avoid
 
     return locals.get().paletteProperties.unknown
+  }
+
+  getContrastRatioForLightness = (
+    lightness: number,
+    textColor: string
+  ): number => {
+    const bgColor = chroma.lch(lightness, 0, 0).rgb()
+    return chroma.contrast(chroma(bgColor).hex(), textColor)
+  }
+
+  getLightnessForContrastRatio = (
+    targetRatio: number,
+    textColor: string,
+    precision = 0.1
+  ): number => {
+    // Pour un texte clair, nous cherchons une couleur de fond sombre
+    // Pour un texte sombre, nous cherchons une couleur de fond claire
+    const isLightText = chroma(textColor).luminance() > 0.5
+    let min = 0
+    let max = 100
+    let currentLightness = isLightText ? 20 : 80 // Point de départ plus proche de la solution attendue
+
+    while (max - min > precision) {
+      currentLightness = (min + max) / 2
+      const currentRatio = this.getContrastRatioForLightness(
+        currentLightness,
+        textColor
+      )
+
+      if (isLightText) {
+        // Pour un texte clair, plus la lightness est basse, plus le ratio est élevé
+        if (currentRatio < targetRatio) {
+          max = currentLightness
+        } else {
+          min = currentLightness
+        }
+      } else {
+        // Pour un texte sombre, plus la lightness est haute, plus le ratio est élevé
+        if (currentRatio < targetRatio) {
+          min = currentLightness
+        } else {
+          max = currentLightness
+        }
+      }
+    }
+
+    return currentLightness
   }
 }

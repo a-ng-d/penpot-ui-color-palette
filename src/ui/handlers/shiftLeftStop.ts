@@ -24,13 +24,17 @@ const shiftLeftStop = (
     nextStopValue: number = newLightnessScale[stopsList[selectedKnobIndex + 1]]
 
   if (currentStopValue + gap - shiftValue <= nextStopValue) nextStopValue + gap
-  else if (currentStopValue <= 1 && (!meta || ctrl))
+  else if (currentStopValue <= 1 && !(meta || ctrl))
     newLightnessScale[stopsList[selectedKnobIndex]] = 0
   else if (currentStopValue === 0 && (meta || ctrl))
     newLightnessScale[stopsList[selectedKnobIndex]] = 0
   else
     newLightnessScale[stopsList[selectedKnobIndex]] =
       newLightnessScale[stopsList[selectedKnobIndex]] - shiftValue
+
+  return {
+    scale: newLightnessScale as ScaleConfiguration,
+  }
 
   palette.setKey('scale', newLightnessScale)
 }

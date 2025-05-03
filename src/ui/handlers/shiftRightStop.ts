@@ -24,7 +24,7 @@ const shiftRightStop = (
     nextStopValue: number = newLightnessScale[stopsList[selectedKnobIndex - 1]]
 
   if (currentStopValue - gap + shiftValue >= nextStopValue) nextStopValue - gap
-  else if (currentStopValue >= 99 && (!meta || ctrl))
+  else if (currentStopValue >= 99 && !(meta || ctrl))
     newLightnessScale[stopsList[selectedKnobIndex]] = 100
   else if (currentStopValue === 100 && (meta || ctrl))
     newLightnessScale[stopsList[selectedKnobIndex]] = 100
@@ -32,7 +32,9 @@ const shiftRightStop = (
     newLightnessScale[stopsList[selectedKnobIndex]] =
       newLightnessScale[stopsList[selectedKnobIndex]] + shiftValue
 
-  palette.setKey('scale', newLightnessScale)
+  return {
+    scale: newLightnessScale as ScaleConfiguration,
+  }
 }
 
 export default shiftRightStop
