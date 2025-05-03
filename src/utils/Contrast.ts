@@ -101,12 +101,10 @@ export default class Contrast {
     textColor: string,
     precision = 0.1
   ): number => {
-    // Pour un texte clair, nous cherchons une couleur de fond sombre
-    // Pour un texte sombre, nous cherchons une couleur de fond claire
     const isLightText = chroma(textColor).luminance() > 0.5
     let min = 0
     let max = 100
-    let currentLightness = isLightText ? 20 : 80 // Point de départ plus proche de la solution attendue
+    let currentLightness = isLightText ? 20 : 80
 
     while (max - min > precision) {
       currentLightness = (min + max) / 2
@@ -115,21 +113,11 @@ export default class Contrast {
         textColor
       )
 
-      if (isLightText) {
-        // Pour un texte clair, plus la lightness est basse, plus le ratio est élevé
-        if (currentRatio < targetRatio) {
-          max = currentLightness
-        } else {
-          min = currentLightness
-        }
-      } else {
-        // Pour un texte sombre, plus la lightness est haute, plus le ratio est élevé
-        if (currentRatio < targetRatio) {
-          min = currentLightness
-        } else {
-          max = currentLightness
-        }
-      }
+      if (isLightText)
+        if (currentRatio < targetRatio) max = currentLightness
+        else min = currentLightness
+      else if (currentRatio < targetRatio) min = currentLightness
+      else max = currentLightness
     }
 
     return currentLightness

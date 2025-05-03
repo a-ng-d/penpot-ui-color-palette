@@ -38,7 +38,11 @@ import {
   ThemeConfiguration,
 } from '../../types/configurations'
 import { ScaleMessage } from '../../types/messages'
-import { ActionsList, DispatchProcess } from '../../types/models'
+import {
+  ActionsList,
+  DispatchProcess,
+  TextColorsThemeHexModel,
+} from '../../types/models'
 import doLightnessScale from '../../utils/doLightnessScale'
 import { trackScaleManagementEvent } from '../../utils/eventsTracker'
 import type { AppStates } from '../App'
@@ -57,6 +61,7 @@ interface ScaleProps extends BaseProps {
   scale?: ScaleConfiguration
   shift: ShiftConfiguration
   themes: Array<ThemeConfiguration>
+  textColorsTheme: TextColorsThemeHexModel
   actions?: string
   onChangePreset?: React.Dispatch<Partial<AppStates>>
   onChangeScale: () => void
@@ -243,17 +248,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     },
     feature?: string
   ) => {
-    const onReleaseStop = () => {
-      this.dispatch.scale.on.status = false
-      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
-      this.scaleMessage.isEditedInRealTime = false
-
-      this.props.onChangeScale()
-
-      if (this.props.service === 'EDIT')
-        parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
-    }
-
     const onChangeStop = () => {
       this.palette.setKey('scale', results.scale)
       if (results.preset !== undefined)
@@ -265,12 +259,18 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         lightForegroundRatio[key] = parseFloat(
           new Contrast()
-            .getContrastRatioForLightness(value, '#FFFFFF')
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.lightColor
+            )
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
           new Contrast()
-            .getContrastRatioForLightness(value, '#000000')
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
             .toFixed(1)
         )
       })
@@ -300,12 +300,18 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         lightForegroundRatio[key] = parseFloat(
           new Contrast()
-            .getContrastRatioForLightness(value, '#FFFFFF')
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.lightColor
+            )
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
           new Contrast()
-            .getContrastRatioForLightness(value, '#000000')
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
             .toFixed(1)
         )
       })
@@ -332,12 +338,18 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         lightForegroundRatio[key] = parseFloat(
           new Contrast()
-            .getContrastRatioForLightness(value, '#FFFFFF')
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.lightColor
+            )
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
           new Contrast()
-            .getContrastRatioForLightness(value, '#000000')
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
             .toFixed(1)
         )
       })
@@ -358,7 +370,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     }
 
     const actions: ActionsList = {
-      RELEASED: () => onReleaseStop(),
       SHIFTED: () => onChangeStop(),
       TYPED: () => onTypeStopValue(),
       UPDATING: () => onUpdatingStop(),
@@ -383,12 +394,18 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = parseFloat(
           new Contrast()
-            .getLightnessForContrastRatio(value, '#FFFFFF')
+            .getLightnessForContrastRatio(
+              value,
+              this.props.textColorsTheme.lightColor
+            )
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
           new Contrast()
-            .getContrastRatioForLightness(scale[key], '#000000')
+            .getContrastRatioForLightness(
+              scale[key],
+              this.props.textColorsTheme.darkColor
+            )
             .toFixed(1)
         )
       })
@@ -420,11 +437,11 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = new Contrast().getLightnessForContrastRatio(
           value,
-          '#FFFFFF'
+          this.props.textColorsTheme.lightColor
         )
         darkForegroundRatio[key] = new Contrast().getContrastRatioForLightness(
           scale[key],
-          '#000000'
+          this.props.textColorsTheme.darkColor
         )
       })
 
@@ -452,11 +469,11 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = new Contrast().getLightnessForContrastRatio(
           value,
-          '#FFFFFF'
+          this.props.textColorsTheme.lightColor
         )
         darkForegroundRatio[key] = new Contrast().getContrastRatioForLightness(
           scale[key],
-          '#000000'
+          this.props.textColorsTheme.darkColor
         )
       })
 
@@ -500,12 +517,18 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = parseFloat(
           new Contrast()
-            .getLightnessForContrastRatio(value, '#000000')
+            .getLightnessForContrastRatio(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
           new Contrast()
-            .getContrastRatioForLightness(scale[key], '#FFFFFF')
+            .getContrastRatioForLightness(
+              scale[key],
+              this.props.textColorsTheme.lightColor
+            )
             .toFixed(1)
         )
       })
@@ -537,12 +560,18 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = parseFloat(
           new Contrast()
-            .getLightnessForContrastRatio(value, '#000000')
+            .getLightnessForContrastRatio(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
             .toFixed(1)
         )
         lightForegroundRatio[key] = parseFloat(
           new Contrast()
-            .getContrastRatioForLightness(scale[key], '#FFFFFF')
+            .getContrastRatioForLightness(
+              scale[key],
+              this.props.textColorsTheme.lightColor
+            )
             .toFixed(1)
         )
       })
@@ -571,12 +600,18 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = parseFloat(
           new Contrast()
-            .getLightnessForContrastRatio(value, '#000000')
+            .getLightnessForContrastRatio(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
             .toFixed(1)
         )
         lightForegroundRatio[key] = parseFloat(
           new Contrast()
-            .getContrastRatioForLightness(scale[key], '#FFFFFF')
+            .getContrastRatioForLightness(
+              scale[key],
+              this.props.textColorsTheme.lightColor
+            )
             .toFixed(1)
         )
       })
@@ -1574,8 +1609,8 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       max: 21,
                     }}
                     colors={{
-                      min: 'white',
-                      max: 'white',
+                      min: this.props.textColorsTheme.lightColor,
+                      max: this.props.textColorsTheme.lightColor,
                     }}
                     onChange={this.contrastLightForegroundHandler}
                   />
@@ -1590,8 +1625,8 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       max: 21,
                     }}
                     colors={{
-                      min: 'black',
-                      max: 'black',
+                      min: this.props.textColorsTheme.darkColor,
+                      max: this.props.textColorsTheme.darkColor,
                     }}
                     onChange={this.contrastDarkForegroundHandler}
                   />
