@@ -1,4 +1,3 @@
-import { $palette } from '../../stores/palette'
 import { ScaleConfiguration } from '../../types/configurations'
 
 const shiftRightStop = (
@@ -10,7 +9,6 @@ const shiftRightStop = (
 ) => {
   const stopsList: Array<string> = []
   const shiftValue = meta || ctrl ? 0.1 : 1
-  const palette = $palette
 
   Object.keys(scale).forEach((stop) => {
     stopsList.push(stop)

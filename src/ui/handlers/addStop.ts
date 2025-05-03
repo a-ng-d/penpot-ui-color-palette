@@ -1,6 +1,4 @@
 import { doMap } from '@a_ng_d/figmug-utils'
-
-import { $palette } from '../../stores/palette'
 import {
   PresetConfiguration,
   ScaleConfiguration,

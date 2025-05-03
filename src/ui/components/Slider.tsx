@@ -102,7 +102,6 @@ export default class Slider extends Component<SliderProps, SliderStates> {
         e.clientX -
         (e.currentTarget as HTMLElement).getBoundingClientRect().left -
         (e.currentTarget as HTMLElement).getBoundingClientRect().width / 2,
-      tooltip = stop.children[0] as HTMLElement,
       rangeWidth = range.offsetWidth as number,
       slider = range.parentElement as HTMLElement,
       stops = Array.from(range.children as HTMLCollectionOf<HTMLElement>)
