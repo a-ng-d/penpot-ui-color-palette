@@ -9,6 +9,7 @@ import {
   layouts,
   List,
   SectionTitle,
+  Select,
   SemanticMessage,
   SimpleItem,
   SimpleSlider,
@@ -78,6 +79,7 @@ interface ScaleStates {
   canPaletteDeepSync: boolean
   ratioLightForeground: ScaleConfiguration
   ratioDarkForeground: ScaleConfiguration
+  isContrastMode: boolean
 }
 export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   private scaleMessage: ScaleMessage
@@ -221,6 +223,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       canPaletteDeepSync: false,
       ratioLightForeground: {},
       ratioDarkForeground: {},
+      isContrastMode: false,
     }
   }
 
@@ -1089,6 +1092,40 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     ]?.()
   }
 
+  // Direct Actions
+  onEnableContrastMode = () => {
+    this.setState({ isContrastMode: !this.state.isContrastMode })
+
+    const lightForegroundRatio = {} as ScaleConfiguration
+    const darkForegroundRatio = {} as ScaleConfiguration
+
+    Object.entries(this.props.scale ?? {}).forEach(([key, value]) => {
+      lightForegroundRatio[key] = parseFloat(
+        new Contrast()
+          .getContrastRatioForLightness(
+            value,
+            this.props.textColorsTheme.lightColor
+          )
+          .toFixed(1)
+      )
+      darkForegroundRatio[key] = parseFloat(
+        new Contrast()
+          .getContrastRatioForLightness(
+            value,
+            this.props.textColorsTheme.darkColor
+          )
+          .toFixed(1)
+      )
+    })
+
+    this.setState({
+      ratioLightForeground: lightForegroundRatio,
+      ratioDarkForeground: darkForegroundRatio,
+    })
+
+    this.props.onChangeScale()
+  }
+
   // Templates
   DistributionEasing = () => {
     return (
@@ -1465,14 +1502,23 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                   <SimpleItem
                     id="update-preset"
                     leftPartSlot={
-                      <SectionTitle label={this.props.locals.scale.title} />
+                      <SectionTitle
+                        label={
+                          !this.state.isContrastMode
+                            ? this.props.locals.scale.title
+                            : 'Contrast ratio'
+                        }
+                      />
                     }
                     rightPartSlot={
                       <div className={layouts['snackbar--medium']}>
                         <Feature
-                          isActive={Scale.features(
-                            this.props.planStatus
-                          ).SCALE_PRESETS.isActive()}
+                          isActive={
+                            Scale.features(
+                              this.props.planStatus
+                            ).SCALE_PRESETS.isActive() &&
+                            !this.state.isContrastMode
+                          }
                         >
                           <Dropdown
                             id="presets"
@@ -1483,9 +1529,12 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                           />
                         </Feature>
                         <Feature
-                          isActive={Scale.features(
-                            this.props.planStatus
-                          ).SCALE_PRESETS.isActive()}
+                          isActive={
+                            Scale.features(
+                              this.props.planStatus
+                            ).SCALE_PRESETS.isActive() &&
+                            !this.state.isContrastMode
+                          }
                         >
                           {this.props.preset.name === 'Custom' && (
                             <>
@@ -1540,6 +1589,17 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                             </>
                           )}
                         </Feature>
+                        <Feature isActive={true}>
+                          <Select
+                            id="switch-contrast-mode"
+                            type="SWITCH_BUTTON"
+                            label="Contrast mode"
+                            isChecked={this.state.isContrastMode}
+                            isBlocked={false}
+                            isNew={false}
+                            action={this.onEnableContrastMode}
+                          />
+                        </Feature>
                       </div>
                     }
                     alignment="BASELINE"
@@ -1579,9 +1639,12 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                     )}
                 </div>
                 <Feature
-                  isActive={Scale.features(
-                    this.props.planStatus
-                  ).SCALE_CONFIGURATION.isActive()}
+                  isActive={
+                    Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONFIGURATION.isActive() &&
+                    !this.state.isContrastMode
+                  }
                 >
                   <Slider
                     {...this.props}
@@ -1598,6 +1661,8 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                     }}
                     onChange={this.lightnessHandler}
                   />
+                </Feature>
+                <Feature isActive={true && this.state.isContrastMode}>
                   <Slider
                     {...this.props}
                     type="EDIT"
@@ -1795,9 +1860,12 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                     )}
                 </div>
                 <Feature
-                  isActive={Scale.features(
-                    this.props.planStatus
-                  ).SCALE_CONFIGURATION.isActive()}
+                  isActive={
+                    Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONFIGURATION.isActive() &&
+                    !this.state.isContrastMode
+                  }
                 >
                   {this.props.preset.id === 'CUSTOM' ? (
                     <Slider
@@ -1832,6 +1900,40 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       onChange={this.lightnessHandler}
                     />
                   )}
+                </Feature>
+                <Feature isActive={true && this.state.isContrastMode}>
+                  <Slider
+                    {...this.props}
+                    type="EDIT"
+                    presetName={this.props.preset.name}
+                    stops={this.props.preset.scale}
+                    scale={this.state.ratioLightForeground}
+                    range={{
+                      min: 0,
+                      max: 21,
+                    }}
+                    colors={{
+                      min: this.props.textColorsTheme.lightColor,
+                      max: this.props.textColorsTheme.lightColor,
+                    }}
+                    onChange={this.contrastLightForegroundHandler}
+                  />
+                  <Slider
+                    {...this.props}
+                    type="EDIT"
+                    presetName={this.props.preset.name}
+                    stops={this.props.preset.scale}
+                    scale={this.state.ratioDarkForeground}
+                    range={{
+                      min: 0,
+                      max: 21,
+                    }}
+                    colors={{
+                      min: this.props.textColorsTheme.darkColor,
+                      max: this.props.textColorsTheme.darkColor,
+                    }}
+                    onChange={this.contrastDarkForegroundHandler}
+                  />
                 </Feature>
                 <Feature
                   isActive={Scale.features(
