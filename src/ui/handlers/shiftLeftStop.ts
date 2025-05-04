@@ -5,7 +5,8 @@ const shiftLeftStop = (
   selectedKnob: HTMLElement,
   meta: boolean,
   ctrl: boolean,
-  gap: number
+  gap: number,
+  minRange: number
 ) => {
   const stopsList: Array<string> = []
   const shiftValue = meta || ctrl ? 0.1 : 1
@@ -24,8 +25,8 @@ const shiftLeftStop = (
     nextStopValue: number = newLightnessScale[stopsList[selectedKnobIndex - 1]]
 
   if (currentStopValue + gap - shiftValue <= nextStopValue) nextStopValue + gap
-  else if (currentStopValue - shiftValue <= 0)
-    newLightnessScale[stopsList[selectedKnobIndex]] = 0
+  else if (currentStopValue - shiftValue <= minRange)
+    newLightnessScale[stopsList[selectedKnobIndex]] = minRange
   else
     newLightnessScale[stopsList[selectedKnobIndex]] =
       newLightnessScale[stopsList[selectedKnobIndex]] - shiftValue

@@ -297,7 +297,8 @@ export default class Slider extends Component<SliderProps, SliderStates> {
       knob,
       isMeta,
       isCtrl,
-      this.safeGap
+      this.safeGap,
+      this.props.range.max
     )
     this.props.onChange('SHIFTED', results)
   }
@@ -308,7 +309,8 @@ export default class Slider extends Component<SliderProps, SliderStates> {
       knob,
       isMeta,
       isCtrl,
-      this.safeGap
+      this.safeGap,
+      this.props.range.min
     )
     this.props.onChange('SHIFTED', results)
   }
