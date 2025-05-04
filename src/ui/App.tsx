@@ -443,7 +443,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
 
           this.setState({
             service: 'EDIT',
-            sourceColors: [],
             id: path.data.meta.id,
             name: path.data.base.name,
             description: path.data.base.description,
