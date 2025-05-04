@@ -1,4 +1,3 @@
-import { $palette } from '../../stores/palette'
 import { ScaleConfiguration } from '../../types/configurations'
 
 const shiftLeftStop = (
@@ -10,23 +9,22 @@ const shiftLeftStop = (
 ) => {
   const stopsList: Array<string> = []
   const shiftValue = meta || ctrl ? 0.1 : 1
-  const palette = $palette
 
-  Object.keys(scale).forEach((stop) => {
-    stopsList.push(stop)
-  })
+  Object.entries(scale)
+    .sort((a, b) => a[1] - b[1])
+    .forEach((stop) => {
+      stopsList.push(stop[0])
+    })
 
   const selectedKnobIndex = stopsList.indexOf(
       selectedKnob.dataset.id as string
     ),
     newLightnessScale = scale,
     currentStopValue: number = newLightnessScale[stopsList[selectedKnobIndex]],
-    nextStopValue: number = newLightnessScale[stopsList[selectedKnobIndex + 1]]
+    nextStopValue: number = newLightnessScale[stopsList[selectedKnobIndex - 1]]
 
   if (currentStopValue + gap - shiftValue <= nextStopValue) nextStopValue + gap
-  else if (currentStopValue <= 1 && !(meta || ctrl))
-    newLightnessScale[stopsList[selectedKnobIndex]] = 0
-  else if (currentStopValue === 0 && (meta || ctrl))
+  else if (currentStopValue - shiftValue <= 0)
     newLightnessScale[stopsList[selectedKnobIndex]] = 0
   else
     newLightnessScale[stopsList[selectedKnobIndex]] =
