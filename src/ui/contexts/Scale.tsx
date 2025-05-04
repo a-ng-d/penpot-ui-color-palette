@@ -233,6 +233,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       this.setState({ canPaletteDeepSync: value })
     })
     this.unsubscribePalette = $palette.subscribe((value) => {
+      console.log('value', value.scale)
       this.scaleMessage.data = value as ExchangeConfiguration
     })
   }
@@ -251,6 +252,15 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     },
     feature?: string
   ) => {
+    const onReleaseStop = () => {
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
+      this.scaleMessage.isEditedInRealTime = false
+      this.scaleMessage.feature = feature
+
+      if (this.props.service === 'EDIT')
+        parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
+    }
+
     const onChangeStop = () => {
       this.palette.setKey('scale', results.scale)
       if (results.preset !== undefined)
@@ -367,12 +377,10 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       this.scaleMessage.isEditedInRealTime = true
 
       this.props.onChangeScale()
-
-      if (this.props.service === 'EDIT' && this.state.canPaletteDeepSync)
-        this.dispatch.scale.on.status = true
     }
 
     const actions: ActionsList = {
+      RELEASED: () => onReleaseStop(),
       SHIFTED: () => onChangeStop(),
       TYPED: () => onTypeStopValue(),
       UPDATING: () => onUpdatingStop(),
@@ -390,6 +398,15 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     },
     feature?: string
   ) => {
+    const onReleaseStop = () => {
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
+      this.scaleMessage.isEditedInRealTime = false
+      this.scaleMessage.feature = feature
+
+      if (this.props.service === 'EDIT')
+        parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
+    }
+
     const onChangeStop = () => {
       const scale = {} as ScaleConfiguration
       const darkForegroundRatio = {} as ScaleConfiguration
@@ -490,12 +507,10 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       this.scaleMessage.isEditedInRealTime = true
 
       this.props.onChangeScale()
-
-      if (this.props.service === 'EDIT' && this.state.canPaletteDeepSync)
-        this.dispatch.scale.on.status = true
     }
 
     const actions: ActionsList = {
+      RELEASED: () => onReleaseStop(),
       SHIFTED: () => onChangeStop(),
       TYPED: () => onTypeStopValue(),
       UPDATING: () => onUpdatingStop(),
@@ -513,6 +528,15 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     },
     feature?: string
   ) => {
+    const onReleaseStop = () => {
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
+      this.scaleMessage.isEditedInRealTime = false
+      this.scaleMessage.feature = feature
+
+      if (this.props.service === 'EDIT')
+        parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
+    }
+
     const onChangeStop = () => {
       const scale = {} as ScaleConfiguration
       const darkForegroundRatio = {} as ScaleConfiguration
@@ -629,12 +653,10 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       this.scaleMessage.isEditedInRealTime = true
 
       this.props.onChangeScale()
-
-      if (this.props.service === 'EDIT' && this.state.canPaletteDeepSync)
-        this.dispatch.scale.on.status = true
     }
 
     const actions: ActionsList = {
+      RELEASED: () => onReleaseStop(),
       SHIFTED: () => onChangeStop(),
       TYPED: () => onTypeStopValue(),
       UPDATING: () => onUpdatingStop(),
@@ -1794,7 +1816,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   }
 
   Edit = () => {
-    this.palette.setKey('scale', {})
     return (
       <Layout
         id="scale"
@@ -1819,8 +1840,21 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       />
                     }
                     rightPartSlot={
-                      <div className={texts.label}>
-                        {this.props.preset.name}
+                      <div className={layouts['snackbar--medium']}>
+                        <div className={texts.label}>
+                          {this.props.preset.name}
+                        </div>
+                        <Feature isActive={true}>
+                          <Select
+                            id="switch-contrast-mode"
+                            type="SWITCH_BUTTON"
+                            label="Contrast mode"
+                            isChecked={this.state.isContrastMode}
+                            isBlocked={false}
+                            isNew={false}
+                            action={this.onEnableContrastMode}
+                          />
+                        </Feature>
                       </div>
                     }
                     alignment="BASELINE"

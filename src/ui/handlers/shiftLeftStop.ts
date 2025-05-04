@@ -35,8 +35,6 @@ const shiftLeftStop = (
   return {
     scale: newLightnessScale as ScaleConfiguration,
   }
-
-  palette.setKey('scale', newLightnessScale)
 }
 
 export default shiftLeftStop

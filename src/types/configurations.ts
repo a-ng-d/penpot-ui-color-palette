@@ -36,8 +36,6 @@ export interface ExchangeConfiguration {
   [key: string]: string | number | boolean | object | undefined
   name: string
   description: string
-  min: number
-  max: number
   preset: PresetConfiguration
   scale: ScaleConfiguration
   shift: ShiftConfiguration
