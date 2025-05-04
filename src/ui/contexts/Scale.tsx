@@ -233,7 +233,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       this.setState({ canPaletteDeepSync: value })
     })
     this.unsubscribePalette = $palette.subscribe((value) => {
-      console.log('value', value.scale)
       this.scaleMessage.data = value as ExchangeConfiguration
     })
   }
