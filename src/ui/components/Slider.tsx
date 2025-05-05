@@ -3,29 +3,42 @@ import { doClassnames, doMap, FeatureStatus } from '@a_ng_d/figmug-utils'
 import { Component } from 'preact/compat'
 import React from 'react'
 import features from '../../config'
-import { $palette } from '../../stores/palette'
 import { BaseProps, Easing, PlanStatus, Service } from '../../types/app'
-import { ScaleConfiguration } from '../../types/configurations'
+import {
+  PresetConfiguration,
+  ScaleConfiguration,
+} from '../../types/configurations'
 import doLightnessScale from '../../utils/doLightnessScale'
 import addStop from './../handlers/addStop'
 import deleteStop from './../handlers/deleteStop'
 import shiftLeftStop from './../handlers/shiftLeftStop'
 import shiftRightStop from './../handlers/shiftRightStop'
 
+type UpdateEvent = 'TYPED' | 'UPDATING' | 'RELEASED' | 'SHIFTED'
+
 interface SliderProps extends BaseProps {
   service: Service
   stops: Array<number>
   presetName: string
   type: 'EDIT' | 'FULLY_EDIT'
-  min?: number
-  max?: number
   scale?: ScaleConfiguration
   distributionEasing: Easing
+  range: {
+    min: number
+    max: number
+  }
   colors: {
     min: string
     max: string
   }
-  onChange: (state: string, feature?: string) => void
+  onChange: (
+    state: UpdateEvent,
+    results: {
+      scale: ScaleConfiguration
+      preset?: PresetConfiguration
+    },
+    feature?: string
+  ) => void
 }
 
 interface SliderStates {
@@ -34,7 +47,6 @@ interface SliderStates {
 
 export default class Slider extends Component<SliderProps, SliderStates> {
   private safeGap: number
-  private palette: typeof $palette
 
   static defaultProps = {
     colors: {
@@ -53,11 +65,10 @@ export default class Slider extends Component<SliderProps, SliderStates> {
 
   constructor(props: SliderProps) {
     super(props)
-    this.palette = $palette
     this.state = {
       isTooltipDisplay: Array(this.props.stops?.length).fill(false),
     }
-    this.safeGap = 0.1
+    this.safeGap = 0.2
   }
 
   // Handlers
@@ -67,19 +78,19 @@ export default class Slider extends Component<SliderProps, SliderStates> {
       | React.FocusEvent<HTMLInputElement>
       | React.KeyboardEvent<HTMLInputElement>
   ) => {
-    const scale = this.palette.get().scale
+    const scale: ScaleConfiguration = this.props.scale ?? {}
     const target = e.target as HTMLInputElement
 
     if (target.value !== '') {
-      this.palette.setKey('scale', this.props.scale ?? {})
-      if (parseFloat(target.value) < parseFloat(target.min))
-        scale[stopId] = parseFloat(target.min)
-      else if (parseFloat(target.value) > parseFloat(target.max))
+      if (parseFloat(target.value) > parseFloat(target.max))
         scale[stopId] = parseFloat(target.max)
+      else if (parseFloat(target.value) < parseFloat(target.min))
+        scale[stopId] = parseFloat(target.min)
       else scale[stopId] = parseFloat(target.value)
 
-      this.palette.setKey('scale', scale)
-      this.props.onChange('TYPED')
+      this.props.onChange('TYPED', {
+        scale: scale,
+      })
     }
   }
 
@@ -91,44 +102,27 @@ export default class Slider extends Component<SliderProps, SliderStates> {
         e.clientX -
         (e.currentTarget as HTMLElement).getBoundingClientRect().left -
         (e.currentTarget as HTMLElement).getBoundingClientRect().width / 2,
-      tooltip = stop.children[0] as HTMLElement,
       rangeWidth = range.offsetWidth as number,
       slider = range.parentElement as HTMLElement,
       stops = Array.from(range.children as HTMLCollectionOf<HTMLElement>)
 
-    const update = () => {
-      const scale = this.palette.get().scale
-      this.palette.setKey(
-        'min',
-        parseFloat(
-          doMap(
-            (range.lastChild as HTMLElement).offsetLeft,
-            0,
-            rangeWidth,
-            0,
-            100
-          ).toFixed(1)
-        )
-      )
-      this.palette.setKey(
-        'max',
-        parseFloat(
-          doMap(
-            (range.firstChild as HTMLElement).offsetLeft,
-            0,
-            rangeWidth,
-            0,
-            100
-          ).toFixed(1)
-        )
-      )
+    const update = (event: UpdateEvent) => {
+      const scale: ScaleConfiguration = {}
       stops.forEach(
         (stop) =>
           (scale[stop.dataset.id as string] = parseFloat(
-            stop.style.left.replace('%', '')
+            doMap(
+              parseFloat(stop.style.left.replace('%', '')),
+              0,
+              100,
+              this.props.range.min,
+              this.props.range.max
+            ).toFixed(1)
           ))
       )
-      this.palette.setKey('scale', scale)
+      this.props.onChange(event, {
+        scale: scale,
+      })
     }
 
     stop.style.zIndex = '2'
@@ -140,13 +134,13 @@ export default class Slider extends Component<SliderProps, SliderStates> {
         range,
         stops,
         stop,
-        tooltip,
         shift,
         rangeWidth,
-        update
+        (event: UpdateEvent) => update(event)
       )
 
-    document.onmouseup = () => this.onRelease(stops, stop, update)
+    document.onmouseup = () =>
+      this.onRelease(stops, stop, (event: UpdateEvent) => update(event))
   }
 
   onSlide = (
@@ -155,10 +149,9 @@ export default class Slider extends Component<SliderProps, SliderStates> {
     range: HTMLElement,
     stops: Array<HTMLElement>,
     stop: HTMLElement,
-    tooltip: HTMLElement,
     shift: number,
     rangeWidth: number,
-    update: () => void
+    update: (e: UpdateEvent) => void
   ) => {
     let limitMin: number, limitMax: number
     const gap: number = doMap(this.safeGap, 0, 100, 0, rangeWidth),
@@ -167,33 +160,47 @@ export default class Slider extends Component<SliderProps, SliderStates> {
       )
     let offset = e.clientX - slider.offsetLeft - sliderPadding - shift
 
-    update()
-
-    if (stop === range.lastChild) {
+    if (stop === range.firstChild) {
       limitMin = 0
-      limitMax = (stop.previousElementSibling as HTMLElement).offsetLeft - gap
-    } else if (stop === range.firstChild) {
-      limitMin = (stop.nextElementSibling as HTMLElement).offsetLeft + gap
+      limitMax = (stop.nextElementSibling as HTMLElement).offsetLeft - gap
+    } else if (stop === range.lastChild) {
+      limitMin = (stop.previousElementSibling as HTMLElement).offsetLeft + gap
       limitMax = rangeWidth
     } else {
-      limitMin = (stop.nextElementSibling as HTMLElement).offsetLeft + gap
-      limitMax = (stop.previousElementSibling as HTMLElement).offsetLeft - gap
+      limitMin = (stop.previousElementSibling as HTMLElement).offsetLeft + gap
+      limitMax = (stop.nextElementSibling as HTMLElement).offsetLeft - gap
     }
 
-    if (offset <= limitMin) offset = limitMin
-    else if (offset >= limitMax) offset = limitMax
+    if (offset >= limitMax) offset = limitMax
+    else if (offset <= limitMin) offset = limitMin
 
     // Distribute stops horizontal spacing
-    if (stop === range.lastChild && e.shiftKey)
+    if (stop === range.firstChild && e.shiftKey)
       return this.distributeStops(
         'MIN',
-        parseFloat(doMap(offset, 0, rangeWidth, 0, 100).toFixed(1)),
+        parseFloat(
+          doMap(
+            offset,
+            0,
+            rangeWidth,
+            this.props.range.min,
+            this.props.range.max
+          ).toFixed(1)
+        ),
         stops
       )
-    else if (stop === range.firstChild && e.shiftKey)
+    else if (stop === range.lastChild && e.shiftKey)
       return this.distributeStops(
         'MAX',
-        parseFloat(doMap(offset, 0, rangeWidth, 0, 100).toFixed(1)),
+        parseFloat(
+          doMap(
+            offset,
+            0,
+            rangeWidth,
+            this.props.range.min,
+            this.props.range.max
+          ).toFixed(1)
+        ),
         stops
       )
 
@@ -201,16 +208,24 @@ export default class Slider extends Component<SliderProps, SliderStates> {
     if (e.ctrlKey || e.metaKey)
       if (
         offset <
-          stop.offsetLeft - (range.lastChild as HTMLElement).offsetLeft ||
+          stop.offsetLeft - (range.firstChild as HTMLElement).offsetLeft ||
         offset >
           rangeWidth -
-            (range.firstChild as HTMLElement).offsetLeft +
+            (range.lastChild as HTMLElement).offsetLeft +
             stop.offsetLeft
       )
         offset = stop.offsetLeft
       else
         return this.linkStops(
-          parseFloat(doMap(offset, 0, rangeWidth, 0, 100).toFixed(1)),
+          parseFloat(
+            doMap(
+              offset,
+              0,
+              rangeWidth,
+              this.props.range.min,
+              this.props.range.max
+            ).toFixed(1)
+          ),
           stop,
           stops
         )
@@ -223,15 +238,14 @@ export default class Slider extends Component<SliderProps, SliderStates> {
     stop.style.left = doMap(offset, 0, rangeWidth, 0, 100).toFixed(1) + '%'
 
     // Update lightness scale
-    update()
-    this.props.onChange('UPDATING')
+    update('UPDATING')
     document.body.style.cursor = 'ew-resize'
   }
 
   onRelease = (
     stops: Array<HTMLElement>,
     stop: HTMLElement,
-    update: () => void
+    update: (e: UpdateEvent) => void
   ) => {
     document.onmousemove = null
     document.onmouseup = null
@@ -241,8 +255,7 @@ export default class Slider extends Component<SliderProps, SliderStates> {
       isTooltipDisplay: Array(stops.length).fill(false),
     })
 
-    update()
-    this.props.onChange('RELEASED')
+    update('RELEASED')
     document.body.style.cursor = ''
   }
 
@@ -256,36 +269,50 @@ export default class Slider extends Component<SliderProps, SliderStates> {
         this.props.stops.length
       )
     ) {
-      addStop(
+      const results = addStop(
         e,
         this.props.scale ?? {},
         this.props.presetName,
-        this.props.min ?? 0,
-        this.props.max ?? 100
+        Math.min(...Object.values(this.props.scale ?? {})) ?? 0,
+        Math.max(...Object.values(this.props.scale ?? {})) ?? 0
       )
-      this.props.onChange('SHIFTED', 'ADD_STOP')
+      this.props.onChange('SHIFTED', results, 'ADD_STOP')
     }
   }
 
   onDelete = (knob: HTMLElement) => {
-    deleteStop(
+    const results = deleteStop(
       this.props.scale ?? {},
       knob,
       this.props.presetName,
-      this.props.min ?? 0,
-      this.props.max ?? 100
+      Math.min(...Object.values(this.props.scale ?? {})) ?? 0,
+      Math.max(...Object.values(this.props.scale ?? {})) ?? 0
     )
-    this.props.onChange('SHIFTED', 'DELETE_STOP')
+    this.props.onChange('SHIFTED', results, 'DELETE_STOP')
   }
 
   onShiftRight = (knob: HTMLElement, isMeta: boolean, isCtrl: boolean) => {
-    shiftRightStop(this.props.scale ?? {}, knob, isMeta, isCtrl, this.safeGap)
-    this.props.onChange('SHIFTED')
+    const results = shiftRightStop(
+      this.props.scale ?? {},
+      knob,
+      isMeta,
+      isCtrl,
+      this.safeGap,
+      this.props.range.max
+    )
+    this.props.onChange('SHIFTED', results)
   }
 
   onShiftLeft = (knob: HTMLElement, isMeta: boolean, isCtrl: boolean) => {
-    shiftLeftStop(this.props.scale ?? {}, knob, isMeta, isCtrl, this.safeGap)
-    this.props.onChange('SHIFTED')
+    const results = shiftLeftStop(
+      this.props.scale ?? {},
+      knob,
+      isMeta,
+      isCtrl,
+      this.safeGap,
+      this.props.range.min
+    )
+    this.props.onChange('SHIFTED', results)
   }
 
   distributeStops = (
@@ -293,34 +320,38 @@ export default class Slider extends Component<SliderProps, SliderStates> {
     value: number,
     stops: Array<HTMLElement>
   ) => {
-    if (type === 'MIN') this.palette.setKey('min', value)
-    else if (type === 'MAX') this.palette.setKey('max', value)
-
-    this.palette.setKey(
-      'scale',
-      doLightnessScale(
-        this.props.stops,
-        this.palette.get().min ?? 0,
-        this.palette.get().max ?? 100,
-        this.props.distributionEasing
-      )
-    )
-
-    stops.forEach((stop) => {
-      stop.style.left =
-        this.palette.get().scale[stop.dataset.id as string] + '%'
-    })
+    if (type === 'MIN')
+      this.props.onChange('UPDATING', {
+        scale: doLightnessScale(
+          Object.entries(this.props.scale ?? {})
+            .sort((a, b) => b[1] - a[1])
+            .map((entry) => parseFloat(entry[0])),
+          value,
+          Math.max(...Object.values(this.props.scale ?? {})) ?? 0,
+          this.props.distributionEasing
+        ),
+      })
+    else if (type === 'MAX')
+      this.props.onChange('UPDATING', {
+        scale: doLightnessScale(
+          Object.entries(this.props.scale ?? {})
+            .sort((a, b) => b[1] - a[1])
+            .map((entry) => parseFloat(entry[0])),
+          Math.min(...Object.values(this.props.scale ?? {})) ?? 0,
+          value,
+          this.props.distributionEasing
+        ),
+      })
 
     this.setState({
       isTooltipDisplay: Array(stops.length).fill(true),
     })
 
-    this.props.onChange('UPDATING')
     document.body.style.cursor = 'ew-resize'
   }
 
   linkStops = (value: number, src: HTMLElement, stops: Array<HTMLElement>) => {
-    const scale = this.palette.get().scale
+    const scale: ScaleConfiguration = this.props.scale ?? {}
 
     stops
       .filter((stop) => stop !== src)
@@ -330,26 +361,23 @@ export default class Slider extends Component<SliderProps, SliderStates> {
           scale[src.dataset.id as string] +
           value
 
-        stop.style.left = delta.toFixed(1) + '%'
         scale[stop.dataset.id as string] = delta
       })
 
-    src.style.left = value + '%'
     scale[src.dataset.id as string] = value
-
-    this.palette.setKey('scale', scale)
 
     this.setState({
       isTooltipDisplay: this.state.isTooltipDisplay.fill(true),
     })
 
-    this.props.onChange('UPDATING')
+    this.props.onChange('UPDATING', {
+      scale: scale,
+    })
     document.body.style.cursor = 'ew-resize'
   }
 
   // Templates
   Edit = () => {
-    this.palette.setKey('scale', this.props.scale ?? {})
     return (
       <div
         className="slider__range"
@@ -357,23 +385,30 @@ export default class Slider extends Component<SliderProps, SliderStates> {
           background: `linear-gradient(90deg, ${this.props.colors.min}, ${this.props.colors.max})`,
         }}
       >
-        {Object.entries(this.props.scale ?? {}).map(
-          (lightness, index, original) => (
+        {Object.entries(this.props.scale ?? {})
+          .sort((a, b) => a[1] - b[1])
+          .map((lightness, index, original) => (
             <Knob
               key={lightness[0]}
               id={lightness[0]}
               shortId={lightness[0]}
               value={lightness[1]}
-              offset={lightness[1]}
+              offset={doMap(
+                lightness[1],
+                this.props.range.min,
+                this.props.range.max,
+                0,
+                100
+              )}
               min={
-                original[index + 1] === undefined
-                  ? '0'
-                  : (original[index + 1][1] + this.safeGap).toString()
+                original[index - 1] === undefined
+                  ? this.props.range.min.toString()
+                  : (original[index - 1][1] + this.safeGap).toString()
               }
               max={
-                original[index - 1] === undefined
-                  ? '100'
-                  : (original[index - 1][1] - this.safeGap).toString()
+                original[index + 1] === undefined
+                  ? this.props.range.max.toString()
+                  : (original[index + 1][1] - this.safeGap).toString()
               }
               helper={
                 index === 0 || index === original.length - 1
@@ -397,14 +432,12 @@ export default class Slider extends Component<SliderProps, SliderStates> {
               }}
               onValidStopValue={(stopId, e) => this.validHandler(stopId, e)}
             />
-          )
-        )}
+          ))}
       </div>
     )
   }
 
   FullyEdit = () => {
-    this.palette.setKey('scale', this.props.scale ?? {})
     return (
       <div
         className={doClassnames([
@@ -429,23 +462,30 @@ export default class Slider extends Component<SliderProps, SliderStates> {
         }}
         onMouseDown={(e) => this.onAdd(e)}
       >
-        {Object.entries(this.props.scale ?? {}).map(
-          (lightness, index, original) => (
+        {Object.entries(this.props.scale ?? {})
+          .sort((a, b) => a[1] - b[1])
+          .map((lightness, index, original) => (
             <Knob
               key={lightness[0]}
               id={lightness[0]}
               shortId={lightness[0]}
               value={lightness[1]}
-              offset={lightness[1]}
+              offset={doMap(
+                lightness[1],
+                this.props.range.min,
+                this.props.range.max,
+                0,
+                100
+              )}
               min={
-                original[index + 1] === undefined
-                  ? '0'
-                  : (original[index + 1][1] + this.safeGap).toString()
+                original[index - 1] === undefined
+                  ? this.props.range.min.toString()
+                  : (original[index - 1][1] + this.safeGap).toString()
               }
               max={
-                original[index - 1] === undefined
-                  ? '100'
-                  : (original[index - 1][1] - this.safeGap).toString()
+                original[index + 1] === undefined
+                  ? this.props.range.max.toString()
+                  : (original[index + 1][1] - this.safeGap).toString()
               }
               helper={
                 index === 0 || index === original.length - 1
@@ -477,8 +517,7 @@ export default class Slider extends Component<SliderProps, SliderStates> {
               }}
               onValidStopValue={(stopId, e) => this.validHandler(stopId, e)}
             />
-          )
-        )}
+          ))}
       </div>
     )
   }

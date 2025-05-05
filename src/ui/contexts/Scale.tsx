@@ -9,6 +9,7 @@ import {
   layouts,
   List,
   SectionTitle,
+  Select,
   SemanticMessage,
   SimpleItem,
   SimpleSlider,
@@ -38,13 +39,18 @@ import {
   ThemeConfiguration,
 } from '../../types/configurations'
 import { ScaleMessage } from '../../types/messages'
-import { ActionsList, DispatchProcess } from '../../types/models'
+import {
+  ActionsList,
+  DispatchProcess,
+  TextColorsThemeHexModel,
+} from '../../types/models'
 import doLightnessScale from '../../utils/doLightnessScale'
 import { trackScaleManagementEvent } from '../../utils/eventsTracker'
 import type { AppStates } from '../App'
 import Feature from '../components/Feature'
 import Slider from '../components/Slider'
 import Dispatcher from '../modules/Dispatcher'
+import Contrast from '../../utils/Contrast'
 
 interface ScaleProps extends BaseProps {
   service: Service
@@ -56,6 +62,7 @@ interface ScaleProps extends BaseProps {
   scale?: ScaleConfiguration
   shift: ShiftConfiguration
   themes: Array<ThemeConfiguration>
+  textColorsTheme: TextColorsThemeHexModel
   actions?: string
   onChangePreset?: React.Dispatch<Partial<AppStates>>
   onChangeScale: () => void
@@ -70,8 +77,10 @@ interface ScaleProps extends BaseProps {
 interface ScaleStates {
   isTipsOpen: boolean
   canPaletteDeepSync: boolean
+  ratioLightForeground: ScaleConfiguration
+  ratioDarkForeground: ScaleConfiguration
+  isContrastMode: boolean
 }
-
 export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   private scaleMessage: ScaleMessage
   private dispatch: { [key: string]: DispatchProcess }
@@ -212,6 +221,9 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     this.state = {
       isTipsOpen: false,
       canPaletteDeepSync: false,
+      ratioLightForeground: {},
+      ratioDarkForeground: {},
+      isContrastMode: false,
     }
   }
 
@@ -231,40 +243,415 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   }
 
   // Handlers
-  slideHandler = (state: string, feature?: string) => {
+  lightnessHandler = (
+    state: string,
+    results: {
+      scale: ScaleConfiguration
+      preset?: PresetConfiguration
+    },
+    feature?: string
+  ) => {
     const onReleaseStop = () => {
-      this.dispatch.scale.on.status = false
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
       this.scaleMessage.isEditedInRealTime = false
-      this.props.onChangeScale()
+      this.scaleMessage.feature = feature
+
       if (this.props.service === 'EDIT')
         parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
     }
 
     const onChangeStop = () => {
+      this.palette.setKey('scale', results.scale)
+      if (results.preset !== undefined)
+        this.palette.setKey('preset', results.preset)
+
+      const lightForegroundRatio = {} as ScaleConfiguration
+      const darkForegroundRatio = {} as ScaleConfiguration
+
+      Object.entries(results.scale).forEach(([key, value]) => {
+        lightForegroundRatio[key] = parseFloat(
+          new Contrast()
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.lightColor
+            )
+            .toFixed(1)
+        )
+        darkForegroundRatio[key] = parseFloat(
+          new Contrast()
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
+            .toFixed(1)
+        )
+      })
+
+      this.setState({
+        ratioLightForeground: lightForegroundRatio,
+        ratioDarkForeground: darkForegroundRatio,
+      })
+
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
       this.scaleMessage.isEditedInRealTime = false
       this.scaleMessage.feature = feature
+
       this.props.onChangeStop?.()
       this.props.onChangeScale()
+
       if (this.props.service === 'EDIT')
         parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
     }
 
     const onTypeStopValue = () => {
+      this.palette.setKey('scale', results.scale)
+
+      const lightForegroundRatio = {} as ScaleConfiguration
+      const darkForegroundRatio = {} as ScaleConfiguration
+
+      Object.entries(results.scale).forEach(([key, value]) => {
+        lightForegroundRatio[key] = parseFloat(
+          new Contrast()
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.lightColor
+            )
+            .toFixed(1)
+        )
+        darkForegroundRatio[key] = parseFloat(
+          new Contrast()
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
+            .toFixed(1)
+        )
+      })
+
+      this.setState({
+        ratioLightForeground: lightForegroundRatio,
+        ratioDarkForeground: darkForegroundRatio,
+      })
+
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
       this.scaleMessage.isEditedInRealTime = false
+
       this.props.onChangeStop?.()
       this.props.onChangeScale()
+
       if (this.props.service === 'EDIT')
         parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
     }
 
     const onUpdatingStop = () => {
+      const lightForegroundRatio = {} as ScaleConfiguration
+      const darkForegroundRatio = {} as ScaleConfiguration
+
+      Object.entries(results.scale).forEach(([key, value]) => {
+        lightForegroundRatio[key] = parseFloat(
+          new Contrast()
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.lightColor
+            )
+            .toFixed(1)
+        )
+        darkForegroundRatio[key] = parseFloat(
+          new Contrast()
+            .getContrastRatioForLightness(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
+            .toFixed(1)
+        )
+      })
+
+      this.palette.setKey('scale', results.scale)
+
+      this.setState({
+        ratioLightForeground: lightForegroundRatio,
+        ratioDarkForeground: darkForegroundRatio,
+      })
+
       this.scaleMessage.isEditedInRealTime = true
+
       this.props.onChangeScale()
-      if (this.props.service === 'EDIT' && this.state.canPaletteDeepSync)
-        this.dispatch.scale.on.status = true
+    }
+
+    const actions: ActionsList = {
+      RELEASED: () => onReleaseStop(),
+      SHIFTED: () => onChangeStop(),
+      TYPED: () => onTypeStopValue(),
+      UPDATING: () => onUpdatingStop(),
+      DEFAULT: () => null,
+    }
+
+    return actions[state ?? 'DEFAULT']?.()
+  }
+
+  contrastLightForegroundHandler = (
+    state: string,
+    results: {
+      scale: ScaleConfiguration
+      preset?: PresetConfiguration
+    },
+    feature?: string
+  ) => {
+    const onReleaseStop = () => {
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
+      this.scaleMessage.isEditedInRealTime = false
+      this.scaleMessage.feature = feature
+
+      if (this.props.service === 'EDIT')
+        parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
+    }
+
+    const onChangeStop = () => {
+      const scale = {} as ScaleConfiguration
+      const darkForegroundRatio = {} as ScaleConfiguration
+
+      Object.entries(results.scale).forEach(([key, value]) => {
+        scale[key] = parseFloat(
+          new Contrast()
+            .getLightnessForContrastRatio(
+              value,
+              this.props.textColorsTheme.lightColor
+            )
+            .toFixed(1)
+        )
+        darkForegroundRatio[key] = parseFloat(
+          new Contrast()
+            .getContrastRatioForLightness(
+              scale[key],
+              this.props.textColorsTheme.darkColor
+            )
+            .toFixed(1)
+        )
+      })
+
+      this.palette.setKey('scale', scale)
+      if (results.preset !== undefined)
+        this.palette.setKey('preset', results.preset)
+
+      this.setState({
+        ratioLightForeground: results.scale,
+        ratioDarkForeground: darkForegroundRatio,
+      })
+
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
+      this.scaleMessage.isEditedInRealTime = false
+      this.scaleMessage.feature = feature
+
+      this.props.onChangeStop?.()
+      this.props.onChangeScale()
+
+      if (this.props.service === 'EDIT')
+        parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
+    }
+
+    const onTypeStopValue = () => {
+      const scale = {} as ScaleConfiguration
+      const darkForegroundRatio = {} as ScaleConfiguration
+
+      Object.entries(results.scale).forEach(([key, value]) => {
+        scale[key] = new Contrast().getLightnessForContrastRatio(
+          value,
+          this.props.textColorsTheme.lightColor
+        )
+        darkForegroundRatio[key] = new Contrast().getContrastRatioForLightness(
+          scale[key],
+          this.props.textColorsTheme.darkColor
+        )
+      })
+
+      this.palette.setKey('scale', scale)
+
+      this.setState({
+        ratioLightForeground: results.scale,
+        ratioDarkForeground: darkForegroundRatio,
+      })
+
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
+      this.scaleMessage.isEditedInRealTime = false
+
+      this.props.onChangeStop?.()
+      this.props.onChangeScale()
+
+      if (this.props.service === 'EDIT')
+        parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
+    }
+
+    const onUpdatingStop = () => {
+      const scale = {} as ScaleConfiguration
+      const darkForegroundRatio = {} as ScaleConfiguration
+
+      Object.entries(results.scale).forEach(([key, value]) => {
+        scale[key] = new Contrast().getLightnessForContrastRatio(
+          value,
+          this.props.textColorsTheme.lightColor
+        )
+        darkForegroundRatio[key] = new Contrast().getContrastRatioForLightness(
+          scale[key],
+          this.props.textColorsTheme.darkColor
+        )
+      })
+
+      this.palette.setKey('scale', scale)
+
+      this.setState({
+        ratioLightForeground: results.scale,
+        ratioDarkForeground: darkForegroundRatio,
+      })
+
+      this.scaleMessage.isEditedInRealTime = true
+
+      this.props.onChangeScale()
+    }
+
+    const actions: ActionsList = {
+      RELEASED: () => onReleaseStop(),
+      SHIFTED: () => onChangeStop(),
+      TYPED: () => onTypeStopValue(),
+      UPDATING: () => onUpdatingStop(),
+      DEFAULT: () => null,
+    }
+
+    return actions[state ?? 'DEFAULT']?.()
+  }
+
+  contrastDarkForegroundHandler = (
+    state: string,
+    results: {
+      scale: ScaleConfiguration
+      preset?: PresetConfiguration
+    },
+    feature?: string
+  ) => {
+    const onReleaseStop = () => {
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
+      this.scaleMessage.isEditedInRealTime = false
+      this.scaleMessage.feature = feature
+
+      if (this.props.service === 'EDIT')
+        parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
+    }
+
+    const onChangeStop = () => {
+      const scale = {} as ScaleConfiguration
+      const darkForegroundRatio = {} as ScaleConfiguration
+
+      Object.entries(results.scale).forEach(([key, value]) => {
+        scale[key] = parseFloat(
+          new Contrast()
+            .getLightnessForContrastRatio(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
+            .toFixed(1)
+        )
+        darkForegroundRatio[key] = parseFloat(
+          new Contrast()
+            .getContrastRatioForLightness(
+              scale[key],
+              this.props.textColorsTheme.lightColor
+            )
+            .toFixed(1)
+        )
+      })
+
+      this.palette.setKey('scale', scale)
+      if (results.preset !== undefined)
+        this.palette.setKey('preset', results.preset)
+
+      this.setState({
+        ratioDarkForeground: results.scale,
+        ratioLightForeground: darkForegroundRatio,
+      })
+
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
+      this.scaleMessage.isEditedInRealTime = false
+      this.scaleMessage.feature = feature
+
+      this.props.onChangeStop?.()
+      this.props.onChangeScale()
+
+      if (this.props.service === 'EDIT')
+        parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
+    }
+
+    const onTypeStopValue = () => {
+      const scale = {} as ScaleConfiguration
+      const lightForegroundRatio = {} as ScaleConfiguration
+
+      Object.entries(results.scale).forEach(([key, value]) => {
+        scale[key] = parseFloat(
+          new Contrast()
+            .getLightnessForContrastRatio(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
+            .toFixed(1)
+        )
+        lightForegroundRatio[key] = parseFloat(
+          new Contrast()
+            .getContrastRatioForLightness(
+              scale[key],
+              this.props.textColorsTheme.lightColor
+            )
+            .toFixed(1)
+        )
+      })
+
+      this.palette.setKey('scale', scale)
+
+      this.setState({
+        ratioDarkForeground: results.scale,
+        ratioLightForeground: lightForegroundRatio,
+      })
+
+      this.scaleMessage.data = this.palette.value as ExchangeConfiguration
+      this.scaleMessage.isEditedInRealTime = false
+
+      this.props.onChangeStop?.()
+      this.props.onChangeScale()
+
+      if (this.props.service === 'EDIT')
+        parent.postMessage({ pluginMessage: this.scaleMessage }, '*')
+    }
+
+    const onUpdatingStop = () => {
+      const scale = {} as ScaleConfiguration
+      const lightForegroundRatio = {} as ScaleConfiguration
+
+      Object.entries(results.scale).forEach(([key, value]) => {
+        scale[key] = parseFloat(
+          new Contrast()
+            .getLightnessForContrastRatio(
+              value,
+              this.props.textColorsTheme.darkColor
+            )
+            .toFixed(1)
+        )
+        lightForegroundRatio[key] = parseFloat(
+          new Contrast()
+            .getContrastRatioForLightness(
+              scale[key],
+              this.props.textColorsTheme.lightColor
+            )
+            .toFixed(1)
+        )
+      })
+
+      this.palette.setKey('scale', scale)
+
+      this.setState({
+        ratioDarkForeground: results.scale,
+        ratioLightForeground: lightForegroundRatio,
+      })
+
+      this.scaleMessage.isEditedInRealTime = true
+
+      this.props.onChangeScale()
     }
 
     const actions: ActionsList = {
@@ -522,8 +909,8 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
 
       preset.scale = newScale ?? []
       this.palette.setKey('preset', preset)
-      this.palette.setKey('min', preset.min)
-      this.palette.setKey('max', preset.max)
+      this.palette.setKey('lightnessRange.min', preset.min)
+      this.palette.setKey('lightnessRange.max', preset.max)
       this.palette.setKey('scale', scale(preset))
 
       this.props.onChangePreset?.({
@@ -633,8 +1020,8 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     const scale = (stps = stops) =>
       doLightnessScale(
         stps,
-        this.palette.get().min ?? 0,
-        this.palette.get().max ?? 100,
+        Math.min(...Object.values(this.props.scale ?? {})),
+        Math.max(...Object.values(this.props.scale ?? {})),
         this.props.distributionEasing
       )
 
@@ -724,6 +1111,40 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     return actions[
       (e.target as HTMLInputElement).dataset.feature ?? 'DEFAULT'
     ]?.()
+  }
+
+  // Direct Actions
+  onEnableContrastMode = () => {
+    this.setState({ isContrastMode: !this.state.isContrastMode })
+
+    const lightForegroundRatio = {} as ScaleConfiguration
+    const darkForegroundRatio = {} as ScaleConfiguration
+
+    Object.entries(this.props.scale ?? {}).forEach(([key, value]) => {
+      lightForegroundRatio[key] = parseFloat(
+        new Contrast()
+          .getContrastRatioForLightness(
+            value,
+            this.props.textColorsTheme.lightColor
+          )
+          .toFixed(1)
+      )
+      darkForegroundRatio[key] = parseFloat(
+        new Contrast()
+          .getContrastRatioForLightness(
+            value,
+            this.props.textColorsTheme.darkColor
+          )
+          .toFixed(1)
+      )
+    })
+
+    this.setState({
+      ratioLightForeground: lightForegroundRatio,
+      ratioDarkForeground: darkForegroundRatio,
+    })
+
+    this.props.onChangeScale()
   }
 
   // Templates
@@ -1102,14 +1523,23 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                   <SimpleItem
                     id="update-preset"
                     leftPartSlot={
-                      <SectionTitle label={this.props.locals.scale.title} />
+                      <SectionTitle
+                        label={
+                          !this.state.isContrastMode
+                            ? this.props.locals.scale.title
+                            : 'Contrast ratio'
+                        }
+                      />
                     }
                     rightPartSlot={
                       <div className={layouts['snackbar--medium']}>
                         <Feature
-                          isActive={Scale.features(
-                            this.props.planStatus
-                          ).SCALE_PRESETS.isActive()}
+                          isActive={
+                            Scale.features(
+                              this.props.planStatus
+                            ).SCALE_PRESETS.isActive() &&
+                            !this.state.isContrastMode
+                          }
                         >
                           <Dropdown
                             id="presets"
@@ -1120,9 +1550,12 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                           />
                         </Feature>
                         <Feature
-                          isActive={Scale.features(
-                            this.props.planStatus
-                          ).SCALE_PRESETS.isActive()}
+                          isActive={
+                            Scale.features(
+                              this.props.planStatus
+                            ).SCALE_PRESETS.isActive() &&
+                            !this.state.isContrastMode
+                          }
                         >
                           {this.props.preset.name === 'Custom' && (
                             <>
@@ -1177,6 +1610,17 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                             </>
                           )}
                         </Feature>
+                        <Feature isActive={true}>
+                          <Select
+                            id="switch-contrast-mode"
+                            type="SWITCH_BUTTON"
+                            label="Contrast mode"
+                            isChecked={this.state.isContrastMode}
+                            isBlocked={false}
+                            isNew={false}
+                            action={this.onEnableContrastMode}
+                          />
+                        </Feature>
                       </div>
                     }
                     alignment="BASELINE"
@@ -1216,22 +1660,61 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                     )}
                 </div>
                 <Feature
-                  isActive={Scale.features(
-                    this.props.planStatus
-                  ).SCALE_CONFIGURATION.isActive()}
+                  isActive={
+                    Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONFIGURATION.isActive() &&
+                    !this.state.isContrastMode
+                  }
                 >
                   <Slider
                     {...this.props}
                     type="EDIT"
                     presetName={this.props.preset.name}
                     stops={this.props.preset.scale}
-                    min={this.palette.get().min}
-                    max={this.palette.get().max}
+                    range={{
+                      min: 0,
+                      max: 100,
+                    }}
                     colors={{
                       min: 'black',
                       max: 'white',
                     }}
-                    onChange={this.slideHandler}
+                    onChange={this.lightnessHandler}
+                  />
+                </Feature>
+                <Feature isActive={true && this.state.isContrastMode}>
+                  <Slider
+                    {...this.props}
+                    type="EDIT"
+                    presetName={this.props.preset.name}
+                    stops={this.props.preset.scale}
+                    scale={this.state.ratioLightForeground}
+                    range={{
+                      min: 0,
+                      max: 21,
+                    }}
+                    colors={{
+                      min: this.props.textColorsTheme.lightColor,
+                      max: this.props.textColorsTheme.lightColor,
+                    }}
+                    onChange={this.contrastLightForegroundHandler}
+                  />
+                  <Slider
+                    {...this.props}
+                    type="EDIT"
+                    presetName={this.props.preset.name}
+                    stops={this.props.preset.scale}
+                    scale={this.state.ratioDarkForeground}
+                    range={{
+                      min: 0,
+                      max: 21,
+                    }}
+                    colors={{
+                      min: this.props.textColorsTheme.darkColor,
+                      max: this.props.textColorsTheme.darkColor,
+                    }}
+                    onChange={this.contrastDarkForegroundHandler}
                   />
                 </Feature>
                 <Feature
@@ -1332,7 +1815,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   }
 
   Edit = () => {
-    this.palette.setKey('scale', {})
     return (
       <Layout
         id="scale"
@@ -1357,8 +1839,21 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       />
                     }
                     rightPartSlot={
-                      <div className={texts.label}>
-                        {this.props.preset.name}
+                      <div className={layouts['snackbar--medium']}>
+                        <div className={texts.label}>
+                          {this.props.preset.name}
+                        </div>
+                        <Feature isActive={true}>
+                          <Select
+                            id="switch-contrast-mode"
+                            type="SWITCH_BUTTON"
+                            label="Contrast mode"
+                            isChecked={this.state.isContrastMode}
+                            isBlocked={false}
+                            isNew={false}
+                            action={this.onEnableContrastMode}
+                          />
+                        </Feature>
                       </div>
                     }
                     alignment="BASELINE"
@@ -1398,9 +1893,12 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                     )}
                 </div>
                 <Feature
-                  isActive={Scale.features(
-                    this.props.planStatus
-                  ).SCALE_CONFIGURATION.isActive()}
+                  isActive={
+                    Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONFIGURATION.isActive() &&
+                    !this.state.isContrastMode
+                  }
                 >
                   {this.props.preset.id === 'CUSTOM' ? (
                     <Slider
@@ -1408,11 +1906,15 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       type="FULLY_EDIT"
                       presetName={this.props.preset.name}
                       stops={this.props.preset.scale}
+                      range={{
+                        min: 0,
+                        max: 100,
+                      }}
                       colors={{
                         min: 'black',
                         max: 'white',
                       }}
-                      onChange={this.slideHandler}
+                      onChange={this.lightnessHandler}
                     />
                   ) : (
                     <Slider
@@ -1420,13 +1922,51 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       type="EDIT"
                       presetName={this.props.preset.name}
                       stops={this.props.preset.scale}
+                      range={{
+                        min: 0,
+                        max: 100,
+                      }}
                       colors={{
                         min: 'black',
                         max: 'white',
                       }}
-                      onChange={this.slideHandler}
+                      onChange={this.lightnessHandler}
                     />
                   )}
+                </Feature>
+                <Feature isActive={true && this.state.isContrastMode}>
+                  <Slider
+                    {...this.props}
+                    type="EDIT"
+                    presetName={this.props.preset.name}
+                    stops={this.props.preset.scale}
+                    scale={this.state.ratioLightForeground}
+                    range={{
+                      min: 0,
+                      max: 21,
+                    }}
+                    colors={{
+                      min: this.props.textColorsTheme.lightColor,
+                      max: this.props.textColorsTheme.lightColor,
+                    }}
+                    onChange={this.contrastLightForegroundHandler}
+                  />
+                  <Slider
+                    {...this.props}
+                    type="EDIT"
+                    presetName={this.props.preset.name}
+                    stops={this.props.preset.scale}
+                    scale={this.state.ratioDarkForeground}
+                    range={{
+                      min: 0,
+                      max: 21,
+                    }}
+                    colors={{
+                      min: this.props.textColorsTheme.darkColor,
+                      max: this.props.textColorsTheme.darkColor,
+                    }}
+                    onChange={this.contrastDarkForegroundHandler}
+                  />
                 </Feature>
                 <Feature
                   isActive={Scale.features(
@@ -1453,7 +1993,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                     onChange={(feature, state, value) => {
                       this.palette.setKey('shift.chroma', value)
                       this.props.onChangeShift(feature, state, value)
-                      this.slideHandler(state)
+                      //this.lightnessHandler(state)
                     }}
                   />
                 </Feature>

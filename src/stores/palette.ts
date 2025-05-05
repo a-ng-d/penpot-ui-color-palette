@@ -8,8 +8,6 @@ export const $palette = deepMap<ExchangeConfiguration>({
   id: '',
   name: locals.get().settings.global.name.default,
   description: '',
-  min: 0,
-  max: 100,
   preset: presets[0],
   scale: {},
   shift: {
