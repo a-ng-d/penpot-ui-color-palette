@@ -193,8 +193,6 @@ export default class Data {
           newHsluv.rgb_b = scaledColor[1][2] / 255
           newHsluv.rgbToHsluv()
 
-          console.log(scaledColor[0])
-
           paletteDataColorItem.shades.push({
             name: scaleName,
             description: `Shade color with ${scaledColor[0][1].toFixed(1)}% of ${

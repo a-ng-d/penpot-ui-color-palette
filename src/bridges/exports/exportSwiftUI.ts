@@ -61,7 +61,7 @@ const exportSwiftUI = (id: string) => {
         )
       })
       Colors.unshift('')
-      Colors.reverse().forEach((color) => swift.push(color))
+      Colors.forEach((color) => swift.push(color))
     })
   })
 

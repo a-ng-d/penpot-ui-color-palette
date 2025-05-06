@@ -147,7 +147,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
     super(props)
     this.counter = 0
     this.state = {
-      format: 'EXPORT_TOKENS_DTCG',
+      format: 'EXPORT_TOKENS_TOKENS_STUDIO',
       colorSpace: {
         selected: 'RGB',
         options: [],
@@ -158,9 +158,63 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
   // Handlers
   exportHandler = (e: Event) => {
     const actions: ActionsList = {
+      EXPORT_TOKENS_TOKENS_STUDIO: () => {
+        this.setState({
+          format: 'EXPORT_TOKENS_TOKENS_STUDIO',
+        })
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'EXPORT_PALETTE',
+              id: this.props.id,
+              export: 'TOKENS_TOKENS_STUDIO',
+            },
+          },
+          '*'
+        )
+      },
       EXPORT_TOKENS_DTCG: () => {
         this.setState({
           format: 'EXPORT_TOKENS_DTCG',
+          colorSpace: {
+            selected: 'RGB',
+            options: [
+              {
+                label: this.props.locals.export.colorSpace.label,
+                type: 'TITLE',
+              },
+              {
+                label: this.props.locals.export.colorSpace.rgb,
+                value: 'EXPORT_TOKENS_DTCG_RGB',
+                feature: 'SELECT_COLOR_SPACE',
+                type: 'OPTION',
+                isActive: true,
+                isBlocked: false,
+                isNew: false,
+                action: this.exportHandler,
+              },
+              {
+                label: this.props.locals.export.colorSpace.hex,
+                value: 'EXPORT_TOKENS_DTCG_HEX',
+                feature: 'SELECT_COLOR_SPACE',
+                type: 'OPTION',
+                isActive: true,
+                isBlocked: false,
+                isNew: false,
+                action: this.exportHandler,
+              },
+              {
+                label: this.props.locals.export.colorSpace.lch,
+                value: 'EXPORT_TOKENS_DTCG_OKLCH',
+                feature: 'SELECT_COLOR_SPACE',
+                type: 'OPTION',
+                isActive: true,
+                isBlocked: false,
+                isNew: false,
+                action: this.exportHandler,
+              },
+            ],
+          },
         })
         parent.postMessage(
           {
@@ -168,21 +222,64 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
               type: 'EXPORT_PALETTE',
               id: this.props.id,
               export: 'TOKENS_DTCG',
+              colorSpace: 'RGB',
             },
           },
           '*'
         )
       },
-      EXPORT_TOKENS_GLOBAL: () => {
+      EXPORT_TOKENS_DTCG_RGB: () => {
         this.setState({
-          format: 'EXPORT_TOKENS_GLOBAL',
+          colorSpace: {
+            selected: 'RGB',
+            options: this.state.colorSpace.options,
+          },
         })
         parent.postMessage(
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
               id: this.props.id,
-              export: 'TOKENS_GLOBAL',
+              export: 'TOKENS_DTCG',
+              colorSpace: 'RGB',
+            },
+          },
+          '*'
+        )
+      },
+      EXPORT_TOKENS_DTCG_HEX: () => {
+        this.setState({
+          colorSpace: {
+            selected: 'HEX',
+            options: this.state.colorSpace.options,
+          },
+        })
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'EXPORT_PALETTE',
+              id: this.props.id,
+              export: 'TOKENS_DTCG',
+              colorSpace: 'HEX',
+            },
+          },
+          '*'
+        )
+      },
+      EXPORT_TOKENS_DTCG_OKLCH: () => {
+        this.setState({
+          colorSpace: {
+            selected: 'OKLCH',
+            options: this.state.colorSpace.options,
+          },
+        })
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'EXPORT_PALETTE',
+              id: this.props.id,
+              export: 'TOKENS_DTCG',
+              colorSpace: 'OKLCH',
             },
           },
           '*'
@@ -203,16 +300,16 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
           '*'
         )
       },
-      EXPORT_TOKENS_TOKENS_STUDIO: () => {
+      EXPORT_TOKENS_GLOBAL: () => {
         this.setState({
-          format: 'EXPORT_TOKENS_TOKENS_STUDIO',
+          format: 'EXPORT_TOKENS_GLOBAL',
         })
         parent.postMessage(
           {
             pluginMessage: {
               type: 'EXPORT_PALETTE',
               id: this.props.id,
-              export: 'TOKENS_TOKENS_STUDIO',
+              export: 'TOKENS_GLOBAL',
             },
           },
           '*'
@@ -576,27 +673,29 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                               ).EXPORT_TOKENS.isNew(),
                               children: [
                                 {
+                                  label:
+                                    this.props.locals.export.tokens
+                                      .tokensStudio,
+                                  value: 'EXPORT_TOKENS_TOKENS_STUDIO',
+                                  type: 'OPTION',
+                                  isActive: Export.features(
+                                    this.props.planStatus
+                                  ).EXPORT_TOKENS_JSON_TOKENS_STUDIO.isActive(),
+                                  isBlocked: Export.features(
+                                    this.props.planStatus
+                                  ).EXPORT_TOKENS_JSON_TOKENS_STUDIO.isBlocked(),
+                                  isNew: Export.features(
+                                    this.props.planStatus
+                                  ).EXPORT_TOKENS_JSON_TOKENS_STUDIO.isNew(),
+                                  action: this.exportHandler,
+                                },
+                                {
                                   label: 'DTCG (JSON)',
                                   value: 'EXPORT_TOKENS_DTCG',
                                   type: 'OPTION',
                                   isActive: true,
                                   isBlocked: false,
                                   isNew: false,
-                                  action: this.exportHandler,
-                                },
-                                {
-                                  label: this.props.locals.export.tokens.global,
-                                  value: 'EXPORT_TOKENS_GLOBAL',
-                                  type: 'OPTION',
-                                  isActive: Export.features(
-                                    this.props.planStatus
-                                  ).EXPORT_TOKENS_JSON.isActive(),
-                                  isBlocked: Export.features(
-                                    this.props.planStatus
-                                  ).EXPORT_TOKENS_JSON.isBlocked(),
-                                  isNew: Export.features(
-                                    this.props.planStatus
-                                  ).EXPORT_TOKENS_JSON.isNew(),
                                   action: this.exportHandler,
                                 },
                                 {
@@ -617,24 +716,21 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                   action: this.exportHandler,
                                 },
                                 {
-                                  label:
-                                    this.props.locals.export.tokens
-                                      .tokensStudio,
-                                  value: 'EXPORT_TOKENS_TOKENS_STUDIO',
+                                  label: this.props.locals.export.tokens.global,
+                                  value: 'EXPORT_TOKENS_GLOBAL',
                                   type: 'OPTION',
                                   isActive: Export.features(
                                     this.props.planStatus
-                                  ).EXPORT_TOKENS_JSON_TOKENS_STUDIO.isActive(),
+                                  ).EXPORT_TOKENS_JSON.isActive(),
                                   isBlocked: Export.features(
                                     this.props.planStatus
-                                  ).EXPORT_TOKENS_JSON_TOKENS_STUDIO.isBlocked(),
+                                  ).EXPORT_TOKENS_JSON.isBlocked(),
                                   isNew: Export.features(
                                     this.props.planStatus
-                                  ).EXPORT_TOKENS_JSON_TOKENS_STUDIO.isNew(),
+                                  ).EXPORT_TOKENS_JSON.isNew(),
                                   action: this.exportHandler,
                                 },
                               ],
-                              action: () => null,
                             },
                             {
                               label:
@@ -784,6 +880,19 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                           pin="TOP"
                         />
                         {this.state.format === 'EXPORT_CSS' && (
+                          <Menu
+                            icon="adjust"
+                            id="select-color-space"
+                            options={this.state.colorSpace.options}
+                            selected={`${this.state.format}_${this.state.colorSpace.selected}`}
+                            alignment="BOTTOM_RIGHT"
+                            helper={{
+                              label:
+                                this.props.locals.export.css.selectColorSpace,
+                            }}
+                          />
+                        )}
+                        {this.state.format === 'EXPORT_TOKENS_DTCG' && (
                           <Menu
                             icon="adjust"
                             id="select-color-space"

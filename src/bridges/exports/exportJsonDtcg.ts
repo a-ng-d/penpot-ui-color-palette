@@ -1,12 +1,9 @@
-import chroma from 'chroma-js'
+import { ColorSpaceConfiguration } from 'src/types/configurations'
+import { ActionsList } from 'src/types/models'
 import { locals } from '../../content/locals'
-import {
-  PaletteData,
-  PaletteDataColorItem,
-  PaletteDataShadeItem,
-} from '../../types/data'
+import { PaletteData, PaletteDataShadeItem } from '../../types/data'
 
-const exportJsonDtcg = (id: string) => {
+const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
@@ -25,35 +22,88 @@ const exportJsonDtcg = (id: string) => {
         .length === 0
         ? paletteData.themes.filter((theme) => theme.type === 'default theme')
         : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    json: { [key: string]: any } = {
-      $themes: [],
-      $metadata: {
-        activeThemes: [],
-        tokenSetOrder: [],
-        activeSets: [],
+    json: { [key: string]: any } = {}
+
+  const setValueAccordingToColorSpace = (shade: PaletteDataShadeItem) => {
+    const actions: ActionsList = {
+      RGB: () => {
+        return {
+          colorSpace: 'srgb',
+          components: [
+            parseFloat(shade.gl[0].toFixed(3)),
+            parseFloat(shade.gl[1].toFixed(3)),
+            parseFloat(shade.gl[2].toFixed(3)),
+          ],
+        }
+      },
+      HEX: () => {
+        return {
+          colorSpace: 'srgb',
+          components: [
+            parseFloat(shade.gl[0].toFixed(3)),
+            parseFloat(shade.gl[1].toFixed(3)),
+            parseFloat(shade.gl[2].toFixed(3)),
+          ],
+          hex: shade.hex,
+        }
+      },
+      OKLCH: () => {
+        return {
+          colorSpace: 'oklch',
+          components: [
+            parseFloat(shade.oklch[0].toFixed(3)),
+            parseFloat(shade.oklch[1].toFixed(3)),
+            parseFloat(shade.oklch[2].toFixed(0)),
+          ],
+        }
       },
     }
 
-  const paletteName = JSON.parse(rawPalette).base.name
+    return actions[colorSpace ?? 'RGB']?.()
+  }
 
-  const model = (
-    color: PaletteDataColorItem,
-    shade: PaletteDataShadeItem,
-    source: PaletteDataShadeItem
+  const setValueAccordingToColorSpaceAndAlpha = (
+    source: PaletteDataShadeItem,
+    shade: PaletteDataShadeItem
   ) => {
-    return {
-      $type: 'color',
-      $value: shade.isTransparent
-        ? chroma(source.hex)
-            .alpha(shade.alpha ?? 1)
-            .hex()
-        : shade.hex,
-      $description:
-        color.description !== ''
-          ? color.description + locals.get().separator + shade.description
-          : shade.description,
+    const actions: ActionsList = {
+      RGB: () => {
+        return {
+          colorSpace: 'srgb',
+          components: [
+            parseFloat(source.gl[0].toFixed(3)),
+            parseFloat(source.gl[1].toFixed(3)),
+            parseFloat(source.gl[2].toFixed(3)),
+          ],
+          alpha: shade.alpha,
+        }
+      },
+      HEX: () => {
+        return {
+          colorSpace: 'srgb',
+          components: [
+            parseFloat(source.gl[0].toFixed(3)),
+            parseFloat(source.gl[1].toFixed(3)),
+            parseFloat(source.gl[2].toFixed(3)),
+          ],
+          hex: source.hex,
+          alpha: shade.alpha,
+        }
+      },
+      OKLCH: () => {
+        return {
+          colorSpace: 'oklch',
+          components: [
+            parseFloat(source.oklch[0].toFixed(3)),
+            parseFloat(source.oklch[1].toFixed(3)),
+            parseFloat(source.oklch[2].toFixed(0)),
+          ],
+          alpha: shade.alpha,
+        }
+      },
     }
+
+    return actions[colorSpace ?? 'RGB']?.()
   }
 
   if (workingThemes[0].type === 'custom theme')
@@ -63,14 +113,26 @@ const exportJsonDtcg = (id: string) => {
           (shade) => shade.type === 'source color'
         )
 
-        json[`${theme.name}/${color.name}`] = {}
-        color.shades.reverse().forEach((shade) => {
-          if (shade && source)
-            json[`${theme.name}/${color.name}`][shade.name] = model(
-              color,
-              shade,
-              source
-            )
+        if (!json[color.name])
+          json[color.name] = {
+            $type: 'color',
+          }
+
+        color.shades.forEach((shade) => {
+          if (!json[color.name][shade.name] && source)
+            json[color.name][shade.name] = {
+              $value: shade.isTransparent
+                ? setValueAccordingToColorSpaceAndAlpha(source, shade)
+                : setValueAccordingToColorSpace(shade),
+              $extensions: {
+                mode: {},
+              },
+            }
+          if (source)
+            json[color.name][shade.name].$extensions.mode[theme.name] =
+              shade.isTransparent
+                ? setValueAccordingToColorSpaceAndAlpha(source, shade)
+                : setValueAccordingToColorSpace(shade)
         })
       })
     })
@@ -81,14 +143,21 @@ const exportJsonDtcg = (id: string) => {
           (shade) => shade.type === 'source color'
         )
 
-        json[`${paletteName}/${color.name}`] = {}
-        color.shades.sort().forEach((shade) => {
+        json[color.name] = {}
+        color.shades.forEach((shade) => {
           if (shade && source)
-            json[`${paletteName}/${color.name}`][shade.name] = model(
-              color,
-              shade,
-              source
-            )
+            json[color.name][shade.name] = {
+              $type: 'color',
+              $value: shade.isTransparent
+                ? setValueAccordingToColorSpaceAndAlpha(source, shade)
+                : setValueAccordingToColorSpace(shade),
+              $description:
+                color.description !== ''
+                  ? color.description +
+                    locals.get().separator +
+                    shade.description
+                  : shade.description,
+            }
         })
       })
     })
@@ -98,6 +167,7 @@ const exportJsonDtcg = (id: string) => {
     data: {
       id: penpot.currentUser.id,
       context: 'TOKENS_DTCG',
+      colorSpace: colorSpace,
       code: JSON.stringify(json, null, '  '),
     },
   })

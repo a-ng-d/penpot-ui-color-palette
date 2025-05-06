@@ -14,7 +14,7 @@ const exportJsonTokensStudio = (id: string) => {
       type: 'EXPORT_PALETTE_JSON',
       data: {
         id: penpot.currentUser.id,
-        context: 'TOKENS_TOKENS_STUDIO',
+        context: 'TOKENS_AMZN_STYLE_DICTIONARY',
         code: locals.get().error.export,
       },
     })
@@ -25,10 +25,17 @@ const exportJsonTokensStudio = (id: string) => {
         .length === 0
         ? paletteData.themes.filter((theme) => theme.type === 'default theme')
         : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
-    name: string =
-      paletteData.name === '' ? locals.get().name : paletteData.name,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    json: { [key: string]: any } = {}
+    json: { [key: string]: any } = {
+      $themes: [],
+      $metadata: {
+        activeThemes: [],
+        tokenSetOrder: [],
+        activeSets: [],
+      },
+    }
+
+  const paletteName = JSON.parse(rawPalette).base.name
 
   const model = (
     color: PaletteDataColorItem,
@@ -36,53 +43,53 @@ const exportJsonTokensStudio = (id: string) => {
     source: PaletteDataShadeItem
   ) => {
     return {
-      value: shade.isTransparent
+      $type: 'color',
+      $value: shade.isTransparent
         ? chroma(source.hex)
             .alpha(shade.alpha ?? 1)
             .hex()
         : shade.hex,
-      description:
+      $description:
         color.description !== ''
           ? color.description + locals.get().separator + shade.description
           : shade.description,
-      type: 'color',
     }
   }
 
   if (workingThemes[0].type === 'custom theme')
     workingThemes.forEach((theme) => {
-      json[name + ' - ' + theme.name] = {}
       theme.colors.forEach((color) => {
         const source = color.shades.find(
           (shade) => shade.type === 'source color'
         )
 
-        json[name + ' - ' + theme.name][color.name] = {}
-        color.shades.reverse().forEach((shade) => {
+        json[`${theme.name}/${color.name}`] = {}
+        color.shades.forEach((shade) => {
           if (shade && source)
-            json[name + ' - ' + theme.name][color.name][shade.name] = model(
+            json[`${theme.name}/${color.name}`][shade.name] = model(
               color,
               shade,
               source
             )
         })
-        json[name + ' - ' + theme.name][color.name]['type'] = 'color'
       })
     })
   else
     workingThemes.forEach((theme) => {
-      json[name] = {}
       theme.colors.forEach((color) => {
         const source = color.shades.find(
           (shade) => shade.type === 'source color'
         )
 
-        json[name][color.name] = {}
-        color.shades.sort().forEach((shade) => {
+        json[`${paletteName}/${color.name}`] = {}
+        color.shades.forEach((shade) => {
           if (shade && source)
-            json[name][color.name][shade.name] = model(color, shade, source)
+            json[`${paletteName}/${color.name}`][shade.name] = model(
+              color,
+              shade,
+              source
+            )
         })
-        json[name][color.name]['type'] = 'color'
       })
     })
 

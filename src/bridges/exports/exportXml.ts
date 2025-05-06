@@ -50,7 +50,7 @@ const exportXml = (id: string) => {
         )
       })
       colors.unshift('')
-      colors.reverse().forEach((color) => resources.push(color))
+      colors.forEach((color) => resources.push(color))
     })
   })
 

@@ -132,7 +132,7 @@ const exportJson = (id: string) => {
         )
 
         json[theme.name][color.name] = {}
-        color.shades.reverse().forEach((shade) => {
+        color.shades.forEach((shade) => {
           if (shade && source)
             json[theme.name][color.name][shade.name] = shade.isTransparent
               ? modelWithTransparency(shade, source)
@@ -152,7 +152,7 @@ const exportJson = (id: string) => {
         )
 
         json[color.name] = {}
-        color.shades.sort().forEach((shade) => {
+        color.shades.forEach((shade) => {
           if (shade && source)
             json[color.name][shade.name] = shade.isTransparent
               ? modelWithTransparency(shade, source)

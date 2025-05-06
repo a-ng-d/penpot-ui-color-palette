@@ -60,7 +60,7 @@ const exportJsonAmznStyleDictionary = (id: string) => {
         )
 
         json['color'][color.name][theme.name] = {}
-        color.shades.reverse().forEach((shade) => {
+        color.shades.forEach((shade) => {
           if (shade && source)
             json['color'][color.name][theme.name][shade.name] = model(
               color,
@@ -78,7 +78,7 @@ const exportJsonAmznStyleDictionary = (id: string) => {
         )
 
         json['color'][color.name] = {}
-        color.shades.sort().forEach((shade) => {
+        color.shades.forEach((shade) => {
           if (shade && source)
             json['color'][color.name][shade.name] = model(color, shade, source)
         })

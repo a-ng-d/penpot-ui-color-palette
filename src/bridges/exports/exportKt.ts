@@ -52,7 +52,7 @@ const exportKt = (id: string) => {
         )
       })
       colors.unshift('')
-      colors.reverse().forEach((color) => kotlin.push(color))
+      colors.forEach((color) => kotlin.push(color))
     })
   })
 

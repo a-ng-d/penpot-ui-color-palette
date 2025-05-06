@@ -53,11 +53,11 @@ const exportUIKit = (id: string) => {
     UIColors.shift()
     if (workingThemes[0].type === 'custom theme')
       swift.push(
-        `struct ${new Case(theme.name).doPascalCase()} {\n    ${UIColors.reverse().join(
+        `struct ${new Case(theme.name).doPascalCase()} {\n    ${UIColors.join(
           '\n    '
         )}\n  }`
       )
-    else swift.push(`${UIColors.reverse().join('\n  ')}`)
+    else swift.push(`${UIColors.join('\n  ')}`)
   })
 
   penpot.ui.sendMessage({

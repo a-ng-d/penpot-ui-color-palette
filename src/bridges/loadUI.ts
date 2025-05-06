@@ -30,7 +30,7 @@ import updateThemes from './updates/updateThemes'
 import createDocument from './creations/createDocument'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
 import updateDocument from './updates/updateDocument'
-import exportJsonDtcg from './exports/exportJsonDTCG'
+import exportJsonDtcg from './exports/exportJsonDtcg'
 
 /*penpot.currentPage?.getPluginDataKeys().forEach((key) => {
   if (key.startsWith('palette_')) penpot.currentPage?.setPluginData(key, '')
@@ -143,7 +143,8 @@ const loadUI = async () => {
           }),
       //
       EXPORT_PALETTE: () => {
-        path.export === 'TOKENS_DTCG' && exportJsonDtcg(path.id)
+        path.export === 'TOKENS_DTCG' &&
+          exportJsonDtcg(path.id, path.colorSpace)
         path.export === 'TOKENS_GLOBAL' && exportJson(path.id)
         path.export === 'TOKENS_AMZN_STYLE_DICTIONARY' &&
           exportJsonAmznStyleDictionary(path.id)

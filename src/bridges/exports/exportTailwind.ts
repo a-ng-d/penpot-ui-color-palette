@@ -43,7 +43,7 @@ const exportTailwind = (id: string) => {
         json['theme']['colors'][new Case(color.name).doKebabCase()][
           new Case(theme.name).doKebabCase()
         ] = {}
-        color.shades.reverse().forEach((shade) => {
+        color.shades.forEach((shade) => {
           json['theme']['colors'][new Case(color.name).doKebabCase()][
             new Case(theme.name).doKebabCase()
           ][new Case(shade.name).doKebabCase()] = shade.isTransparent

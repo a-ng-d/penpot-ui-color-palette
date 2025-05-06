@@ -3,8 +3,9 @@ import { locals } from '../../content/locals'
 import { PaletteData, PaletteDataShadeItem } from '../../types/data'
 import { ActionsList } from '../../types/models'
 import chroma from 'chroma-js'
+import { ColorSpaceConfiguration } from 'src/types/configurations'
 
-const exportCss = (id: string, colorSpace: 'RGB' | 'LCH' | 'P3') => {
+const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
@@ -84,7 +85,7 @@ const exportCss = (id: string, colorSpace: 'RGB' | 'LCH' | 'P3') => {
     const rowCss: Array<string> = []
     theme.colors.forEach((color) => {
       rowCss.push(`/* ${color.name} */`)
-      color.shades.forEach((shade) => {
+      color.shades.reverse().forEach((shade) => {
         const source = color.shades.find((c) => c.type === 'source color')
 
         if (source)

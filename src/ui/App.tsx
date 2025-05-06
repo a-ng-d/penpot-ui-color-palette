@@ -176,9 +176,9 @@ export default class App extends Component<Record<string, never>, AppStates> {
       },
       export: {
         format: 'JSON',
-        context: 'TOKENS_DTCG',
+        context: 'TOKENS_TOKENS_STUDIO',
         label: '',
-        colorSpace: 'RGB',
+        colorSpace: 'HEX',
         mimeType: 'application/json',
         data: '',
       },
@@ -487,7 +487,7 @@ export default class App extends Component<Record<string, never>, AppStates> {
               label: `${this.state.locals.actions.export} ${
                 this.state.locals.export.tokens.label
               }`,
-              colorSpace: 'RGB',
+              colorSpace: path.data.colorSpace,
               mimeType: 'application/json',
               data: path.data.code,
             },
