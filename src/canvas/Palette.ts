@@ -195,6 +195,7 @@ export default class Palette {
               status: {
                 isClosestToRef: shade.isClosestToRef ?? false,
                 isLocked: shade.isSourceColorLocked ?? false,
+                isTransparent: shade.isTransparent ?? false,
               },
             }).makeNodeShade({
               width: this.sampleSize,

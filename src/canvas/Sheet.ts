@@ -209,6 +209,7 @@ export default class Sheet {
               status: {
                 isClosestToRef: shade.isClosestToRef ?? false,
                 isLocked: shade.isSourceColorLocked ?? false,
+                isTransparent: shade.isTransparent ?? false,
               },
             }).makeNodeRichShade({
               width: this.sampleSize * this.sampleRatio,

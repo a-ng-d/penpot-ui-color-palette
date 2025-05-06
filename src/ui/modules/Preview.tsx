@@ -942,6 +942,11 @@ export default class Preview extends PureComponent<
                         key="source"
                         name={color.name}
                         color={color.rgb}
+                        isTransparent={
+                          'transparency' in color
+                            ? color.transparency.isEnabled
+                            : false
+                        }
                       />
                       {Object.values(scaledColors).map((scaledColor, index) => {
                         return (

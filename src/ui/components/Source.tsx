@@ -7,18 +7,12 @@ import { BaseProps } from '../../types/app'
 interface SourceProps extends BaseProps {
   name: string
   color: RgbModel
+  isTransparent: boolean
 }
 
-interface SourceStates {
-  isCompact: boolean
-}
-
-export default class Source extends PureComponent<SourceProps, SourceStates> {
-  constructor(props: SourceProps) {
-    super(props)
-    this.state = {
-      isCompact: false,
-    }
+export default class Source extends PureComponent<SourceProps> {
+  static defaultProps: Partial<SourceProps> = {
+    isTransparent: false,
   }
 
   // Render
@@ -35,6 +29,9 @@ export default class Source extends PureComponent<SourceProps, SourceStates> {
         }}
       >
         <Chip state="ON_BACKGROUND">{this.props.name}</Chip>
+        {this.props.isTransparent && (
+          <Chip state="ON_BACKGROUND">Transparent</Chip>
+        )}
       </div>
     )
   }

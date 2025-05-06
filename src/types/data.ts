@@ -49,6 +49,7 @@ export interface PaletteDataShadeItem {
   styleId: string
   isClosestToRef?: boolean
   isSourceColorLocked?: boolean
+  isTransparent?: boolean
   type: 'source color' | 'color shade'
 }
 

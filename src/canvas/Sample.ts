@@ -26,6 +26,7 @@ export default class Sample {
   private status: {
     isClosestToRef: boolean
     isLocked: boolean
+    isTransparent: boolean
   }
   private nodeColor: Board | null
   private node: Board | null
@@ -45,6 +46,7 @@ export default class Sample {
     status = {
       isClosestToRef: false,
       isLocked: false,
+      isTransparent: false,
     },
   }: {
     id?: string
@@ -57,7 +59,11 @@ export default class Sample {
     visionSimulationMode: VisionSimulationModeConfiguration
     view: ViewConfiguration
     textColorsTheme: TextColorsThemeHexModel
-    status?: { isClosestToRef: boolean; isLocked: boolean }
+    status?: {
+      isClosestToRef: boolean
+      isLocked: boolean
+      isTransparent: boolean
+    }
   }) {
     this.id = id
     this.name = name
@@ -187,7 +193,11 @@ export default class Sample {
       }
     }
 
-    if (this.status.isClosestToRef || this.status.isLocked) {
+    if (
+      this.status.isClosestToRef ||
+      this.status.isLocked ||
+      this.status.isTransparent
+    ) {
       const statusNode = new Status({
         status: this.status,
         source: this.source

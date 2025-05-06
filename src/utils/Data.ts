@@ -261,6 +261,7 @@ export default class Data {
             isClosestToRef: distance < 4 && !this.base.areSourceColorsLocked,
             isSourceColorLocked:
               index === minDistanceIndex && this.base.areSourceColorsLocked,
+            isTransparent: color.transparency.isEnabled,
             type: 'color shade',
           })
         })

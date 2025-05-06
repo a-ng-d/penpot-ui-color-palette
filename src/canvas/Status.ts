@@ -3,7 +3,11 @@ import { locals } from '../content/locals'
 import Tag from './Tag'
 
 export default class Status {
-  private status: { isClosestToRef: boolean; isLocked: boolean }
+  private status: {
+    isClosestToRef: boolean
+    isLocked: boolean
+    isTransparent: boolean
+  }
   private source: { [key: string]: number }
   node: Board
 
@@ -11,6 +15,7 @@ export default class Status {
     status = {
       isClosestToRef: false,
       isLocked: false,
+      isTransparent: false,
     },
     source = {
       r: 0,
@@ -18,7 +23,11 @@ export default class Status {
       b: 0,
     },
   }: {
-    status: { isClosestToRef: boolean; isLocked: boolean }
+    status: {
+      isClosestToRef: boolean
+      isLocked: boolean
+      isTransparent: boolean
+    }
     source: { [key: string]: number }
   }) {
     this.status = status
@@ -59,6 +68,15 @@ export default class Status {
         new Tag({
           name: '_lock',
           content: locals.get().paletteProperties.locked,
+          fontSize: 10,
+        }).makeNodeTag()
+      )
+
+    if (this.status.isTransparent)
+      this.node.appendChild(
+        new Tag({
+          name: '_transparent',
+          content: 'Transparent',
           fontSize: 10,
         }).makeNodeTag()
       )
