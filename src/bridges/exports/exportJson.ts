@@ -134,10 +134,9 @@ const exportJson = (id: string) => {
         json[theme.name][color.name] = {}
         color.shades.reverse().forEach((shade) => {
           if (shade && source)
-            json[theme.name][color.name][shade.name] =
-              shade.alpha !== undefined
-                ? modelWithTransparency(shade, source)
-                : model(shade)
+            json[theme.name][color.name][shade.name] = shade.isTransparent
+              ? modelWithTransparency(shade, source)
+              : model(shade)
         })
         json[theme.name][color.name]['description'] = color.description
         json[theme.name][color.name]['type'] = 'color'
@@ -155,10 +154,9 @@ const exportJson = (id: string) => {
         json[color.name] = {}
         color.shades.sort().forEach((shade) => {
           if (shade && source)
-            json[color.name][shade.name] =
-              shade.alpha !== undefined
-                ? modelWithTransparency(shade, source)
-                : model(shade)
+            json[color.name][shade.name] = shade.isTransparent
+              ? modelWithTransparency(shade, source)
+              : model(shade)
         })
         json[color.name]['description'] = color.description
         json[color.name]['type'] = 'color'

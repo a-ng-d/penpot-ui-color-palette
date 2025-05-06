@@ -35,7 +35,7 @@ const exportSwiftUI = (id: string) => {
       )
       color.shades.forEach((shade) => {
         Colors.unshift(
-          shade.alpha !== undefined
+          shade.isTransparent
             ? `public let ${
                 workingThemes[0].type === 'custom theme'
                   ? new Case(theme.name + ' ' + color.name).doCamelCase()
@@ -46,7 +46,7 @@ const exportSwiftUI = (id: string) => {
                 3
               )}, green: ${source?.gl[1].toFixed(3)}, blue: ${shade.gl[2].toFixed(
                 3
-              )}.opacity(${shade.alpha.toFixed(1)}))`
+              )}).opacity(${shade.alpha ?? 1})`
             : `public let ${
                 workingThemes[0].type === 'custom theme'
                   ? new Case(theme.name + ' ' + color.name).doCamelCase()

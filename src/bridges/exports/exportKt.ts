@@ -41,9 +41,9 @@ const exportKt = (id: string) => {
               ? new Case(theme.name + ' ' + color.name).doSnakeCase()
               : new Case(color.name).doSnakeCase()
           }_${shade.name} = Color(${
-            shade.alpha !== undefined
+            shade.isTransparent
               ? chroma(source?.hex ?? '#000000')
-                  .alpha(shade.alpha)
+                  .alpha(shade.alpha ?? 1)
                   .hex()
                   .replace('#', '0xFF')
                   .toUpperCase()

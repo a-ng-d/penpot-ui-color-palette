@@ -46,12 +46,11 @@ const exportTailwind = (id: string) => {
         color.shades.reverse().forEach((shade) => {
           json['theme']['colors'][new Case(color.name).doKebabCase()][
             new Case(theme.name).doKebabCase()
-          ][new Case(shade.name).doKebabCase()] =
-            shade.alpha !== undefined
-              ? chroma(source?.hex ?? '#000000')
-                  .alpha(shade.alpha)
-                  .hex()
-              : shade.hex
+          ][new Case(shade.name).doKebabCase()] = shade.isTransparent
+            ? chroma(source?.hex ?? '#000000')
+                .alpha(shade.alpha ?? 1)
+                .hex()
+            : shade.hex
         })
       })
     })
@@ -66,12 +65,11 @@ const exportTailwind = (id: string) => {
         color.shades.sort().forEach((shade) => {
           json['theme']['colors'][new Case(color.name).doKebabCase()][
             new Case(shade.name).doKebabCase()
-          ] =
-            shade.alpha !== undefined
-              ? chroma(source?.hex ?? '#000000')
-                  .alpha(shade.alpha)
-                  .hex()
-              : shade.hex
+          ] = shade.isTransparent
+            ? chroma(source?.hex ?? '#000000')
+                .alpha(shade.alpha ?? 1)
+                .hex()
+            : shade.hex
         })
       })
     })

@@ -250,7 +250,7 @@ export default class Data {
                 : chroma(scaledColor[1]).hsl(),
             hsluv: [newHsluv.hsluv_h, newHsluv.hsluv_s, newHsluv.hsluv_l],
             alpha: color.transparency.isEnabled
-              ? scaledColor[0][1] / 100
+              ? parseFloat((scaledColor[0][1] / 100).toFixed(2))
               : undefined,
             styleId: this.searchForShadeStyleId(
               previousData?.themes ?? this.paletteData.themes,

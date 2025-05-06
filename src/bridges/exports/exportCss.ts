@@ -89,7 +89,7 @@ const exportCss = (id: string, colorSpace: 'RGB' | 'LCH' | 'P3') => {
 
         if (source)
           rowCss.push(
-            `--${new Case(color.name).doKebabCase()}-${shade.name}: ${shade.alpha !== undefined ? setValueAccordingToAlpha(shade, source) : setValueAccordingToColorSpace(shade)};`
+            `--${new Case(color.name).doKebabCase()}-${shade.name}: ${shade.isTransparent ? setValueAccordingToAlpha(shade, source) : setValueAccordingToColorSpace(shade)};`
           )
       })
 

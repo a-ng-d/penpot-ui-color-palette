@@ -44,10 +44,11 @@ const exportJsonDtcg = (id: string) => {
   ) => {
     return {
       $type: 'color',
-      $value:
-        shade.alpha !== undefined
-          ? chroma(source.hex).alpha(shade.alpha).hex()
-          : shade.hex,
+      $value: shade.isTransparent
+        ? chroma(source.hex)
+            .alpha(shade.alpha ?? 1)
+            .hex()
+        : shade.hex,
       $description:
         color.description !== ''
           ? color.description + locals.get().separator + shade.description

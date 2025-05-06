@@ -31,14 +31,14 @@ const exportUIKit = (id: string) => {
       UIColors.unshift(`// ${color.name}`)
       color.shades.forEach((shade) => {
         UIColors.unshift(
-          shade.alpha !== undefined
+          shade.isTransparent
             ? `static let ${new Case(color.name).doCamelCase()}${
                 shade.name === 'source' ? 'Source' : shade.name
               } = UIColor(red: ${source?.gl[0].toFixed(
                 3
               )}, green: ${source?.gl[1].toFixed(3)}, blue: ${source?.gl[2].toFixed(
                 3
-              )}, alpha: ${shade.alpha.toFixed(1)})`
+              )}, alpha: ${shade.alpha ?? 1})`
             : `static let ${new Case(color.name).doCamelCase()}${
                 shade.name === 'source' ? 'Source' : shade.name
               } = UIColor(red: ${shade.gl[0].toFixed(

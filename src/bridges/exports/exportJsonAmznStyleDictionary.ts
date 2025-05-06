@@ -36,10 +36,11 @@ const exportJsonAmznStyleDictionary = (id: string) => {
     source: PaletteDataShadeItem
   ) => {
     return {
-      value:
-        shade.alpha !== undefined
-          ? chroma(source.hex).alpha(shade.alpha).hex()
-          : shade.hex,
+      value: shade.isTransparent
+        ? chroma(source.hex)
+            .alpha(shade.alpha ?? 1)
+            .hex()
+        : shade.hex,
       comment:
         color.description !== ''
           ? color.description + locals.get().separator + shade.description

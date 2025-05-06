@@ -44,11 +44,10 @@ const createLocalStyles = async (id: string) => {
                     : `${paletteData.name === '' ? '' : paletteData.name} / ${
                         color.name
                       } / ${shade.name}`,
-                hex:
-                  shade.alpha !== undefined
-                    ? (source?.hex ?? shade.hex)
-                    : shade.hex,
-                alpha: shade.alpha,
+                hex: shade.isTransparent
+                  ? (source?.hex ?? shade.hex)
+                  : shade.hex,
+                alpha: shade.isTransparent ? (shade.alpha ?? 1) : undefined,
               })
               shade.styleId = style.libraryColor.id
               i++

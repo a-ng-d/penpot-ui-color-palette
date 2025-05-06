@@ -78,7 +78,7 @@ const updateLocalStyles = async (id: string) => {
                   j++
                 }
 
-                if (shade.alpha !== undefined) {
+                if (shade.isTransparent) {
                   if (source?.hex !== styleMatch.color) {
                     styleMatch.color = source?.hex ?? '#000000'
                     j++
