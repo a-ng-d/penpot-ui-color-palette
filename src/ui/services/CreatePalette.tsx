@@ -314,9 +314,10 @@ export default class CreatePalette extends PureComponent<
         />
         <section className="context">{fragment}</section>
         <Feature
-          isActive={CreatePalette.features(
-            this.props.planStatus
-          ).PREVIEW.isActive()}
+          isActive={
+            CreatePalette.features(this.props.planStatus).PREVIEW.isActive() &&
+            this.props.sourceColors.length > 0
+          }
         >
           <Preview
             {...this.props}

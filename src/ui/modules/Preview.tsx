@@ -425,26 +425,24 @@ export default class Preview extends PureComponent<
         <Bar
           leftPartSlot={
             <div className={layouts['snackbar--medium']}>
-              {this.props.colors.length > 0 && (
-                <Button
-                  type="icon"
-                  icon={
-                    this.state.isDrawerCollapsed
-                      ? 'toggle-sidebar-top'
-                      : 'toggle-sidebar-bottom'
-                  }
-                  helper={{
-                    label: this.state.isDrawerCollapsed
-                      ? this.props.locals.preview.actions.expandPreview
-                      : this.props.locals.preview.actions.collapsePreview,
-                  }}
-                  action={() => {
-                    if (!this.state.isDrawerCollapsed)
-                      this.drawerRef.current?.collapseDrawer()
-                    else this.drawerRef.current?.expandDrawer()
-                  }}
-                />
-              )}
+              <Button
+                type="icon"
+                icon={
+                  this.state.isDrawerCollapsed
+                    ? 'toggle-sidebar-top'
+                    : 'toggle-sidebar-bottom'
+                }
+                helper={{
+                  label: this.state.isDrawerCollapsed
+                    ? this.props.locals.preview.actions.expandPreview
+                    : this.props.locals.preview.actions.collapsePreview,
+                }}
+                action={() => {
+                  if (!this.state.isDrawerCollapsed)
+                    this.drawerRef.current?.collapseDrawer()
+                  else this.drawerRef.current?.expandDrawer()
+                }}
+              />
               <Menu
                 id="change-score-display"
                 type="ICON"
