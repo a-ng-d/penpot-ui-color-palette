@@ -216,7 +216,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                 action: this.exportHandler,
               },
               {
-                label: this.props.locals.export.colorSpace.lch,
+                label: this.props.locals.export.colorSpace.oklch,
                 value: 'EXPORT_TOKENS_DTCG_OKLCH',
                 feature: 'SELECT_COLOR_SPACE',
                 type: 'OPTION',
@@ -689,7 +689,8 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                   action: this.exportHandler,
                                 },
                                 {
-                                  label: 'DTCG (JSON)',
+                                  label:
+                                    this.props.locals.export.tokens.dtcg.label,
                                   value: 'EXPORT_TOKENS_DTCG',
                                   type: 'OPTION',
                                   isActive: Export.features(
@@ -906,7 +907,8 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                             alignment="BOTTOM_RIGHT"
                             helper={{
                               label:
-                                this.props.locals.export.css.selectColorSpace,
+                                this.props.locals.export.actions
+                                  .selectColorSpace,
                             }}
                           />
                         )}
@@ -918,7 +920,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                     <div className="export-palette__info">
                       <SemanticMessage
                         type="INFO"
-                        message="DTCG tokens format is an ongoing work in progress led by a W3C group and can be changed in the future"
+                        message={this.props.locals.export.tokens.dtcg.message}
                       />
                     </div>
                   )}

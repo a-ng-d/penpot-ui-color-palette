@@ -95,6 +95,9 @@
     "unshare": "✕ The palette has not been removed from the community"
   },
   "export": {
+    "actions": {
+      "selectColorSpace": "Select a color space"
+    },
     "android": {
       "compose": "Compose (KT)",
       "label": "Android",
@@ -110,12 +113,12 @@
       "hsl": "HSL",
       "label": "Color space",
       "lch": "LCH",
+      "oklch": "OKLCH",
       "p3": "P3",
       "rgb": "RGB"
     },
     "css": {
-      "customProperties": "Custom Properties (CSS)",
-      "selectColorSpace": "Select a color space"
+      "customProperties": "Custom Properties (CSS)"
     },
     "csv": {
       "spreadsheet": "Spreadsheet (CSV)"
@@ -126,9 +129,14 @@
       "config": "Tailwind (JS)"
     },
     "tokens": {
-      "amznStyleDictionary": "Amazon Style Dictionary (JSON)",
+      "amznStyleDictionary": "Amazon Style Dictionary v3 (JSON)",
+      "dtcg": {
+        "label": "DTCG format (JSON)",
+        "message": "DTCG tokens format is an ongoing work in progress led by a W3C group and can be changed in the future"
+      },
       "global": "Global (JSON)",
       "label": "Tokens",
+      "nativeTokens": "Native tokens (JSON)",
       "tokensStudio": "Tokens Studio (JSON)"
     }
   },
