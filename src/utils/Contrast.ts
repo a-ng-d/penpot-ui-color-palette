@@ -7,12 +7,15 @@ export default class Contrast {
   private backgroundColor: [number, number, number]
   private textColor: HexModel
 
-  constructor(data?: {
+  constructor({
+    backgroundColor = [0, 0, 0],
+    textColor = '#FFFFFF',
+  }: {
     backgroundColor?: [number, number, number]
     textColor?: HexModel
   }) {
-    this.backgroundColor = data?.backgroundColor ?? [0, 0, 0]
-    this.textColor = data?.textColor ?? '#FFFFFF'
+    this.backgroundColor = backgroundColor
+    this.textColor = textColor
   }
 
   getWCAGContrast = (): number => {
@@ -88,30 +91,23 @@ export default class Contrast {
     return locals.get().paletteProperties.unknown
   }
 
-  getContrastRatioForLightness = (
-    lightness: number,
-    textColor: string
-  ): number => {
+  getContrastRatioForLightness = (lightness: number): number => {
     const bgColor = chroma.lch(lightness, 0, 0).rgb()
-    return chroma.contrast(chroma(bgColor).hex(), textColor)
+    return chroma.contrast(chroma(bgColor).hex(), this.textColor)
   }
 
   getLightnessForContrastRatio = (
     targetRatio: number,
-    textColor: string,
     precision = 0.1
   ): number => {
-    const isLightText = chroma(textColor).luminance() > 0.5
+    const isLightText = chroma(this.textColor).luminance() > 0.5
     let min = 0
     let max = 100
     let currentLightness = isLightText ? 20 : 80
 
     while (max - min > precision) {
       currentLightness = (min + max) / 2
-      const currentRatio = this.getContrastRatioForLightness(
-        currentLightness,
-        textColor
-      )
+      const currentRatio = this.getContrastRatioForLightness(currentLightness)
 
       if (isLightText)
         if (currentRatio < targetRatio) max = currentLightness

@@ -16,19 +16,19 @@ export interface PaletteData {
 }
 
 export interface PaletteDataThemeItem {
+  id: string
   name: string
   description: string
   colors: Array<PaletteDataColorItem>
   modeId?: string
-  id: string
   type: 'default theme' | 'custom theme'
 }
 
 export interface PaletteDataColorItem {
+  id: string
   name: string
   description: string
   shades: Array<PaletteDataShadeItem>
-  id: string
   type: 'color'
 }
 
@@ -44,6 +44,7 @@ export interface PaletteDataShadeItem {
   oklab: [number, number, number]
   hsl: [number, number, number]
   hsluv: [number, number, number]
+  alpha?: number
   variableId?: string
   styleId: string
   isClosestToRef?: boolean
@@ -52,12 +53,12 @@ export interface PaletteDataShadeItem {
 }
 
 export interface ColourLovers {
+  id: number
   apiUrl: string
   badgeUrl: string
   colors: Array<HexModel>
   dateCreated: Date | string
   description: string
-  id: number
   imageUrl: string
   numComments: number
   numHearts: number

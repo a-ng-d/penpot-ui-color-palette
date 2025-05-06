@@ -1,3 +1,4 @@
+import chroma from 'chroma-js'
 import { locals } from '../../content/locals'
 import {
   PaletteData,
@@ -29,9 +30,16 @@ const exportJsonTokensStudio = (id: string) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     json: { [key: string]: any } = {}
 
-  const model = (color: PaletteDataColorItem, shade: PaletteDataShadeItem) => {
+  const model = (
+    color: PaletteDataColorItem,
+    shade: PaletteDataShadeItem,
+    source: PaletteDataShadeItem
+  ) => {
     return {
-      value: shade.hex,
+      value:
+        shade.alpha !== undefined
+          ? chroma(source.hex).alpha(shade.alpha).hex()
+          : shade.hex,
       description:
         color.description !== ''
           ? color.description + locals.get().separator + shade.description
@@ -44,12 +52,18 @@ const exportJsonTokensStudio = (id: string) => {
     workingThemes.forEach((theme) => {
       json[name + ' - ' + theme.name] = {}
       theme.colors.forEach((color) => {
+        const source = color.shades.find(
+          (shade) => shade.type === 'source color'
+        )
+
         json[name + ' - ' + theme.name][color.name] = {}
         color.shades.reverse().forEach((shade) => {
-          json[name + ' - ' + theme.name][color.name][shade.name] = model(
-            color,
-            shade
-          )
+          if (shade && source)
+            json[name + ' - ' + theme.name][color.name][shade.name] = model(
+              color,
+              shade,
+              source
+            )
         })
         json[name + ' - ' + theme.name][color.name]['type'] = 'color'
       })
@@ -58,9 +72,14 @@ const exportJsonTokensStudio = (id: string) => {
     workingThemes.forEach((theme) => {
       json[name] = {}
       theme.colors.forEach((color) => {
+        const source = color.shades.find(
+          (shade) => shade.type === 'source color'
+        )
+
         json[name][color.name] = {}
         color.shades.sort().forEach((shade) => {
-          json[name][color.name][shade.name] = model(color, shade)
+          if (shade && source)
+            json[name][color.name][shade.name] = model(color, shade, source)
         })
         json[name][color.name]['type'] = 'color'
       })

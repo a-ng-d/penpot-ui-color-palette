@@ -57,13 +57,13 @@ export interface ExtractOfBaseConfiguration {
 }
 
 export interface PresetConfiguration {
+  id: string
   name: string
   scale: Array<number>
   min: number
   max: number
   easing: Easing
   family?: string
-  id: string
 }
 
 export type ScaleConfiguration = Record<string, number>
@@ -75,6 +75,7 @@ export interface ShiftConfiguration {
 export type LockedSourceColorsConfiguration = boolean
 
 export interface ColorConfiguration {
+  id: string
   name: string
   description: string
   rgb: RgbModel
@@ -86,12 +87,14 @@ export interface ColorConfiguration {
     shift: number
     isLocked: boolean
   }
-  hueShifting?: number
-  chromaShifting?: number
-  id: string
+  transparency: {
+    isEnabled: boolean
+    backgroundColor: HexModel
+  }
 }
 
 export interface ThemeConfiguration {
+  id: string
   name: string
   description: string
   scale: ScaleConfiguration
@@ -99,7 +102,6 @@ export interface ThemeConfiguration {
   textColorsTheme: TextColorsThemeHexModel
   paletteBackground: HexModel
   isEnabled: boolean
-  id: string
   type: 'default theme' | 'custom theme'
 }
 
@@ -196,8 +198,8 @@ export interface FullConfiguration {
 }
 
 export interface DocumentConfiguration {
-  view?: ViewConfiguration
   id?: string
+  view?: ViewConfiguration
   isLinkedToPalette?: boolean
   updatedAt?: Date | string
 }

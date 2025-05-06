@@ -1,3 +1,4 @@
+import chroma from 'chroma-js'
 import { locals } from '../../content/locals'
 import {
   PaletteData,
@@ -29,9 +30,16 @@ const exportJsonAmznStyleDictionary = (id: string) => {
       color: {},
     }
 
-  const model = (color: PaletteDataColorItem, shade: PaletteDataShadeItem) => {
+  const model = (
+    color: PaletteDataColorItem,
+    shade: PaletteDataShadeItem,
+    source: PaletteDataShadeItem
+  ) => {
     return {
-      value: shade.hex,
+      value:
+        shade.alpha !== undefined
+          ? chroma(source.hex).alpha(shade.alpha).hex()
+          : shade.hex,
       comment:
         color.description !== ''
           ? color.description + locals.get().separator + shade.description
@@ -46,21 +54,32 @@ const exportJsonAmznStyleDictionary = (id: string) => {
   if (workingThemes[0].type === 'custom theme')
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
+        const source = color.shades.find(
+          (shade) => shade.type === 'source color'
+        )
+
         json['color'][color.name][theme.name] = {}
         color.shades.reverse().forEach((shade) => {
-          json['color'][color.name][theme.name][shade.name] = model(
-            color,
-            shade
-          )
+          if (shade && source)
+            json['color'][color.name][theme.name][shade.name] = model(
+              color,
+              shade,
+              source
+            )
         })
       })
     })
   else
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
+        const source = color.shades.find(
+          (shade) => shade.type === 'source color'
+        )
+
         json['color'][color.name] = {}
         color.shades.sort().forEach((shade) => {
-          json['color'][color.name][shade.name] = model(color, shade)
+          if (shade && source)
+            json['color'][color.name][shade.name] = model(color, shade, source)
         })
       })
     })

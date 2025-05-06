@@ -1,6 +1,7 @@
 import { Case } from '@a_ng_d/figmug-utils'
 import { locals } from '../../content/locals'
 import { PaletteData } from '../../types/data'
+import chroma from 'chroma-js'
 
 const exportTailwind = (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
@@ -35,24 +36,42 @@ const exportTailwind = (id: string) => {
   if (workingThemes[0].type === 'custom theme')
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
+        const source = color.shades.find(
+          (shade) => shade.type === 'source color'
+        )
+
         json['theme']['colors'][new Case(color.name).doKebabCase()][
           new Case(theme.name).doKebabCase()
         ] = {}
         color.shades.reverse().forEach((shade) => {
           json['theme']['colors'][new Case(color.name).doKebabCase()][
             new Case(theme.name).doKebabCase()
-          ][new Case(shade.name).doKebabCase()] = shade.hex
+          ][new Case(shade.name).doKebabCase()] =
+            shade.alpha !== undefined
+              ? chroma(source?.hex ?? '#000000')
+                  .alpha(shade.alpha)
+                  .hex()
+              : shade.hex
         })
       })
     })
   else
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
+        const source = color.shades.find(
+          (shade) => shade.type === 'source color'
+        )
+
         json['theme']['colors'][new Case(color.name).doKebabCase()] = {}
         color.shades.sort().forEach((shade) => {
           json['theme']['colors'][new Case(color.name).doKebabCase()][
             new Case(shade.name).doKebabCase()
-          ] = shade.hex
+          ] =
+            shade.alpha !== undefined
+              ? chroma(source?.hex ?? '#000000')
+                  .alpha(shade.alpha)
+                  .hex()
+              : shade.hex
         })
       })
     })

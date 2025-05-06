@@ -26,16 +26,26 @@ const exportUIKit = (id: string) => {
   workingThemes.forEach((theme) => {
     const UIColors: Array<string> = []
     theme.colors.forEach((color) => {
+      const source = color.shades.find((shade) => shade.type === 'source color')
+      
       UIColors.unshift(`// ${color.name}`)
       color.shades.forEach((shade) => {
         UIColors.unshift(
-          `static let ${new Case(color.name).doCamelCase()}${
-            shade.name === 'source' ? 'Source' : shade.name
-          } = UIColor(red: ${shade.gl[0].toFixed(
-            3
-          )}, green: ${shade.gl[1].toFixed(3)}, blue: ${shade.gl[2].toFixed(
-            3
-          )})`
+          shade.alpha !== undefined
+            ? `static let ${new Case(color.name).doCamelCase()}${
+                shade.name === 'source' ? 'Source' : shade.name
+              } = UIColor(red: ${source?.gl[0].toFixed(
+                3
+              )}, green: ${source?.gl[1].toFixed(3)}, blue: ${source?.gl[2].toFixed(
+                3
+              )}, alpha: ${shade.alpha.toFixed(1)})`
+            : `static let ${new Case(color.name).doCamelCase()}${
+                shade.name === 'source' ? 'Source' : shade.name
+              } = UIColor(red: ${shade.gl[0].toFixed(
+                3
+              )}, green: ${shade.gl[1].toFixed(3)}, blue: ${shade.gl[2].toFixed(
+                3
+              )})`
         )
       })
       UIColors.unshift('')

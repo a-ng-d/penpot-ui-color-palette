@@ -7,6 +7,7 @@ import {
   Layout,
   layouts,
   SectionTitle,
+  Select,
   SemanticMessage,
   SimpleItem,
   SortableList,
@@ -144,6 +145,10 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
         chroma: {
           shift: 100,
           isLocked: false,
+        },
+        transparency: {
+          isEnabled: false,
+          backgroundColor: '#FFFFFF',
         },
       })
 
@@ -478,6 +483,37 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
       }
     }
 
+    const switchTransparencyMode = () => {
+      this.colorsMessage.data = this.props.colors.map((item) => {
+        if (item.id === id)
+          item.transparency.isEnabled = !item.transparency.isEnabled
+        return item
+      })
+
+      this.props.onChangeColors({
+        colors: this.colorsMessage.data,
+        onGoingStep: 'colors changed',
+      })
+
+      parent.postMessage({ pluginMessage: this.colorsMessage }, '*')
+    }
+
+    const updateBackgroundColor = () => {
+      this.colorsMessage.data = this.props.colors.map((item) => {
+        if (item.id === id)
+          item.transparency.backgroundColor = currentElement.value
+        return item
+      })
+
+      this.props.onChangeColors({
+        colors: this.colorsMessage.data,
+        onGoingStep: 'colors changed',
+      })
+
+      if (e.type === 'focusout')
+        parent.postMessage({ pluginMessage: this.colorsMessage }, '*')
+    }
+
     const removeColor = () => {
       this.colorsMessage.data = this.props.colors.filter(
         (item) => item.id !== id
@@ -511,6 +547,8 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
       RESET_HUE: () => resetHue(),
       RESET_CHROMA: () => resetChroma(),
       UPDATE_DESCRIPTION: () => updateColorDescription(),
+      SWITCH_TRANSPARENCY_MODE: () => switchTransparencyMode(),
+      UPDATE_BACKGROUND_COLOR: () => updateBackgroundColor(),
       REMOVE_ITEM: () => removeColor(),
       DEFAULT: () => null,
     }
@@ -879,6 +917,29 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
                                   />
                                 </FormItem>
                               </div>
+                            </Feature>
+                            <Feature isActive={true}>
+                              <Select
+                                id="switch-transparency-mode"
+                                type="SWITCH_BUTTON"
+                                label="Transparent"
+                                feature="SWITCH_TRANSPARENCY_MODE"
+                                isChecked={color.transparency.isEnabled}
+                                isBlocked={false}
+                                isNew={false}
+                                action={this.colorsHandler}
+                              />
+                              {color.transparency.isEnabled && (
+                                <Input
+                                  type="COLOR"
+                                  value={color.transparency.backgroundColor}
+                                  feature="UPDATE_BACKGROUND_COLOR"
+                                  isBlocked={false}
+                                  isNew={false}
+                                  onChange={this.colorsHandler}
+                                  onBlur={this.colorsHandler}
+                                />
+                              )}
                             </Feature>
                           </>
                         ))(),

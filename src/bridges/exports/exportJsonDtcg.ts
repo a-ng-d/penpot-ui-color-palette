@@ -1,3 +1,4 @@
+import chroma from 'chroma-js'
 import { locals } from '../../content/locals'
 import {
   PaletteData,
@@ -36,10 +37,17 @@ const exportJsonDtcg = (id: string) => {
 
   const paletteName = JSON.parse(rawPalette).base.name
 
-  const model = (color: PaletteDataColorItem, shade: PaletteDataShadeItem) => {
+  const model = (
+    color: PaletteDataColorItem,
+    shade: PaletteDataShadeItem,
+    source: PaletteDataShadeItem
+  ) => {
     return {
       $type: 'color',
-      $value: shade.hex,
+      $value:
+        shade.alpha !== undefined
+          ? chroma(source.hex).alpha(shade.alpha).hex()
+          : shade.hex,
       $description:
         color.description !== ''
           ? color.description + locals.get().separator + shade.description
@@ -50,18 +58,36 @@ const exportJsonDtcg = (id: string) => {
   if (workingThemes[0].type === 'custom theme')
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
+        const source = color.shades.find(
+          (shade) => shade.type === 'source color'
+        )
+
         json[`${theme.name}/${color.name}`] = {}
         color.shades.reverse().forEach((shade) => {
-          json[`${theme.name}/${color.name}`][shade.name] = model(color, shade)
+          if (shade && source)
+            json[`${theme.name}/${color.name}`][shade.name] = model(
+              color,
+              shade,
+              source
+            )
         })
       })
     })
   else
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
+        const source = color.shades.find(
+          (shade) => shade.type === 'source color'
+        )
+
         json[`${paletteName}/${color.name}`] = {}
         color.shades.sort().forEach((shade) => {
-          json[`${paletteName}/${color.name}`][shade.name] = model(color, shade)
+          if (shade && source)
+            json[`${paletteName}/${color.name}`][shade.name] = model(
+              color,
+              shade,
+              source
+            )
         })
       })
     })

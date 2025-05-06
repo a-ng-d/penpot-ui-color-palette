@@ -25,7 +25,9 @@ const exportSwiftUI = (id: string) => {
 
   workingThemes.forEach((theme) => {
     theme.colors.forEach((color) => {
+      const source = color.shades.find((shade) => shade.type === 'source color')
       const Colors: Array<string> = []
+
       Colors.unshift(
         `// ${
           workingThemes[0].type === 'custom theme' ? theme.name + ' - ' : ''
@@ -33,17 +35,29 @@ const exportSwiftUI = (id: string) => {
       )
       color.shades.forEach((shade) => {
         Colors.unshift(
-          `public let ${
-            workingThemes[0].type === 'custom theme'
-              ? new Case(theme.name + ' ' + color.name).doCamelCase()
-              : new Case(color.name).doCamelCase()
-          }${
-            shade.name === 'source' ? 'Source' : shade.name
-          } = Color(red: ${shade.gl[0].toFixed(
-            3
-          )}, green: ${shade.gl[1].toFixed(3)}, blue: ${shade.gl[2].toFixed(
-            3
-          )})`
+          shade.alpha !== undefined
+            ? `public let ${
+                workingThemes[0].type === 'custom theme'
+                  ? new Case(theme.name + ' ' + color.name).doCamelCase()
+                  : new Case(color.name).doCamelCase()
+              }${
+                shade.name === 'source' ? 'Source' : shade.name
+              } = Color(red: ${source?.gl[0].toFixed(
+                3
+              )}, green: ${source?.gl[1].toFixed(3)}, blue: ${shade.gl[2].toFixed(
+                3
+              )}.opacity(${shade.alpha.toFixed(1)}))`
+            : `public let ${
+                workingThemes[0].type === 'custom theme'
+                  ? new Case(theme.name + ' ' + color.name).doCamelCase()
+                  : new Case(color.name).doCamelCase()
+              }${
+                shade.name === 'source' ? 'Source' : shade.name
+              } = Color(red: ${shade.gl[0].toFixed(
+                3
+              )}, green: ${shade.gl[1].toFixed(3)}, blue: ${shade.gl[2].toFixed(
+                3
+              )})`
         )
       })
       Colors.unshift('')

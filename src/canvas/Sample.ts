@@ -18,6 +18,7 @@ export default class Sample {
   private source?: RgbModel
   private scale?: string
   private rgb: [number, number, number]
+  private alpha: number
   private colorSpace: ColorSpaceConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
   private view: ViewConfiguration
@@ -36,6 +37,7 @@ export default class Sample {
     source,
     scale,
     rgb,
+    alpha = 1,
     colorSpace,
     visionSimulationMode,
     view,
@@ -50,6 +52,7 @@ export default class Sample {
     source?: RgbModel
     scale?: string
     rgb: [number, number, number]
+    alpha?: number
     colorSpace: ColorSpaceConfiguration
     visionSimulationMode: VisionSimulationModeConfiguration
     view: ViewConfiguration
@@ -61,6 +64,7 @@ export default class Sample {
     this.source = source
     this.scale = scale
     this.rgb = rgb
+    this.alpha = alpha
     this.colorSpace = colorSpace
     this.visionSimulationMode = visionSimulationMode
     this.view = view
@@ -137,6 +141,7 @@ export default class Sample {
         ? libraryColor.asFill()
         : {
             fillColor: chroma([this.rgb[0], this.rgb[1], this.rgb[2]]).hex(),
+            fillOpacity: this.alpha,
           },
     ]
     this.node.horizontalSizing = 'fix'
@@ -249,10 +254,8 @@ export default class Sample {
         ? libraryColor.asFill()
         : {
             fillColor: chroma([this.rgb[0], this.rgb[1], this.rgb[2]]).hex(),
+            fillOpacity: this.alpha,
           },
-      {
-        fillColor: chroma([this.rgb[0], this.rgb[1], this.rgb[2]]).hex(),
-      },
     ]
     this.nodeColor.borderRadius = 16
 

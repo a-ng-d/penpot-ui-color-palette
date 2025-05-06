@@ -1,6 +1,7 @@
 import { Case } from '@a_ng_d/figmug-utils'
 import { locals } from '../../content/locals'
 import { PaletteData } from '../../types/data'
+import chroma from 'chroma-js'
 
 const exportXml = (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
@@ -25,7 +26,9 @@ const exportXml = (id: string) => {
 
   workingThemes.forEach((theme) => {
     theme.colors.forEach((color) => {
+      const source = color.shades.find((shade) => shade.type === 'source color')
       const colors: Array<string> = []
+
       colors.unshift(
         `${'<'}!--` + workingThemes[0].type === 'custom theme'
           ? theme.name + ' - ' + color.name + `--${'>'}`
@@ -37,7 +40,13 @@ const exportXml = (id: string) => {
             workingThemes[0].type === 'custom theme'
               ? new Case(theme.name + ' ' + color.name).doSnakeCase()
               : new Case(color.name).doSnakeCase()
-          }_${shade.name}">${shade.hex}</color>`
+          }_${shade.name}">${
+            shade.alpha !== undefined
+              ? chroma(source?.hex ?? '#000000')
+                  .alpha(shade.alpha)
+                  .hex()
+              : shade.hex
+          }</color>`
         )
       })
       colors.unshift('')

@@ -71,13 +71,73 @@ const exportJson = (id: string) => {
     }
   }
 
+  const modelWithTransparency = (
+    shade: PaletteDataShadeItem,
+    source: PaletteDataShadeItem
+  ) => {
+    return {
+      rgb: {
+        r: Math.floor(source.rgb[0]),
+        g: Math.floor(source.rgb[1]),
+        b: Math.floor(source.rgb[2]),
+      },
+      gl: {
+        r: parseFloat(source.gl[0].toFixed(3)),
+        g: parseFloat(source.gl[1].toFixed(3)),
+        b: parseFloat(source.gl[2].toFixed(3)),
+      },
+      lch: {
+        l: Math.floor(source.lch[0]),
+        c: Math.floor(source.lch[1]),
+        h: Math.floor(source.lch[2]),
+      },
+      oklch: {
+        l: parseFloat(source.oklch[0].toFixed(3)),
+        c: parseFloat(source.oklch[1].toFixed(3)),
+        h: Math.floor(source.oklch[2]),
+      },
+      lab: {
+        l: Math.floor(source.lab[0]),
+        a: Math.floor(source.lab[1]),
+        b: Math.floor(source.lab[2]),
+      },
+      oklab: {
+        l: parseFloat(source.oklab[0].toFixed(3)),
+        a: parseFloat(source.oklab[1].toFixed(3)),
+        b: parseFloat(source.oklab[2].toFixed(3)),
+      },
+      hsl: {
+        h: Math.floor(source.hsl[0]),
+        s: Math.floor(source.hsl[1] * 100),
+        l: Math.floor(source.hsl[2] * 100),
+      },
+      hsluv: {
+        h: Math.floor(source.hsluv[0]),
+        s: Math.floor(source.hsluv[1]),
+        l: Math.floor(source.hsluv[2]),
+      },
+      hex: source.hex,
+      alpha: shade.alpha,
+      description: shade.description,
+      type: 'color shade',
+    }
+  }
+
   if (workingThemes[0].type === 'custom theme')
     workingThemes.forEach((theme) => {
       json[theme.name] = {}
       theme.colors.forEach((color) => {
+        const source = color.shades.find(
+          (shade) => shade.type === 'source color'
+        )
+
         json[theme.name][color.name] = {}
         color.shades.reverse().forEach((shade) => {
-          json[theme.name][color.name][shade.name] = model(shade)
+          if (shade && source)
+            json[theme.name][color.name][shade.name] =
+              shade.alpha !== undefined
+                ? modelWithTransparency(shade, source)
+                : model(shade)
         })
         json[theme.name][color.name]['description'] = color.description
         json[theme.name][color.name]['type'] = 'color'
@@ -88,9 +148,17 @@ const exportJson = (id: string) => {
   else
     workingThemes.forEach((theme) => {
       theme.colors.forEach((color) => {
+        const source = color.shades.find(
+          (shade) => shade.type === 'source color'
+        )
+
         json[color.name] = {}
         color.shades.sort().forEach((shade) => {
-          json[color.name][shade.name] = model(shade)
+          if (shade && source)
+            json[color.name][shade.name] =
+              shade.alpha !== undefined
+                ? modelWithTransparency(shade, source)
+                : model(shade)
         })
         json[color.name]['description'] = color.description
         json[color.name]['type'] = 'color'

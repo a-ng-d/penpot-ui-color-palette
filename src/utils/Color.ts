@@ -2,7 +2,6 @@ import chroma from 'chroma-js'
 import blinder from '@hexorialstudio/color-blinder'
 import { Hsluv } from 'hsluv'
 import { HexModel } from '@a_ng_d/figmug-ui'
-import { algorithmVersion } from '../config'
 import {
   AlgorithmVersionConfiguration,
   VisionSimulationModeConfiguration,
@@ -18,22 +17,30 @@ export default class Color {
   private algorithmVersion: AlgorithmVersionConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
 
-  constructor(data: {
+  constructor({
+    render = 'HEX',
+    sourceColor = [0, 0, 0],
+    lightness = 100,
+    hueShifting = 0,
+    chromaShifting = 100,
+    algorithmVersion = 'v3',
+    visionSimulationMode = 'NONE',
+  }: {
     render?: 'HEX' | 'RGB'
     sourceColor?: [number, number, number]
     lightness?: number
     hueShifting?: number
     chromaShifting?: number
     algorithmVersion?: AlgorithmVersionConfiguration
-    visionSimulationMode: VisionSimulationModeConfiguration
+    visionSimulationMode?: VisionSimulationModeConfiguration
   }) {
-    this.render = data.render ?? 'HEX'
-    this.sourceColor = data.sourceColor ?? [0, 0, 0]
-    this.lightness = data.lightness ?? 100
-    this.hueShifting = data.hueShifting ?? 0
-    this.chromaShifting = data.chromaShifting ?? 100
-    this.algorithmVersion = data.algorithmVersion ?? algorithmVersion
-    this.visionSimulationMode = data.visionSimulationMode
+    this.render = render
+    this.sourceColor = sourceColor
+    this.lightness = lightness
+    this.hueShifting = hueShifting
+    this.chromaShifting = chromaShifting
+    this.algorithmVersion = algorithmVersion
+    this.visionSimulationMode = visionSimulationMode
   }
 
   adjustHue = (hue: number): number => {
@@ -252,38 +259,40 @@ export default class Color {
     return result !== undefined ? result : '#000000'
   }
 
-  toSRGB = (
-    sourceColor: [number, number, number]
+  setAlphaRgb = (alpha: number): [number, number, number, number] => {
+    return [...this.simulateColorBlindRgb(this.sourceColor), alpha]
+  }
+
+  setAlphaHex = (alpha: number): HexModel => {
+    const alphaHex = Math.round(alpha * 255)
+      .toString(16)
+      .padStart(2, '0')
+    return this.simulateColorBlindHex(this.sourceColor) + alphaHex
+  }
+
+  mixColorsRgb = (
+    colorA: [number, number, number, number],
+    colorB: [number, number, number, number]
   ): [number, number, number] => {
-    const linearRgb = sourceColor.map((value) => {
-      const normalized = value / 255
-      return Math.pow((normalized + 0.055) / 1.055, 2.4)
-    }) as [number, number, number]
+    const [r1, g1, b1, a1] = colorA
+    const [r2, g2, b2, a2] = colorB
+    
+    if (a1 === 1) return [r1, g1, b1]
+    
+    if (a1 === 0) return [r2, g2, b2]
+    
+    const alpha = a1 + a2 * (1 - a1)
+    const r = (r1 * a1 + r2 * a2 * (1 - a1)) / alpha
+    const g = (g1 * a1 + g2 * a2 * (1 - a1)) / alpha
+    const b = (b1 * a1 + b2 * a2 * (1 - a1)) / alpha
+    
+    return [r, g, b]
+  }
 
-    // Calculate luminance
-    const luminance =
-      0.2126 * linearRgb[0] + 0.7152 * linearRgb[1] + 0.0722 * linearRgb[2]
-    const targetLuminance = this.lightness / 100
-
-    // Scale the linear RGB values to match the target luminance
-    const scale = targetLuminance / luminance
-    const adjustedLinearRgb = linearRgb.map((value) => value * scale) as [
-      number,
-      number,
-      number,
-    ]
-
-    // Convert adjusted linear RGB back to sRGB
-    const adjustedRgb = adjustedLinearRgb.map((value) => {
-      return (1.055 * Math.pow(value, 1 / 2.4) - 0.055) * 255
-    }) as [number, number, number]
-
-    // Apply a soft adjustment to preserve saturation
-    const finalRgb = adjustedRgb.map((value, index) => {
-      const originalValue = sourceColor[index]
-      return originalValue + (value - originalValue) * 0.5
-    }) as [number, number, number]
-
-    return finalRgb
+  mixColorsHex = (colorA: HexModel, colorB: HexModel): HexModel => {
+    const rgbA = chroma(colorA).rgba()
+    const rgbB = chroma(colorB).rgba()
+    const mixed = this.mixColorsRgb(rgbA, rgbB)
+    return chroma(mixed).hex()
   }
 }

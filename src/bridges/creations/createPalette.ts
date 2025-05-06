@@ -35,6 +35,10 @@ const createPalette = async (msg: Msg) => {
           shift: msg.data.exchange.shift.chroma,
           isLocked: false,
         },
+        transparency: {
+          isEnabled: false,
+          backgroundColor: '#FFFFFF',
+        },
       }
     })
     .sort((a, b) => {

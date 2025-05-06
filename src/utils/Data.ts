@@ -70,10 +70,10 @@ export default class Data {
   makePaletteData = (previousData?: PaletteData) => {
     this.themes.forEach((theme) => {
       const paletteDataThemeItem: PaletteDataThemeItem = {
+        id: theme.id,
         name: theme.name,
         description: theme.description,
         colors: [],
-        id: theme.id,
         type: theme.type,
       }
       this.base.colors.forEach((color) => {
@@ -94,7 +94,19 @@ export default class Data {
               algorithmVersion: this.base.algorithmVersion,
               visionSimulationMode: theme.visionSimulationMode,
             })
-
+            if (color.transparency.isEnabled)
+              return [
+                lightness,
+                colorData.mixColorsRgb(
+                  [
+                    color.rgb.r * 255,
+                    color.rgb.g * 255,
+                    color.rgb.b * 255,
+                    lightness[1] / 100,
+                  ],
+                  chroma(color.transparency.backgroundColor).rgba(false)
+                ),
+              ]
             if (this.base.colorSpace === 'LCH')
               return [lightness, colorData.lch()]
             else if (this.base.colorSpace === 'OKLCH')
@@ -111,10 +123,10 @@ export default class Data {
           }) as Array<[[string, number], [number, number, number]]>
 
         const paletteDataColorItem: PaletteDataColorItem = {
+            id: color.id,
             name: color.name,
             description: color.description,
             shades: [],
-            id: color.id,
             type: 'color',
           },
           sourceColor: [number, number, number] = [
@@ -181,42 +193,65 @@ export default class Data {
           newHsluv.rgb_b = scaledColor[1][2] / 255
           newHsluv.rgbToHsluv()
 
+          console.log(scaledColor[0])
+
           paletteDataColorItem.shades.push({
             name: scaleName,
-            description: `Shade color with ${scaledColor[0][1]}% of lightness`,
+            description: `Shade color with ${scaledColor[0][1].toFixed(1)}% of ${
+              color.transparency.isEnabled ? 'opacity' : 'lightness'
+            }`,
             hex:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.transparency.isEnabled
                 ? chroma(sourceColor).hex()
                 : chroma(scaledColor[1]).hex(),
             rgb:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.transparency.isEnabled
                 ? chroma(sourceColor).rgb()
                 : chroma(scaledColor[1]).rgb(),
             gl:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.transparency.isEnabled
                 ? chroma(sourceColor).gl()
                 : chroma(scaledColor[1]).gl(),
             lch:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.transparency.isEnabled
                 ? chroma(sourceColor).lch()
                 : chroma(scaledColor[1]).lch(),
             oklch:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.transparency.isEnabled
                 ? chroma(sourceColor).oklch()
                 : chroma(scaledColor[1]).oklch(),
             lab:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.transparency.isEnabled
                 ? chroma(sourceColor).lab()
                 : chroma(scaledColor[1]).lab(),
             oklab:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.transparency.isEnabled
                 ? chroma(sourceColor).oklab()
                 : chroma(scaledColor[1]).oklab(),
             hsl:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.transparency.isEnabled
                 ? chroma(sourceColor).hsl()
                 : chroma(scaledColor[1]).hsl(),
             hsluv: [newHsluv.hsluv_h, newHsluv.hsluv_s, newHsluv.hsluv_l],
+            alpha: color.transparency.isEnabled
+              ? scaledColor[0][1] / 100
+              : undefined,
             styleId: this.searchForShadeStyleId(
               previousData?.themes ?? this.paletteData.themes,
               theme.id,

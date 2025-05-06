@@ -36,6 +36,7 @@ import { AppStates } from '../App'
 import Feature from '../components/Feature'
 import Shade from '../components/Shade'
 import Source from '../components/Source'
+import chroma from 'chroma-js'
 
 interface PreviewProps extends BaseProps {
   service: Service
@@ -363,6 +364,17 @@ export default class Preview extends PureComponent<
       algorithmVersion: this.props.algorithmVersion,
       visionSimulationMode: this.props.visionSimulationMode,
     })
+
+    if ('transparency' in color && color.transparency.isEnabled)
+      return colorData.mixColorsHex(
+        chroma([
+          color.rgb.r * 255,
+          color.rgb.g * 255,
+          color.rgb.b * 255,
+          scale / 100,
+        ]).hex(),
+        color.transparency.backgroundColor ?? '#000000'
+      )
 
     switch (this.props.colorSpace) {
       case 'LCH':

@@ -2,6 +2,7 @@ import { Case } from '@a_ng_d/figmug-utils'
 import { locals } from '../../content/locals'
 import { PaletteData, PaletteDataShadeItem } from '../../types/data'
 import { ActionsList } from '../../types/models'
+import chroma from 'chroma-js'
 
 const exportCss = (id: string, colorSpace: 'RGB' | 'LCH' | 'P3') => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
@@ -49,15 +50,49 @@ const exportCss = (id: string, colorSpace: 'RGB' | 'LCH' | 'P3') => {
     return actions[colorSpace ?? 'RGB']?.()
   }
 
+  const setValueAccordingToAlpha = (
+    shade: PaletteDataShadeItem,
+    source: PaletteDataShadeItem
+  ) => {
+    const actions: ActionsList = {
+      RGB: () =>
+        `rgb(${Math.floor(source.rgb[0])}, ${Math.floor(
+          source.rgb[1]
+        )}, ${Math.floor(source.rgb[2])} / ${shade.alpha?.toFixed(2) ?? 1})`,
+      HEX: () =>
+        chroma(source.hex)
+          .alpha(shade.alpha ?? 1)
+          .hex(),
+      HSL: () =>
+        `hsl(${Math.floor(source.hsl[0])} ${Math.floor(
+          source.hsl[1]
+        )}% ${Math.floor(source.hsl[2])}% / ${shade.alpha?.toFixed(2) ?? 1})`,
+      LCH: () =>
+        `lch(${Math.floor(source.lch[0])}% ${Math.floor(
+          source.lch[1]
+        )} ${Math.floor(source.lch[2])} / ${shade.alpha?.toFixed(2) ?? 1})`,
+      P3: () =>
+        `color(display-p3 ${source.gl[0].toFixed(3)} ${source.gl[1].toFixed(
+          3
+        )} ${source.gl[2].toFixed(3)} / ${shade.alpha?.toFixed(2) ?? 1})`,
+    }
+
+    return actions[colorSpace ?? 'RGB']?.()
+  }
+
   workingThemes.forEach((theme) => {
     const rowCss: Array<string> = []
     theme.colors.forEach((color) => {
       rowCss.push(`/* ${color.name} */`)
       color.shades.forEach((shade) => {
-        rowCss.push(
-          `--${new Case(color.name).doKebabCase()}-${shade.name}: ${setValueAccordingToColorSpace(shade)};`
-        )
+        const source = color.shades.find((c) => c.type === 'source color')
+
+        if (source)
+          rowCss.push(
+            `--${new Case(color.name).doKebabCase()}-${shade.name}: ${shade.alpha !== undefined ? setValueAccordingToAlpha(shade, source) : setValueAccordingToColorSpace(shade)};`
+          )
       })
+
       rowCss.push('')
     })
     rowCss.pop()

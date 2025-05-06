@@ -25,6 +25,10 @@ const createLocalStyles = async (id: string) => {
       let i = 0
       workingThemes.forEach((theme) => {
         theme.colors.forEach((color) => {
+          const source = color.shades.find(
+            (shade) => shade.type === 'source color'
+          )
+
           color.shades.forEach((shade) => {
             if (
               localStyles.find(
@@ -40,9 +44,13 @@ const createLocalStyles = async (id: string) => {
                     : `${paletteData.name === '' ? '' : paletteData.name} / ${
                         color.name
                       } / ${shade.name}`,
-                hex: shade.hex,
-              }).makeLibraryColor()
-              shade.styleId = style.id
+                hex:
+                  shade.alpha !== undefined
+                    ? (source?.hex ?? shade.hex)
+                    : shade.hex,
+                alpha: shade.alpha,
+              })
+              shade.styleId = style.libraryColor.id
               i++
             }
           })

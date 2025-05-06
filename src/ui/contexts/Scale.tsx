@@ -270,18 +270,21 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
 
       Object.entries(results.scale).forEach(([key, value]) => {
         lightForegroundRatio[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.lightColor,
+          }
+          )
             .getContrastRatioForLightness(
-              value,
-              this.props.textColorsTheme.lightColor
+              value
             )
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.darkColor,
+          })
             .getContrastRatioForLightness(
-              value,
-              this.props.textColorsTheme.darkColor
+              value
             )
             .toFixed(1)
         )
@@ -311,18 +314,20 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
 
       Object.entries(results.scale).forEach(([key, value]) => {
         lightForegroundRatio[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.lightColor,
+          })
             .getContrastRatioForLightness(
-              value,
-              this.props.textColorsTheme.lightColor
+              value
             )
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.darkColor,
+          })
             .getContrastRatioForLightness(
-              value,
-              this.props.textColorsTheme.darkColor
+              value
             )
             .toFixed(1)
         )
@@ -349,18 +354,20 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
 
       Object.entries(results.scale).forEach(([key, value]) => {
         lightForegroundRatio[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.lightColor,
+          })
             .getContrastRatioForLightness(
-              value,
-              this.props.textColorsTheme.lightColor
+              value
             )
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.darkColor,
+          })
             .getContrastRatioForLightness(
-              value,
-              this.props.textColorsTheme.darkColor
+              value
             )
             .toFixed(1)
         )
@@ -412,18 +419,20 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
 
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.lightColor,
+          })
             .getLightnessForContrastRatio(
-              value,
-              this.props.textColorsTheme.lightColor
+              value
             )
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.darkColor,
+          })
             .getContrastRatioForLightness(
-              scale[key],
-              this.props.textColorsTheme.darkColor
+              scale[key]
             )
             .toFixed(1)
         )
@@ -454,13 +463,15 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       const darkForegroundRatio = {} as ScaleConfiguration
 
       Object.entries(results.scale).forEach(([key, value]) => {
-        scale[key] = new Contrast().getLightnessForContrastRatio(
-          value,
-          this.props.textColorsTheme.lightColor
+        scale[key] = new Contrast({
+          textColor: this.props.textColorsTheme.lightColor,
+        }).getLightnessForContrastRatio(
+          value
         )
-        darkForegroundRatio[key] = new Contrast().getContrastRatioForLightness(
-          scale[key],
-          this.props.textColorsTheme.darkColor
+        darkForegroundRatio[key] = new Contrast({
+          textColor: this.props.textColorsTheme.darkColor,
+        }).getContrastRatioForLightness(
+          scale[key]
         )
       })
 
@@ -486,13 +497,15 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       const darkForegroundRatio = {} as ScaleConfiguration
 
       Object.entries(results.scale).forEach(([key, value]) => {
-        scale[key] = new Contrast().getLightnessForContrastRatio(
-          value,
-          this.props.textColorsTheme.lightColor
+        scale[key] = new Contrast({
+          textColor: this.props.textColorsTheme.lightColor,
+        }).getLightnessForContrastRatio(
+          value
         )
-        darkForegroundRatio[key] = new Contrast().getContrastRatioForLightness(
-          scale[key],
-          this.props.textColorsTheme.darkColor
+        darkForegroundRatio[key] = new Contrast({
+          textColor: this.props.textColorsTheme.darkColor,
+        }).getContrastRatioForLightness(
+          scale[key]
         )
       })
 
@@ -542,18 +555,20 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
 
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.darkColor,
+          })
             .getLightnessForContrastRatio(
-              value,
-              this.props.textColorsTheme.darkColor
+              value
             )
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.lightColor,
+          })
             .getContrastRatioForLightness(
-              scale[key],
-              this.props.textColorsTheme.lightColor
+              scale[key]
             )
             .toFixed(1)
         )
@@ -585,18 +600,20 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
 
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.darkColor,
+          })
             .getLightnessForContrastRatio(
-              value,
-              this.props.textColorsTheme.darkColor
+              value
             )
             .toFixed(1)
         )
         lightForegroundRatio[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.lightColor,
+          })
             .getContrastRatioForLightness(
-              scale[key],
-              this.props.textColorsTheme.lightColor
+              scale[key]
             )
             .toFixed(1)
         )
@@ -625,18 +642,20 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
 
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.darkColor,
+          })
             .getLightnessForContrastRatio(
-              value,
-              this.props.textColorsTheme.darkColor
+              value
             )
             .toFixed(1)
         )
         lightForegroundRatio[key] = parseFloat(
-          new Contrast()
+          new Contrast({
+            textColor: this.props.textColorsTheme.lightColor,
+          })
             .getContrastRatioForLightness(
-              scale[key],
-              this.props.textColorsTheme.lightColor
+              scale[key]
             )
             .toFixed(1)
         )
@@ -1122,18 +1141,20 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
 
     Object.entries(this.props.scale ?? {}).forEach(([key, value]) => {
       lightForegroundRatio[key] = parseFloat(
-        new Contrast()
+        new Contrast({
+          textColor: this.props.textColorsTheme.lightColor,
+        })
           .getContrastRatioForLightness(
-            value,
-            this.props.textColorsTheme.lightColor
+            value
           )
           .toFixed(1)
       )
       darkForegroundRatio[key] = parseFloat(
-        new Contrast()
+        new Contrast({
+          textColor: this.props.textColorsTheme.darkColor,
+        })
           .getContrastRatioForLightness(
-            value,
-            this.props.textColorsTheme.darkColor
+            value
           )
           .toFixed(1)
       )
