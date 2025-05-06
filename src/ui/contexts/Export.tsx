@@ -6,6 +6,7 @@ import {
   layouts,
   Menu,
   SectionTitle,
+  SemanticMessage,
   SimpleItem,
 } from '@a_ng_d/figmug-ui'
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
@@ -94,6 +95,21 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
     EXPORT_TOKENS_JSON_TOKENS_STUDIO: new FeatureStatus({
       features: features,
       featureName: 'EXPORT_TOKENS_JSON_TOKENS_STUDIO',
+      planStatus: planStatus,
+    }),
+    EXPORT_TOKENS_JSON_DTCG: new FeatureStatus({
+      features: features,
+      featureName: 'EXPORT_TOKENS_JSON_DTCG',
+      planStatus: planStatus,
+    }),
+    EXPORT_TOKENS_JSON_DTCG_RGB: new FeatureStatus({
+      features: features,
+      featureName: 'EXPORT_TOKENS_JSON_DTCG_RGB',
+      planStatus: planStatus,
+    }),
+    EXPORT_TOKENS_JSON_DTCG_OKLCH: new FeatureStatus({
+      features: features,
+      featureName: 'EXPORT_TOKENS_JSON_DTCG_OKLCH',
       planStatus: planStatus,
     }),
     EXPORT_CSS: new FeatureStatus({
@@ -188,9 +204,15 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                 value: 'EXPORT_TOKENS_DTCG_RGB',
                 feature: 'SELECT_COLOR_SPACE',
                 type: 'OPTION',
-                isActive: true,
-                isBlocked: false,
-                isNew: false,
+                isActive: Export.features(
+                  this.props.planStatus
+                ).EXPORT_TOKENS_JSON_DTCG_RGB.isActive(),
+                isBlocked: Export.features(
+                  this.props.planStatus
+                ).EXPORT_TOKENS_JSON_DTCG_RGB.isBlocked(),
+                isNew: Export.features(
+                  this.props.planStatus
+                ).EXPORT_TOKENS_JSON_DTCG_RGB.isNew(),
                 action: this.exportHandler,
               },
               {
@@ -198,9 +220,15 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                 value: 'EXPORT_TOKENS_DTCG_OKLCH',
                 feature: 'SELECT_COLOR_SPACE',
                 type: 'OPTION',
-                isActive: true,
-                isBlocked: false,
-                isNew: false,
+                isActive: Export.features(
+                  this.props.planStatus
+                ).EXPORT_TOKENS_JSON_DTCG_OKLCH.isActive(),
+                isBlocked: Export.features(
+                  this.props.planStatus
+                ).EXPORT_TOKENS_JSON_DTCG_OKLCH.isBlocked(),
+                isNew: Export.features(
+                  this.props.planStatus
+                ).EXPORT_TOKENS_JSON_DTCG_OKLCH.isNew(),
                 action: this.exportHandler,
               },
             ],
@@ -664,9 +692,15 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                   label: 'DTCG (JSON)',
                                   value: 'EXPORT_TOKENS_DTCG',
                                   type: 'OPTION',
-                                  isActive: true,
-                                  isBlocked: false,
-                                  isNew: false,
+                                  isActive: Export.features(
+                                    this.props.planStatus
+                                  ).EXPORT_TOKENS_JSON_DTCG.isActive(),
+                                  isBlocked: Export.features(
+                                    this.props.planStatus
+                                  ).EXPORT_TOKENS_JSON_DTCG.isBlocked(),
+                                  isNew: Export.features(
+                                    this.props.planStatus
+                                  ).EXPORT_TOKENS_JSON_DTCG.isNew(),
                                   action: this.exportHandler,
                                 },
                                 {
@@ -880,6 +914,14 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                     }
                     alignment="BASELINE"
                   />
+                  {this.state.format === 'EXPORT_TOKENS_DTCG' && (
+                    <div className="export-palette__info">
+                      <SemanticMessage
+                        type="INFO"
+                        message="DTCG tokens format is an ongoing work in progress led by a W3C group and can be changed in the future"
+                      />
+                    </div>
+                  )}
                   <div className="export-palette__preview">
                     <Input
                       id="code-snippet-dragging"

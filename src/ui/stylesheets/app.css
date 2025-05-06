@@ -52,6 +52,10 @@ div.export-palette__preview {
   padding: 0 var(--size-xsmall);
 }
 
+div.export-palette__info {
+  padding: var(--size-xxsmall) var(--size-xsmall);
+}
+
 div.export-palette__preview textarea {
   margin: 0;
   height: 100% !important;
