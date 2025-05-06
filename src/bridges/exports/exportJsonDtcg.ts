@@ -34,16 +34,6 @@ const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
             parseFloat(shade.gl[1].toFixed(3)),
             parseFloat(shade.gl[2].toFixed(3)),
           ],
-        }
-      },
-      HEX: () => {
-        return {
-          colorSpace: 'srgb',
-          components: [
-            parseFloat(shade.gl[0].toFixed(3)),
-            parseFloat(shade.gl[1].toFixed(3)),
-            parseFloat(shade.gl[2].toFixed(3)),
-          ],
           hex: shade.hex,
         }
       },
@@ -55,6 +45,7 @@ const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
             parseFloat(shade.oklch[1].toFixed(3)),
             parseFloat(shade.oklch[2].toFixed(0)),
           ],
+          hex: shade.hex,
         }
       },
     }
@@ -75,17 +66,6 @@ const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
             parseFloat(source.gl[1].toFixed(3)),
             parseFloat(source.gl[2].toFixed(3)),
           ],
-          alpha: shade.alpha,
-        }
-      },
-      HEX: () => {
-        return {
-          colorSpace: 'srgb',
-          components: [
-            parseFloat(source.gl[0].toFixed(3)),
-            parseFloat(source.gl[1].toFixed(3)),
-            parseFloat(source.gl[2].toFixed(3)),
-          ],
           hex: source.hex,
           alpha: shade.alpha,
         }
@@ -98,6 +78,7 @@ const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
             parseFloat(source.oklch[1].toFixed(3)),
             parseFloat(source.oklch[2].toFixed(0)),
           ],
+          hex: source.hex,
           alpha: shade.alpha,
         }
       },

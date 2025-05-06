@@ -194,16 +194,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                 action: this.exportHandler,
               },
               {
-                label: this.props.locals.export.colorSpace.hex,
-                value: 'EXPORT_TOKENS_DTCG_HEX',
-                feature: 'SELECT_COLOR_SPACE',
-                type: 'OPTION',
-                isActive: true,
-                isBlocked: false,
-                isNew: false,
-                action: this.exportHandler,
-              },
-              {
                 label: this.props.locals.export.colorSpace.lch,
                 value: 'EXPORT_TOKENS_DTCG_OKLCH',
                 feature: 'SELECT_COLOR_SPACE',
@@ -242,25 +232,6 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
               id: this.props.id,
               export: 'TOKENS_DTCG',
               colorSpace: 'RGB',
-            },
-          },
-          '*'
-        )
-      },
-      EXPORT_TOKENS_DTCG_HEX: () => {
-        this.setState({
-          colorSpace: {
-            selected: 'HEX',
-            options: this.state.colorSpace.options,
-          },
-        })
-        parent.postMessage(
-          {
-            pluginMessage: {
-              type: 'EXPORT_PALETTE',
-              id: this.props.id,
-              export: 'TOKENS_DTCG',
-              colorSpace: 'HEX',
             },
           },
           '*'
