@@ -357,6 +357,10 @@
       "addStop": "Add stop",
       "removeStop": "Remove stop"
     },
+    "contrast": {
+      "label": "Contrast mode",
+      "title": "Contrast ratio"
+    },
     "easing": {
       "easeIn": "Ease in",
       "easeInOut": "Ease in and out",

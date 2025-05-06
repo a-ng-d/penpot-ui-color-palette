@@ -109,6 +109,11 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       featureName: 'SCALE_CONFIGURATION',
       planStatus: planStatus,
     }),
+    SCALE_CONTRAST_RATIO: new FeatureStatus({
+      features: features,
+      featureName: 'SCALE_CONTRAST_RATIO',
+      planStatus: planStatus,
+    }),
     SCALE_CHROMA: new FeatureStatus({
       features: features,
       featureName: 'SCALE_CHROMA',
@@ -272,20 +277,15 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
         lightForegroundRatio[key] = parseFloat(
           new Contrast({
             textColor: this.props.textColorsTheme.lightColor,
-          }
-          )
-            .getContrastRatioForLightness(
-              value
-            )
+          })
+            .getContrastRatioForLightness(value)
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
           new Contrast({
             textColor: this.props.textColorsTheme.darkColor,
           })
-            .getContrastRatioForLightness(
-              value
-            )
+            .getContrastRatioForLightness(value)
             .toFixed(1)
         )
       })
@@ -317,18 +317,14 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
           new Contrast({
             textColor: this.props.textColorsTheme.lightColor,
           })
-            .getContrastRatioForLightness(
-              value
-            )
+            .getContrastRatioForLightness(value)
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
           new Contrast({
             textColor: this.props.textColorsTheme.darkColor,
           })
-            .getContrastRatioForLightness(
-              value
-            )
+            .getContrastRatioForLightness(value)
             .toFixed(1)
         )
       })
@@ -357,18 +353,14 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
           new Contrast({
             textColor: this.props.textColorsTheme.lightColor,
           })
-            .getContrastRatioForLightness(
-              value
-            )
+            .getContrastRatioForLightness(value)
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
           new Contrast({
             textColor: this.props.textColorsTheme.darkColor,
           })
-            .getContrastRatioForLightness(
-              value
-            )
+            .getContrastRatioForLightness(value)
             .toFixed(1)
         )
       })
@@ -422,18 +414,14 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
           new Contrast({
             textColor: this.props.textColorsTheme.lightColor,
           })
-            .getLightnessForContrastRatio(
-              value
-            )
+            .getLightnessForContrastRatio(value)
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
           new Contrast({
             textColor: this.props.textColorsTheme.darkColor,
           })
-            .getContrastRatioForLightness(
-              scale[key]
-            )
+            .getContrastRatioForLightness(scale[key])
             .toFixed(1)
         )
       })
@@ -465,14 +453,10 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = new Contrast({
           textColor: this.props.textColorsTheme.lightColor,
-        }).getLightnessForContrastRatio(
-          value
-        )
+        }).getLightnessForContrastRatio(value)
         darkForegroundRatio[key] = new Contrast({
           textColor: this.props.textColorsTheme.darkColor,
-        }).getContrastRatioForLightness(
-          scale[key]
-        )
+        }).getContrastRatioForLightness(scale[key])
       })
 
       this.palette.setKey('scale', scale)
@@ -499,14 +483,10 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       Object.entries(results.scale).forEach(([key, value]) => {
         scale[key] = new Contrast({
           textColor: this.props.textColorsTheme.lightColor,
-        }).getLightnessForContrastRatio(
-          value
-        )
+        }).getLightnessForContrastRatio(value)
         darkForegroundRatio[key] = new Contrast({
           textColor: this.props.textColorsTheme.darkColor,
-        }).getContrastRatioForLightness(
-          scale[key]
-        )
+        }).getContrastRatioForLightness(scale[key])
       })
 
       this.palette.setKey('scale', scale)
@@ -558,18 +538,14 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
           new Contrast({
             textColor: this.props.textColorsTheme.darkColor,
           })
-            .getLightnessForContrastRatio(
-              value
-            )
+            .getLightnessForContrastRatio(value)
             .toFixed(1)
         )
         darkForegroundRatio[key] = parseFloat(
           new Contrast({
             textColor: this.props.textColorsTheme.lightColor,
           })
-            .getContrastRatioForLightness(
-              scale[key]
-            )
+            .getContrastRatioForLightness(scale[key])
             .toFixed(1)
         )
       })
@@ -603,18 +579,14 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
           new Contrast({
             textColor: this.props.textColorsTheme.darkColor,
           })
-            .getLightnessForContrastRatio(
-              value
-            )
+            .getLightnessForContrastRatio(value)
             .toFixed(1)
         )
         lightForegroundRatio[key] = parseFloat(
           new Contrast({
             textColor: this.props.textColorsTheme.lightColor,
           })
-            .getContrastRatioForLightness(
-              scale[key]
-            )
+            .getContrastRatioForLightness(scale[key])
             .toFixed(1)
         )
       })
@@ -645,18 +617,14 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
           new Contrast({
             textColor: this.props.textColorsTheme.darkColor,
           })
-            .getLightnessForContrastRatio(
-              value
-            )
+            .getLightnessForContrastRatio(value)
             .toFixed(1)
         )
         lightForegroundRatio[key] = parseFloat(
           new Contrast({
             textColor: this.props.textColorsTheme.lightColor,
           })
-            .getContrastRatioForLightness(
-              scale[key]
-            )
+            .getContrastRatioForLightness(scale[key])
             .toFixed(1)
         )
       })
@@ -1144,18 +1112,14 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
         new Contrast({
           textColor: this.props.textColorsTheme.lightColor,
         })
-          .getContrastRatioForLightness(
-            value
-          )
+          .getContrastRatioForLightness(value)
           .toFixed(1)
       )
       darkForegroundRatio[key] = parseFloat(
         new Contrast({
           textColor: this.props.textColorsTheme.darkColor,
         })
-          .getContrastRatioForLightness(
-            value
-          )
+          .getContrastRatioForLightness(value)
           .toFixed(1)
       )
     })
@@ -1548,7 +1512,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                         label={
                           !this.state.isContrastMode
                             ? this.props.locals.scale.title
-                            : 'Contrast ratio'
+                            : this.props.locals.scale.contrast.title
                         }
                       />
                     }
@@ -1631,20 +1595,29 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                             </>
                           )}
                         </Feature>
-                        <Feature isActive={true}>
+                        <Feature
+                          isActive={Scale.features(
+                            this.props.planStatus
+                          ).SCALE_CONTRAST_RATIO.isActive()}
+                        >
                           <Select
                             id="switch-contrast-mode"
                             type="SWITCH_BUTTON"
-                            label="Contrast mode"
+                            label={this.props.locals.scale.contrast.label}
                             isChecked={this.state.isContrastMode}
-                            isBlocked={false}
-                            isNew={false}
+                            isBlocked={Scale.features(
+                              this.props.planStatus
+                            ).SCALE_CONTRAST_RATIO.isBlocked()}
+                            isNew={Scale.features(
+                              this.props.planStatus
+                            ).SCALE_CONTRAST_RATIO.isNew()}
                             action={this.onEnableContrastMode}
                           />
                         </Feature>
                       </div>
                     }
-                    alignment="BASELINE"
+                    alignment="CENTER"
+                    isListItem={false}
                   />
                   {Scale.features(
                     this.props.planStatus
@@ -1701,10 +1674,23 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       min: 'black',
                       max: 'white',
                     }}
+                    isBlocked={Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONFIGURATION.isBlocked()}
+                    isNew={Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONFIGURATION.isNew()}
                     onChange={this.lightnessHandler}
                   />
                 </Feature>
-                <Feature isActive={true && this.state.isContrastMode}>
+                <Feature
+                  isActive={
+                    Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONTRAST_RATIO.isActive() &&
+                    this.state.isContrastMode
+                  }
+                >
                   <Slider
                     {...this.props}
                     type="EDIT"
@@ -1719,6 +1705,12 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       min: this.props.textColorsTheme.lightColor,
                       max: this.props.textColorsTheme.lightColor,
                     }}
+                    isBlocked={Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONTRAST_RATIO.isBlocked()}
+                    isNew={Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONTRAST_RATIO.isNew()}
                     onChange={this.contrastLightForegroundHandler}
                   />
                   <Slider
@@ -1735,13 +1727,21 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       min: this.props.textColorsTheme.darkColor,
                       max: this.props.textColorsTheme.darkColor,
                     }}
+                    isBlocked={Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONTRAST_RATIO.isBlocked()}
+                    isNew={Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONTRAST_RATIO.isNew()}
                     onChange={this.contrastDarkForegroundHandler}
                   />
                 </Feature>
                 <Feature
-                  isActive={Scale.features(
-                    this.props.planStatus
-                  ).SCALE_CHROMA.isActive()}
+                  isActive={
+                    Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CHROMA.isActive() && !this.state.isContrastMode
+                  }
                 >
                   <SimpleSlider
                     id="update-chroma"
@@ -1853,7 +1853,11 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                     id="watch-preset"
                     leftPartSlot={
                       <SectionTitle
-                        label={this.props.locals.scale.title}
+                        label={
+                          !this.state.isContrastMode
+                            ? this.props.locals.scale.title
+                            : this.props.locals.scale.contrast.title
+                        }
                         indicator={Object.entries(
                           this.props.scale ?? {}
                         ).length.toString()}
@@ -1864,20 +1868,29 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                         <div className={texts.label}>
                           {this.props.preset.name}
                         </div>
-                        <Feature isActive={true}>
+                        <Feature
+                          isActive={Scale.features(
+                            this.props.planStatus
+                          ).SCALE_CONTRAST_RATIO.isActive()}
+                        >
                           <Select
                             id="switch-contrast-mode"
                             type="SWITCH_BUTTON"
-                            label="Contrast mode"
+                            label={this.props.locals.scale.contrast.label}
                             isChecked={this.state.isContrastMode}
-                            isBlocked={false}
-                            isNew={false}
+                            isBlocked={Scale.features(
+                              this.props.planStatus
+                            ).SCALE_CONTRAST_RATIO.isBlocked()}
+                            isNew={Scale.features(
+                              this.props.planStatus
+                            ).SCALE_CONTRAST_RATIO.isNew()}
                             action={this.onEnableContrastMode}
                           />
                         </Feature>
                       </div>
                     }
-                    alignment="BASELINE"
+                    alignment="CENTER"
+                    isListItem={false}
                   />
                   {Scale.features(
                     this.props.planStatus
@@ -1935,6 +1948,12 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                         min: 'black',
                         max: 'white',
                       }}
+                      isBlocked={Scale.features(
+                        this.props.planStatus
+                      ).SCALE_CONFIGURATION.isBlocked()}
+                      isNew={Scale.features(
+                        this.props.planStatus
+                      ).SCALE_CONFIGURATION.isNew()}
                       onChange={this.lightnessHandler}
                     />
                   ) : (
@@ -1951,11 +1970,24 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                         min: 'black',
                         max: 'white',
                       }}
+                      isBlocked={Scale.features(
+                        this.props.planStatus
+                      ).SCALE_CONFIGURATION.isBlocked()}
+                      isNew={Scale.features(
+                        this.props.planStatus
+                      ).SCALE_CONFIGURATION.isNew()}
                       onChange={this.lightnessHandler}
                     />
                   )}
                 </Feature>
-                <Feature isActive={true && this.state.isContrastMode}>
+                <Feature
+                  isActive={
+                    Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONTRAST_RATIO.isActive() &&
+                    this.state.isContrastMode
+                  }
+                >
                   <Slider
                     {...this.props}
                     type="EDIT"
@@ -1970,6 +2002,12 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       min: this.props.textColorsTheme.lightColor,
                       max: this.props.textColorsTheme.lightColor,
                     }}
+                    isBlocked={Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONTRAST_RATIO.isBlocked()}
+                    isNew={Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONTRAST_RATIO.isNew()}
                     onChange={this.contrastLightForegroundHandler}
                   />
                   <Slider
@@ -1986,13 +2024,21 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                       min: this.props.textColorsTheme.darkColor,
                       max: this.props.textColorsTheme.darkColor,
                     }}
+                    isBlocked={Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONTRAST_RATIO.isBlocked()}
+                    isNew={Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CONTRAST_RATIO.isNew()}
                     onChange={this.contrastDarkForegroundHandler}
                   />
                 </Feature>
                 <Feature
-                  isActive={Scale.features(
-                    this.props.planStatus
-                  ).SCALE_CHROMA.isActive()}
+                  isActive={
+                    Scale.features(
+                      this.props.planStatus
+                    ).SCALE_CHROMA.isActive() && !this.state.isContrastMode
+                  }
                 >
                   <SimpleSlider
                     id="update-chroma"

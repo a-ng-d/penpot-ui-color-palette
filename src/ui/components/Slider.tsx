@@ -31,6 +31,8 @@ interface SliderProps extends BaseProps {
     min: string
     max: string
   }
+  isBlocked?: boolean
+  isNew?: boolean
   onChange: (
     state: UpdateEvent,
     results: {
@@ -53,6 +55,8 @@ export default class Slider extends Component<SliderProps, SliderStates> {
       min: 'var(--color-background-quaternary)',
       max: 'var(--color-background-quaternary)',
     },
+    isBlocked: false,
+    isNew: false,
   }
 
   static features = (planStatus: PlanStatus) => ({
@@ -420,6 +424,8 @@ export default class Slider extends Component<SliderProps, SliderStates> {
               }
               canBeTyped
               isDisplayed={this.state.isTooltipDisplay[index]}
+              isBlocked={this.props.isBlocked}
+              isNew={this.props.isNew}
               onShiftRight={(e: React.KeyboardEvent<HTMLInputElement>) => {
                 this.onShiftRight(e.target as HTMLElement, e.metaKey, e.ctrlKey)
               }}
@@ -497,6 +503,8 @@ export default class Slider extends Component<SliderProps, SliderStates> {
               }
               canBeTyped
               isDisplayed={this.state.isTooltipDisplay[index]}
+              isBlocked={this.props.isBlocked}
+              isNew={this.props.isNew}
               onShiftRight={(e: React.KeyboardEvent<HTMLInputElement>) => {
                 this.onShiftRight(e.target as HTMLElement, e.metaKey, e.ctrlKey)
               }}

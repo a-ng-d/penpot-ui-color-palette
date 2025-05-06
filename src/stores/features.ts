@@ -295,6 +295,15 @@ export const featuresScheme: Array<
     service: ['CREATE', 'EDIT'],
   },
   {
+    name: 'SCALE_CONTRAST_RATIO',
+    description: 'Contrast ratio configuration',
+    isActive: true,
+    isPro: false,
+    isNew: false,
+    type: 'ACTION',
+    service: ['CREATE', 'EDIT'],
+  },
+  {
     name: 'SCALE_CHROMA',
     description: 'Chroma scale configuration',
     isActive: true,
