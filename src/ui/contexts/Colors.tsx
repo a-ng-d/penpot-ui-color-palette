@@ -18,18 +18,16 @@ import { PureComponent } from 'preact/compat'
 import React from 'react'
 import { uid } from 'uid'
 import features from '../../config'
-import { $canPaletteDeepSync } from '../../stores/preferences'
 import { BaseProps, PlanStatus, PriorityContext } from '../../types/app'
 import {
   ColorConfiguration,
   ShiftConfiguration,
 } from '../../types/configurations'
 import { ColorsMessage } from '../../types/messages'
-import { ActionsList, DispatchProcess } from '../../types/models'
+import { ActionsList } from '../../types/models'
 import { trackSourceColorsManagementEvent } from '../../utils/eventsTracker'
 import type { AppStates } from '../App'
 import Feature from '../components/Feature'
-import Dispatcher from '../modules/Dispatcher'
 
 interface ColorsProps extends BaseProps {
   id: string
@@ -39,14 +37,8 @@ interface ColorsProps extends BaseProps {
   onGetProPlan: (context: { priorityContainerContext: PriorityContext }) => void
 }
 
-interface ColorsStates {
-  canPaletteDeepSync: boolean
-}
-
-export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
+export default class Colors extends PureComponent<ColorsProps> {
   private colorsMessage: ColorsMessage
-  private dispatch: { [key: string]: DispatchProcess }
-  private unsubscribe: (() => void) | null = null
 
   static features = (planStatus: PlanStatus) => ({
     COLORS: new FeatureStatus({
@@ -87,28 +79,7 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
       type: 'UPDATE_COLORS',
       id: this.props.id,
       data: [],
-      isEditedInRealTime: false,
     }
-    this.dispatch = {
-      colors: new Dispatcher(
-        () => parent.postMessage({ pluginMessage: this.colorsMessage }, '*'),
-        500
-      ) as DispatchProcess,
-    }
-    this.state = {
-      canPaletteDeepSync: false,
-    }
-  }
-
-  // Lifecycle
-  componentDidMount() {
-    this.unsubscribe = $canPaletteDeepSync.subscribe((value) => {
-      this.setState({ canPaletteDeepSync: value })
-    })
-  }
-
-  componentWillUnmount() {
-    if (this.unsubscribe) this.unsubscribe()
   }
 
   // Handlers
@@ -120,8 +91,6 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
       currentElement = e.currentTarget as HTMLInputElement
 
     element !== null ? (id = element.getAttribute('data-id')) : (id = null)
-
-    this.colorsMessage.isEditedInRealTime = false
 
     const addColor = () => {
       const hasAlreadyNewUIColor = this.props.colors.filter((color) =>
@@ -231,8 +200,6 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
       }
 
       if (e.type === 'focusout') {
-        this.dispatch.colors.on.status = false
-
         parent.postMessage({ pluginMessage: this.colorsMessage }, '*')
 
         trackSourceColorsManagementEvent(
@@ -243,9 +210,6 @@ export default class Colors extends PureComponent<ColorsProps, ColorsStates> {
             feature: 'UPDATE_HEX',
           }
         )
-      } else if (this.state.canPaletteDeepSync) {
-        this.colorsMessage.isEditedInRealTime = true
-        this.dispatch.colors.on.status = true
       }
     }
 

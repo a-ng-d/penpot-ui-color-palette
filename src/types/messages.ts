@@ -12,7 +12,6 @@ export interface ScaleMessage {
   type: 'UPDATE_SCALE'
   id: string
   data: ExchangeConfiguration
-  isEditedInRealTime: boolean
   feature?: string
 }
 
@@ -20,14 +19,12 @@ export interface ColorsMessage {
   type: 'UPDATE_COLORS'
   id: string
   data: Array<ColorConfiguration>
-  isEditedInRealTime: boolean
 }
 
 export interface ThemesMessage {
   type: 'UPDATE_THEMES'
   id: string
   data: Array<ThemeConfiguration>
-  isEditedInRealTime: boolean
 }
 
 export interface SettingsMessage {

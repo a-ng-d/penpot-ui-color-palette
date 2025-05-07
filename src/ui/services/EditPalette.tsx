@@ -105,10 +105,7 @@ interface EditPaletteStates {
   canPaletteDeepSync: boolean
 }
 
-export default class EditPalette extends PureComponent<
-  EditPaletteProps,
-  EditPaletteStates
-> {
+export default class EditPalette extends PureComponent<EditPaletteProps, EditPaletteStates> {
   private colorsMessage: ColorsMessage
   private themesMessage: ThemesMessage
   private dispatch: { [key: string]: DispatchProcess }
@@ -142,13 +139,11 @@ export default class EditPalette extends PureComponent<
       type: 'UPDATE_THEMES',
       id: this.props.id,
       data: [],
-      isEditedInRealTime: false,
     }
     this.colorsMessage = {
       type: 'UPDATE_COLORS',
       id: this.props.id,
       data: [],
-      isEditedInRealTime: false,
     }
     this.contexts = setContexts(
       ['SCALE', 'COLORS', 'THEMES', 'EXPORT', 'SETTINGS'],
@@ -214,6 +209,8 @@ export default class EditPalette extends PureComponent<
       return theme
     })
 
+    $palette.setKey('isThemeSwitched', true)
+
     parent.postMessage({ pluginMessage: this.themesMessage }, '*')
 
     this.props.onChangeThemes({
@@ -272,8 +269,6 @@ export default class EditPalette extends PureComponent<
     })
 
   shiftHandler = (feature?: string, state?: string, value?: number) => {
-    this.colorsMessage.isEditedInRealTime = false
-
     const onReleaseStop = () => {
       setData()
       this.dispatch.colors.on.status = false
@@ -302,10 +297,6 @@ export default class EditPalette extends PureComponent<
 
     const onUpdatingStop = () => {
       setData()
-      if (this.state.canPaletteDeepSync) {
-        this.colorsMessage.isEditedInRealTime = true
-        this.dispatch.colors.on.status = true
-      }
     }
 
     const setData = () => {

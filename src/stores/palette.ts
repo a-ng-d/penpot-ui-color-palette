@@ -22,4 +22,5 @@ export const $palette = deepMap<ExchangeConfiguration>({
     darkColor: '#000000',
   },
   colors: [],
+  isThemeSwitched: false,
 })

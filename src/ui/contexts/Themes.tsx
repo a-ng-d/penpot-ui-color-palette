@@ -14,7 +14,6 @@ import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import React, { PureComponent } from 'react'
 import { uid } from 'uid'
 import features from '../../config'
-import { $canPaletteDeepSync } from '../../stores/preferences'
 import { BaseProps, PlanStatus, PriorityContext } from '../../types/app'
 import {
   PresetConfiguration,
@@ -22,16 +21,11 @@ import {
   ThemeConfiguration,
 } from '../../types/configurations'
 import { ThemesMessage } from '../../types/messages'
-import {
-  ActionsList,
-  DispatchProcess,
-  TextColorsThemeHexModel,
-} from '../../types/models'
+import { ActionsList, TextColorsThemeHexModel } from '../../types/models'
 import doLightnessScale from '../../utils/doLightnessScale'
 import { trackColorThemesManagementEvent } from '../../utils/eventsTracker'
 import type { AppStates } from '../App'
 import Feature from '../components/Feature'
-import Dispatcher from '../modules/Dispatcher'
 
 interface ThemesProps extends BaseProps {
   id: string
@@ -43,14 +37,8 @@ interface ThemesProps extends BaseProps {
   onGetProPlan: (context: { priorityContainerContext: PriorityContext }) => void
 }
 
-interface ThemesStates {
-  canPaletteDeepSync: boolean
-}
-
-export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
+export default class Themes extends PureComponent<ThemesProps> {
   private themesMessage: ThemesMessage
-  private dispatch: { [key: string]: DispatchProcess }
-  private unsubscribe: (() => void) | null = null
 
   static features = (planStatus: PlanStatus) => ({
     THEMES: new FeatureStatus({
@@ -81,25 +69,7 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
       type: 'UPDATE_THEMES',
       id: this.props.id,
       data: [],
-      isEditedInRealTime: false,
     }
-    this.dispatch = {
-      themes: new Dispatcher(
-        () => parent.postMessage({ pluginMessage: this.themesMessage }, '*'),
-        500
-      ) as DispatchProcess,
-    }
-  }
-
-  // Lifecycle
-  componentDidMount() {
-    this.unsubscribe = $canPaletteDeepSync.subscribe((value) => {
-      this.setState({ canPaletteDeepSync: value })
-    })
-  }
-
-  componentWillUnmount() {
-    if (this.unsubscribe) this.unsubscribe()
   }
 
   // Handlers
@@ -111,8 +81,6 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
       currentElement = e.currentTarget as HTMLInputElement
 
     element !== null ? (id = element.getAttribute('data-id')) : (id = null)
-
-    this.themesMessage.isEditedInRealTime = false
 
     const addTheme = () => {
       const hasAlreadyNewUITheme = this.props.themes.filter((color) =>
@@ -134,8 +102,8 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
         paletteBackground: '#FFFFFF',
         visionSimulationMode: 'NONE',
         textColorsTheme: {
-          lightColor: '#000000',
-          darkColor: '#FFFFFF',
+          lightColor: '#FFFFFF',
+          darkColor: '#000000',
         },
         isEnabled: true,
         id: uid(),
@@ -151,8 +119,8 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
         themes: this.themesMessage.data,
         visionSimulationMode: enabledTheme?.visionSimulationMode ?? 'NONE',
         textColorsTheme: enabledTheme?.textColorsTheme ?? {
-          lightColor: '#000000',
-          darkColor: '#FFFFFF',
+          lightColor: '#FFFFFF',
+          darkColor: '#000000',
         },
         onGoingStep: 'themes changed',
       })
@@ -226,8 +194,6 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
       }
 
       if (e.type === 'focusout') {
-        this.dispatch.themes.on.status = false
-
         parent.postMessage({ pluginMessage: this.themesMessage }, '*')
 
         trackColorThemesManagementEvent(
@@ -238,9 +204,6 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
             feature: 'UPDATE_BACKGROUND',
           }
         )
-      } else if (this.state.canPaletteDeepSync) {
-        this.themesMessage.isEditedInRealTime = true
-        this.dispatch.themes.on.status = true
       }
     }
 
@@ -295,8 +258,8 @@ export default class Themes extends PureComponent<ThemesProps, ThemesStates> {
         themes: this.themesMessage.data,
         visionSimulationMode: enabledTheme?.visionSimulationMode ?? 'NONE',
         textColorsTheme: enabledTheme?.textColorsTheme ?? {
-          lightColor: '#000000',
-          darkColor: '#FFFFFF',
+          lightColor: '#FFFFFF',
+          darkColor: '#000000',
         },
         onGoingStep: 'themes changed',
       })

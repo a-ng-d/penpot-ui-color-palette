@@ -21,7 +21,6 @@ import React from 'react'
 import features from '../../config'
 import de from '../../content/images/distribution_easing.gif'
 import { $palette } from '../../stores/palette'
-import { $canPaletteDeepSync } from '../../stores/preferences'
 import { defaultPreset, presets } from '../../stores/presets'
 import {
   BaseProps,
@@ -39,17 +38,12 @@ import {
   ThemeConfiguration,
 } from '../../types/configurations'
 import { ScaleMessage } from '../../types/messages'
-import {
-  ActionsList,
-  DispatchProcess,
-  TextColorsThemeHexModel,
-} from '../../types/models'
+import { ActionsList, TextColorsThemeHexModel } from '../../types/models'
 import doLightnessScale from '../../utils/doLightnessScale'
 import { trackScaleManagementEvent } from '../../utils/eventsTracker'
 import type { AppStates } from '../App'
 import Feature from '../components/Feature'
 import Slider from '../components/Slider'
-import Dispatcher from '../modules/Dispatcher'
 import Contrast from '../../utils/Contrast'
 
 interface ScaleProps extends BaseProps {
@@ -76,15 +70,12 @@ interface ScaleProps extends BaseProps {
 
 interface ScaleStates {
   isTipsOpen: boolean
-  canPaletteDeepSync: boolean
   ratioLightForeground: ScaleConfiguration
   ratioDarkForeground: ScaleConfiguration
   isContrastMode: boolean
 }
 export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   private scaleMessage: ScaleMessage
-  private dispatch: { [key: string]: DispatchProcess }
-  private unsubscribeSync: (() => void) | undefined
   private unsubscribePalette: (() => void) | undefined
   private palette: typeof $palette
 
@@ -215,17 +206,9 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       type: 'UPDATE_SCALE',
       id: this.props.id,
       data: this.palette.value as ExchangeConfiguration,
-      isEditedInRealTime: true,
-    }
-    this.dispatch = {
-      scale: new Dispatcher(
-        () => parent.postMessage({ pluginMessage: this.scaleMessage }, '*'),
-        500
-      ) as DispatchProcess,
     }
     this.state = {
       isTipsOpen: false,
-      canPaletteDeepSync: false,
       ratioLightForeground: {},
       ratioDarkForeground: {},
       isContrastMode: false,
@@ -234,16 +217,16 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
 
   // Lifecycle
   componentDidMount() {
-    this.unsubscribeSync = $canPaletteDeepSync.subscribe((value) => {
-      this.setState({ canPaletteDeepSync: value })
-    })
     this.unsubscribePalette = $palette.subscribe((value) => {
       this.scaleMessage.data = value as ExchangeConfiguration
+      if (value.isThemeSwitched && this.state.isContrastMode) {
+        setTimeout(() => this.setContrastMode(), 100)
+        $palette.setKey('isThemeSwitched', false)
+      }
     })
   }
 
   componentWillUnmount() {
-    if (this.unsubscribeSync) this.unsubscribeSync()
     if (this.unsubscribePalette) this.unsubscribePalette()
   }
 
@@ -258,7 +241,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   ) => {
     const onReleaseStop = () => {
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
-      this.scaleMessage.isEditedInRealTime = false
       this.scaleMessage.feature = feature
 
       if (this.props.service === 'EDIT')
@@ -296,7 +278,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       })
 
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
-      this.scaleMessage.isEditedInRealTime = false
       this.scaleMessage.feature = feature
 
       this.props.onChangeStop?.()
@@ -335,7 +316,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       })
 
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
-      this.scaleMessage.isEditedInRealTime = false
 
       this.props.onChangeStop?.()
       this.props.onChangeScale()
@@ -372,8 +352,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
         ratioDarkForeground: darkForegroundRatio,
       })
 
-      this.scaleMessage.isEditedInRealTime = true
-
       this.props.onChangeScale()
     }
 
@@ -398,7 +376,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   ) => {
     const onReleaseStop = () => {
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
-      this.scaleMessage.isEditedInRealTime = false
       this.scaleMessage.feature = feature
 
       if (this.props.service === 'EDIT')
@@ -436,7 +413,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       })
 
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
-      this.scaleMessage.isEditedInRealTime = false
       this.scaleMessage.feature = feature
 
       this.props.onChangeStop?.()
@@ -467,7 +443,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       })
 
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
-      this.scaleMessage.isEditedInRealTime = false
 
       this.props.onChangeStop?.()
       this.props.onChangeScale()
@@ -496,8 +471,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
         ratioDarkForeground: darkForegroundRatio,
       })
 
-      this.scaleMessage.isEditedInRealTime = true
-
       this.props.onChangeScale()
     }
 
@@ -522,7 +495,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   ) => {
     const onReleaseStop = () => {
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
-      this.scaleMessage.isEditedInRealTime = false
       this.scaleMessage.feature = feature
 
       if (this.props.service === 'EDIT')
@@ -560,7 +532,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       })
 
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
-      this.scaleMessage.isEditedInRealTime = false
       this.scaleMessage.feature = feature
 
       this.props.onChangeStop?.()
@@ -599,7 +570,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       })
 
       this.scaleMessage.data = this.palette.value as ExchangeConfiguration
-      this.scaleMessage.isEditedInRealTime = false
 
       this.props.onChangeStop?.()
       this.props.onChangeScale()
@@ -635,8 +605,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
         ratioDarkForeground: results.scale,
         ratioLightForeground: lightForegroundRatio,
       })
-
-      this.scaleMessage.isEditedInRealTime = true
 
       this.props.onChangeScale()
     }
@@ -1101,9 +1069,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   }
 
   // Direct Actions
-  onEnableContrastMode = () => {
-    this.setState({ isContrastMode: !this.state.isContrastMode })
-
+  setContrastMode = () => {
     const lightForegroundRatio = {} as ScaleConfiguration
     const darkForegroundRatio = {} as ScaleConfiguration
 
@@ -1128,8 +1094,6 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
       ratioLightForeground: lightForegroundRatio,
       ratioDarkForeground: darkForegroundRatio,
     })
-
-    this.props.onChangeScale()
   }
 
   // Templates
@@ -1611,7 +1575,12 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                             isNew={Scale.features(
                               this.props.planStatus
                             ).SCALE_CONTRAST_RATIO.isNew()}
-                            action={this.onEnableContrastMode}
+                            action={() => {
+                              this.setState({
+                                isContrastMode: !this.state.isContrastMode,
+                              })
+                              this.setContrastMode()
+                            }}
                           />
                         </Feature>
                       </div>
@@ -1884,7 +1853,12 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
                             isNew={Scale.features(
                               this.props.planStatus
                             ).SCALE_CONTRAST_RATIO.isNew()}
-                            action={this.onEnableContrastMode}
+                            action={() => {
+                              this.setState({
+                                isContrastMode: !this.state.isContrastMode,
+                              })
+                              this.setContrastMode()
+                            }}
                           />
                         </Feature>
                       </div>
