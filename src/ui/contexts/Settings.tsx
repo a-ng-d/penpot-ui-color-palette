@@ -4,7 +4,6 @@ import { PureComponent } from 'preact/compat'
 import React from 'react'
 import features, { algorithmVersion } from '../../config'
 import { $palette } from '../../stores/palette'
-import { $canPaletteDeepSync } from '../../stores/preferences'
 import { BaseProps, Context, PlanStatus, Service } from '../../types/app'
 import {
   AlgorithmVersionConfiguration,
@@ -14,15 +13,10 @@ import {
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
 import { SettingsMessage } from '../../types/messages'
-import {
-  ActionsList,
-  DispatchProcess,
-  TextColorsThemeHexModel,
-} from '../../types/models'
+import { ActionsList, TextColorsThemeHexModel } from '../../types/models'
 import { trackSettingsManagementEvent } from '../../utils/eventsTracker'
 import type { AppStates } from '../App'
 import Feature from '../components/Feature'
-import Dispatcher from '../modules/Dispatcher'
 import ColorSettings from '../modules/ColorSettings'
 import ContrastSettings from '../modules/ContrastSettings'
 import GlobalSettings from '../modules/GlobalSettings'
@@ -45,7 +39,6 @@ interface SettingsProps extends BaseProps {
 
 export default class Settings extends PureComponent<SettingsProps> {
   private settingsMessage: SettingsMessage
-  private dispatch: { [key: string]: DispatchProcess }
   private unsubscribe: (() => void) | null = null
   private palette: typeof $palette
 
@@ -94,25 +87,7 @@ export default class Settings extends PureComponent<SettingsProps> {
           darkColor: '#000000',
         },
       },
-      isEditedInRealTime: false,
     }
-    this.dispatch = {
-      textColorsTheme: new Dispatcher(
-        () => parent.postMessage({ pluginMessage: this.settingsMessage }, '*'),
-        500
-      ) as DispatchProcess,
-    }
-  }
-
-  // Lifecycle
-  componentDidMount() {
-    this.unsubscribe = $canPaletteDeepSync.subscribe((value) => {
-      this.setState({ canPaletteDeepSync: value })
-    })
-  }
-
-  componentWillUnmount() {
-    if (this.unsubscribe) this.unsubscribe()
   }
 
   // Handlers
@@ -322,11 +297,8 @@ export default class Settings extends PureComponent<SettingsProps> {
         onGoingStep: 'settings changed',
       })
 
-      if (e.type === 'focusout' && this.props.service === 'EDIT') {
-        this.dispatch.textColorsTheme.on.status = false
+      if (e.type === 'focusout' && this.props.service === 'EDIT')
         parent.postMessage({ pluginMessage: this.settingsMessage }, '*')
-      } else if (this.props.service === 'EDIT')
-        this.dispatch.textColorsTheme.on.status = true
 
       if (e.type === 'focusout')
         trackSettingsManagementEvent(
@@ -367,11 +339,8 @@ export default class Settings extends PureComponent<SettingsProps> {
         onGoingStep: 'settings changed',
       })
 
-      if (e.type === 'focusout' && this.props.service === 'EDIT') {
-        this.dispatch.textColorsTheme.on.status = false
+      if (e.type === 'focusout' && this.props.service === 'EDIT')
         parent.postMessage({ pluginMessage: this.settingsMessage }, '*')
-      } else if (this.props.service === 'EDIT')
-        this.dispatch.textColorsTheme.on.status = true
 
       if (e.type === 'focusout')
         trackSettingsManagementEvent(

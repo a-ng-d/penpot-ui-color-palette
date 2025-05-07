@@ -14,7 +14,6 @@ import { PureComponent } from 'preact/compat'
 import React from 'react'
 import features from '../../config'
 import { $palette } from '../../stores/palette'
-import { $canPaletteDeepSync } from '../../stores/preferences'
 import { defaultPreset } from '../../stores/presets'
 import {
   BaseProps,
@@ -102,16 +101,17 @@ interface EditPaletteStates {
   }
   isPrimaryLoading: boolean
   isSecondaryLoading: boolean
-  canPaletteDeepSync: boolean
 }
 
-export default class EditPalette extends PureComponent<EditPaletteProps, EditPaletteStates> {
+export default class EditPalette extends PureComponent<
+  EditPaletteProps,
+  EditPaletteStates
+> {
   private colorsMessage: ColorsMessage
   private themesMessage: ThemesMessage
   private dispatch: { [key: string]: DispatchProcess }
   private contexts: Array<ContextItem>
   private themesRef: React.RefObject<Themes>
-  private unsubscribe: (() => void) | null = null
   private palette: typeof $palette
 
   static features = (planStatus: PlanStatus) => ({
@@ -157,7 +157,6 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
       },
       isPrimaryLoading: false,
       isSecondaryLoading: false,
-      canPaletteDeepSync: false,
     }
     this.dispatch = {
       colors: new Dispatcher(
@@ -170,14 +169,10 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
 
   // Lifecycle
   componentDidMount = () => {
-    this.unsubscribe = $canPaletteDeepSync.subscribe((value) => {
-      this.setState({ canPaletteDeepSync: value })
-    })
     window.addEventListener('message', this.handleMessage)
   }
 
   componentWillUnmount = () => {
-    if (this.unsubscribe) this.unsubscribe()
     window.removeEventListener('message', this.handleMessage)
   }
 

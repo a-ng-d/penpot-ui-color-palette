@@ -8,10 +8,7 @@ import {
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-import {
-  $canPaletteDeepSync,
-  $canStylesDeepSync,
-} from '../../stores/preferences'
+import { $canStylesDeepSync } from '../../stores/preferences'
 import features from '../../config'
 import { BaseProps, PlanStatus } from '../../types/app'
 import Feature from '../components/Feature'
@@ -21,7 +18,6 @@ interface SyncPreferencesProps extends BaseProps {
 }
 
 interface SyncPreferencesStates {
-  canPaletteDeepSync: boolean
   canStylesDeepSync: boolean
 }
 
@@ -29,7 +25,6 @@ export default class SyncPreferences extends PureComponent<
   SyncPreferencesProps,
   SyncPreferencesStates
 > {
-  private subscribePalette: (() => void) | undefined
   private subscribeStyles: (() => void) | undefined
 
   static features = (planStatus: PlanStatus) => ({
@@ -52,23 +47,18 @@ export default class SyncPreferences extends PureComponent<
   constructor(props: SyncPreferencesProps) {
     super(props)
     this.state = {
-      canPaletteDeepSync: false,
       canStylesDeepSync: false,
     }
   }
 
   // Lifecycle
   componentDidMount() {
-    this.subscribePalette = $canPaletteDeepSync.subscribe((value) => {
-      this.setState({ canPaletteDeepSync: value })
-    })
     this.subscribeStyles = $canStylesDeepSync.subscribe((value) => {
       this.setState({ canStylesDeepSync: value })
     })
   }
 
   componentWillUnmount() {
-    if (this.subscribePalette) this.subscribePalette()
     if (this.subscribeStyles) this.subscribeStyles()
   }
 

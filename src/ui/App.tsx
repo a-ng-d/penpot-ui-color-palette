@@ -10,7 +10,6 @@ import features, {
 } from '../config'
 import { $palette } from '../stores/palette'
 import {
-  $canPaletteDeepSync,
   $canStylesDeepSync,
   $isAPCADisplayed,
   $isVsCodeMessageDisplayed,
@@ -326,7 +325,6 @@ export default class App extends Component<Record<string, never>, AppStates> {
           setTimeout(() => this.setState({ isLoaded: true }), 1000)
           $isWCAGDisplayed.set(path.data.isWCAGDisplayed)
           $isAPCADisplayed.set(path.data.isAPCADisplayed)
-          $canPaletteDeepSync.set(path.data.canDeepSyncPalette)
           $canStylesDeepSync.set(path.data.canDeepSyncStyles)
           $isVsCodeMessageDisplayed.set(path.data.isVsCodeMessageDisplayed)
           $userLanguage.set(path.data.userLanguage)

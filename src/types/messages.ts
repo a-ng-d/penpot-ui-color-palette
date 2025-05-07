@@ -38,15 +38,6 @@ export interface SettingsMessage {
     algorithmVersion: AlgorithmVersionConfiguration
     textColorsTheme: TextColorsThemeHexModel
   }
-  isEditedInRealTime: boolean
-}
-
-export interface CollectionMessage {
-  type: 'UPDATE_COLLECTION'
-  data: {
-    id: string
-  }
-  isEditedInRealTime: boolean
 }
 
 export interface PaletteMessage {
