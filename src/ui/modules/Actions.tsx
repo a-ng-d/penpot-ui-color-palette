@@ -56,10 +56,7 @@ interface ActionsStates {
   canUpdateDocument: boolean
 }
 
-export default class Actions extends PureComponent<
-  ActionsProps,
-  ActionsStates
-> {
+export default class Actions extends PureComponent<ActionsProps, ActionsStates> {
   private palette: typeof $palette
 
   static defaultProps = {
@@ -89,9 +86,24 @@ export default class Actions extends PureComponent<
       featureName: 'SYNC_LOCAL_STYLES',
       planStatus: planStatus,
     }),
-    PUBLISH_PALETTE: new FeatureStatus({
+    DOCUMENT_SHEET: new FeatureStatus({
       features: features,
-      featureName: 'PUBLISH_PALETTE',
+      featureName: 'DOCUMENT_SHEET',
+      planStatus: planStatus,
+    }),
+    DOCUMENT_PALETTE: new FeatureStatus({
+      features: features,
+      featureName: 'DOCUMENT_PALETTE',
+      planStatus: planStatus,
+    }),
+    DOCUMENT_PALETTE_PROPERTIES: new FeatureStatus({
+      features: features,
+      featureName: 'DOCUMENT_PALETTE_PROPERTIES',
+      planStatus: planStatus,
+    }),
+    DOCUMENT_PUSH_UPDATES: new FeatureStatus({
+      features: features,
+      featureName: 'DOCUMENT_PUSH_UPDATES',
       planStatus: planStatus,
     }),
     SETTINGS_NAME: new FeatureStatus({
@@ -274,26 +286,54 @@ export default class Actions extends PureComponent<
   optionsHandler = () => {
     const options = [
       {
-        label: 'Generate a document',
+        label: this.props.locals.actions.generateDocument.label,
         value: 'DOCUMENT',
         type: 'OPTION',
         children: [
           {
-            label: 'Generate a color sheet document',
+            label: this.props.locals.actions.generateDocument.sheet,
             feature: 'GENERATE_SHEET',
             type: 'OPTION',
+            isActive: Actions.features(
+              this.props.planStatus
+            ).DOCUMENT_SHEET.isActive(),
+            isBlocked: Actions.features(
+              this.props.planStatus
+            ).DOCUMENT_SHEET.isBlocked(),
+            isNew: Actions.features(
+              this.props.planStatus
+            ).DOCUMENT_SHEET.isNew(),
             action: this.documentHandler,
           },
           {
-            label: 'Generate a color palette with properties',
+            label:
+              this.props.locals.actions.generateDocument.paletteWithProperties,
             feature: 'GENERATE_PALETTE_WITH_PROPERTIES',
             type: 'OPTION',
+            isActive: Actions.features(
+              this.props.planStatus
+            ).DOCUMENT_PALETTE_PROPERTIES.isActive(),
+            isBlocked: Actions.features(
+              this.props.planStatus
+            ).DOCUMENT_PALETTE_PROPERTIES.isBlocked(),
+            isNew: Actions.features(
+              this.props.planStatus
+            ).DOCUMENT_PALETTE_PROPERTIES.isNew(),
             action: this.documentHandler,
           },
           {
-            label: 'Generate a color palette',
+            label: this.props.locals.actions.generateDocument.palette,
             feature: 'GENERATE_PALETTE',
             type: 'OPTION',
+            isActive: Actions.features(
+              this.props.planStatus
+            ).DOCUMENT_PALETTE.isActive(),
+            isBlocked: Actions.features(
+              this.props.planStatus
+            ).DOCUMENT_PALETTE.isBlocked(),
+            isNew: Actions.features(
+              this.props.planStatus
+            ).DOCUMENT_PALETTE.isNew(),
             action: this.documentHandler,
           },
         ],
@@ -302,9 +342,18 @@ export default class Actions extends PureComponent<
 
     if (this.state.canUpdateDocument)
       options.push({
-        label: 'Push changes to the document',
+        label: this.props.locals.actions.pushUpdates,
         feature: 'PUSH_UPDATES',
         type: 'OPTION',
+        isActive: Actions.features(
+          this.props.planStatus
+        ).DOCUMENT_PUSH_UPDATES.isActive(),
+        isBlocked: Actions.features(
+          this.props.planStatus
+        ).DOCUMENT_PUSH_UPDATES.isBlocked(),
+        isNew: Actions.features(
+          this.props.planStatus
+        ).DOCUMENT_PUSH_UPDATES.isNew(),
         action: this.documentHandler,
       })
 
@@ -440,64 +489,63 @@ export default class Actions extends PureComponent<
               onFocus={this.nameHandler}
               onBlur={this.nameHandler}
             />
-            {this.props.document &&
-              Object.keys(this.props.document).length > 0 && (
-                <Dropdown
-                  id="views"
-                  options={[
-                    {
-                      label: this.props.locals.settings.global.views.detailed,
-                      value: 'PALETTE_WITH_PROPERTIES',
-                      type: 'OPTION',
-                      isActive: Actions.features(
-                        this.props.planStatus
-                      ).VIEWS_PALETTE_WITH_PROPERTIES.isActive(),
-                      isBlocked: Actions.features(
-                        this.props.planStatus
-                      ).VIEWS_PALETTE_WITH_PROPERTIES.isBlocked(),
-                      isNew: Actions.features(
-                        this.props.planStatus
-                      ).VIEWS_PALETTE_WITH_PROPERTIES.isNew(),
-                      action: this.onChangeView,
-                    },
-                    {
-                      label: this.props.locals.settings.global.views.simple,
-                      value: 'PALETTE',
-                      type: 'OPTION',
-                      isActive: Actions.features(
-                        this.props.planStatus
-                      ).VIEWS_PALETTE.isActive(),
-                      isBlocked: Actions.features(
-                        this.props.planStatus
-                      ).VIEWS_PALETTE.isBlocked(),
-                      isNew: Actions.features(
-                        this.props.planStatus
-                      ).VIEWS_PALETTE.isNew(),
-                      action: this.onChangeView,
-                    },
-                    {
-                      label: this.props.locals.settings.global.views.sheet,
-                      value: 'SHEET',
-                      type: 'OPTION',
-                      isActive: Actions.features(
-                        this.props.planStatus
-                      ).VIEWS_SHEET.isActive(),
-                      isBlocked: Actions.features(
-                        this.props.planStatus
-                      ).VIEWS_SHEET.isBlocked(),
-                      isNew: Actions.features(
-                        this.props.planStatus
-                      ).VIEWS_SHEET.isNew(),
-                      action: this.onChangeView,
-                    },
-                  ]}
-                  selected={this.props.document.view}
-                  isBlocked={Actions.features(
-                    this.props.planStatus
-                  ).VIEWS.isBlocked()}
-                  isNew={Actions.features(this.props.planStatus).VIEWS.isNew()}
-                />
-              )}
+            {this.props.document && this.state.canUpdateDocument && (
+              <Dropdown
+                id="views"
+                options={[
+                  {
+                    label: this.props.locals.settings.global.views.detailed,
+                    value: 'PALETTE_WITH_PROPERTIES',
+                    type: 'OPTION',
+                    isActive: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_PALETTE_WITH_PROPERTIES.isActive(),
+                    isBlocked: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_PALETTE_WITH_PROPERTIES.isBlocked(),
+                    isNew: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_PALETTE_WITH_PROPERTIES.isNew(),
+                    action: this.onChangeView,
+                  },
+                  {
+                    label: this.props.locals.settings.global.views.simple,
+                    value: 'PALETTE',
+                    type: 'OPTION',
+                    isActive: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_PALETTE.isActive(),
+                    isBlocked: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_PALETTE.isBlocked(),
+                    isNew: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_PALETTE.isNew(),
+                    action: this.onChangeView,
+                  },
+                  {
+                    label: this.props.locals.settings.global.views.sheet,
+                    value: 'SHEET',
+                    type: 'OPTION',
+                    isActive: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_SHEET.isActive(),
+                    isBlocked: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_SHEET.isBlocked(),
+                    isNew: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_SHEET.isNew(),
+                    action: this.onChangeView,
+                  },
+                ]}
+                selected={this.props.document.view}
+                isBlocked={Actions.features(
+                  this.props.planStatus
+                ).VIEWS.isBlocked()}
+                isNew={Actions.features(this.props.planStatus).VIEWS.isNew()}
+              />
+            )}
           </div>
         }
         rightPartSlot={

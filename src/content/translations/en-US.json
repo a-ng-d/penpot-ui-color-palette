@@ -18,8 +18,15 @@
     "createPalette": "Save the UI Color Palette",
     "duplicate": "Duplicate",
     "export": "Export the UI Color Palette to",
+    "generateDocument": {
+      "label": "Generate a document",
+      "palette": "Generate a color palette",
+      "paletteWithProperties": "Generate a detailed color palette",
+      "sheet": "Generate a color sheet"
+    },
     "publishOrSyncPalette": "Publish or Synchronize palette",
     "publishPalette": "Publish palette",
+    "pushUpdates": "Push updates to the document",
     "shadesNumber": {
       "several": "$1 shades",
       "single": "$1 shade"
