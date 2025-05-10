@@ -489,7 +489,7 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
               onFocus={this.nameHandler}
               onBlur={this.nameHandler}
             />
-            {this.props.document && this.state.canUpdateDocument && (
+            {this.props.document?.id === this.props.id && (
               <Dropdown
                 id="views"
                 options={[

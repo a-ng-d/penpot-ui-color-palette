@@ -30,6 +30,11 @@ export default class InternalPalettes extends PureComponent<
   InternalPalettesStates
 > {
   static features = (planStatus: PlanStatus) => ({
+    OPEN_PALETTE: new FeatureStatus({
+      features: features,
+      featureName: 'OPEN_PALETTE',
+      planStatus: planStatus,
+    }),
     DELETE_PALETTE: new FeatureStatus({
       features: features,
       featureName: 'ACTIONS',
@@ -197,26 +202,50 @@ export default class InternalPalettes extends PureComponent<
                     )}
                     actionsSlot={
                       <>
-                        <Button
-                          type="icon"
-                          icon="trash"
-                          helper={{
-                            label:
-                              this.props.locals.browse.actions.deletePalette,
-                          }}
-                          action={() =>
-                            this.setState({
-                              isDeleteDialogOpen: true,
-                              targetedPaletteId: palette.meta.id,
-                              targetedPaletteName: palette.base.name,
-                            })
-                          }
-                        />
-                        <Button
-                          type="secondary"
-                          label={this.props.locals.browse.actions.editPalette}
-                          action={() => this.onEditPalette(palette.meta.id)}
-                        />
+                        <Feature
+                          isActive={InternalPalettes.features(
+                            this.props.planStatus
+                          ).OPEN_PALETTE.isActive()}
+                        >
+                          <Button
+                            type="icon"
+                            icon="trash"
+                            helper={{
+                              label:
+                                this.props.locals.browse.actions.deletePalette,
+                            }}
+                            isBlocked={InternalPalettes.features(
+                              this.props.planStatus
+                            ).DELETE_PALETTE.isBlocked()}
+                            isNew={InternalPalettes.features(
+                              this.props.planStatus
+                            ).DELETE_PALETTE.isNew()}
+                            action={() =>
+                              this.setState({
+                                isDeleteDialogOpen: true,
+                                targetedPaletteId: palette.meta.id,
+                                targetedPaletteName: palette.base.name,
+                              })
+                            }
+                          />
+                        </Feature>
+                        <Feature
+                          isActive={InternalPalettes.features(
+                            this.props.planStatus
+                          ).OPEN_PALETTE.isActive()}
+                        >
+                          <Button
+                            type="secondary"
+                            label={this.props.locals.browse.actions.editPalette}
+                            isBlocked={InternalPalettes.features(
+                              this.props.planStatus
+                            ).OPEN_PALETTE.isBlocked()}
+                            isNew={InternalPalettes.features(
+                              this.props.planStatus
+                            ).OPEN_PALETTE.isNew()}
+                            action={() => this.onEditPalette(palette.meta.id)}
+                          />
+                        </Feature>
                       </>
                     }
                     complementSlot={

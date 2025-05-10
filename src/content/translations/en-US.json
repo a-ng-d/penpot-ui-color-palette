@@ -48,7 +48,12 @@
       "delete": "Delete palette",
       "message": "You're about to delete the \"$1\" palette. This action is irreversible.",
       "title": "Delete palette"
-    }
+    },
+    "document": {
+      "create": "Create from document",
+      "open": "Open document"
+    },
+    "new": "New UI Color Palette"
   },
   "colors": {
     "actions": {

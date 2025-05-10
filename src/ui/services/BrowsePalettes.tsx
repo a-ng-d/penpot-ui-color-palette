@@ -4,12 +4,12 @@ import React from 'react'
 import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { ActionsList } from 'src/types/models'
 import features from '../../config'
-import { $palette } from '../../stores/palette'
 import { BaseProps, Context, ContextItem, PlanStatus } from '../../types/app'
 import { DocumentConfiguration } from '../../types/configurations'
 import { setContexts } from '../../utils/setContexts'
 import { AppStates } from '../App'
 import InternalPalettes from '../contexts/InternalPalettes'
+import Feature from '../components/Feature'
 
 interface BrowsePalettesProps extends BaseProps {
   document: DocumentConfiguration
@@ -27,7 +27,6 @@ export default class BrowsePalettes extends PureComponent<
   BrowsePalettesStates
 > {
   private contexts: Array<ContextItem>
-  private palette: typeof $palette
 
   static features = (planStatus: PlanStatus) => ({
     LIBRARY_FILE: new FeatureStatus({
@@ -40,11 +39,25 @@ export default class BrowsePalettes extends PureComponent<
       featureName: 'LIBRARY_PAGE',
       planStatus: planStatus,
     }),
+    DOCUMENT_OPEN: new FeatureStatus({
+      features: features,
+      featureName: 'DOCUMENT_OPEN',
+      planStatus: planStatus,
+    }),
+    DOCUMENT_CREATE: new FeatureStatus({
+      features: features,
+      featureName: 'DOCUMENT_CREATE',
+      planStatus: planStatus,
+    }),
+    CREATE_PALETTE: new FeatureStatus({
+      features: features,
+      featureName: 'CREATE_PALETTE',
+      planStatus: planStatus,
+    }),
   })
 
   constructor(props: BrowsePalettesProps) {
     super(props)
-    this.palette = $palette
     this.contexts = setContexts(
       ['LIBRARY_PAGE', 'LIBRARY_FILE'],
       props.planStatus
@@ -141,26 +154,62 @@ export default class BrowsePalettes extends PureComponent<
             <div className={layouts['snackbar--medium']}>
               {this.props.document.isLinkedToPalette !== undefined &&
                 this.props.document.isLinkedToPalette && (
-                  <Button
-                    type="secondary"
-                    label="Open document"
-                    action={this.onEditPalette}
-                  />
+                  <Feature
+                    isActive={BrowsePalettes.features(
+                      this.props.planStatus
+                    ).DOCUMENT_OPEN.isActive()}
+                  >
+                    <Button
+                      type="secondary"
+                      label={this.props.locals.browse.document.open}
+                      isBlocked={BrowsePalettes.features(
+                        this.props.planStatus
+                      ).DOCUMENT_OPEN.isBlocked()}
+                      isNew={BrowsePalettes.features(
+                        this.props.planStatus
+                      ).DOCUMENT_OPEN.isNew()}
+                      action={this.onEditPalette}
+                    />
+                  </Feature>
                 )}
               {this.props.document.isLinkedToPalette !== undefined &&
                 !this.props.document.isLinkedToPalette && (
-                  <Button
-                    type="secondary"
-                    label="Create from the document"
-                    action={this.onCreateFromDocument}
-                  />
+                  <Feature
+                    isActive={BrowsePalettes.features(
+                      this.props.planStatus
+                    ).DOCUMENT_CREATE.isActive()}
+                  >
+                    <Button
+                      type="secondary"
+                      label={this.props.locals.browse.document.create}
+                      isBlocked={BrowsePalettes.features(
+                        this.props.planStatus
+                      ).DOCUMENT_CREATE.isBlocked()}
+                      isNew={BrowsePalettes.features(
+                        this.props.planStatus
+                      ).DOCUMENT_CREATE.isNew()}
+                      action={this.onCreateFromDocument}
+                    />
+                  </Feature>
                 )}
-              <Button
-                type="primary"
-                icon="plus"
-                label="New UI Color Palette"
-                action={this.onCreatePalette}
-              />
+              <Feature
+                isActive={BrowsePalettes.features(
+                  this.props.planStatus
+                ).CREATE_PALETTE.isActive()}
+              >
+                <Button
+                  type="primary"
+                  icon="plus"
+                  label={this.props.locals.browse.new}
+                  isBlocked={BrowsePalettes.features(
+                    this.props.planStatus
+                  ).CREATE_PALETTE.isBlocked()}
+                  isNew={BrowsePalettes.features(
+                    this.props.planStatus
+                  ).CREATE_PALETTE.isNew()}
+                  action={this.onCreatePalette}
+                />
+              </Feature>
             </div>
           }
         />
