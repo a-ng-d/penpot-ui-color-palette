@@ -291,18 +291,18 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
         type: 'OPTION',
         children: [
           {
-            label: this.props.locals.actions.generateDocument.sheet,
-            feature: 'GENERATE_SHEET',
+            label: this.props.locals.actions.generateDocument.palette,
+            feature: 'GENERATE_PALETTE',
             type: 'OPTION',
             isActive: Actions.features(
               this.props.planStatus
-            ).DOCUMENT_SHEET.isActive(),
+            ).DOCUMENT_PALETTE.isActive(),
             isBlocked: Actions.features(
               this.props.planStatus
-            ).DOCUMENT_SHEET.isBlocked(),
+            ).DOCUMENT_PALETTE.isBlocked(),
             isNew: Actions.features(
               this.props.planStatus
-            ).DOCUMENT_SHEET.isNew(),
+            ).DOCUMENT_PALETTE.isNew(),
             action: this.documentHandler,
           },
           {
@@ -322,18 +322,18 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
             action: this.documentHandler,
           },
           {
-            label: this.props.locals.actions.generateDocument.palette,
-            feature: 'GENERATE_PALETTE',
+            label: this.props.locals.actions.generateDocument.sheet,
+            feature: 'GENERATE_SHEET',
             type: 'OPTION',
             isActive: Actions.features(
               this.props.planStatus
-            ).DOCUMENT_PALETTE.isActive(),
+            ).DOCUMENT_SHEET.isActive(),
             isBlocked: Actions.features(
               this.props.planStatus
-            ).DOCUMENT_PALETTE.isBlocked(),
+            ).DOCUMENT_SHEET.isBlocked(),
             isNew: Actions.features(
               this.props.planStatus
-            ).DOCUMENT_PALETTE.isNew(),
+            ).DOCUMENT_SHEET.isNew(),
             action: this.documentHandler,
           },
         ],
@@ -494,21 +494,6 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
                 id="views"
                 options={[
                   {
-                    label: this.props.locals.settings.global.views.detailed,
-                    value: 'PALETTE_WITH_PROPERTIES',
-                    type: 'OPTION',
-                    isActive: Actions.features(
-                      this.props.planStatus
-                    ).VIEWS_PALETTE_WITH_PROPERTIES.isActive(),
-                    isBlocked: Actions.features(
-                      this.props.planStatus
-                    ).VIEWS_PALETTE_WITH_PROPERTIES.isBlocked(),
-                    isNew: Actions.features(
-                      this.props.planStatus
-                    ).VIEWS_PALETTE_WITH_PROPERTIES.isNew(),
-                    action: this.onChangeView,
-                  },
-                  {
                     label: this.props.locals.settings.global.views.simple,
                     value: 'PALETTE',
                     type: 'OPTION',
@@ -521,6 +506,21 @@ export default class Actions extends PureComponent<ActionsProps, ActionsStates> 
                     isNew: Actions.features(
                       this.props.planStatus
                     ).VIEWS_PALETTE.isNew(),
+                    action: this.onChangeView,
+                  },
+                  {
+                    label: this.props.locals.settings.global.views.detailed,
+                    value: 'PALETTE_WITH_PROPERTIES',
+                    type: 'OPTION',
+                    isActive: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_PALETTE_WITH_PROPERTIES.isActive(),
+                    isBlocked: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_PALETTE_WITH_PROPERTIES.isBlocked(),
+                    isNew: Actions.features(
+                      this.props.planStatus
+                    ).VIEWS_PALETTE_WITH_PROPERTIES.isNew(),
                     action: this.onChangeView,
                   },
                   {

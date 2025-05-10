@@ -1,15 +1,15 @@
-import { Bar, Button, layouts, Tabs } from '@a_ng_d/figmug-ui'
+import { Bar, Button, layouts, texts } from '@a_ng_d/figmug-ui'
+import { doClassnames, FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
-import { FeatureStatus } from '@a_ng_d/figmug-utils'
 import { ActionsList } from 'src/types/models'
 import features from '../../config'
 import { BaseProps, Context, ContextItem, PlanStatus } from '../../types/app'
 import { DocumentConfiguration } from '../../types/configurations'
 import { setContexts } from '../../utils/setContexts'
 import { AppStates } from '../App'
-import InternalPalettes from '../contexts/InternalPalettes'
 import Feature from '../components/Feature'
+import InternalPalettes from '../contexts/InternalPalettes'
 
 interface BrowsePalettesProps extends BaseProps {
   document: DocumentConfiguration
@@ -29,11 +29,6 @@ export default class BrowsePalettes extends PureComponent<
   private contexts: Array<ContextItem>
 
   static features = (planStatus: PlanStatus) => ({
-    LIBRARY_FILE: new FeatureStatus({
-      features: features,
-      featureName: 'LIBRARY_FILE',
-      planStatus: planStatus,
-    }),
     LIBRARY_PAGE: new FeatureStatus({
       features: features,
       featureName: 'LIBRARY_PAGE',
@@ -58,10 +53,7 @@ export default class BrowsePalettes extends PureComponent<
 
   constructor(props: BrowsePalettesProps) {
     super(props)
-    this.contexts = setContexts(
-      ['LIBRARY_PAGE', 'LIBRARY_FILE'],
-      props.planStatus
-    )
+    this.contexts = setContexts(['LIBRARY_PAGE'], props.planStatus)
     this.state = {
       context: this.contexts[0].id,
       isPrimaryLoading: false,
@@ -144,11 +136,9 @@ export default class BrowsePalettes extends PureComponent<
       <>
         <Bar
           leftPartSlot={
-            <Tabs
-              tabs={this.contexts}
-              active={this.state.context ?? ''}
-              action={this.navHandler}
-            />
+            <span className={doClassnames([texts.type, texts.label])}>
+              {this.props.locals.palettes.devMode.title}
+            </span>
           }
           rightPartSlot={
             <div className={layouts['snackbar--medium']}>

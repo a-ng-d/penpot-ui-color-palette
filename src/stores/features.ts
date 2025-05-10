@@ -95,15 +95,6 @@ export const featuresScheme: Array<
     service: ['BROWSE'],
   },
   {
-    name: 'LIBRARY_FILE',
-    description: 'Saved palettes in the file',
-    isActive: true,
-    isPro: false,
-    isNew: false,
-    type: 'CONTEXT',
-    service: ['BROWSE'],
-  },
-  {
     name: 'DOCUMENT',
     description: 'Generates a document',
     isActive: true,
