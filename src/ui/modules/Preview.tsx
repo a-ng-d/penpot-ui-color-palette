@@ -37,7 +37,6 @@ import Feature from '../components/Feature'
 import Shade from '../components/Shade'
 import Source from '../components/Source'
 import chroma from 'chroma-js'
-import { c } from 'vite/dist/node/moduleRunnerTransport.d-CXw_Ws6P'
 
 interface PreviewProps extends BaseProps {
   service: Service

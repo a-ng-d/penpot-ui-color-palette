@@ -1,12 +1,84 @@
-import chroma from 'chroma-js'
-import blinder from '@hexorialstudio/color-blinder'
-import { Hsluv } from 'hsluv'
 import { HexModel } from '@a_ng_d/figmug-ui'
+import chroma from 'chroma-js'
+import { Hsluv } from 'hsluv'
 import {
   AlgorithmVersionConfiguration,
   VisionSimulationModeConfiguration,
 } from '../types/configurations'
 import { ActionsList } from '../types/models'
+
+const colorBlindMatrices = {
+  PROTANOPIA: [
+    [0.567, 0.433, 0],
+    [0.558, 0.442, 0],
+    [0, 0.242, 0.758],
+  ],
+  PROTANOMALY: [
+    [0.817, 0.183, 0],
+    [0.333, 0.667, 0],
+    [0, 0.125, 0.875],
+  ],
+  DEUTERANOPIA: [
+    [0.625, 0.375, 0],
+    [0.7, 0.3, 0],
+    [0, 0.3, 0.7],
+  ],
+  DEUTERANOMALY: [
+    [0.8, 0.2, 0],
+    [0.258, 0.742, 0],
+    [0, 0.142, 0.858],
+  ],
+  TRITANOPIA: [
+    [0.95, 0.05, 0],
+    [0, 0.433, 0.567],
+    [0, 0.475, 0.525],
+  ],
+  TRITANOMALY: [
+    [0.967, 0.033, 0],
+    [0, 0.733, 0.267],
+    [0, 0.183, 0.817],
+  ],
+  ACHROMATOPSIA: [
+    [0.299, 0.587, 0.114],
+    [0.299, 0.587, 0.114],
+    [0.299, 0.587, 0.114],
+  ],
+  ACHROMATOMALY: [
+    [0.618, 0.32, 0.062],
+    [0.163, 0.775, 0.062],
+    [0.163, 0.32, 0.516],
+  ],
+}
+
+const applyColorMatrix = (
+  color: [number, number, number],
+  matrix: number[][]
+): [number, number, number] => {
+  const [r, g, b] = color
+  return [
+    Math.min(
+      255,
+      Math.max(
+        0,
+        Math.round(r * matrix[0][0] + g * matrix[0][1] + b * matrix[0][2])
+      )
+    ),
+    Math.min(
+      255,
+      Math.max(
+        0,
+        Math.round(r * matrix[1][0] + g * matrix[1][1] + b * matrix[1][2])
+      )
+    ),
+    Math.min(
+      255,
+      Math.max(
+        0,
+        Math.round(r * matrix[2][0] + g * matrix[2][1] + b * matrix[2][2])
+      )
+    ),
+  ]
+}
 
 export default class Color {
   private render: 'HEX' | 'RGB'
@@ -388,57 +460,94 @@ export default class Color {
     return [hsluv.hsluv_h, hsluv.hsluv_s, hsluv.hsluv_l]
   }
 
+  simulateColorBlindHex = (color: [number, number, number]): HexModel => {
+    const actions: ActionsList = {
+      NONE: () => chroma(color).hex(),
+      PROTANOMALY: () => {
+        const transformed = applyColorMatrix(
+          color,
+          colorBlindMatrices.PROTANOMALY
+        )
+        return chroma(transformed).hex()
+      },
+      PROTANOPIA: () => {
+        const transformed = applyColorMatrix(
+          color,
+          colorBlindMatrices.PROTANOPIA
+        )
+        return chroma(transformed).hex()
+      },
+      DEUTERANOMALY: () => {
+        const transformed = applyColorMatrix(
+          color,
+          colorBlindMatrices.DEUTERANOMALY
+        )
+        return chroma(transformed).hex()
+      },
+      DEUTERANOPIA: () => {
+        const transformed = applyColorMatrix(
+          color,
+          colorBlindMatrices.DEUTERANOPIA
+        )
+        return chroma(transformed).hex()
+      },
+      TRITANOMALY: () => {
+        const transformed = applyColorMatrix(
+          color,
+          colorBlindMatrices.TRITANOMALY
+        )
+        return chroma(transformed).hex()
+      },
+      TRITANOPIA: () => {
+        const transformed = applyColorMatrix(
+          color,
+          colorBlindMatrices.TRITANOPIA
+        )
+        return chroma(transformed).hex()
+      },
+      ACHROMATOMALY: () => {
+        const transformed = applyColorMatrix(
+          color,
+          colorBlindMatrices.ACHROMATOMALY
+        )
+        return chroma(transformed).hex()
+      },
+      ACHROMATOPSIA: () => {
+        const transformed = applyColorMatrix(
+          color,
+          colorBlindMatrices.ACHROMATOPSIA
+        )
+        return chroma(transformed).hex()
+      },
+    }
+
+    const result = actions[this.visionSimulationMode]?.()
+    return result !== undefined ? result : '#000000'
+  }
+
   simulateColorBlindRgb = (
     color: [number, number, number]
   ): [number, number, number] => {
     const actions: ActionsList = {
       NONE: () => color,
       PROTANOMALY: () =>
-        chroma(blinder.protanomaly(chroma(color).hex())).rgb(false),
-      PROTANOPIA: () =>
-        chroma(blinder.protanopia(chroma(color).hex())).rgb(false),
+        applyColorMatrix(color, colorBlindMatrices.PROTANOMALY),
+      PROTANOPIA: () => applyColorMatrix(color, colorBlindMatrices.PROTANOPIA),
       DEUTERANOMALY: () =>
-        chroma(blinder.deuteranomaly(chroma(color).hex())).rgb(false),
+        applyColorMatrix(color, colorBlindMatrices.DEUTERANOMALY),
       DEUTERANOPIA: () =>
-        chroma(blinder.deuteranopia(chroma(color).hex())).rgb(false),
+        applyColorMatrix(color, colorBlindMatrices.DEUTERANOPIA),
       TRITANOMALY: () =>
-        chroma(blinder.tritanomaly(chroma(color).hex())).rgb(false),
-      TRITANOPIA: () =>
-        chroma(blinder.tritanopia(chroma(color).hex())).rgb(false),
+        applyColorMatrix(color, colorBlindMatrices.TRITANOMALY),
+      TRITANOPIA: () => applyColorMatrix(color, colorBlindMatrices.TRITANOPIA),
       ACHROMATOMALY: () =>
-        chroma(blinder.achromatomaly(chroma(color).hex())).rgb(false),
+        applyColorMatrix(color, colorBlindMatrices.ACHROMATOMALY),
       ACHROMATOPSIA: () =>
-        chroma(blinder.achromatopsia(chroma(color).hex())).rgb(false),
+        applyColorMatrix(color, colorBlindMatrices.ACHROMATOPSIA),
     }
 
     const result = actions[this.visionSimulationMode]?.()
-
     return result !== undefined ? result : [0, 0, 0]
-  }
-
-  simulateColorBlindHex = (color: [number, number, number]): HexModel => {
-    const actions: ActionsList = {
-      NONE: () => chroma(color).hex(),
-      PROTANOMALY: () => blinder.protanomaly(chroma(color).hex()),
-      PROTANOPIA: () => blinder.protanopia(chroma(color).hex()),
-      DEUTERANOMALY: () => blinder.deuteranomaly(chroma(color).hex()),
-      DEUTERANOPIA: () => blinder.deuteranopia(chroma(color).hex()),
-      TRITANOMALY: () => blinder.tritanomaly(chroma(color).hex()),
-      TRITANOPIA: () => blinder.tritanopia(chroma(color).hex()),
-      ACHROMATOMALY: () => blinder.achromatomaly(chroma(color).hex()),
-      ACHROMATOPSIA: () => blinder.achromatopsia(chroma(color).hex()),
-    }
-
-    console.log(
-      this.visionSimulationMode,
-      color,
-      chroma(color).hex(),
-      blinder.protanopia(chroma(color).hex())
-    )
-
-    const result = actions[this.visionSimulationMode]?.()
-
-    return result !== undefined ? result : '#000000'
   }
 
   mixColorsRgb = (
