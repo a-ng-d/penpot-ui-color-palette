@@ -365,7 +365,7 @@ export default class Preview extends PureComponent<
       visionSimulationMode: this.props.visionSimulationMode,
     })
 
-    if ('transparency' in color && color.transparency.isEnabled)
+    if ('alpha' in color && color.alpha.isEnabled)
       return colorData.mixColorsHex(
         chroma([
           color.rgb.r * 255,
@@ -373,7 +373,7 @@ export default class Preview extends PureComponent<
           color.rgb.b * 255,
           scale / 100,
         ]).hex(),
-        color.transparency.backgroundColor ?? '#000000'
+        color.alpha.backgroundColor ?? '#000000'
       )
 
     switch (this.props.colorSpace) {
@@ -941,9 +941,7 @@ export default class Preview extends PureComponent<
                         name={color.name}
                         color={color.rgb}
                         isTransparent={
-                          'transparency' in color
-                            ? color.transparency.isEnabled
-                            : false
+                          'alpha' in color ? color.alpha.isEnabled : false
                         }
                       />
                       {Object.values(scaledColors).map((scaledColor, index) => {

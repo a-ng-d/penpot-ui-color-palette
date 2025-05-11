@@ -35,7 +35,7 @@ const createPalette = async (msg: Msg) => {
           shift: msg.data.exchange.shift.chroma,
           isLocked: false,
         },
-        transparency: {
+        alpha: {
           isEnabled: false,
           backgroundColor: '#FFFFFF',
         },

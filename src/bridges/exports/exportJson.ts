@@ -71,7 +71,7 @@ const exportJson = (id: string) => {
     }
   }
 
-  const modelWithTransparency = (
+  const modelWithAlpha = (
     shade: PaletteDataShadeItem,
     source: PaletteDataShadeItem
   ) => {
@@ -135,7 +135,7 @@ const exportJson = (id: string) => {
         color.shades.forEach((shade) => {
           if (shade && source)
             json[theme.name][color.name][shade.name] = shade.isTransparent
-              ? modelWithTransparency(shade, source)
+              ? modelWithAlpha(shade, source)
               : model(shade)
         })
         json[theme.name][color.name]['description'] = color.description
@@ -155,7 +155,7 @@ const exportJson = (id: string) => {
         color.shades.forEach((shade) => {
           if (shade && source)
             json[color.name][shade.name] = shade.isTransparent
-              ? modelWithTransparency(shade, source)
+              ? modelWithAlpha(shade, source)
               : model(shade)
         })
         json[color.name]['description'] = color.description

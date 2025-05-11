@@ -548,8 +548,8 @@ export const featuresScheme: Array<
     service: ['EDIT'],
   },
   {
-    name: 'COLORS_TRANSPARENCY',
-    description: 'Transparency of the source color',
+    name: 'COLORS_ALPHA',
+    description: 'Alpha of the source color',
     isActive: true,
     isPro: false,
     isNew: false,

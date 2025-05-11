@@ -94,7 +94,7 @@ export default class Data {
               algorithmVersion: this.base.algorithmVersion,
               visionSimulationMode: theme.visionSimulationMode,
             })
-            if (color.transparency.isEnabled)
+            if (color.alpha.isEnabled)
               return [
                 lightness,
                 colorData.mixColorsRgb(
@@ -104,7 +104,7 @@ export default class Data {
                     color.rgb.b * 255,
                     lightness[1] / 100,
                   ],
-                  chroma(color.transparency.backgroundColor).rgba(false)
+                  chroma(color.alpha.backgroundColor).rgba(false)
                 ),
               ]
             if (this.base.colorSpace === 'LCH')
@@ -196,58 +196,58 @@ export default class Data {
           paletteDataColorItem.shades.push({
             name: scaleName,
             description: `Shade color with ${scaledColor[0][1].toFixed(1)}% of ${
-              color.transparency.isEnabled ? 'opacity' : 'lightness'
+              color.alpha.isEnabled ? 'opacity' : 'lightness'
             }`,
             hex:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
-              !color.transparency.isEnabled
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).hex()
                 : chroma(scaledColor[1]).hex(),
             rgb:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
-              !color.transparency.isEnabled
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).rgb()
                 : chroma(scaledColor[1]).rgb(),
             gl:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
-              !color.transparency.isEnabled
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).gl()
                 : chroma(scaledColor[1]).gl(),
             lch:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
-              !color.transparency.isEnabled
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).lch()
                 : chroma(scaledColor[1]).lch(),
             oklch:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
-              !color.transparency.isEnabled
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).oklch()
                 : chroma(scaledColor[1]).oklch(),
             lab:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
-              !color.transparency.isEnabled
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).lab()
                 : chroma(scaledColor[1]).lab(),
             oklab:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
-              !color.transparency.isEnabled
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).oklab()
                 : chroma(scaledColor[1]).oklab(),
             hsl:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
-              !color.transparency.isEnabled
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).hsl()
                 : chroma(scaledColor[1]).hsl(),
             hsluv: [newHsluv.hsluv_h, newHsluv.hsluv_s, newHsluv.hsluv_l],
-            alpha: color.transparency.isEnabled
+            alpha: color.alpha.isEnabled
               ? parseFloat((scaledColor[0][1] / 100).toFixed(2))
               : undefined,
             styleId: this.searchForShadeStyleId(
@@ -259,7 +259,7 @@ export default class Data {
             isClosestToRef: distance < 4 && !this.base.areSourceColorsLocked,
             isSourceColorLocked:
               index === minDistanceIndex && this.base.areSourceColorsLocked,
-            isTransparent: color.transparency.isEnabled,
+            isTransparent: color.alpha.isEnabled,
             type: 'color shade',
           })
         })

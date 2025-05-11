@@ -71,9 +71,9 @@ export default class Colors extends PureComponent<ColorsProps> {
       featureName: 'COLORS_DESCRIPTION',
       planStatus: planStatus,
     }),
-    COLORS_TRANSPARENCY: new FeatureStatus({
+    COLORS_ALPHA: new FeatureStatus({
       features: features,
-      featureName: 'COLORS_TRANSPARENCY',
+      featureName: 'COLORS_ALPHA',
       planStatus: planStatus,
     }),
     COLORS_BACKGROUND_COLOR: new FeatureStatus({
@@ -125,7 +125,7 @@ export default class Colors extends PureComponent<ColorsProps> {
           shift: 100,
           isLocked: false,
         },
-        transparency: {
+        alpha: {
           isEnabled: false,
           backgroundColor: '#FFFFFF',
         },
@@ -457,10 +457,9 @@ export default class Colors extends PureComponent<ColorsProps> {
       }
     }
 
-    const switchTransparencyMode = () => {
+    const switchAlphaMode = () => {
       this.colorsMessage.data = this.props.colors.map((item) => {
-        if (item.id === id)
-          item.transparency.isEnabled = !item.transparency.isEnabled
+        if (item.id === id) item.alpha.isEnabled = !item.alpha.isEnabled
         return item
       })
 
@@ -474,8 +473,7 @@ export default class Colors extends PureComponent<ColorsProps> {
 
     const updateBackgroundColor = () => {
       this.colorsMessage.data = this.props.colors.map((item) => {
-        if (item.id === id)
-          item.transparency.backgroundColor = currentElement.value
+        if (item.id === id) item.alpha.backgroundColor = currentElement.value
         return item
       })
 
@@ -521,7 +519,7 @@ export default class Colors extends PureComponent<ColorsProps> {
       RESET_HUE: () => resetHue(),
       RESET_CHROMA: () => resetChroma(),
       UPDATE_DESCRIPTION: () => updateColorDescription(),
-      SWITCH_TRANSPARENCY_MODE: () => switchTransparencyMode(),
+      SWITCH_ALPHA_MODE: () => switchAlphaMode(),
       UPDATE_BACKGROUND_COLOR: () => updateBackgroundColor(),
       REMOVE_ITEM: () => removeColor(),
       DEFAULT: () => null,
@@ -890,34 +888,31 @@ export default class Colors extends PureComponent<ColorsProps> {
                             <Feature
                               isActive={Colors.features(
                                 this.props.planStatus
-                              ).COLORS_TRANSPARENCY.isActive()}
+                              ).COLORS_ALPHA.isActive()}
                             >
                               <FormItem
-                                id="switch-transparency-mode"
-                                label={
-                                  this.props.locals.colors.transparency.label
-                                }
+                                id="switch-alpha-mode"
+                                label={this.props.locals.colors.alpha.label}
                                 helper={{
                                   type: 'INFO',
                                   message:
-                                    this.props.locals.colors.transparency
-                                      .message,
+                                    this.props.locals.colors.alpha.message,
                                 }}
                                 isBlocked={Colors.features(
                                   this.props.planStatus
-                                ).COLORS_TRANSPARENCY.isBlocked()}
+                                ).COLORS_ALPHA.isBlocked()}
                               >
                                 <Select
-                                  id="switch-transparency-mode"
+                                  id="switch-alpha-mode"
                                   type="SWITCH_BUTTON"
-                                  feature="SWITCH_TRANSPARENCY_MODE"
-                                  isChecked={color.transparency.isEnabled}
+                                  feature="SWITCH_ALPHA_MODE"
+                                  isChecked={color.alpha.isEnabled}
                                   isBlocked={Colors.features(
                                     this.props.planStatus
-                                  ).COLORS_TRANSPARENCY.isBlocked()}
+                                  ).COLORS_ALPHA.isBlocked()}
                                   isNew={Colors.features(
                                     this.props.planStatus
-                                  ).COLORS_TRANSPARENCY.isNew()}
+                                  ).COLORS_ALPHA.isNew()}
                                   action={this.colorsHandler}
                                 />
                               </FormItem>
@@ -927,7 +922,7 @@ export default class Colors extends PureComponent<ColorsProps> {
                                 Colors.features(
                                   this.props.planStatus
                                 ).COLORS_BACKGROUND_COLOR.isActive() &&
-                                color.transparency.isEnabled
+                                color.alpha.isEnabled
                               }
                             >
                               <FormItem
@@ -942,7 +937,7 @@ export default class Colors extends PureComponent<ColorsProps> {
                                 <Input
                                   id="update-color-background"
                                   type="COLOR"
-                                  value={color.transparency.backgroundColor}
+                                  value={color.alpha.backgroundColor}
                                   feature="UPDATE_BACKGROUND_COLOR"
                                   isBlocked={Colors.features(
                                     this.props.planStatus

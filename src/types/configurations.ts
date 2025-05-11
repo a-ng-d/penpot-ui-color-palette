@@ -87,7 +87,7 @@ export interface ColorConfiguration {
     shift: number
     isLocked: boolean
   }
-  transparency: {
+  alpha: {
     isEnabled: boolean
     backgroundColor: HexModel
   }

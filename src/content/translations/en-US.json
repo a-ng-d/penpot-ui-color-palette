@@ -79,7 +79,7 @@
     "moreParameters": "$1 parameters",
     "new": "New UI Color",
     "title": "Source colors",
-    "transparency": {
+    "alpha": {
       "label": "Alpha mode",
       "message": "The lightness scale is applied to the color alpha channel instead of the lightness."
     }
