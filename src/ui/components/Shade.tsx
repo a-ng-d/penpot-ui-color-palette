@@ -184,7 +184,12 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
     )
 
     const background: HexModel =
-      this.props.index === minDistanceIndex && this.props.areSourceColorsLocked
+      this.props.index === minDistanceIndex &&
+      this.props.areSourceColorsLocked &&
+      !(
+        'alpha' in this.props.sourceColor &&
+        this.props.sourceColor.alpha.isEnabled
+      )
         ? new Color({
             visionSimulationMode: this.props.visionSimulationMode,
           }).simulateColorBlindHex(chroma(sourceColor).rgb())
@@ -252,7 +257,11 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
           />
         )}
         {this.props.index === minDistanceIndex &&
-          this.props.areSourceColorsLocked && <this.lockColorTag />}
+          this.props.areSourceColorsLocked &&
+          !(
+            'alpha' in this.props.sourceColor &&
+            this.props.sourceColor.alpha.isEnabled
+          ) && <this.lockColorTag />}
         {distance < 4 && !this.props.areSourceColorsLocked && (
           <this.closestColorTag />
         )}
