@@ -36,8 +36,8 @@ const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
       HEX: () => shade.hex,
       HSL: () =>
         `hsl(${Math.floor(shade.hsl[0])} ${Math.floor(
-          shade.hsl[1]
-        )}% ${Math.floor(shade.hsl[2])}%)`,
+          shade.hsl[1] * 100
+        )}% ${Math.floor(shade.hsl[2] * 100)}%)`,
       LCH: () =>
         `lch(${Math.floor(shade.lch[0])}% ${Math.floor(
           shade.lch[1]
@@ -66,8 +66,8 @@ const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
           .hex(),
       HSL: () =>
         `hsl(${Math.floor(source.hsl[0])} ${Math.floor(
-          source.hsl[1]
-        )}% ${Math.floor(source.hsl[2])}% / ${shade.alpha?.toFixed(2) ?? 1})`,
+          source.hsl[1] * 100
+        )}% ${Math.floor(source.hsl[2] * 100)}% / ${shade.alpha?.toFixed(2) ?? 1})`,
       LCH: () =>
         `lch(${Math.floor(source.lch[0])}% ${Math.floor(
           source.lch[1]
@@ -80,6 +80,8 @@ const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
 
     return actions[colorSpace ?? 'RGB']?.()
   }
+
+  console.log(paletteData)
 
   workingThemes.forEach((theme) => {
     const rowCss: Array<string> = []

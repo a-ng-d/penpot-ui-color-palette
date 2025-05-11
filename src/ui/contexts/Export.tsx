@@ -674,7 +674,7 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                                 {
                                   label:
                                     this.props.locals.export.tokens
-                                      .tokensStudio,
+                                      .nativeTokens,
                                   value: 'EXPORT_TOKENS_TOKENS_STUDIO',
                                   type: 'OPTION',
                                   isActive: Export.features(
@@ -894,7 +894,8 @@ export default class Export extends PureComponent<ExportProps, ExportStates> {
                             alignment="BOTTOM_RIGHT"
                             helper={{
                               label:
-                                this.props.locals.export.css.selectColorSpace,
+                                this.props.locals.export.actions
+                                  .selectColorSpace,
                             }}
                           />
                         )}
