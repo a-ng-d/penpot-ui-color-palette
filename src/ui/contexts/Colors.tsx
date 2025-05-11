@@ -71,6 +71,16 @@ export default class Colors extends PureComponent<ColorsProps> {
       featureName: 'COLORS_DESCRIPTION',
       planStatus: planStatus,
     }),
+    COLORS_TRANSPARENCY: new FeatureStatus({
+      features: features,
+      featureName: 'COLORS_TRANSPARENCY',
+      planStatus: planStatus,
+    }),
+    COLORS_BACKGROUND_COLOR: new FeatureStatus({
+      features: features,
+      featureName: 'COLORS_BACKGROUND_COLOR',
+      planStatus: planStatus,
+    }),
   })
 
   constructor(props: ColorsProps) {
@@ -797,113 +807,153 @@ export default class Colors extends PureComponent<ColorsProps> {
                                 this.props.planStatus
                               ).COLORS_CHROMA_SHIFTING.isActive()}
                             >
-                              <div className="draggable-item__param">
-                                <FormItem
-                                  id="shift-chroma"
-                                  label={
-                                    this.props.locals.colors.chromaShifting
-                                      .label
-                                  }
-                                  isBlocked={Colors.features(
-                                    this.props.planStatus
-                                  ).COLORS_CHROMA_SHIFTING.isBlocked()}
-                                >
-                                  <div className={layouts['snackbar--tight']}>
-                                    <Input
-                                      id="shift-chroma"
-                                      type="NUMBER"
-                                      icon={{ type: 'LETTER', value: 'C' }}
-                                      unit="%"
-                                      value={
-                                        color.chroma.shift !== undefined
-                                          ? color.chroma.shift.toString()
-                                          : '100'
-                                      }
-                                      min="0"
-                                      max="200"
-                                      feature="SHIFT_CHROMA"
-                                      isBlocked={Colors.features(
-                                        this.props.planStatus
-                                      ).COLORS_CHROMA_SHIFTING.isBlocked()}
-                                      isNew={Colors.features(
-                                        this.props.planStatus
-                                      ).COLORS_CHROMA_SHIFTING.isNew()}
-                                      onBlur={this.colorsHandler}
-                                      onShift={this.colorsHandler}
-                                    />
-                                    {!Colors.features(
+                              <FormItem
+                                id="shift-chroma"
+                                label={
+                                  this.props.locals.colors.chromaShifting.label
+                                }
+                                isBlocked={Colors.features(
+                                  this.props.planStatus
+                                ).COLORS_CHROMA_SHIFTING.isBlocked()}
+                              >
+                                <div className={layouts['snackbar--tight']}>
+                                  <Input
+                                    id="shift-chroma"
+                                    type="NUMBER"
+                                    icon={{ type: 'LETTER', value: 'C' }}
+                                    unit="%"
+                                    value={
+                                      color.chroma.shift !== undefined
+                                        ? color.chroma.shift.toString()
+                                        : '100'
+                                    }
+                                    min="0"
+                                    max="200"
+                                    feature="SHIFT_CHROMA"
+                                    isBlocked={Colors.features(
                                       this.props.planStatus
-                                    ).COLORS_CHROMA_SHIFTING.isBlocked() && (
-                                      <Button
-                                        type="icon"
-                                        icon="reset"
-                                        feature="RESET_CHROMA"
-                                        isDisabled={!color.chroma.isLocked}
-                                        action={this.colorsHandler}
-                                      />
-                                    )}
-                                  </div>
-                                </FormItem>
-                              </div>
+                                    ).COLORS_CHROMA_SHIFTING.isBlocked()}
+                                    isNew={Colors.features(
+                                      this.props.planStatus
+                                    ).COLORS_CHROMA_SHIFTING.isNew()}
+                                    onBlur={this.colorsHandler}
+                                    onShift={this.colorsHandler}
+                                  />
+                                  {!Colors.features(
+                                    this.props.planStatus
+                                  ).COLORS_CHROMA_SHIFTING.isBlocked() && (
+                                    <Button
+                                      type="icon"
+                                      icon="reset"
+                                      feature="RESET_CHROMA"
+                                      isDisabled={!color.chroma.isLocked}
+                                      action={this.colorsHandler}
+                                    />
+                                  )}
+                                </div>
+                              </FormItem>
                             </Feature>
                             <Feature
                               isActive={Colors.features(
                                 this.props.planStatus
                               ).COLORS_DESCRIPTION.isActive()}
                             >
-                              <div className="draggable-item__param">
-                                <FormItem
+                              <FormItem
+                                id="update-color-description"
+                                label={
+                                  this.props.locals.global.description.label
+                                }
+                                isBlocked={Colors.features(
+                                  this.props.planStatus
+                                ).COLORS_DESCRIPTION.isBlocked()}
+                              >
+                                <Input
                                   id="update-color-description"
-                                  label={
-                                    this.props.locals.global.description.label
+                                  type="LONG_TEXT"
+                                  value={color.description}
+                                  placeholder={
+                                    this.props.locals.global.description
+                                      .placeholder
                                   }
+                                  feature="UPDATE_DESCRIPTION"
                                   isBlocked={Colors.features(
                                     this.props.planStatus
                                   ).COLORS_DESCRIPTION.isBlocked()}
-                                >
-                                  <Input
-                                    id="update-color-description"
-                                    type="LONG_TEXT"
-                                    value={color.description}
-                                    placeholder={
-                                      this.props.locals.global.description
-                                        .placeholder
-                                    }
-                                    feature="UPDATE_DESCRIPTION"
-                                    isBlocked={Colors.features(
-                                      this.props.planStatus
-                                    ).COLORS_DESCRIPTION.isBlocked()}
-                                    isNew={Colors.features(
-                                      this.props.planStatus
-                                    ).COLORS_DESCRIPTION.isNew()}
-                                    isGrowing
-                                    onBlur={this.colorsHandler}
-                                  />
-                                </FormItem>
-                              </div>
+                                  isNew={Colors.features(
+                                    this.props.planStatus
+                                  ).COLORS_DESCRIPTION.isNew()}
+                                  isGrowing
+                                  onBlur={this.colorsHandler}
+                                />
+                              </FormItem>
                             </Feature>
-                            <Feature isActive={true}>
-                              <Select
+                            <Feature
+                              isActive={Colors.features(
+                                this.props.planStatus
+                              ).COLORS_TRANSPARENCY.isActive()}
+                            >
+                              <FormItem
                                 id="switch-transparency-mode"
-                                type="SWITCH_BUTTON"
-                                label="Transparent"
-                                feature="SWITCH_TRANSPARENCY_MODE"
-                                isChecked={color.transparency.isEnabled}
-                                isBlocked={false}
-                                isNew={false}
-                                action={this.colorsHandler}
-                              />
-                              {color.transparency.isEnabled && (
+                                label={
+                                  this.props.locals.colors.transparency.label
+                                }
+                                helper={{
+                                  type: 'INFO',
+                                  message:
+                                    this.props.locals.colors.transparency
+                                      .message,
+                                }}
+                                isBlocked={Colors.features(
+                                  this.props.planStatus
+                                ).COLORS_TRANSPARENCY.isBlocked()}
+                              >
+                                <Select
+                                  id="switch-transparency-mode"
+                                  type="SWITCH_BUTTON"
+                                  feature="SWITCH_TRANSPARENCY_MODE"
+                                  isChecked={color.transparency.isEnabled}
+                                  isBlocked={Colors.features(
+                                    this.props.planStatus
+                                  ).COLORS_TRANSPARENCY.isBlocked()}
+                                  isNew={Colors.features(
+                                    this.props.planStatus
+                                  ).COLORS_TRANSPARENCY.isNew()}
+                                  action={this.colorsHandler}
+                                />
+                              </FormItem>
+                            </Feature>
+                            <Feature
+                              isActive={
+                                Colors.features(
+                                  this.props.planStatus
+                                ).COLORS_BACKGROUND_COLOR.isActive() &&
+                                color.transparency.isEnabled
+                              }
+                            >
+                              <FormItem
+                                id="update-color-background"
+                                label={
+                                  this.props.locals.colors.backgroundColor.label
+                                }
+                                isBlocked={Colors.features(
+                                  this.props.planStatus
+                                ).COLORS_BACKGROUND_COLOR.isBlocked()}
+                              >
                                 <Input
+                                  id="update-color-background"
                                   type="COLOR"
                                   value={color.transparency.backgroundColor}
                                   feature="UPDATE_BACKGROUND_COLOR"
-                                  isBlocked={false}
-                                  isNew={false}
+                                  isBlocked={Colors.features(
+                                    this.props.planStatus
+                                  ).COLORS_BACKGROUND_COLOR.isBlocked()}
+                                  isNew={Colors.features(
+                                    this.props.planStatus
+                                  ).COLORS_BACKGROUND_COLOR.isNew()}
                                   onChange={this.colorsHandler}
                                   onBlur={this.colorsHandler}
                                 />
-                              )}
+                              </FormItem>
                             </Feature>
                           </>
                         ))(),

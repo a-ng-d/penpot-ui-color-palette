@@ -60,6 +60,9 @@
       "moreParameters": "More parameters",
       "removeColor": "Remove color"
     },
+    "backgroundColor": {
+      "label": "Background"
+    },
     "callout": {
       "cta": "Create a source color",
       "message": "Create a source color to split it into multiple shades according to your lightness scale"
@@ -75,7 +78,11 @@
     },
     "moreParameters": "$1 parameters",
     "new": "New UI Color",
-    "title": "Source colors"
+    "title": "Source colors",
+    "transparency": {
+      "label": "Alpha mode",
+      "message": "The lightness scale is applied to the color alpha channel instead of the lightness."
+    }
   },
   "contexts": {
     "colors": "Colors",
