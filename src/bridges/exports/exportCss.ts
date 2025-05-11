@@ -81,8 +81,6 @@ const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
     return actions[colorSpace ?? 'RGB']?.()
   }
 
-  console.log(paletteData)
-
   workingThemes.forEach((theme) => {
     const rowCss: Array<string> = []
     theme.colors.forEach((color) => {

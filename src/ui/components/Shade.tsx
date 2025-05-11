@@ -190,21 +190,20 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
         'alpha' in this.props.sourceColor &&
         this.props.sourceColor.alpha.isEnabled
       )
-        ? new Color({
+        ? (new Color({
+            sourceColor: chroma(sourceColor).rgb(),
             visionSimulationMode: this.props.visionSimulationMode,
-          }).simulateColorBlindHex(chroma(sourceColor).rgb())
+          }).hex() as HexModel)
         : this.props.color
 
     const darkText = new Color({
+      sourceColor: chroma(this.props.textColorsTheme.darkColor).rgb(),
       visionSimulationMode: this.props.visionSimulationMode,
-    }).simulateColorBlindHex(
-      chroma(this.props.textColorsTheme.darkColor).rgb(false)
-    )
+    }).hex() as HexModel
     const lightText = new Color({
+      sourceColor: chroma(this.props.textColorsTheme.lightColor).rgb(),
       visionSimulationMode: this.props.visionSimulationMode,
-    }).simulateColorBlindHex(
-      chroma(this.props.textColorsTheme.lightColor).rgb(false)
-    )
+    }).hex() as HexModel
 
     const lightTextContrast = new Contrast({
       backgroundColor: chroma(background).rgb(false),
