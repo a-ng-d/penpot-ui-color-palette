@@ -45,7 +45,8 @@ export default class Status {
 
     // Layout
     const flex = this.node.addFlexLayout()
-    flex.dir = 'row'
+    flex.dir = 'column'
+    flex.rowGap = 4
     flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
 

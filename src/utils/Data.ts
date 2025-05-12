@@ -413,8 +413,6 @@ export default class Data {
       this.paletteData.themes.push(paletteDataThemeItem)
     })
 
-    console.log(this.paletteData)
-
     return this.paletteData
   }
 
