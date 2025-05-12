@@ -109,111 +109,97 @@ export default class Data {
 
               switch (this.base.colorSpace) {
                 case 'LCH':
-                  return [
-                    lightness,
-                    this.base.areSourceColorsLocked
-                      ? (colorData.setColorWithAlpha() as [
+                  return this.base.areSourceColorsLocked
+                    ? [
+                        lightness,
+                        colorData.setColorWithAlpha() as [
                           number,
                           number,
                           number,
                           number,
-                        ])
-                      : (colorData.lcha() as [number, number, number, number]),
-                    backgroundColorData.lcha(),
-                  ]
+                        ],
+                        backgroundColorData.setColorWithAlpha(),
+                      ]
+                    : [lightness, colorData.lcha(), backgroundColorData.lcha()]
                 case 'OKLCH':
-                  return [
-                    lightness,
-                    this.base.areSourceColorsLocked
-                      ? (colorData.setColorWithAlpha() as [
+                  return this.base.areSourceColorsLocked
+                    ? [
+                        lightness,
+                        colorData.setColorWithAlpha() as [
                           number,
                           number,
                           number,
                           number,
-                        ])
-                      : (colorData.oklcha() as [
-                          number,
-                          number,
-                          number,
-                          number,
-                        ]),
-                    backgroundColorData.oklcha(),
-                  ]
+                        ],
+                        backgroundColorData.setColorWithAlpha(),
+                      ]
+                    : [
+                        lightness,
+                        colorData.oklcha(),
+                        backgroundColorData.oklcha(),
+                      ]
                 case 'LAB':
-                  return [
-                    lightness,
-                    this.base.areSourceColorsLocked
-                      ? (colorData.setColorWithAlpha() as [
+                  return this.base.areSourceColorsLocked
+                    ? [
+                        lightness,
+                        colorData.setColorWithAlpha() as [
                           number,
                           number,
                           number,
                           number,
-                        ])
-                      : (colorData.laba() as [number, number, number, number]),
-                    backgroundColorData.laba(),
-                  ]
+                        ],
+                        backgroundColorData.laba(),
+                      ]
+                    : [lightness, colorData.laba(), backgroundColorData.laba()]
                 case 'OKLAB':
-                  return [
-                    lightness,
-                    this.base.areSourceColorsLocked
-                      ? (colorData.setColorWithAlpha() as [
+                  return this.base.areSourceColorsLocked
+                    ? [
+                        lightness,
+                        colorData.setColorWithAlpha() as [
                           number,
                           number,
                           number,
                           number,
-                        ])
-                      : (colorData.oklaba() as [
-                          number,
-                          number,
-                          number,
-                          number,
-                        ]),
-                    backgroundColorData.oklaba(),
-                  ]
+                        ],
+                        backgroundColorData.setColorWithAlpha(),
+                      ]
+                    : [
+                        lightness,
+                        colorData.oklaba(),
+                        backgroundColorData.oklaba(),
+                      ]
                 case 'HSL':
-                  return [
-                    lightness,
-                    this.base.areSourceColorsLocked
-                      ? (colorData.setColorWithAlpha() as [
+                  return this.base.areSourceColorsLocked
+                    ? [
+                        lightness,
+                        colorData.setColorWithAlpha() as [
                           number,
                           number,
                           number,
                           number,
-                        ])
-                      : (colorData.hsla() as [number, number, number, number]),
-                    backgroundColorData.hsla(),
-                  ]
+                        ],
+                        backgroundColorData.setColorWithAlpha(),
+                      ]
+                    : [lightness, colorData.hsl(), backgroundColorData.hsl()]
                 case 'HSLUV':
-                  return [
-                    lightness,
-                    this.base.areSourceColorsLocked
-                      ? (colorData.setColorWithAlpha() as [
+                  return this.base.areSourceColorsLocked
+                    ? [
+                        lightness,
+                        colorData.setColorWithAlpha() as [
                           number,
                           number,
                           number,
                           number,
-                        ])
-                      : (colorData.hsluva() as [
-                          number,
-                          number,
-                          number,
-                          number,
-                        ]),
-                    backgroundColorData.hsluva(),
-                  ]
+                        ],
+                        backgroundColorData.setColorWithAlpha(),
+                      ]
+                    : [
+                        lightness,
+                        colorData.hsluv(),
+                        backgroundColorData.hsluv(),
+                      ]
                 default:
-                  return [
-                    lightness,
-                    this.base.areSourceColorsLocked
-                      ? (colorData.setColorWithAlpha() as [
-                          number,
-                          number,
-                          number,
-                          number,
-                        ])
-                      : (colorData.lcha() as [number, number, number, number]),
-                    backgroundColorData.lcha(),
-                  ]
+                  return [lightness, [0, 0, 0], [255, 255, 255]]
               }
             }
 
@@ -231,7 +217,7 @@ export default class Data {
               case 'HSLUV':
                 return [lightness, colorData.hsluv()]
               default:
-                return [lightness, colorData.lch()]
+                return [lightness, [0, 0, 0]]
             }
           })
 
