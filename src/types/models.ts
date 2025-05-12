@@ -6,6 +6,14 @@ export interface RgbModel {
   b: number
 }
 
+export type RgbComponent = [number, number, number]
+
+export type RgbaComponent = [number, number, number, number]
+
+export type ColorFormat<T extends 'HEX' | 'RGB'> = T extends 'HEX'
+  ? HexModel
+  : RgbComponent | RgbaComponent
+
 export interface TextColorsThemeHexModel {
   lightColor: HexModel
   darkColor: HexModel
@@ -18,16 +26,4 @@ export interface TextColorsThemeGLModel {
 
 export interface ActionsList {
   [action: string]: () => void
-}
-
-export interface DispatchProcess {
-  time: number
-  on: {
-    active: boolean
-    blocked: boolean
-    interval: string
-    send: () => void
-    stop: () => void
-    status: boolean
-  }
 }

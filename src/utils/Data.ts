@@ -101,7 +101,7 @@ export default class Data {
             if (color.alpha.isEnabled) {
               const backgroundColorData = new Color({
                 render: 'RGB',
-                sourceColor: chroma(color.alpha.backgroundColor).rgb(false),
+                sourceColor: chroma(color.alpha.backgroundColor).rgb(),
                 algorithmVersion: this.base.algorithmVersion,
                 visionSimulationMode: theme.visionSimulationMode,
                 alpha: 1,
@@ -111,156 +111,108 @@ export default class Data {
                 case 'LCH':
                   return [
                     lightness,
-                    colorData.mixColorsRgb(
-                      this.base.areSourceColorsLocked
-                        ? (colorData.hexa() as [number, number, number, number])
-                        : (colorData.lcha() as [
-                            number,
-                            number,
-                            number,
-                            number,
-                          ]),
-                      [
-                        ...(backgroundColorData.hex() as [
+                    this.base.areSourceColorsLocked
+                      ? (colorData.setColorWithAlpha() as [
                           number,
                           number,
                           number,
-                        ]),
-                        1,
-                      ]
-                    ),
+                          number,
+                        ])
+                      : (colorData.lcha() as [number, number, number, number]),
+                    backgroundColorData.lcha(),
                   ]
                 case 'OKLCH':
                   return [
                     lightness,
-                    colorData.mixColorsRgb(
-                      this.base.areSourceColorsLocked
-                        ? (colorData.hexa() as [number, number, number, number])
-                        : (colorData.oklcha() as [
-                            number,
-                            number,
-                            number,
-                            number,
-                          ]),
-                      [
-                        ...(backgroundColorData.hex() as [
+                    this.base.areSourceColorsLocked
+                      ? (colorData.setColorWithAlpha() as [
+                          number,
+                          number,
+                          number,
+                          number,
+                        ])
+                      : (colorData.oklcha() as [
+                          number,
                           number,
                           number,
                           number,
                         ]),
-                        1,
-                      ]
-                    ),
+                    backgroundColorData.oklcha(),
                   ]
                 case 'LAB':
                   return [
                     lightness,
-                    colorData.mixColorsRgb(
-                      this.base.areSourceColorsLocked
-                        ? (colorData.hexa() as [number, number, number, number])
-                        : (colorData.laba() as [
-                            number,
-                            number,
-                            number,
-                            number,
-                          ]),
-                      [
-                        ...(backgroundColorData.hex() as [
+                    this.base.areSourceColorsLocked
+                      ? (colorData.setColorWithAlpha() as [
                           number,
                           number,
                           number,
-                        ]),
-                        1,
-                      ]
-                    ),
+                          number,
+                        ])
+                      : (colorData.laba() as [number, number, number, number]),
+                    backgroundColorData.laba(),
                   ]
                 case 'OKLAB':
                   return [
                     lightness,
-                    colorData.mixColorsRgb(
-                      this.base.areSourceColorsLocked
-                        ? (colorData.hexa() as [number, number, number, number])
-                        : (colorData.oklaba() as [
-                            number,
-                            number,
-                            number,
-                            number,
-                          ]),
-                      [
-                        ...(backgroundColorData.hex() as [
+                    this.base.areSourceColorsLocked
+                      ? (colorData.setColorWithAlpha() as [
+                          number,
+                          number,
+                          number,
+                          number,
+                        ])
+                      : (colorData.oklaba() as [
+                          number,
                           number,
                           number,
                           number,
                         ]),
-                        1,
-                      ]
-                    ),
+                    backgroundColorData.oklaba(),
                   ]
                 case 'HSL':
                   return [
                     lightness,
-                    colorData.mixColorsRgb(
-                      this.base.areSourceColorsLocked
-                        ? (colorData.hexa() as [number, number, number, number])
-                        : (colorData.hsla() as [
-                            number,
-                            number,
-                            number,
-                            number,
-                          ]),
-                      [
-                        ...(backgroundColorData.hex() as [
+                    this.base.areSourceColorsLocked
+                      ? (colorData.setColorWithAlpha() as [
                           number,
                           number,
                           number,
-                        ]),
-                        1,
-                      ]
-                    ),
+                          number,
+                        ])
+                      : (colorData.hsla() as [number, number, number, number]),
+                    backgroundColorData.hsla(),
                   ]
                 case 'HSLUV':
                   return [
                     lightness,
-                    colorData.mixColorsRgb(
-                      this.base.areSourceColorsLocked
-                        ? (colorData.hexa() as [number, number, number, number])
-                        : (colorData.hsluva() as [
-                            number,
-                            number,
-                            number,
-                            number,
-                          ]),
-                      [
-                        ...(backgroundColorData.hex() as [
+                    this.base.areSourceColorsLocked
+                      ? (colorData.setColorWithAlpha() as [
+                          number,
+                          number,
+                          number,
+                          number,
+                        ])
+                      : (colorData.hsluva() as [
+                          number,
                           number,
                           number,
                           number,
                         ]),
-                        1,
-                      ]
-                    ),
+                    backgroundColorData.hsluva(),
                   ]
                 default:
                   return [
                     lightness,
-                    colorData.mixColorsRgb(
-                      this.base.areSourceColorsLocked
-                        ? (colorData.hexa() as [number, number, number, number])
-                        : (colorData.lcha() as [
-                            number,
-                            number,
-                            number,
-                            number,
-                          ]),
-                      [
-                        ...(backgroundColorData.hex() as [
+                    this.base.areSourceColorsLocked
+                      ? (colorData.setColorWithAlpha() as [
                           number,
                           number,
                           number,
-                        ]),
-                        1,
-                      ]
-                    ),
+                          number,
+                        ])
+                      : (colorData.lcha() as [number, number, number, number]),
+                    backgroundColorData.lcha(),
                   ]
               }
             }
@@ -394,6 +346,24 @@ export default class Data {
             alpha: color.alpha.isEnabled
               ? parseFloat(((scaledColor[0][1] as number) / 100).toFixed(2))
               : undefined,
+            backgroundColor:
+              color.alpha.isEnabled && color.alpha.backgroundColor
+                ? chroma(scaledColor[2] as [number, number, number]).rgb()
+                : undefined,
+            mixedColor:
+              color.alpha.isEnabled && color.alpha.backgroundColor
+                ? new Color({
+                    visionSimulationMode: theme.visionSimulationMode,
+                  }).mixColorsRgb(
+                    [
+                      ...(scaledColor[1] as [number, number, number]),
+                      parseFloat(
+                        ((scaledColor[0][1] as number) / 100).toFixed(2)
+                      ),
+                    ],
+                    [...(scaledColor[2] as [number, number, number]), 1]
+                  )
+                : undefined,
             styleId: this.searchForShadeStyleId(
               previousData?.themes ?? this.paletteData.themes,
               theme.id,
@@ -402,7 +372,9 @@ export default class Data {
             ),
             isClosestToRef: distance < 4 && !this.base.areSourceColorsLocked,
             isSourceColorLocked:
-              index === minDistanceIndex && this.base.areSourceColorsLocked,
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.alpha.isEnabled,
             isTransparent: color.alpha.isEnabled,
             type: 'color shade',
           })

@@ -45,7 +45,8 @@ export interface PaletteDataShadeItem {
   hsl: [number, number, number]
   hsluv: [number, number, number]
   alpha?: number
-  variableId?: string
+  backgroundColor?: [number, number, number]
+  mixedColor?: [number, number, number]
   styleId: string
   isClosestToRef?: boolean
   isSourceColorLocked?: boolean

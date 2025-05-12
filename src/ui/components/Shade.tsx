@@ -193,17 +193,17 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
         ? (new Color({
             sourceColor: chroma(sourceColor).rgb(),
             visionSimulationMode: this.props.visionSimulationMode,
-          }).hex() as HexModel)
+          }).setColor() as HexModel)
         : this.props.color
 
     const darkText = new Color({
       sourceColor: chroma(this.props.textColorsTheme.darkColor).rgb(),
       visionSimulationMode: this.props.visionSimulationMode,
-    }).hex() as HexModel
+    }).setColor() as HexModel
     const lightText = new Color({
       sourceColor: chroma(this.props.textColorsTheme.lightColor).rgb(),
       visionSimulationMode: this.props.visionSimulationMode,
-    }).hex() as HexModel
+    }).setColor() as HexModel
 
     const lightTextContrast = new Contrast({
       backgroundColor: chroma(background).rgb(false),

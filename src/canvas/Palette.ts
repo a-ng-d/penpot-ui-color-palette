@@ -127,10 +127,7 @@ export default class Palette {
       this.nodeRow.name = color.name
       this.nodeRowSource.name = '_source'
       this.nodeRowShades.name = '_shades'
-      this.nodeRow.fills =
-        this.nodeRowSource.fills =
-        this.nodeRowShades.fills =
-          []
+      this.nodeRow.fills = this.nodeRowSource.fills = []
       this.nodeRow.horizontalSizing =
         this.nodeRowSource.horizontalSizing =
         this.nodeRowShades.horizontalSizing =
@@ -188,6 +185,9 @@ export default class Palette {
               },
               scale: shade.name,
               rgb: shade.rgb,
+              alpha: shade.alpha,
+              backgroundColor: shade.backgroundColor,
+              mixedColor: shade.mixedColor,
               colorSpace: this.base.colorSpace,
               visionSimulationMode: this.theme.visionSimulationMode,
               view: this.view,

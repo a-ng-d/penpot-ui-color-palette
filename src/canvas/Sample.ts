@@ -13,12 +13,13 @@ import Property from './Property'
 import Status from './Status'
 
 export default class Sample {
-  private id: string
   private name: string
   private source?: RgbModel
   private scale?: string
   private rgb: [number, number, number]
-  private alpha: number
+  private alpha?: number
+  private backgroundColor?: [number, number, number]
+  private mixedColor?: [number, number, number]
   private colorSpace: ColorSpaceConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
   private view: ViewConfiguration
@@ -33,12 +34,13 @@ export default class Sample {
   private children: Board | null
 
   constructor({
-    id = '',
     name,
     source,
     scale,
     rgb,
-    alpha = 1,
+    alpha,
+    backgroundColor,
+    mixedColor,
     colorSpace,
     visionSimulationMode,
     view,
@@ -55,6 +57,8 @@ export default class Sample {
     scale?: string
     rgb: [number, number, number]
     alpha?: number
+    backgroundColor?: [number, number, number]
+    mixedColor?: [number, number, number]
     colorSpace: ColorSpaceConfiguration
     visionSimulationMode: VisionSimulationModeConfiguration
     view: ViewConfiguration
@@ -65,12 +69,13 @@ export default class Sample {
       isTransparent: boolean
     }
   }) {
-    this.id = id
     this.name = name
     this.source = source
     this.scale = scale
     this.rgb = rgb
     this.alpha = alpha
+    this.backgroundColor = backgroundColor
+    this.mixedColor = mixedColor
     this.colorSpace = colorSpace
     this.visionSimulationMode = visionSimulationMode
     this.view = view
@@ -134,22 +139,25 @@ export default class Sample {
     name: string
     isColorName?: boolean
   }) => {
-    const libraryColor = penpot.library.local.colors.find(
-      (color) => color.id === this.id
-    )
+    const newFills = [
+      {
+        fillColor: chroma(this.rgb).hex(),
+        fillOpacity: this.alpha ?? 1,
+      },
+    ]
+
+    if (this.backgroundColor !== undefined)
+      newFills.push({
+        fillColor: chroma(this.backgroundColor).hex(),
+        fillOpacity: 1,
+      })
 
     // Base
     this.node = penpot.createBoard()
     this.node.name = name
     this.node.resize(width, height)
-    this.node.fills = [
-      libraryColor !== undefined
-        ? libraryColor.asFill()
-        : {
-            fillColor: chroma([this.rgb[0], this.rgb[1], this.rgb[2]]).hex(),
-            fillOpacity: this.alpha,
-          },
-    ]
+    this.node.fills = newFills
+    this.node.fills = this.node.fills.filter(Boolean)
     this.node.horizontalSizing = 'fix'
     this.node.verticalSizing = 'fix'
 
@@ -167,6 +175,8 @@ export default class Sample {
       const propertiesNode = new Properties({
         name: this.scale ?? '0',
         rgb: this.rgb,
+        alpha: this.alpha,
+        mixedColor: this.mixedColor,
         colorSpace: this.colorSpace,
         visionSimulationMode: this.visionSimulationMode,
         textColorsTheme: this.textColorsTheme,
@@ -227,9 +237,18 @@ export default class Sample {
     description?: string
     isColorName?: boolean
   }) => {
-    const libraryColor = penpot.library.local.colors.find(
-      (color) => color.id === this.id
-    )
+    const newFills = [
+      {
+        fillColor: chroma(this.rgb).hex(),
+        fillOpacity: this.alpha ?? 1,
+      },
+    ]
+
+    if (this.backgroundColor !== undefined)
+      newFills.push({
+        fillColor: chroma(this.backgroundColor).hex(),
+        fillOpacity: 1,
+      })
 
     // Base
     this.node = penpot.createBoard()
@@ -259,14 +278,7 @@ export default class Sample {
     flexColor.verticalPadding = 8
     flexColor.rowGap = 8
 
-    this.nodeColor.fills = [
-      libraryColor !== undefined
-        ? libraryColor.asFill()
-        : {
-            fillColor: chroma([this.rgb[0], this.rgb[1], this.rgb[2]]).hex(),
-            fillOpacity: this.alpha,
-          },
-    ]
+    this.nodeColor.fills = newFills
     this.nodeColor.borderRadius = 16
 
     // Insert
@@ -313,6 +325,8 @@ export default class Sample {
       const propertiesNode = new Properties({
         name: this.scale ?? '0',
         rgb: this.rgb,
+        alpha: this.alpha,
+        mixedColor: this.mixedColor,
         colorSpace: this.colorSpace,
         visionSimulationMode: this.visionSimulationMode,
         textColorsTheme: this.textColorsTheme,

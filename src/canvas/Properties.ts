@@ -6,7 +6,7 @@ import {
   ColorSpaceConfiguration,
   VisionSimulationModeConfiguration,
 } from '../types/configurations'
-import { TextColorsThemeHexModel } from '../types/models'
+import { RgbComponent, TextColorsThemeHexModel } from '../types/models'
 import Color from '../utils/Color'
 import Contrast from '../utils/Contrast'
 import Tag from './Tag'
@@ -14,6 +14,8 @@ import Tag from './Tag'
 export default class Properties {
   private name: string
   private rgb: [number, number, number]
+  private alpha?: number
+  private mixedColor?: [number, number, number]
   private colorSpace: ColorSpaceConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
   private textColorsTheme: TextColorsThemeHexModel
@@ -43,18 +45,24 @@ export default class Properties {
   constructor({
     name,
     rgb,
+    alpha,
+    mixedColor,
     colorSpace,
     visionSimulationMode,
     textColorsTheme,
   }: {
     name: string
     rgb: [number, number, number]
+    alpha?: number
+    mixedColor?: [number, number, number]
     colorSpace: ColorSpaceConfiguration
     visionSimulationMode: VisionSimulationModeConfiguration
     textColorsTheme: TextColorsThemeHexModel
   }) {
     this.name = name
     this.rgb = rgb
+    this.alpha = alpha
+    this.mixedColor = mixedColor
     this.colorSpace = colorSpace
     this.visionSimulationMode = visionSimulationMode
     this.textColorsTheme = textColorsTheme
@@ -69,17 +77,19 @@ export default class Properties {
       visionSimulationMode: this.visionSimulationMode,
     }).getHsluv()
     this.lightTextColor = new Color({
+      sourceColor: chroma(this.textColorsTheme.lightColor).rgb(),
       visionSimulationMode: this.visionSimulationMode,
-    }).simulateColorBlindRgb(chroma(this.textColorsTheme.lightColor).rgb())
+    }).setColor() as RgbComponent
     this.darkTextColor = new Color({
+      sourceColor: chroma(this.textColorsTheme.darkColor).rgb(),
       visionSimulationMode: this.visionSimulationMode,
-    }).simulateColorBlindRgb(chroma(this.textColorsTheme.darkColor).rgb())
+    }).setColor() as RgbComponent
     this.lightTextColorContrast = new Contrast({
-      backgroundColor: this.rgb,
+      backgroundColor: this.alpha !== undefined ? this.mixedColor : this.rgb,
       textColor: chroma(this.lightTextColor).hex(),
     })
     this.darkTextColorContrast = new Contrast({
-      backgroundColor: this.rgb,
+      backgroundColor: this.alpha !== undefined ? this.mixedColor : this.rgb,
       textColor: chroma(this.darkTextColor).hex(),
     })
     this.nodeTopProps = null
@@ -204,6 +214,15 @@ export default class Properties {
       }).makeNodeTag()
     )
     this.nodeBaseProps.appendChild(basePropViaColorSpace as Board)
+
+    if (this.alpha !== undefined) {
+      const basePropViaAlpha = new Tag({
+        name: '_alpha',
+        content: `A ${this.alpha.toString()}`,
+      }).makeNodeTag()
+
+      this.nodeBaseProps.appendChild(basePropViaAlpha as Board)
+    }
 
     return this.nodeBaseProps
   }
@@ -387,6 +406,15 @@ export default class Properties {
       }).makeNodeTag()
     )
     this.nodeDetailedBaseProps.appendChild(basePropViaColorSpace as Board)
+
+    if (this.alpha !== undefined) {
+      const basePropViaAlpha = new Tag({
+        name: '_alpha',
+        content: `A ${this.alpha.toString()}`,
+      }).makeNodeTag()
+
+      this.nodeDetailedBaseProps.appendChild(basePropViaAlpha as Board)
+    }
 
     return this.nodeDetailedBaseProps
   }

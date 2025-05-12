@@ -1,10 +1,11 @@
 import { HexModel } from '@a_ng_d/figmug-ui'
-import chroma from 'chroma-js'
-import { Hsluv } from 'hsluv'
+import { ColorFormat, RgbaComponent, RgbComponent } from '../types/models'
 import {
   AlgorithmVersionConfiguration,
   VisionSimulationModeConfiguration,
 } from '../types/configurations'
+import chroma from 'chroma-js'
+import { Hsluv } from 'hsluv'
 import { ActionsList } from '../types/models'
 
 const colorBlindMatrices = {
@@ -55,28 +56,12 @@ const applyColorMatrix = (
   matrix: number[][]
 ): [number, number, number] => {
   const [r, g, b] = color
+  const [m1, m2, m3] = matrix
+
   return [
-    Math.min(
-      255,
-      Math.max(
-        0,
-        Math.round(r * matrix[0][0] + g * matrix[0][1] + b * matrix[0][2])
-      )
-    ),
-    Math.min(
-      255,
-      Math.max(
-        0,
-        Math.round(r * matrix[1][0] + g * matrix[1][1] + b * matrix[1][2])
-      )
-    ),
-    Math.min(
-      255,
-      Math.max(
-        0,
-        Math.round(r * matrix[2][0] + g * matrix[2][1] + b * matrix[2][2])
-      )
-    ),
+    Math.round(r * m1[0] + g * m1[1] + b * m1[2]),
+    Math.round(r * m2[0] + g * m2[1] + b * m2[2]),
+    Math.round(r * m3[0] + g * m3[1] + b * m3[2]),
   ]
 }
 
@@ -88,7 +73,7 @@ export default class Color {
   private chromaShifting: number
   private algorithmVersion: AlgorithmVersionConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
-  private alpha?: number
+  private alpha: number
 
   constructor({
     render = 'HEX',
@@ -98,7 +83,7 @@ export default class Color {
     chromaShifting = 100,
     algorithmVersion = 'v3',
     visionSimulationMode = 'NONE',
-    alpha,
+    alpha = 1,
   }: {
     render?: 'HEX' | 'RGB'
     sourceColor?: [number, number, number]
@@ -143,21 +128,21 @@ export default class Color {
     return chroma
   }
 
-  hex = (): HexModel | [number, number, number] => {
+  setColor = (): ColorFormat<typeof this.render> => {
     if (this.render === 'HEX')
       return this.simulateColorBlindHex(this.sourceColor)
 
     return this.simulateColorBlindRgb(this.sourceColor)
   }
 
-  hexa = (): HexModel | [number, number, number, number] => {
+  setColorWithAlpha = (): ColorFormat<typeof this.render> => {
     if (this.render === 'HEX')
-      return chroma([...this.sourceColor, this.alpha ?? 1]).hex()
+      return chroma([...this.sourceColor, this.alpha]).hex()
 
-    return [...this.sourceColor, this.alpha ?? 1]
+    return [...this.sourceColor, this.alpha]
   }
 
-  lch = (): HexModel | [number, number, number] => {
+  lch = (): ColorFormat<typeof this.render> => {
     const lch = chroma(this.sourceColor).lch(),
       newColor = chroma
         .lch(
@@ -172,7 +157,8 @@ export default class Color {
     return this.simulateColorBlindRgb([...newColor])
   }
 
-  lcha = (): HexModel | [number, number, number, number] => {
+  lcha = (): ColorFormat<typeof this.render> => {
+    this.lightness = chroma(this.sourceColor).luminance() * 100
     const lch = chroma(this.sourceColor).lch(),
       newColor = chroma
         .lch(
@@ -182,13 +168,12 @@ export default class Color {
         )
         .rgb()
 
-    if (this.render === 'HEX')
-      return chroma([...newColor, this.alpha ?? 1]).hex()
+    if (this.render === 'HEX') return chroma([...newColor, this.alpha]).hex()
 
-    return [...newColor, this.alpha ?? 1]
+    return [...newColor, this.alpha]
   }
 
-  oklch = (): HexModel | [number, number, number] => {
+  oklch = (): ColorFormat<typeof this.render> => {
     const oklch = chroma(this.sourceColor).oklch(),
       newColor = chroma
         .oklch(
@@ -203,7 +188,8 @@ export default class Color {
     return this.simulateColorBlindRgb(newColor)
   }
 
-  oklcha = (): HexModel | [number, number, number, number] => {
+  oklcha = (): ColorFormat<typeof this.render> => {
+    this.lightness = chroma(this.sourceColor).luminance() * 100
     const oklch = chroma(this.sourceColor).oklch(),
       newColor = chroma
         .oklch(
@@ -213,13 +199,12 @@ export default class Color {
         )
         .rgb()
 
-    if (this.render === 'HEX')
-      return chroma([...newColor, this.alpha ?? 1]).hex()
+    if (this.render === 'HEX') return chroma([...newColor, this.alpha]).hex()
 
-    return [...newColor, this.alpha ?? 1]
+    return [...newColor, this.alpha]
   }
 
-  lab = (): HexModel | [number, number, number] => {
+  lab = (): ColorFormat<typeof this.render> => {
     const labA = chroma(this.sourceColor).get('lab.a'),
       labB = chroma(this.sourceColor).get('lab.b'),
       chr = Math.sqrt(labA ** 2 + labB ** 2) * (this.chromaShifting / 100)
@@ -253,7 +238,8 @@ export default class Color {
     return this.simulateColorBlindRgb(newColor)
   }
 
-  laba = (): HexModel | [number, number, number, number] => {
+  laba = (): ColorFormat<typeof this.render> => {
+    this.lightness = chroma(this.sourceColor).luminance() * 100
     const labA = chroma(this.sourceColor).get('lab.a'),
       labB = chroma(this.sourceColor).get('lab.b'),
       labL = chroma(this.sourceColor).get('lab.l'),
@@ -279,13 +265,12 @@ export default class Color {
       .lab(labL, this.adjustChroma(newLabA), this.adjustChroma(newLabB))
       .rgb()
 
-    if (this.render === 'HEX')
-      return chroma([...newColor, this.alpha ?? 1]).hex()
+    if (this.render === 'HEX') return chroma([...newColor, this.alpha]).hex()
 
-    return [...newColor, this.alpha ?? 1]
+    return [...newColor, this.alpha]
   }
 
-  oklab = (): HexModel | [number, number, number] => {
+  oklab = (): ColorFormat<typeof this.render> => {
     const labA = chroma(this.sourceColor).get('oklab.a'),
       labB = chroma(this.sourceColor).get('oklab.b'),
       chr = Math.sqrt(labA ** 2 + labB ** 2) * (this.chromaShifting / 100)
@@ -322,7 +307,8 @@ export default class Color {
     return this.simulateColorBlindRgb(newColor)
   }
 
-  oklaba = (): HexModel | [number, number, number, number] => {
+  oklaba = (): ColorFormat<typeof this.render> => {
+    this.lightness = chroma(this.sourceColor).luminance() * 100
     const labA = chroma(this.sourceColor).get('oklab.a'),
       labB = chroma(this.sourceColor).get('oklab.b'),
       labL = chroma(this.sourceColor).get('oklab.l'),
@@ -351,13 +337,12 @@ export default class Color {
       .oklab(labL, this.adjustChroma(newLabA), this.adjustChroma(newLabB))
       .rgb()
 
-    if (this.render === 'HEX')
-      return chroma([...newColor, this.alpha ?? 1]).hex()
+    if (this.render === 'HEX') return chroma([...newColor, this.alpha]).hex()
 
-    return [...newColor, this.alpha ?? 1]
+    return [...newColor, this.alpha]
   }
 
-  hsl = (): HexModel | [number, number, number] => {
+  hsl = (): ColorFormat<typeof this.render> => {
     const hsl = chroma(this.sourceColor).hsl(),
       newColor = chroma
         .hsl(
@@ -372,7 +357,8 @@ export default class Color {
     return this.simulateColorBlindRgb(newColor)
   }
 
-  hsla = (): HexModel | [number, number, number, number] => {
+  hsla = (): ColorFormat<typeof this.render> => {
+    this.lightness = chroma(this.sourceColor).luminance() * 100
     const hsl = chroma(this.sourceColor).hsl(),
       newColor = chroma
         .hsl(
@@ -382,13 +368,12 @@ export default class Color {
         )
         .rgb()
 
-    if (this.render === 'HEX')
-      return chroma([...newColor, this.alpha ?? 1]).hex()
+    if (this.render === 'HEX') return chroma([...newColor, this.alpha]).hex()
 
-    return [...newColor, this.alpha ?? 1]
+    return [...newColor, this.alpha]
   }
 
-  hsluv = (): HexModel | [number, number, number] => {
+  hsluv = (): ColorFormat<typeof this.render> => {
     const hsluv = new Hsluv()
 
     hsluv.rgb_r = this.sourceColor[0] / 255
@@ -419,7 +404,8 @@ export default class Color {
     return this.simulateColorBlindRgb(newColor)
   }
 
-  hsluva = (): HexModel | [number, number, number, number] => {
+  hsluva = (): ColorFormat<typeof this.render> => {
+    this.lightness = chroma(this.sourceColor).luminance() * 100
     const hsluv = new Hsluv()
 
     hsluv.rgb_r = this.sourceColor[0] / 255
@@ -442,7 +428,7 @@ export default class Color {
       hsluv.rgb_r * 255,
       hsluv.rgb_g * 255,
       hsluv.rgb_b * 255,
-      this.alpha ?? 1,
+      this.alpha,
     ]
 
     if (this.render === 'HEX') return chroma(newColor).hex()
@@ -450,7 +436,7 @@ export default class Color {
     return newColor
   }
 
-  getHsluv = (): [number, number, number] => {
+  getHsluv = (): RgbComponent => {
     const hsluv = new Hsluv()
     hsluv.rgb_r = this.sourceColor[0] / 255
     hsluv.rgb_g = this.sourceColor[1] / 255
@@ -460,7 +446,7 @@ export default class Color {
     return [hsluv.hsluv_h, hsluv.hsluv_s, hsluv.hsluv_l]
   }
 
-  simulateColorBlindHex = (color: [number, number, number]): HexModel => {
+  simulateColorBlindHex = (color: RgbComponent): HexModel => {
     const actions: ActionsList = {
       NONE: () => chroma(color).hex(),
       PROTANOMALY: () => {
@@ -525,9 +511,7 @@ export default class Color {
     return result !== undefined ? result : '#000000'
   }
 
-  simulateColorBlindRgb = (
-    color: [number, number, number]
-  ): [number, number, number] => {
+  simulateColorBlindRgb = (color: RgbComponent): RgbComponent => {
     const actions: ActionsList = {
       NONE: () => color,
       PROTANOMALY: () =>
@@ -551,20 +535,28 @@ export default class Color {
   }
 
   mixColorsRgb = (
-    colorA: [number, number, number, number],
-    colorB: [number, number, number, number]
-  ): [number, number, number] => {
+    colorA: RgbaComponent,
+    colorB: RgbaComponent
+  ): RgbComponent => {
     const [r1, g1, b1, a1] = colorA
     const [r2, g2, b2, a2] = colorB
 
     if (a1 === 1) return [r1, g1, b1]
-
     if (a1 === 0) return [r2, g2, b2]
 
     const alpha = a1 + a2 * (1 - a1)
-    const r = (r1 * a1 + r2 * a2 * (1 - a1)) / alpha
-    const g = (g1 * a1 + g2 * a2 * (1 - a1)) / alpha
-    const b = (b1 * a1 + b2 * a2 * (1 - a1)) / alpha
+    const r = Math.min(
+      255,
+      Math.max(0, Math.round((r1 * a1 + r2 * a2 * (1 - a1)) / alpha))
+    )
+    const g = Math.min(
+      255,
+      Math.max(0, Math.round((g1 * a1 + g2 * a2 * (1 - a1)) / alpha))
+    )
+    const b = Math.min(
+      255,
+      Math.max(0, Math.round((b1 * a1 + b2 * a2 * (1 - a1)) / alpha))
+    )
 
     return this.simulateColorBlindRgb([r, g, b])
   }
@@ -574,6 +566,6 @@ export default class Color {
     const rgbB = chroma(colorB).rgba()
     const mixed = this.mixColorsRgb(rgbA, rgbB)
 
-    return this.simulateColorBlindHex(mixed)
+    return chroma(mixed).hex()
   }
 }

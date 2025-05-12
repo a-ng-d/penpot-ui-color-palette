@@ -29,7 +29,11 @@ import {
   ThemeConfiguration,
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
-import { ActionsList, TextColorsThemeHexModel } from '../../types/models'
+import {
+  ActionsList,
+  RgbaComponent,
+  TextColorsThemeHexModel,
+} from '../../types/models'
 import Color from '../../utils/Color'
 import { trackPreviewManagementEvent } from '../../utils/eventsTracker'
 import { AppStates } from '../App'
@@ -381,44 +385,44 @@ export default class Preview extends PureComponent<
         case 'LCH':
           return colorData.mixColorsHex(
             this.props.areSourceColorsLocked
-              ? (colorData.hexa() as HexModel)
+              ? (colorData.setColorWithAlpha() as HexModel)
               : (colorData.lcha() as HexModel),
-            backgroundColorData.hex() as HexModel
+            backgroundColorData.lcha() as HexModel
           )
         case 'OKLCH':
           return colorData.mixColorsHex(
             this.props.areSourceColorsLocked
-              ? (colorData.hexa() as HexModel)
+              ? (colorData.setColorWithAlpha() as HexModel)
               : (colorData.oklcha() as HexModel),
-            backgroundColorData.hex() as HexModel
+            backgroundColorData.oklcha() as HexModel
           )
         case 'LAB':
           return colorData.mixColorsHex(
             this.props.areSourceColorsLocked
-              ? (colorData.hexa() as HexModel)
+              ? (colorData.setColorWithAlpha() as HexModel)
               : (colorData.laba() as HexModel),
-            backgroundColorData.hex() as HexModel
+            backgroundColorData.oklcha() as HexModel
           )
         case 'OKLAB':
           return colorData.mixColorsHex(
             this.props.areSourceColorsLocked
-              ? (colorData.hexa() as HexModel)
+              ? (colorData.setColorWithAlpha() as HexModel)
               : (colorData.oklaba() as HexModel),
-            backgroundColorData.hex() as HexModel
+            backgroundColorData.oklaba() as HexModel
           )
         case 'HSL':
           return colorData.mixColorsHex(
             this.props.areSourceColorsLocked
-              ? (colorData.hexa() as HexModel)
+              ? (colorData.setColorWithAlpha() as HexModel)
               : (colorData.hsla() as HexModel),
-            backgroundColorData.hex() as HexModel
+            backgroundColorData.hsla() as HexModel
           )
         case 'HSLUV':
           return colorData.mixColorsHex(
             this.props.areSourceColorsLocked
-              ? (colorData.hexa() as HexModel)
+              ? (colorData.setColorWithAlpha() as HexModel)
               : (colorData.hsluva() as HexModel),
-            backgroundColorData.hex() as HexModel
+            backgroundColorData.hsluva() as HexModel
           )
         default:
           return '#000000'
