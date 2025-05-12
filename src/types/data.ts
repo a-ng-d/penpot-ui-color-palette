@@ -5,6 +5,7 @@ import {
   PresetConfiguration,
   ThemeConfiguration,
 } from './configurations'
+import { RgbaComponent, RgbComponent } from './models'
 
 export interface PaletteData {
   name: string
@@ -36,17 +37,17 @@ export interface PaletteDataShadeItem {
   name: string
   description: string
   hex: HexModel
-  rgb: [number, number, number]
-  gl: [number, number, number, number]
-  lch: [number, number, number]
-  oklch: [number, number, number]
-  lab: [number, number, number]
-  oklab: [number, number, number]
-  hsl: [number, number, number]
-  hsluv: [number, number, number]
+  rgb: RgbComponent
+  gl: RgbaComponent
+  lch: RgbComponent
+  oklch: RgbComponent
+  lab: RgbComponent
+  oklab: RgbComponent
+  hsl: RgbComponent
+  hsluv: RgbComponent
   alpha?: number
-  backgroundColor?: [number, number, number]
-  mixedColor?: [number, number, number]
+  backgroundColor?: RgbComponent
+  mixedColor?: RgbComponent
   styleId: string
   isClosestToRef?: boolean
   isSourceColorLocked?: boolean

@@ -13,9 +13,9 @@ import Tag from './Tag'
 
 export default class Properties {
   private name: string
-  private rgb: [number, number, number]
+  private rgb: RgbComponent
   private alpha?: number
-  private mixedColor?: [number, number, number]
+  private mixedColor?: RgbComponent
   private colorSpace: ColorSpaceConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
   private textColorsTheme: TextColorsThemeHexModel
@@ -26,8 +26,8 @@ export default class Properties {
   private oklab: Array<number>
   private hsl: Array<number>
   private hsluv: Array<number>
-  private lightTextColor: [number, number, number]
-  private darkTextColor: [number, number, number]
+  private lightTextColor: RgbComponent
+  private darkTextColor: RgbComponent
   private lightTextColorContrast: Contrast
   private darkTextColorContrast: Contrast
   private nodeTopProps: Board | null
@@ -52,9 +52,9 @@ export default class Properties {
     textColorsTheme,
   }: {
     name: string
-    rgb: [number, number, number]
+    rgb: RgbComponent
     alpha?: number
-    mixedColor?: [number, number, number]
+    mixedColor?: RgbComponent
     colorSpace: ColorSpaceConfiguration
     visionSimulationMode: VisionSimulationModeConfiguration
     textColorsTheme: TextColorsThemeHexModel

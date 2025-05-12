@@ -1,7 +1,7 @@
 import { RgbModel } from '@a_ng_d/figmug-ui'
 import { Board } from '@penpot/plugin-types'
 import chroma from 'chroma-js'
-import { TextColorsThemeHexModel } from 'src/types/models'
+import { RgbComponent, TextColorsThemeHexModel } from '../types/models'
 import {
   ColorSpaceConfiguration,
   ViewConfiguration,
@@ -16,10 +16,10 @@ export default class Sample {
   private name: string
   private source?: RgbModel
   private scale?: string
-  private rgb: [number, number, number]
+  private rgb: RgbComponent
   private alpha?: number
-  private backgroundColor?: [number, number, number]
-  private mixedColor?: [number, number, number]
+  private backgroundColor?: RgbComponent
+  private mixedColor?: RgbComponent
   private colorSpace: ColorSpaceConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
   private view: ViewConfiguration
@@ -55,10 +55,10 @@ export default class Sample {
     name: string
     source?: RgbModel
     scale?: string
-    rgb: [number, number, number]
+    rgb: RgbComponent
     alpha?: number
-    backgroundColor?: [number, number, number]
-    mixedColor?: [number, number, number]
+    backgroundColor?: RgbComponent
+    mixedColor?: RgbComponent
     colorSpace: ColorSpaceConfiguration
     visionSimulationMode: VisionSimulationModeConfiguration
     view: ViewConfiguration

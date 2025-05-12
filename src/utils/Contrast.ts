@@ -2,16 +2,17 @@ import { HexModel, RgbModel } from '@a_ng_d/figmug-ui'
 import { APCAcontrast, fontLookupAPCA, sRGBtoY } from 'apca-w3'
 import chroma from 'chroma-js'
 import { locals } from '../content/locals'
+import { RgbComponent } from '../types/models'
 
 export default class Contrast {
-  private backgroundColor: [number, number, number]
+  private backgroundColor: RgbComponent
   private textColor: HexModel
 
   constructor({
     backgroundColor = [0, 0, 0],
     textColor = '#FFFFFF',
   }: {
-    backgroundColor?: [number, number, number]
+    backgroundColor?: RgbComponent
     textColor?: HexModel
   }) {
     this.backgroundColor = backgroundColor

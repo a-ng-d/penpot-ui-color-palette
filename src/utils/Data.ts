@@ -16,6 +16,7 @@ import {
 } from '../types/data'
 import Color from './Color'
 import defaultTheme from '../stores/theme'
+import { RgbComponent } from '../types/models'
 
 export default class Data {
   private base: BaseConfiguration
@@ -112,12 +113,7 @@ export default class Data {
                   return this.base.areSourceColorsLocked
                     ? [
                         lightness,
-                        colorData.setColorWithAlpha() as [
-                          number,
-                          number,
-                          number,
-                          number,
-                        ],
+                        colorData.setColorWithAlpha(),
                         backgroundColorData.setColorWithAlpha(),
                       ]
                     : [lightness, colorData.lcha(), backgroundColorData.lcha()]
@@ -125,12 +121,7 @@ export default class Data {
                   return this.base.areSourceColorsLocked
                     ? [
                         lightness,
-                        colorData.setColorWithAlpha() as [
-                          number,
-                          number,
-                          number,
-                          number,
-                        ],
+                        colorData.setColorWithAlpha(),
                         backgroundColorData.setColorWithAlpha(),
                       ]
                     : [
@@ -142,12 +133,7 @@ export default class Data {
                   return this.base.areSourceColorsLocked
                     ? [
                         lightness,
-                        colorData.setColorWithAlpha() as [
-                          number,
-                          number,
-                          number,
-                          number,
-                        ],
+                        colorData.setColorWithAlpha(),
                         backgroundColorData.laba(),
                       ]
                     : [lightness, colorData.laba(), backgroundColorData.laba()]
@@ -155,12 +141,7 @@ export default class Data {
                   return this.base.areSourceColorsLocked
                     ? [
                         lightness,
-                        colorData.setColorWithAlpha() as [
-                          number,
-                          number,
-                          number,
-                          number,
-                        ],
+                        colorData.setColorWithAlpha(),
                         backgroundColorData.setColorWithAlpha(),
                       ]
                     : [
@@ -172,12 +153,7 @@ export default class Data {
                   return this.base.areSourceColorsLocked
                     ? [
                         lightness,
-                        colorData.setColorWithAlpha() as [
-                          number,
-                          number,
-                          number,
-                          number,
-                        ],
+                        colorData.setColorWithAlpha(),
                         backgroundColorData.setColorWithAlpha(),
                       ]
                     : [lightness, colorData.hsl(), backgroundColorData.hsl()]
@@ -185,12 +161,7 @@ export default class Data {
                   return this.base.areSourceColorsLocked
                     ? [
                         lightness,
-                        colorData.setColorWithAlpha() as [
-                          number,
-                          number,
-                          number,
-                          number,
-                        ],
+                        colorData.setColorWithAlpha(),
                         backgroundColorData.setColorWithAlpha(),
                       ]
                     : [
@@ -228,7 +199,7 @@ export default class Data {
             shades: [],
             type: 'color',
           },
-          sourceColor: [number, number, number] = [
+          sourceColor: RgbComponent = [
             color.rgb.r * 255,
             color.rgb.g * 255,
             color.rgb.b * 255,
@@ -268,7 +239,7 @@ export default class Data {
         const distances = scaledColors.map((shade) =>
           chroma.distance(
             chroma(sourceColor).hex(),
-            chroma(shade[1] as [number, number, number]).hex(),
+            chroma(shade[1] as RgbComponent).hex(),
             'rgb'
           )
         )
@@ -277,7 +248,7 @@ export default class Data {
         scaledColors.forEach((scaledColor, index) => {
           const distance: number = chroma.distance(
             chroma(sourceColor).hex(),
-            chroma(scaledColor[1] as [number, number, number]).hex(),
+            chroma(scaledColor[1] as RgbComponent).hex(),
             'rgb'
           )
 
@@ -299,42 +270,42 @@ export default class Data {
             hex:
               index === minDistanceIndex && this.base.areSourceColorsLocked
                 ? chroma(sourceColor).hex()
-                : chroma(scaledColor[1] as [number, number, number]).hex(),
+                : chroma(scaledColor[1] as RgbComponent).hex(),
             rgb:
               index === minDistanceIndex && this.base.areSourceColorsLocked
                 ? chroma(sourceColor).rgb()
-                : chroma(scaledColor[1] as [number, number, number]).rgb(),
+                : chroma(scaledColor[1] as RgbComponent).rgb(),
             gl:
               index === minDistanceIndex && this.base.areSourceColorsLocked
                 ? chroma(sourceColor).gl()
-                : chroma(scaledColor[1] as [number, number, number]).gl(),
+                : chroma(scaledColor[1] as RgbComponent).gl(),
             lch:
               index === minDistanceIndex && this.base.areSourceColorsLocked
                 ? chroma(sourceColor).lch()
-                : chroma(scaledColor[1] as [number, number, number]).lch(),
+                : chroma(scaledColor[1] as RgbComponent).lch(),
             oklch:
               index === minDistanceIndex && this.base.areSourceColorsLocked
                 ? chroma(sourceColor).oklch()
-                : chroma(scaledColor[1] as [number, number, number]).oklch(),
+                : chroma(scaledColor[1] as RgbComponent).oklch(),
             lab:
               index === minDistanceIndex && this.base.areSourceColorsLocked
                 ? chroma(sourceColor).lab()
-                : chroma(scaledColor[1] as [number, number, number]).lab(),
+                : chroma(scaledColor[1] as RgbComponent).lab(),
             oklab:
               index === minDistanceIndex && this.base.areSourceColorsLocked
                 ? chroma(sourceColor).oklab()
-                : chroma(scaledColor[1] as [number, number, number]).oklab(),
+                : chroma(scaledColor[1] as RgbComponent).oklab(),
             hsl:
               index === minDistanceIndex && this.base.areSourceColorsLocked
                 ? chroma(sourceColor).hsl()
-                : chroma(scaledColor[1] as [number, number, number]).hsl(),
+                : chroma(scaledColor[1] as RgbComponent).hsl(),
             hsluv: [newHsluv.hsluv_h, newHsluv.hsluv_s, newHsluv.hsluv_l],
             alpha: color.alpha.isEnabled
               ? parseFloat(((scaledColor[0][1] as number) / 100).toFixed(2))
               : undefined,
             backgroundColor:
               color.alpha.isEnabled && color.alpha.backgroundColor
-                ? chroma(scaledColor[2] as [number, number, number]).rgb()
+                ? chroma(scaledColor[2] as RgbComponent).rgb()
                 : undefined,
             mixedColor:
               color.alpha.isEnabled && color.alpha.backgroundColor
@@ -342,12 +313,12 @@ export default class Data {
                     visionSimulationMode: theme.visionSimulationMode,
                   }).mixColorsRgb(
                     [
-                      ...(scaledColor[1] as [number, number, number]),
+                      ...(scaledColor[1] as RgbComponent),
                       parseFloat(
                         ((scaledColor[0][1] as number) / 100).toFixed(2)
                       ),
                     ],
-                    [...(scaledColor[2] as [number, number, number]), 1]
+                    [...(scaledColor[2] as RgbComponent), 1]
                   )
                 : undefined,
             styleId: this.searchForShadeStyleId(

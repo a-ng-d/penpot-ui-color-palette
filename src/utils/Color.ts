@@ -52,9 +52,9 @@ const colorBlindMatrices = {
 }
 
 const applyColorMatrix = (
-  color: [number, number, number],
+  color: RgbComponent,
   matrix: number[][]
-): [number, number, number] => {
+): RgbComponent => {
   const [r, g, b] = color
   const [m1, m2, m3] = matrix
 
@@ -67,7 +67,7 @@ const applyColorMatrix = (
 
 export default class Color {
   private render: 'HEX' | 'RGB'
-  private sourceColor: [number, number, number]
+  private sourceColor: RgbComponent
   private lightness: number
   private hueShifting: number
   private chromaShifting: number
@@ -86,7 +86,7 @@ export default class Color {
     alpha = 1,
   }: {
     render?: 'HEX' | 'RGB'
-    sourceColor?: [number, number, number]
+    sourceColor?: RgbComponent
     lightness?: number
     hueShifting?: number
     chromaShifting?: number
@@ -393,7 +393,7 @@ export default class Color {
 
     hsluv.hsluvToRgb()
 
-    const newColor: [number, number, number] = [
+    const newColor: RgbComponent = [
       hsluv.rgb_r * 255,
       hsluv.rgb_g * 255,
       hsluv.rgb_b * 255,
@@ -424,7 +424,7 @@ export default class Color {
 
     hsluv.hsluvToRgb()
 
-    const newColor: [number, number, number, number] = [
+    const newColor: RgbaComponent = [
       hsluv.rgb_r * 255,
       hsluv.rgb_g * 255,
       hsluv.rgb_b * 255,
