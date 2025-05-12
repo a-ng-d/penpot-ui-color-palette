@@ -260,10 +260,32 @@ export default class InternalPalettes extends PureComponent<
                                 <div
                                   key={`color-${index}-${shadeIndex}`}
                                   className="preview__cell"
-                                  style={{
-                                    backgroundColor: shade.hex,
-                                  }}
-                                />
+                                >
+                                  <div
+                                    style={{
+                                      width: '100%',
+                                      height: '100%',
+                                      position: 'absolute',
+                                      zIndex: '1',
+                                      top: 0,
+                                      left: 0,
+                                      backgroundColor: shade.hex,
+                                    }}
+                                  />
+                                  {shade.backgroundColor !== undefined && (
+                                    <div
+                                      style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        position: 'absolute',
+                                        zIndex: '0',
+                                        top: 0,
+                                        left: 0,
+                                        backgroundColor: `rgba(${shade.backgroundColor[0]}, ${shade.backgroundColor[1]}, ${shade.backgroundColor[2]})`,
+                                      }}
+                                    />
+                                  )}
+                                </div>
                               ))}
                             </div>
                           )

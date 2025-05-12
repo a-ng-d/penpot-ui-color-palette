@@ -97,11 +97,11 @@ export default class Color {
     this.render = render
     this.sourceColor = sourceColor
     this.lightness = lightness
+    this.alpha = alpha
     this.hueShifting = hueShifting
     this.chromaShifting = chromaShifting
     this.algorithmVersion = algorithmVersion
     this.visionSimulationMode = visionSimulationMode
-    this.alpha = alpha
   }
 
   adjustHue = (hue: number): number => {
@@ -168,9 +168,13 @@ export default class Color {
         )
         .rgb()
 
-    if (this.render === 'HEX') return chroma([...newColor, this.alpha]).hex()
+    if (this.render === 'HEX')
+      return chroma([
+        ...this.simulateColorBlindRgb([...newColor]),
+        this.alpha,
+      ]).hex()
 
-    return [...newColor, this.alpha]
+    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
   }
 
   oklch = (): ColorFormat<typeof this.render> => {
@@ -199,9 +203,13 @@ export default class Color {
         )
         .rgb()
 
-    if (this.render === 'HEX') return chroma([...newColor, this.alpha]).hex()
+    if (this.render === 'HEX')
+      return chroma([
+        ...this.simulateColorBlindRgb([...newColor]),
+        this.alpha,
+      ]).hex()
 
-    return [...newColor, this.alpha]
+    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
   }
 
   lab = (): ColorFormat<typeof this.render> => {
@@ -265,9 +273,13 @@ export default class Color {
       .lab(labL, this.adjustChroma(newLabA), this.adjustChroma(newLabB))
       .rgb()
 
-    if (this.render === 'HEX') return chroma([...newColor, this.alpha]).hex()
+    if (this.render === 'HEX')
+      return chroma([
+        ...this.simulateColorBlindRgb([...newColor]),
+        this.alpha,
+      ]).hex()
 
-    return [...newColor, this.alpha]
+    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
   }
 
   oklab = (): ColorFormat<typeof this.render> => {
@@ -337,9 +349,13 @@ export default class Color {
       .oklab(labL, this.adjustChroma(newLabA), this.adjustChroma(newLabB))
       .rgb()
 
-    if (this.render === 'HEX') return chroma([...newColor, this.alpha]).hex()
+    if (this.render === 'HEX')
+      return chroma([
+        ...this.simulateColorBlindRgb([...newColor]),
+        this.alpha,
+      ]).hex()
 
-    return [...newColor, this.alpha]
+    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
   }
 
   hsl = (): ColorFormat<typeof this.render> => {
@@ -368,9 +384,13 @@ export default class Color {
         )
         .rgb()
 
-    if (this.render === 'HEX') return chroma([...newColor, this.alpha]).hex()
+    if (this.render === 'HEX')
+      return chroma([
+        ...this.simulateColorBlindRgb([...newColor]),
+        this.alpha,
+      ]).hex()
 
-    return [...newColor, this.alpha]
+    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
   }
 
   hsluv = (): ColorFormat<typeof this.render> => {
@@ -424,16 +444,19 @@ export default class Color {
 
     hsluv.hsluvToRgb()
 
-    const newColor: RgbaComponent = [
+    const newColor: RgbComponent = [
       hsluv.rgb_r * 255,
       hsluv.rgb_g * 255,
       hsluv.rgb_b * 255,
-      this.alpha,
     ]
 
-    if (this.render === 'HEX') return chroma(newColor).hex()
+    if (this.render === 'HEX')
+      return chroma([
+        ...this.simulateColorBlindRgb([...newColor]),
+        this.alpha,
+      ]).hex()
 
-    return newColor
+    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
   }
 
   getHsluv = (): RgbComponent => {

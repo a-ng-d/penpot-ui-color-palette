@@ -94,6 +94,7 @@ div.export-palette__preview textarea {
   padding: var(--size-xxxsmall);
   min-height: 44px;
   overflow: hidden;
+  position: relative;
 }
 
 .preview__cell--no-height {
