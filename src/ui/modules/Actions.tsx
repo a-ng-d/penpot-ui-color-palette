@@ -26,7 +26,7 @@ import {
 } from '../../types/configurations'
 import { AppStates } from '../App'
 import Feature from '../components/Feature'
-import { ActionsList } from 'src/types/models'
+import { ActionsList } from '../../types/models'
 
 interface ActionsProps extends BaseProps {
   service: Service

@@ -1,6 +1,6 @@
-import { FullConfiguration } from 'src/types/configurations'
 import LocalStyle from '../../canvas/LocalStyle'
 import { locals } from '../../content/locals'
+import { FullConfiguration } from '../../types/configurations'
 import { PaletteData } from '../../types/data'
 
 const createLocalStyles = async (id: string) => {

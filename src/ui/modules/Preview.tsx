@@ -29,11 +29,7 @@ import {
   ThemeConfiguration,
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
-import {
-  ActionsList,
-  RgbaComponent,
-  TextColorsThemeHexModel,
-} from '../../types/models'
+import { ActionsList, TextColorsThemeHexModel } from '../../types/models'
 import Color from '../../utils/Color'
 import { trackPreviewManagementEvent } from '../../utils/eventsTracker'
 import { AppStates } from '../App'

@@ -1,5 +1,5 @@
 import { Board } from '@penpot/plugin-types'
-import { PaletteData, PaletteDataThemeItem } from 'src/types/data'
+import { PaletteData, PaletteDataThemeItem } from '../types/data'
 import {
   BaseConfiguration,
   MetaConfiguration,

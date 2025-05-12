@@ -1,4 +1,4 @@
-import { Language } from 'src/types/app'
+import { Language } from '../types/app'
 import en_US from './translations/en-US.json'
 
 export const translations = {

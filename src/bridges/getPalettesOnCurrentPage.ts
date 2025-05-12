@@ -1,4 +1,4 @@
-import { PaletteData } from 'src/types/data'
+import { PaletteData } from '../types/data'
 
 const getPalettesOnCurrentPage = async () => {
   const dataKeys = penpot.currentPage?.getPluginDataKeys()

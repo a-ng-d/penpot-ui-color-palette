@@ -1,5 +1,5 @@
 import { deepMap } from 'nanostores'
-import { ExchangeConfiguration } from 'src/types/configurations'
+import { ExchangeConfiguration } from '../types/configurations'
 import { algorithmVersion } from '../config'
 import { locals } from '../content/locals'
 import { presets } from './presets'

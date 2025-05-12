@@ -3,8 +3,8 @@ import {
   BaseConfiguration,
   MetaConfiguration,
   ThemeConfiguration,
-} from 'src/types/configurations'
-import { PaletteDataThemeItem } from 'src/types/data'
+} from '../types/configurations'
+import { PaletteDataThemeItem } from '../types/data'
 import { locals } from '../content/locals'
 import Paragraph from './Paragraph'
 import Tag from './Tag'

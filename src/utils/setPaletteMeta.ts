@@ -1,7 +1,4 @@
-import {
-  ColorConfiguration,
-  ThemeConfiguration,
-} from 'src/types/configurations'
+import { ColorConfiguration, ThemeConfiguration } from '../types/configurations'
 import { locals } from '../content/locals'
 
 const getPaletteMeta = (

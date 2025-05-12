@@ -3,7 +3,7 @@ import { locals } from '../../content/locals'
 import { PaletteData, PaletteDataShadeItem } from '../../types/data'
 import { ActionsList } from '../../types/models'
 import chroma from 'chroma-js'
-import { ColorSpaceConfiguration } from 'src/types/configurations'
+import { ColorSpaceConfiguration } from '../../types/configurations'
 
 const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)

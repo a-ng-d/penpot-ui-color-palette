@@ -1,7 +1,7 @@
-import { ColorSpaceConfiguration } from 'src/types/configurations'
-import { ActionsList } from 'src/types/models'
 import { locals } from '../../content/locals'
+import { ColorSpaceConfiguration } from '../../types/configurations'
 import { PaletteData, PaletteDataShadeItem } from '../../types/data'
+import { ActionsList } from '../../types/models'
 
 const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
