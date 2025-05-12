@@ -371,7 +371,6 @@ export default class Preview extends PureComponent<
 
     if ('alpha' in color && color.alpha.isEnabled) {
       const backgroundColorData = new Color({
-        lightness: scale,
         sourceColor: chroma(color.alpha.backgroundColor).rgb(),
         algorithmVersion: this.props.algorithmVersion,
         visionSimulationMode: this.props.visionSimulationMode,

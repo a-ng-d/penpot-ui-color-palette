@@ -145,9 +145,9 @@ export default class Color {
 
   hex = (): HexModel | [number, number, number] => {
     if (this.render === 'HEX')
-      return this.simulateColorBlindHex([...this.sourceColor])
+      return this.simulateColorBlindHex(this.sourceColor)
 
-    return this.simulateColorBlindRgb([...this.sourceColor])
+    return this.simulateColorBlindRgb(this.sourceColor)
   }
 
   hexa = (): HexModel | [number, number, number, number] => {
