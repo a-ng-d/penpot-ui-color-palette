@@ -44,10 +44,6 @@ const updateLocalStyles = async (id: string) => {
 
       workingThemes.forEach((theme: PaletteDataThemeItem) => {
         theme.colors.forEach((color) => {
-          const source = color.shades.find(
-            (shade) => shade.type === 'source color'
-          )
-
           color.shades.forEach((shade) => {
             const path =
               workingThemes[0].type === 'custom theme'
@@ -79,8 +75,8 @@ const updateLocalStyles = async (id: string) => {
                 }
 
                 if (shade.isTransparent) {
-                  if (source?.hex !== styleMatch.color) {
-                    styleMatch.color = source?.hex ?? '#000000'
+                  if (shade.hex.substring(0, 5) !== styleMatch.color) {
+                    styleMatch.color = shade.hex.substring(0, 7)
                     j++
                   }
 

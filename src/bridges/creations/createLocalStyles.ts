@@ -25,10 +25,6 @@ const createLocalStyles = async (id: string) => {
       let i = 0
       workingThemes.forEach((theme) => {
         theme.colors.forEach((color) => {
-          const source = color.shades.find(
-            (shade) => shade.type === 'source color'
-          )
-
           color.shades.forEach((shade) => {
             if (
               localStyles.find(
@@ -45,9 +41,9 @@ const createLocalStyles = async (id: string) => {
                         color.name
                       } / ${shade.name}`,
                 hex: shade.isTransparent
-                  ? (source?.hex ?? shade.hex)
+                  ? shade.hex.substring(0, 7)
                   : shade.hex,
-                alpha: shade.isTransparent ? (shade.alpha ?? 1) : undefined,
+                alpha: shade.isTransparent ? shade.alpha : undefined,
               })
               shade.styleId = style.libraryColor.id
               i++
