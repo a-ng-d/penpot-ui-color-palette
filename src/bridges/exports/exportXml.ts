@@ -30,9 +30,11 @@ const exportXml = (id: string) => {
       const colors: Array<string> = []
 
       colors.push(
-        `${'<'}!--` + workingThemes[0].type === 'custom theme'
-          ? theme.name + ' - ' + color.name + `--${'>'}`
-          : color.name + `--${'>'}`
+        `${'<'}!--${
+          workingThemes[0].type === 'custom theme'
+            ? `${theme.name} - ${color.name}--${'>'}`
+            : `${color.name}--${'>'}`
+        }`
       )
       color.shades.reverse().forEach((shade) => {
         colors.push(
