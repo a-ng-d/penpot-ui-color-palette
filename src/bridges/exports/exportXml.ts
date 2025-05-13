@@ -29,13 +29,13 @@ const exportXml = (id: string) => {
       const source = color.shades.find((shade) => shade.type === 'source color')
       const colors: Array<string> = []
 
-      colors.unshift(
+      colors.push(
         `${'<'}!--` + workingThemes[0].type === 'custom theme'
           ? theme.name + ' - ' + color.name + `--${'>'}`
           : color.name + `--${'>'}`
       )
-      color.shades.forEach((shade) => {
-        colors.unshift(
+      color.shades.reverse().forEach((shade) => {
+        colors.push(
           `<color name="${
             workingThemes[0].type === 'custom theme'
               ? new Case(theme.name + ' ' + color.name).doSnakeCase()
@@ -49,7 +49,7 @@ const exportXml = (id: string) => {
           }</color>`
         )
       })
-      colors.unshift('')
+      colors.push('')
       colors.forEach((color) => resources.push(color))
     })
   })

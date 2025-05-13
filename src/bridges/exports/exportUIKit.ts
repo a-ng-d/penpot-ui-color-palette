@@ -27,10 +27,10 @@ const exportUIKit = (id: string) => {
     const UIColors: Array<string> = []
     theme.colors.forEach((color) => {
       const source = color.shades.find((shade) => shade.type === 'source color')
-      
-      UIColors.unshift(`// ${color.name}`)
-      color.shades.forEach((shade) => {
-        UIColors.unshift(
+
+      UIColors.push(`// ${color.name}`)
+      color.shades.reverse().forEach((shade) => {
+        UIColors.push(
           shade.isTransparent
             ? `static let ${new Case(color.name).doCamelCase()}${
                 shade.name === 'source' ? 'Source' : shade.name
@@ -48,9 +48,9 @@ const exportUIKit = (id: string) => {
               )})`
         )
       })
-      UIColors.unshift('')
+      UIColors.push('')
     })
-    UIColors.shift()
+    UIColors.pop()
     if (workingThemes[0].type === 'custom theme')
       swift.push(
         `struct ${new Case(theme.name).doPascalCase()} {\n    ${UIColors.join(

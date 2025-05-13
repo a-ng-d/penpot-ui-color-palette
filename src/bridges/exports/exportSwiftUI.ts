@@ -28,13 +28,13 @@ const exportSwiftUI = (id: string) => {
       const source = color.shades.find((shade) => shade.type === 'source color')
       const Colors: Array<string> = []
 
-      Colors.unshift(
+      Colors.push(
         `// ${
           workingThemes[0].type === 'custom theme' ? theme.name + ' - ' : ''
         }${color.name}`
       )
-      color.shades.forEach((shade) => {
-        Colors.unshift(
+      color.shades.reverse().forEach((shade) => {
+        Colors.push(
           shade.isTransparent
             ? `public let ${
                 workingThemes[0].type === 'custom theme'
@@ -60,7 +60,7 @@ const exportSwiftUI = (id: string) => {
               )})`
         )
       })
-      Colors.unshift('')
+      Colors.push('')
       Colors.forEach((color) => swift.push(color))
     })
   })
