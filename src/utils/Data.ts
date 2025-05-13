@@ -17,6 +17,7 @@ import {
 import Color from './Color'
 import defaultTheme from '../stores/theme'
 import { RgbComponent } from '../types/models'
+import { HexModel } from '@a_ng_d/figmug-ui'
 
 export default class Data {
   private base: BaseConfiguration
@@ -275,21 +276,30 @@ export default class Data {
             chroma(scaledColor[1] as RgbComponent).hex(),
             'rgb'
           )
-
           const scaleName: string =
             Object.keys(this.currentScale).find(
               (key) => key === scaledColor[0][0]
             ) ?? '0'
           const newHsluv = new Hsluv()
+          const simulatedSourceColorRgb = new Color({
+            render: 'RGB',
+            sourceColor: chroma(sourceColor).rgb(),
+            visionSimulationMode: theme.visionSimulationMode,
+          }).setColor() as RgbComponent
+          const simulatedSourceColorHex = new Color({
+            render: 'HEX',
+            sourceColor: chroma(sourceColor).rgb(),
+            visionSimulationMode: theme.visionSimulationMode,
+          }).setColor() as HexModel
 
           if (
             index === minDistanceIndex &&
             this.base.areSourceColorsLocked &&
             !color.alpha.isEnabled
           ) {
-            newHsluv.rgb_r = Number(sourceColor[0]) / 255
-            newHsluv.rgb_g = Number(sourceColor[1]) / 255
-            newHsluv.rgb_b = Number(sourceColor[2]) / 255
+            newHsluv.rgb_r = Number(simulatedSourceColorRgb[0]) / 255
+            newHsluv.rgb_g = Number(simulatedSourceColorRgb[1]) / 255
+            newHsluv.rgb_b = Number(simulatedSourceColorRgb[2]) / 255
           } else {
             newHsluv.rgb_r = Number(scaledColor[1][0]) / 255
             newHsluv.rgb_g = Number(scaledColor[1][1]) / 255
@@ -306,49 +316,49 @@ export default class Data {
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
               !color.alpha.isEnabled
-                ? chroma(sourceColor).hex()
+                ? chroma(simulatedSourceColorHex).hex()
                 : chroma(scaledColor[1] as RgbComponent).hex(),
             rgb:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
               !color.alpha.isEnabled
-                ? chroma(sourceColor).rgb()
+                ? chroma(simulatedSourceColorHex).rgb()
                 : chroma(scaledColor[1] as RgbComponent).rgb(),
             gl:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
               !color.alpha.isEnabled
-                ? chroma(sourceColor).gl()
+                ? chroma(simulatedSourceColorHex).gl()
                 : chroma(scaledColor[1] as RgbComponent).gl(),
             lch:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
               !color.alpha.isEnabled
-                ? chroma(sourceColor).lch()
+                ? chroma(simulatedSourceColorHex).lch()
                 : chroma(scaledColor[1] as RgbComponent).lch(),
             oklch:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
               !color.alpha.isEnabled
-                ? chroma(sourceColor).oklch()
+                ? chroma(simulatedSourceColorHex).oklch()
                 : chroma(scaledColor[1] as RgbComponent).oklch(),
             lab:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
               !color.alpha.isEnabled
-                ? chroma(sourceColor).lab()
+                ? chroma(simulatedSourceColorHex).lab()
                 : chroma(scaledColor[1] as RgbComponent).lab(),
             oklab:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
               !color.alpha.isEnabled
-                ? chroma(sourceColor).oklab()
+                ? chroma(simulatedSourceColorHex).oklab()
                 : chroma(scaledColor[1] as RgbComponent).oklab(),
             hsl:
               index === minDistanceIndex &&
               this.base.areSourceColorsLocked &&
               !color.alpha.isEnabled
-                ? chroma(sourceColor).hsl()
+                ? chroma(simulatedSourceColorHex).hsl()
                 : chroma(scaledColor[1] as RgbComponent).hsl(),
             hsluv: [newHsluv.hsluv_h, newHsluv.hsluv_s, newHsluv.hsluv_l],
             alpha: color.alpha.isEnabled
