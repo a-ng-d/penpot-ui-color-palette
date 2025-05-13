@@ -81,31 +81,27 @@ export default class Data {
         const scaledColors = Object.entries(theme.scale)
           .reverse()
           .map((lightness) => {
-            const colorData = new Color({
-              render: 'RGB',
-              sourceColor: [
-                color.rgb.r * 255,
-                color.rgb.g * 255,
-                color.rgb.b * 255,
-              ],
-              lightness: lightness[1],
-              hueShifting: color.hue.shift !== undefined ? color.hue.shift : 0,
-              chromaShifting:
-                color.chroma.shift !== undefined ? color.chroma.shift : 100,
-              algorithmVersion: this.base.algorithmVersion,
-              visionSimulationMode: theme.visionSimulationMode,
-              alpha: color.alpha.isEnabled
-                ? parseFloat((lightness[1] / 100).toFixed(2))
-                : undefined,
-            })
-
             if (color.alpha.isEnabled) {
+              const foregroundColorData = new Color({
+                render: 'RGB',
+                sourceColor: [
+                  color.rgb.r * 255,
+                  color.rgb.g * 255,
+                  color.rgb.b * 255,
+                ],
+                alpha: parseFloat((lightness[1] / 100).toFixed(2)),
+                hueShifting:
+                  color.hue.shift !== undefined ? color.hue.shift : 0,
+                chromaShifting:
+                  color.chroma.shift !== undefined ? color.chroma.shift : 100,
+                algorithmVersion: this.base.algorithmVersion,
+                visionSimulationMode: theme.visionSimulationMode,
+              })
               const backgroundColorData = new Color({
                 render: 'RGB',
                 sourceColor: chroma(color.alpha.backgroundColor).rgb(),
                 algorithmVersion: this.base.algorithmVersion,
                 visionSimulationMode: theme.visionSimulationMode,
-                alpha: 1,
               })
 
               switch (this.base.colorSpace) {
@@ -113,82 +109,110 @@ export default class Data {
                   return this.base.areSourceColorsLocked
                     ? [
                         lightness,
-                        colorData.setColorWithAlpha(),
-                        backgroundColorData.setColorWithAlpha(),
-                      ]
-                    : [lightness, colorData.lcha(), backgroundColorData.lcha()]
-                case 'OKLCH':
-                  return this.base.areSourceColorsLocked
-                    ? [
-                        lightness,
-                        colorData.setColorWithAlpha(),
+                        foregroundColorData.setColorWithAlpha(),
                         backgroundColorData.setColorWithAlpha(),
                       ]
                     : [
                         lightness,
-                        colorData.oklcha(),
+                        foregroundColorData.lcha(),
+                        backgroundColorData.lcha(),
+                      ]
+                case 'OKLCH':
+                  return this.base.areSourceColorsLocked
+                    ? [
+                        lightness,
+                        foregroundColorData.setColorWithAlpha(),
+                        backgroundColorData.setColorWithAlpha(),
+                      ]
+                    : [
+                        lightness,
+                        foregroundColorData.oklcha(),
                         backgroundColorData.oklcha(),
                       ]
                 case 'LAB':
                   return this.base.areSourceColorsLocked
                     ? [
                         lightness,
-                        colorData.setColorWithAlpha(),
+                        foregroundColorData.setColorWithAlpha(),
                         backgroundColorData.laba(),
                       ]
-                    : [lightness, colorData.laba(), backgroundColorData.laba()]
+                    : [
+                        lightness,
+                        foregroundColorData.laba(),
+                        backgroundColorData.laba(),
+                      ]
                 case 'OKLAB':
                   return this.base.areSourceColorsLocked
                     ? [
                         lightness,
-                        colorData.setColorWithAlpha(),
+                        foregroundColorData.setColorWithAlpha(),
                         backgroundColorData.setColorWithAlpha(),
                       ]
                     : [
                         lightness,
-                        colorData.oklaba(),
+                        foregroundColorData.oklaba(),
                         backgroundColorData.oklaba(),
                       ]
                 case 'HSL':
                   return this.base.areSourceColorsLocked
                     ? [
                         lightness,
-                        colorData.setColorWithAlpha(),
-                        backgroundColorData.setColorWithAlpha(),
-                      ]
-                    : [lightness, colorData.hsl(), backgroundColorData.hsl()]
-                case 'HSLUV':
-                  return this.base.areSourceColorsLocked
-                    ? [
-                        lightness,
-                        colorData.setColorWithAlpha(),
+                        foregroundColorData.setColorWithAlpha(),
                         backgroundColorData.setColorWithAlpha(),
                       ]
                     : [
                         lightness,
-                        colorData.hsluv(),
+                        foregroundColorData.hsl(),
+                        backgroundColorData.hsl(),
+                      ]
+                case 'HSLUV':
+                  return this.base.areSourceColorsLocked
+                    ? [
+                        lightness,
+                        foregroundColorData.setColorWithAlpha(),
+                        backgroundColorData.setColorWithAlpha(),
+                      ]
+                    : [
+                        lightness,
+                        foregroundColorData.hsluv(),
                         backgroundColorData.hsluv(),
                       ]
                 default:
                   return [lightness, [0, 0, 0], [255, 255, 255]]
               }
-            }
+            } else {
+              const colorData = new Color({
+                render: 'RGB',
+                sourceColor: [
+                  color.rgb.r * 255,
+                  color.rgb.g * 255,
+                  color.rgb.b * 255,
+                ],
+                lightness: lightness[1],
+                hueShifting:
+                  color.hue.shift !== undefined ? color.hue.shift : 0,
+                chromaShifting:
+                  color.chroma.shift !== undefined ? color.chroma.shift : 100,
+                algorithmVersion: this.base.algorithmVersion,
+                visionSimulationMode: theme.visionSimulationMode,
+              })
 
-            switch (this.base.colorSpace) {
-              case 'LCH':
-                return [lightness, colorData.lch()]
-              case 'OKLCH':
-                return [lightness, colorData.oklch()]
-              case 'LAB':
-                return [lightness, colorData.lab()]
-              case 'OKLAB':
-                return [lightness, colorData.oklab()]
-              case 'HSL':
-                return [lightness, colorData.hsl()]
-              case 'HSLUV':
-                return [lightness, colorData.hsluv()]
-              default:
-                return [lightness, [0, 0, 0]]
+              switch (this.base.colorSpace) {
+                case 'LCH':
+                  return [lightness, colorData.lch()]
+                case 'OKLCH':
+                  return [lightness, colorData.oklch()]
+                case 'LAB':
+                  return [lightness, colorData.lab()]
+                case 'OKLAB':
+                  return [lightness, colorData.oklab()]
+                case 'HSL':
+                  return [lightness, colorData.hsl()]
+                case 'HSLUV':
+                  return [lightness, colorData.hsluv()]
+                default:
+                  return [lightness, [0, 0, 0]]
+              }
             }
           })
 

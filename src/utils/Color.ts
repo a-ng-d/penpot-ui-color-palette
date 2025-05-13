@@ -69,30 +69,30 @@ export default class Color {
   private render: 'HEX' | 'RGB'
   private sourceColor: RgbComponent
   private lightness: number
+  private alpha: number
   private hueShifting: number
   private chromaShifting: number
   private algorithmVersion: AlgorithmVersionConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
-  private alpha: number
 
   constructor({
     render = 'HEX',
     sourceColor = [0, 0, 0],
-    lightness = 100,
+    lightness = parseFloat((chroma(sourceColor).luminance() * 100).toFixed(1)),
+    alpha = 1,
     hueShifting = 0,
     chromaShifting = 100,
     algorithmVersion = 'v3',
     visionSimulationMode = 'NONE',
-    alpha = 1,
   }: {
     render?: 'HEX' | 'RGB'
     sourceColor?: RgbComponent
     lightness?: number
+    alpha?: number
     hueShifting?: number
     chromaShifting?: number
     algorithmVersion?: AlgorithmVersionConfiguration
     visionSimulationMode?: VisionSimulationModeConfiguration
-    alpha?: number
   }) {
     this.render = render
     this.sourceColor = sourceColor
@@ -137,9 +137,12 @@ export default class Color {
 
   setColorWithAlpha = (): ColorFormat<typeof this.render> => {
     if (this.render === 'HEX')
-      return chroma([...this.sourceColor, this.alpha]).hex()
+      return chroma([
+        ...this.simulateColorBlindRgb(this.sourceColor),
+        this.alpha,
+      ]).hex()
 
-    return [...this.sourceColor, this.alpha]
+    return [...this.simulateColorBlindRgb(this.sourceColor), this.alpha]
   }
 
   lch = (): ColorFormat<typeof this.render> => {
@@ -152,13 +155,12 @@ export default class Color {
         )
         .rgb()
 
-    if (this.render === 'HEX') return this.simulateColorBlindHex([...newColor])
+    if (this.render === 'HEX') return this.simulateColorBlindHex(newColor)
 
-    return this.simulateColorBlindRgb([...newColor])
+    return this.simulateColorBlindRgb(newColor)
   }
 
   lcha = (): ColorFormat<typeof this.render> => {
-    this.lightness = chroma(this.sourceColor).luminance() * 100
     const lch = chroma(this.sourceColor).lch(),
       newColor = chroma
         .lch(
@@ -169,12 +171,9 @@ export default class Color {
         .rgb()
 
     if (this.render === 'HEX')
-      return chroma([
-        ...this.simulateColorBlindRgb([...newColor]),
-        this.alpha,
-      ]).hex()
+      return chroma([...this.simulateColorBlindRgb(newColor), this.alpha]).hex()
 
-    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
+    return [...this.simulateColorBlindRgb(newColor), this.alpha]
   }
 
   oklch = (): ColorFormat<typeof this.render> => {
@@ -193,7 +192,6 @@ export default class Color {
   }
 
   oklcha = (): ColorFormat<typeof this.render> => {
-    this.lightness = chroma(this.sourceColor).luminance() * 100
     const oklch = chroma(this.sourceColor).oklch(),
       newColor = chroma
         .oklch(
@@ -204,12 +202,9 @@ export default class Color {
         .rgb()
 
     if (this.render === 'HEX')
-      return chroma([
-        ...this.simulateColorBlindRgb([...newColor]),
-        this.alpha,
-      ]).hex()
+      return chroma([...this.simulateColorBlindRgb(newColor), this.alpha]).hex()
 
-    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
+    return [...this.simulateColorBlindRgb(newColor), this.alpha]
   }
 
   lab = (): ColorFormat<typeof this.render> => {
@@ -247,7 +242,6 @@ export default class Color {
   }
 
   laba = (): ColorFormat<typeof this.render> => {
-    this.lightness = chroma(this.sourceColor).luminance() * 100
     const labA = chroma(this.sourceColor).get('lab.a'),
       labB = chroma(this.sourceColor).get('lab.b'),
       labL = chroma(this.sourceColor).get('lab.l'),
@@ -274,12 +268,9 @@ export default class Color {
       .rgb()
 
     if (this.render === 'HEX')
-      return chroma([
-        ...this.simulateColorBlindRgb([...newColor]),
-        this.alpha,
-      ]).hex()
+      return chroma([...this.simulateColorBlindRgb(newColor), this.alpha]).hex()
 
-    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
+    return [...this.simulateColorBlindRgb(newColor), this.alpha]
   }
 
   oklab = (): ColorFormat<typeof this.render> => {
@@ -320,7 +311,6 @@ export default class Color {
   }
 
   oklaba = (): ColorFormat<typeof this.render> => {
-    this.lightness = chroma(this.sourceColor).luminance() * 100
     const labA = chroma(this.sourceColor).get('oklab.a'),
       labB = chroma(this.sourceColor).get('oklab.b'),
       labL = chroma(this.sourceColor).get('oklab.l'),
@@ -350,12 +340,9 @@ export default class Color {
       .rgb()
 
     if (this.render === 'HEX')
-      return chroma([
-        ...this.simulateColorBlindRgb([...newColor]),
-        this.alpha,
-      ]).hex()
+      return chroma([...this.simulateColorBlindRgb(newColor), this.alpha]).hex()
 
-    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
+    return [...this.simulateColorBlindRgb(newColor), this.alpha]
   }
 
   hsl = (): ColorFormat<typeof this.render> => {
@@ -374,7 +361,6 @@ export default class Color {
   }
 
   hsla = (): ColorFormat<typeof this.render> => {
-    this.lightness = chroma(this.sourceColor).luminance() * 100
     const hsl = chroma(this.sourceColor).hsl(),
       newColor = chroma
         .hsl(
@@ -385,12 +371,9 @@ export default class Color {
         .rgb()
 
     if (this.render === 'HEX')
-      return chroma([
-        ...this.simulateColorBlindRgb([...newColor]),
-        this.alpha,
-      ]).hex()
+      return chroma([...this.simulateColorBlindRgb(newColor), this.alpha]).hex()
 
-    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
+    return [...this.simulateColorBlindRgb(newColor), this.alpha]
   }
 
   hsluv = (): ColorFormat<typeof this.render> => {
@@ -425,7 +408,6 @@ export default class Color {
   }
 
   hsluva = (): ColorFormat<typeof this.render> => {
-    this.lightness = chroma(this.sourceColor).luminance() * 100
     const hsluv = new Hsluv()
 
     hsluv.rgb_r = this.sourceColor[0] / 255
@@ -451,12 +433,9 @@ export default class Color {
     ]
 
     if (this.render === 'HEX')
-      return chroma([
-        ...this.simulateColorBlindRgb([...newColor]),
-        this.alpha,
-      ]).hex()
+      return chroma([...this.simulateColorBlindRgb(newColor), this.alpha]).hex()
 
-    return [...this.simulateColorBlindRgb([...newColor]), this.alpha]
+    return [...this.simulateColorBlindRgb(newColor), this.alpha]
   }
 
   getHsluv = (): RgbComponent => {
@@ -536,7 +515,7 @@ export default class Color {
 
   simulateColorBlindRgb = (color: RgbComponent): RgbComponent => {
     const actions: ActionsList = {
-      NONE: () => color,
+      NONE: () => chroma(color).rgb(),
       PROTANOMALY: () =>
         applyColorMatrix(color, colorBlindMatrices.PROTANOMALY),
       PROTANOPIA: () => applyColorMatrix(color, colorBlindMatrices.PROTANOPIA),

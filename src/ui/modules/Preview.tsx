@@ -353,111 +353,122 @@ export default class Preview extends PureComponent<
     color: ColorConfiguration | SourceColorConfiguration,
     scale: number
   ): HexModel => {
-    const colorData = new Color({
-      sourceColor: [color.rgb.r * 255, color.rgb.g * 255, color.rgb.b * 255],
-      lightness: scale,
-      hueShifting: this.props.service === 'CREATE' ? 0 : color.hue?.shift,
-      chromaShifting:
-        this.props.service === 'CREATE'
-          ? this.props.shift.chroma
-          : color.chroma?.shift,
-      algorithmVersion: this.props.algorithmVersion,
-      visionSimulationMode: this.props.visionSimulationMode,
-      alpha:
-        'alpha' in color && color.alpha.isEnabled
-          ? parseFloat((scale / 100).toFixed(2))
-          : undefined,
-    })
-
     if ('alpha' in color && color.alpha.isEnabled) {
+      const foregroundColorData = new Color({
+        sourceColor: [color.rgb.r * 255, color.rgb.g * 255, color.rgb.b * 255],
+        alpha: parseFloat((scale / 100).toFixed(2)),
+        hueShifting: this.props.service === 'CREATE' ? 0 : color.hue?.shift,
+        chromaShifting:
+          this.props.service === 'CREATE'
+            ? this.props.shift.chroma
+            : color.chroma?.shift,
+        algorithmVersion: this.props.algorithmVersion,
+        visionSimulationMode: this.props.visionSimulationMode,
+      })
+
       const backgroundColorData = new Color({
         sourceColor: chroma(color.alpha.backgroundColor).rgb(),
         algorithmVersion: this.props.algorithmVersion,
         visionSimulationMode: this.props.visionSimulationMode,
-        alpha: 1,
       })
 
       switch (this.props.colorSpace) {
         case 'LCH':
           return this.props.areSourceColorsLocked
-            ? colorData.mixColorsHex(
-                colorData.setColorWithAlpha() as HexModel,
+            ? foregroundColorData.mixColorsHex(
+                foregroundColorData.setColorWithAlpha() as HexModel,
                 backgroundColorData.setColorWithAlpha() as HexModel
               )
-            : colorData.mixColorsHex(
-                colorData.lcha() as HexModel,
+            : foregroundColorData.mixColorsHex(
+                foregroundColorData.lcha() as HexModel,
                 backgroundColorData.lcha() as HexModel
               )
         case 'OKLCH':
           return this.props.areSourceColorsLocked
-            ? colorData.mixColorsHex(
-                colorData.setColorWithAlpha() as HexModel,
+            ? foregroundColorData.mixColorsHex(
+                foregroundColorData.setColorWithAlpha() as HexModel,
                 backgroundColorData.setColorWithAlpha() as HexModel
               )
-            : colorData.mixColorsHex(
-                colorData.oklcha() as HexModel,
+            : foregroundColorData.mixColorsHex(
+                foregroundColorData.oklcha() as HexModel,
                 backgroundColorData.oklcha() as HexModel
               )
         case 'LAB':
           return this.props.areSourceColorsLocked
-            ? colorData.mixColorsHex(
-                colorData.setColorWithAlpha() as HexModel,
+            ? foregroundColorData.mixColorsHex(
+                foregroundColorData.setColorWithAlpha() as HexModel,
                 backgroundColorData.setColorWithAlpha() as HexModel
               )
-            : colorData.mixColorsHex(
-                colorData.laba() as HexModel,
+            : foregroundColorData.mixColorsHex(
+                foregroundColorData.laba() as HexModel,
                 backgroundColorData.laba() as HexModel
               )
         case 'OKLAB':
           return this.props.areSourceColorsLocked
-            ? colorData.mixColorsHex(
-                colorData.setColorWithAlpha() as HexModel,
+            ? foregroundColorData.mixColorsHex(
+                foregroundColorData.setColorWithAlpha() as HexModel,
                 backgroundColorData.setColorWithAlpha() as HexModel
               )
-            : colorData.mixColorsHex(
-                colorData.oklaba() as HexModel,
+            : foregroundColorData.mixColorsHex(
+                foregroundColorData.oklaba() as HexModel,
                 backgroundColorData.oklaba() as HexModel
               )
         case 'HSL':
           return this.props.areSourceColorsLocked
-            ? colorData.mixColorsHex(
-                colorData.setColorWithAlpha() as HexModel,
+            ? foregroundColorData.mixColorsHex(
+                foregroundColorData.setColorWithAlpha() as HexModel,
                 backgroundColorData.setColorWithAlpha() as HexModel
               )
-            : colorData.mixColorsHex(
-                colorData.hsla() as HexModel,
+            : foregroundColorData.mixColorsHex(
+                foregroundColorData.hsla() as HexModel,
                 backgroundColorData.hsla() as HexModel
               )
         case 'HSLUV':
           return this.props.areSourceColorsLocked
-            ? colorData.mixColorsHex(
-                colorData.setColorWithAlpha() as HexModel,
+            ? foregroundColorData.mixColorsHex(
+                foregroundColorData.setColorWithAlpha() as HexModel,
                 backgroundColorData.setColorWithAlpha() as HexModel
               )
-            : colorData.mixColorsHex(
-                colorData.hsluva() as HexModel,
+            : foregroundColorData.mixColorsHex(
+                foregroundColorData.hsluva() as HexModel,
                 backgroundColorData.hsluva() as HexModel
               )
         default:
           return '#000000'
       }
-    }
+    } else {
+      const colorData = new Color({
+        sourceColor: [color.rgb.r * 255, color.rgb.g * 255, color.rgb.b * 255],
+        lightness: scale,
+        hueShifting: this.props.service === 'CREATE' ? 0 : color.hue?.shift,
+        chromaShifting:
+          this.props.service === 'CREATE'
+            ? this.props.shift.chroma
+            : color.chroma?.shift,
+        algorithmVersion: this.props.algorithmVersion,
+        visionSimulationMode: this.props.visionSimulationMode,
+        alpha:
+          'alpha' in color && color.alpha.isEnabled
+            ? parseFloat((scale / 100).toFixed(2))
+            : undefined,
+      })
 
-    switch (this.props.colorSpace) {
-      case 'LCH':
-        return colorData.lch() as HexModel
-      case 'OKLCH':
-        return colorData.oklch() as HexModel
-      case 'LAB':
-        return colorData.lab() as HexModel
-      case 'OKLAB':
-        return colorData.oklab() as HexModel
-      case 'HSL':
-        return colorData.hsl() as HexModel
-      case 'HSLUV':
-        return colorData.hsluv() as HexModel
-      default:
-        return '#000000'
+      switch (this.props.colorSpace) {
+        case 'LCH':
+          return colorData.lch() as HexModel
+        case 'OKLCH':
+          return colorData.oklch() as HexModel
+        case 'LAB':
+          return colorData.lab() as HexModel
+        case 'OKLAB':
+          return colorData.oklab() as HexModel
+        case 'HSL':
+          return colorData.hsl() as HexModel
+        case 'HSLUV':
+          return colorData.hsluv() as HexModel
+        default:
+          return '#000000'
+      }
     }
   }
 
