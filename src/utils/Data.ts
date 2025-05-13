@@ -134,7 +134,7 @@ export default class Data {
                     ? [
                         lightness,
                         foregroundColorData.setColorWithAlpha(),
-                        backgroundColorData.laba(),
+                        backgroundColorData.setColorWithAlpha(),
                       ]
                     : [
                         lightness,
@@ -162,8 +162,8 @@ export default class Data {
                       ]
                     : [
                         lightness,
-                        foregroundColorData.hsl(),
-                        backgroundColorData.hsl(),
+                        foregroundColorData.hsla(),
+                        backgroundColorData.hsla(),
                       ]
                 case 'HSLUV':
                   return this.base.areSourceColorsLocked
@@ -174,8 +174,8 @@ export default class Data {
                       ]
                     : [
                         lightness,
-                        foregroundColorData.hsluv(),
-                        backgroundColorData.hsluv(),
+                        foregroundColorData.hsluva(),
+                        backgroundColorData.hsluva(),
                       ]
                 default:
                   return [lightness, [0, 0, 0], [255, 255, 255]]
@@ -281,9 +281,20 @@ export default class Data {
               (key) => key === scaledColor[0][0]
             ) ?? '0'
           const newHsluv = new Hsluv()
-          newHsluv.rgb_r = Number(scaledColor[1][0]) / 255
-          newHsluv.rgb_g = Number(scaledColor[1][1]) / 255
-          newHsluv.rgb_b = Number(scaledColor[1][2]) / 255
+
+          if (
+            index === minDistanceIndex &&
+            this.base.areSourceColorsLocked &&
+            !color.alpha.isEnabled
+          ) {
+            newHsluv.rgb_r = Number(sourceColor[0]) / 255
+            newHsluv.rgb_g = Number(sourceColor[1]) / 255
+            newHsluv.rgb_b = Number(sourceColor[2]) / 255
+          } else {
+            newHsluv.rgb_r = Number(scaledColor[1][0]) / 255
+            newHsluv.rgb_g = Number(scaledColor[1][1]) / 255
+            newHsluv.rgb_b = Number(scaledColor[1][2]) / 255
+          }
           newHsluv.rgbToHsluv()
 
           paletteDataColorItem.shades.push({
@@ -292,35 +303,51 @@ export default class Data {
               color.alpha.isEnabled ? 'opacity' : 'lightness'
             }`,
             hex:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).hex()
                 : chroma(scaledColor[1] as RgbComponent).hex(),
             rgb:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).rgb()
                 : chroma(scaledColor[1] as RgbComponent).rgb(),
             gl:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).gl()
                 : chroma(scaledColor[1] as RgbComponent).gl(),
             lch:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).lch()
                 : chroma(scaledColor[1] as RgbComponent).lch(),
             oklch:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).oklch()
                 : chroma(scaledColor[1] as RgbComponent).oklch(),
             lab:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).lab()
                 : chroma(scaledColor[1] as RgbComponent).lab(),
             oklab:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).oklab()
                 : chroma(scaledColor[1] as RgbComponent).oklab(),
             hsl:
-              index === minDistanceIndex && this.base.areSourceColorsLocked
+              index === minDistanceIndex &&
+              this.base.areSourceColorsLocked &&
+              !color.alpha.isEnabled
                 ? chroma(sourceColor).hsl()
                 : chroma(scaledColor[1] as RgbComponent).hsl(),
             hsluv: [newHsluv.hsluv_h, newHsluv.hsluv_s, newHsluv.hsluv_l],
