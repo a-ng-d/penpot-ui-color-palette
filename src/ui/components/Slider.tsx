@@ -157,26 +157,14 @@ export default class Slider extends Component<SliderProps, SliderStates> {
     rangeWidth: number,
     update: (e: UpdateEvent) => void
   ) => {
-    let limitMin: number, limitMax: number
-    const gap: number = doMap(this.safeGap, 0, 100, 0, rangeWidth),
-      sliderPadding: number = parseFloat(
-        window.getComputedStyle(slider, null).getPropertyValue('padding-left')
-      )
+    const sliderPadding: number = parseFloat(
+      window.getComputedStyle(slider, null).getPropertyValue('padding-left')
+    )
     let offset = e.clientX - slider.offsetLeft - sliderPadding - shift
 
-    if (stop === range.firstChild) {
-      limitMin = 0
-      limitMax = (stop.nextElementSibling as HTMLElement).offsetLeft - gap
-    } else if (stop === range.lastChild) {
-      limitMin = (stop.previousElementSibling as HTMLElement).offsetLeft + gap
-      limitMax = rangeWidth
-    } else {
-      limitMin = (stop.previousElementSibling as HTMLElement).offsetLeft + gap
-      limitMax = (stop.nextElementSibling as HTMLElement).offsetLeft - gap
-    }
-
-    if (offset >= limitMax) offset = limitMax
-    else if (offset <= limitMin) offset = limitMin
+    if (stop === range.firstChild && offset <= 0) offset = 0
+    else if (stop === range.lastChild && offset >= rangeWidth)
+      offset = rangeWidth
 
     // Distribute stops horizontal spacing
     if (stop === range.firstChild && e.shiftKey)
@@ -239,7 +227,12 @@ export default class Slider extends Component<SliderProps, SliderStates> {
         isTooltipDisplay: Array(stops.length).fill(false),
       })
 
-    stop.style.left = doMap(offset, 0, rangeWidth, 0, 100).toFixed(1) + '%'
+    const newPosition = doMap(offset, 0, rangeWidth, 0, 100)
+    stop.style.left = newPosition.toFixed(1) + '%'
+
+    requestAnimationFrame(() => {
+      stop.focus()
+    })
 
     // Update lightness scale
     update('UPDATING')
@@ -255,6 +248,11 @@ export default class Slider extends Component<SliderProps, SliderStates> {
     document.onmouseup = null
     stop.onmouseup = null
     stop.style.zIndex = '1'
+
+    requestAnimationFrame(() => {
+      stop.focus()
+    })
+
     this.setState({
       isTooltipDisplay: Array(stops.length).fill(false),
     })
@@ -301,10 +299,18 @@ export default class Slider extends Component<SliderProps, SliderStates> {
       knob,
       isMeta,
       isCtrl,
-      this.safeGap,
+      this.props.range.min,
       this.props.range.max
     )
+
+    const knobId = knob.dataset.id
+
     this.props.onChange('SHIFTED', results)
+
+    requestAnimationFrame(() => {
+      const updatedKnob = document.querySelector(`[data-id="${knobId}"]`)
+      if (updatedKnob instanceof HTMLElement) updatedKnob.focus()
+    })
   }
 
   onShiftLeft = (knob: HTMLElement, isMeta: boolean, isCtrl: boolean) => {
@@ -313,10 +319,18 @@ export default class Slider extends Component<SliderProps, SliderStates> {
       knob,
       isMeta,
       isCtrl,
-      this.safeGap,
-      this.props.range.min
+      this.props.range.min,
+      this.props.range.max
     )
+
+    const knobId = knob.dataset.id
+
     this.props.onChange('SHIFTED', results)
+
+    requestAnimationFrame(() => {
+      const updatedKnob = document.querySelector(`[data-id="${knobId}"]`)
+      if (updatedKnob instanceof HTMLElement) updatedKnob.focus()
+    })
   }
 
   distributeStops = (
@@ -404,16 +418,8 @@ export default class Slider extends Component<SliderProps, SliderStates> {
                 0,
                 100
               )}
-              min={
-                original[index - 1] === undefined
-                  ? this.props.range.min.toString()
-                  : (original[index - 1][1] + this.safeGap).toString()
-              }
-              max={
-                original[index + 1] === undefined
-                  ? this.props.range.max.toString()
-                  : (original[index + 1][1] - this.safeGap).toString()
-              }
+              min={this.props.range.min.toString()}
+              max={this.props.range.max.toString()}
               helper={
                 index === 0 || index === original.length - 1
                   ? {
@@ -483,16 +489,8 @@ export default class Slider extends Component<SliderProps, SliderStates> {
                 0,
                 100
               )}
-              min={
-                original[index - 1] === undefined
-                  ? this.props.range.min.toString()
-                  : (original[index - 1][1] + this.safeGap).toString()
-              }
-              max={
-                original[index + 1] === undefined
-                  ? this.props.range.max.toString()
-                  : (original[index + 1][1] - this.safeGap).toString()
-              }
+              min={this.props.range.min.toString()}
+              max={this.props.range.max.toString()}
               helper={
                 index === 0 || index === original.length - 1
                   ? {
