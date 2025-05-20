@@ -40,7 +40,8 @@ export default class Documents {
   }
 
   makeDocuments = () => {
-    let x = 0
+    let x = penpot.viewport.center.x
+    const y = penpot.viewport.center.y
     const documents: Array<Board> = []
     const workingThemesData =
       this.data.themes.filter((theme) => theme.type === 'custom theme')
@@ -57,6 +58,7 @@ export default class Documents {
 
       x = x + 32 + document.width
       document.x = x
+      document.y = y
 
       documents.push(document)
     })
