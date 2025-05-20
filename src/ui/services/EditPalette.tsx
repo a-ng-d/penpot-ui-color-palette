@@ -39,11 +39,7 @@ import {
 } from '../../types/configurations'
 import { SourceColorEvent } from '../../types/events'
 import { ColorsMessage, ThemesMessage } from '../../types/messages'
-import {
-  ActionsList,
-  DispatchProcess,
-  TextColorsThemeHexModel,
-} from '../../types/models'
+import { ActionsList, TextColorsThemeHexModel } from '../../types/models'
 import doLightnessScale from '../../utils/doLightnessScale'
 import {
   trackActionEvent,
@@ -58,7 +54,6 @@ import Scale from '../contexts/Scale'
 import Settings from '../contexts/Settings'
 import Themes from '../contexts/Themes'
 import Actions from '../modules/Actions'
-import Dispatcher from '../modules/Dispatcher'
 import Preview from '../modules/Preview'
 
 interface EditPaletteProps extends BaseProps {
@@ -103,13 +98,9 @@ interface EditPaletteStates {
   isSecondaryLoading: boolean
 }
 
-export default class EditPalette extends PureComponent<
-  EditPaletteProps,
-  EditPaletteStates
-> {
+export default class EditPalette extends PureComponent<EditPaletteProps, EditPaletteStates> {
   private colorsMessage: ColorsMessage
   private themesMessage: ThemesMessage
-  private dispatch: { [key: string]: DispatchProcess }
   private contexts: Array<ContextItem>
   private themesRef: React.RefObject<Themes>
   private palette: typeof $palette
@@ -157,12 +148,6 @@ export default class EditPalette extends PureComponent<
       },
       isPrimaryLoading: false,
       isSecondaryLoading: false,
-    }
-    this.dispatch = {
-      colors: new Dispatcher(
-        () => parent.postMessage({ pluginMessage: this.colorsMessage }, '*'),
-        500
-      ) as DispatchProcess,
     }
     this.themesRef = React.createRef()
   }
@@ -266,7 +251,6 @@ export default class EditPalette extends PureComponent<
   shiftHandler = (feature?: string, state?: string, value?: number) => {
     const onReleaseStop = () => {
       setData()
-      this.dispatch.colors.on.status = false
 
       parent.postMessage({ pluginMessage: this.colorsMessage }, '*')
 
