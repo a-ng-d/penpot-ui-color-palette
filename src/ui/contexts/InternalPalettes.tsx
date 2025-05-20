@@ -3,6 +3,7 @@ import {
   Button,
   Dialog,
   List,
+  Menu,
   SemanticMessage,
   texts,
 } from '@a_ng_d/figmug-ui'
@@ -33,6 +34,11 @@ export default class InternalPalettes extends PureComponent<
     OPEN_PALETTE: new FeatureStatus({
       features: features,
       featureName: 'OPEN_PALETTE',
+      planStatus: planStatus,
+    }),
+    DUPLICATE_PALETTE: new FeatureStatus({
+      features: features,
+      featureName: 'DUPLICATE_PALETTE',
       planStatus: planStatus,
     }),
     DELETE_PALETTE: new FeatureStatus({
@@ -93,6 +99,18 @@ export default class InternalPalettes extends PureComponent<
     )
   }
 
+  onDuplicatePalette = (id: string) => {
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: 'DUPLICATE_PALETTE',
+          id: id,
+        },
+      },
+      '*'
+    )
+  }
+
   onDeletePalette = () => {
     this.setState({
       isDeleteDialogOpen: false,
@@ -109,7 +127,6 @@ export default class InternalPalettes extends PureComponent<
       },
       '*'
     )
-    parent.postMessage({ pluginMessage: { type: 'GET_PALETTES' } }, '*')
   }
 
   // Templates
@@ -202,33 +219,54 @@ export default class InternalPalettes extends PureComponent<
                     )}
                     actionsSlot={
                       <>
-                        <Feature
-                          isActive={InternalPalettes.features(
-                            this.props.planStatus
-                          ).OPEN_PALETTE.isActive()}
-                        >
-                          <Button
-                            type="icon"
-                            icon="trash"
-                            helper={{
+                        <Menu
+                          id="shortcuts-menu"
+                          icon="ellipses"
+                          options={[
+                            {
+                              label:
+                                this.props.locals.browse.actions
+                                  .duplicatePalette,
+                              type: 'OPTION',
+                              isActive: InternalPalettes.features(
+                                this.props.planStatus
+                              ).DUPLICATE_PALETTE.isActive(),
+                              isBlocked: InternalPalettes.features(
+                                this.props.planStatus
+                              ).DUPLICATE_PALETTE.isBlocked(),
+                              isNew: InternalPalettes.features(
+                                this.props.planStatus
+                              ).DUPLICATE_PALETTE.isNew(),
+                              action: () =>
+                                this.onDuplicatePalette(palette.meta.id),
+                            },
+                            {
                               label:
                                 this.props.locals.browse.actions.deletePalette,
-                            }}
-                            isBlocked={InternalPalettes.features(
-                              this.props.planStatus
-                            ).DELETE_PALETTE.isBlocked()}
-                            isNew={InternalPalettes.features(
-                              this.props.planStatus
-                            ).DELETE_PALETTE.isNew()}
-                            action={() =>
-                              this.setState({
-                                isDeleteDialogOpen: true,
-                                targetedPaletteId: palette.meta.id,
-                                targetedPaletteName: palette.base.name,
-                              })
-                            }
-                          />
-                        </Feature>
+                              type: 'OPTION',
+                              isActive: InternalPalettes.features(
+                                this.props.planStatus
+                              ).DELETE_PALETTE.isActive(),
+                              isBlocked: InternalPalettes.features(
+                                this.props.planStatus
+                              ).DELETE_PALETTE.isBlocked(),
+                              isNew: InternalPalettes.features(
+                                this.props.planStatus
+                              ).DELETE_PALETTE.isNew(),
+                              action: () =>
+                                this.setState({
+                                  isDeleteDialogOpen: true,
+                                  targetedPaletteId: palette.meta.id,
+                                  targetedPaletteName: palette.base.name,
+                                }),
+                            },
+                          ]}
+                          alignment="BOTTOM_RIGHT"
+                          helper={{
+                            label:
+                              this.props.locals.browse.actions.moreParameters,
+                          }}
+                        />
                         <Feature
                           isActive={InternalPalettes.features(
                             this.props.planStatus
@@ -249,7 +287,13 @@ export default class InternalPalettes extends PureComponent<
                       </>
                     }
                     complementSlot={
-                      <div className="preview__rows">
+                      <div
+                        style={{
+                          borderRadius: 'var(--size-border-radius)',
+                          overflow: 'hidden',
+                        }}
+                        className="preview__rows"
+                      >
                         {palette.data.themes[enabledThemeIndex].colors.map(
                           (color, index) => (
                             <div

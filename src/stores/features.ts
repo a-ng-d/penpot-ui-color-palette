@@ -74,7 +74,16 @@ export const featuresScheme: Array<
     isPro: false,
     isNew: false,
     type: 'ACTION',
-    service: ['BROWSE', 'EDIT'],
+    service: ['BROWSE'],
+  },
+  {
+    name: 'DUPLICATE_PALETTE',
+    description: 'Duplicate the palette',
+    isActive: true,
+    isPro: false,
+    isNew: false,
+    type: 'ACTION',
+    service: ['BROWSE'],
   },
   {
     name: 'DELETE_PALETTE',

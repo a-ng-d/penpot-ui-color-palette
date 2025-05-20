@@ -31,6 +31,8 @@ import createDocument from './creations/createDocument'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
 import updateDocument from './updates/updateDocument'
 import exportJsonDtcg from './exports/exportJsonDtcg'
+import createPaletteFromDuplication from './creations/createFromDuplication'
+import deletePalette from './creations/deletePalette'
 
 /*penpot.currentPage?.getPluginDataKeys().forEach((key) => {
   if (key.startsWith('palette_')) penpot.currentPage?.setPluginData(key, '')
@@ -197,8 +199,18 @@ const loadUI = async () => {
             data: JSON.parse(palette),
           })
       },
-      DELETE_PALETTE: () =>
-        penpot.currentPage?.setPluginData(`palette_${path.id}`, ''),
+      DUPLICATE_PALETTE: async () =>
+        await createPaletteFromDuplication(path.id)
+          .finally(async () => await getPalettesOnCurrentPage())
+          .catch((error) => {
+            throw error
+          }),
+      DELETE_PALETTE: async () =>
+        await deletePalette(path.id)
+          .finally(async () => await getPalettesOnCurrentPage())
+          .catch((error) => {
+            throw error
+          }),
       //
       GET_PRO_PLAN: async () => await getProPlan(),
       //

@@ -41,8 +41,10 @@
   "browse": {
     "actions": {
       "deletePalette": "Delete palette",
+      "duplicatePalette": "Duplicate palette",
       "editPalette": "Edit palette",
-      "new": "New UI Color Palette"
+      "new": "New UI Color Palette",
+      "moreParameters": "More parameters"
     },
     "deletePaletteDialog": {
       "cancel": "Cancel",
@@ -53,7 +55,8 @@
     "document": {
       "create": "Create from document",
       "open": "Open document"
-    }
+    },
+    "copy": "Copy of {$1}"
   },
   "colors": {
     "actions": {
