@@ -289,7 +289,7 @@ export default class InternalPalettes extends PureComponent<
                     complementSlot={
                       <div
                         style={{
-                          borderRadius: 'var(--size-border-radius)',
+                          borderRadius: 'var(--border-radius-med)',
                           overflow: 'hidden',
                         }}
                         className="preview__rows"
