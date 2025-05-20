@@ -216,7 +216,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
   }
 
   // Lifecycle
-  componentDidMount() {
+  componentDidMount = () => {
     this.unsubscribePalette = $palette.subscribe((value) => {
       this.scaleMessage.data = value as ExchangeConfiguration
       if (value.isThemeSwitched && this.state.isContrastMode) {
@@ -226,7 +226,7 @@ export default class Scale extends PureComponent<ScaleProps, ScaleStates> {
     })
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     if (this.unsubscribePalette) this.unsubscribePalette()
   }
 

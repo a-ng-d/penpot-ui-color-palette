@@ -52,13 +52,13 @@ export default class SyncPreferences extends PureComponent<
   }
 
   // Lifecycle
-  componentDidMount() {
+  componentDidMount = () => {
     this.subscribeStyles = $canStylesDeepSync.subscribe((value) => {
       this.setState({ canStylesDeepSync: value })
     })
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     if (this.subscribeStyles) this.subscribeStyles()
   }
 

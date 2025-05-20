@@ -46,10 +46,7 @@ interface OverviewStates {
   isColourLoversImportOpen: boolean
 }
 
-export default class Overview extends PureComponent<
-  OverviewProps,
-  OverviewStates
-> {
+export default class Overview extends PureComponent<OverviewProps, OverviewStates> {
   static features = (planStatus: PlanStatus) => ({
     SOURCE: new FeatureStatus({
       features: features,
@@ -112,7 +109,7 @@ export default class Overview extends PureComponent<
   }
 
   // Lifecycle
-  componentWillUnmount(): void {
+  componentWillUnmount = () => {
     this.setState({
       coolorsUrl: {
         value: '',
