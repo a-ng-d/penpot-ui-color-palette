@@ -84,7 +84,7 @@ export default class Themes extends PureComponent<ThemesProps> {
 
     const addTheme = () => {
       const hasAlreadyNewUITheme = this.props.themes.filter((color) =>
-        color.name.includes(this.props.locals.themes.new)
+        color.name.includes(this.props.locals.themes.actions.new)
       )
 
       this.themesMessage.data = this.props.themes.map((theme) => {
@@ -92,7 +92,7 @@ export default class Themes extends PureComponent<ThemesProps> {
         return theme
       })
       this.themesMessage.data.push({
-        name: `${this.props.locals.themes.new} ${hasAlreadyNewUITheme.length + 1}`,
+        name: `${this.props.locals.themes.actions.new} ${hasAlreadyNewUITheme.length + 1}`,
         description: '',
         scale: doLightnessScale(
           this.props.preset.scale,
@@ -291,14 +291,14 @@ export default class Themes extends PureComponent<ThemesProps> {
   // Direct Actions
   onAddTheme = () => {
     const hasAlreadyNewUITheme = this.props.themes.filter((color) =>
-      color.name.includes(this.props.locals.themes.new)
+      color.name.includes(this.props.locals.themes.actions.new)
     )
     this.themesMessage.data = this.props.themes.map((theme) => {
       theme.isEnabled = false
       return theme
     })
     this.themesMessage.data.push({
-      name: `${this.props.locals.themes.new} ${hasAlreadyNewUITheme.length + 1}`,
+      name: `${this.props.locals.themes.actions.new} ${hasAlreadyNewUITheme.length + 1}`,
       description: '',
       scale: doLightnessScale(
         this.props.preset.scale,
@@ -383,7 +383,7 @@ export default class Themes extends PureComponent<ThemesProps> {
                       type="icon"
                       icon="plus"
                       helper={{
-                        label: this.props.locals.themes.new,
+                        label: this.props.locals.themes.actions.new,
                       }}
                       isBlocked={Themes.features(
                         this.props.planStatus
@@ -459,7 +459,7 @@ export default class Themes extends PureComponent<ThemesProps> {
                     )}
                     <SortableList<ThemeConfiguration>
                       data={customThemes}
-                      primarySlot={customThemes.map((theme) => {
+                      primarySlot={customThemes.map((theme, index) => {
                         return (
                           <>
                             <Feature
@@ -490,7 +490,7 @@ export default class Themes extends PureComponent<ThemesProps> {
                             >
                               <div className="draggable-item__param">
                                 <FormItem
-                                  id="update-palette-background-color"
+                                  id={`update-palette-background-color-${index}`}
                                   label={
                                     this.props.locals.themes
                                       .paletteBackgroundColor.label
@@ -501,7 +501,7 @@ export default class Themes extends PureComponent<ThemesProps> {
                                   ).THEMES_PARAMS.isBlocked()}
                                 >
                                   <Input
-                                    id="update-palette-background-color"
+                                    id={`update-palette-background-color-${index}`}
                                     type="COLOR"
                                     value={theme.paletteBackground}
                                     feature="UPDATE_PALETTE_BACKGROUND"

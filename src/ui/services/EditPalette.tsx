@@ -428,7 +428,7 @@ export default class EditPalette extends PureComponent<EditPaletteProps, EditPal
         type: 'SEPARATOR',
       },
       {
-        label: 'Create a color theme',
+        label: this.props.locals.themes.callout.cta,
         feature: 'ADD_THEME',
         type: 'OPTION',
         isActive: EditPalette.features(this.props.planStatus).THEMES.isActive(),

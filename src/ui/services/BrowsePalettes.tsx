@@ -190,7 +190,7 @@ export default class BrowsePalettes extends PureComponent<
                 <Button
                   type="primary"
                   icon="plus"
-                  label={this.props.locals.browse.new}
+                  label={this.props.locals.browse.actions.new}
                   isBlocked={BrowsePalettes.features(
                     this.props.planStatus
                   ).CREATE_PALETTE.isBlocked()}

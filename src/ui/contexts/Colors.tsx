@@ -104,12 +104,12 @@ export default class Colors extends PureComponent<ColorsProps> {
 
     const addColor = () => {
       const hasAlreadyNewUIColor = this.props.colors.filter((color) =>
-        color.name.includes(this.props.locals.colors.new)
+        color.name.includes(this.props.locals.colors.actions.new)
       )
 
       this.colorsMessage.data = this.props.colors
       this.colorsMessage.data.push({
-        name: `${this.props.locals.colors.new} ${hasAlreadyNewUIColor.length + 1}`,
+        name: `${this.props.locals.colors.actions.actions.new} ${hasAlreadyNewUIColor.length + 1}`,
         description: '',
         rgb: {
           r: 0.53,
@@ -572,7 +572,7 @@ export default class Colors extends PureComponent<ColorsProps> {
                       icon="plus"
                       feature="ADD_COLOR"
                       helper={{
-                        label: this.props.locals.colors.new,
+                        label: this.props.locals.colors.actions.new,
                       }}
                       isBlocked={Colors.features(
                         this.props.planStatus

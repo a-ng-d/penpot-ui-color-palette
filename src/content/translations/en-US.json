@@ -11,8 +11,8 @@
     "addToFile": "Add to file",
     "addToSource": "Add to source",
     "colorThemesNumber": {
-      "several": "$1 color themes",
-      "single": "$1 color theme"
+      "several": "$1 color modes",
+      "single": "$1 color mode"
     },
     "createLocalStyles": "Sync with the local styles",
     "createPalette": "Save the UI Color Palette",
@@ -41,7 +41,8 @@
   "browse": {
     "actions": {
       "deletePalette": "Delete palette",
-      "editPalette": "Edit palette"
+      "editPalette": "Edit palette",
+      "new": "New UI Color Palette"
     },
     "deletePaletteDialog": {
       "cancel": "Cancel",
@@ -52,13 +53,13 @@
     "document": {
       "create": "Create from document",
       "open": "Open document"
-    },
-    "new": "New UI Color Palette"
+    }
   },
   "colors": {
     "actions": {
       "moreParameters": "More parameters",
-      "removeColor": "Remove color"
+      "removeColor": "Remove color",
+      "new": "New UI Color"
     },
     "backgroundColor": {
       "label": "Background"
@@ -77,7 +78,6 @@
       "label": "LCH"
     },
     "moreParameters": "$1 parameters",
-    "new": "New UI Color",
     "title": "Source colors",
     "alpha": {
       "label": "Alpha mode",
@@ -91,7 +91,7 @@
     "scale": "Scale",
     "settings": "Settings",
     "source": "Source",
-    "themes": "Themes"
+    "themes": "Modes"
   },
   "error": {
     "addToFile": "✕ The palette cannot be added",
@@ -188,7 +188,7 @@
       "single": "1 style removed"
     },
     "signOut": "☻ See you later",
-    "themesOnFree": "You cannot add or edit themes in the current plan",
+    "themesOnFree": "You cannot add or edit modes in the current plan",
     "updatedLocalStyles": {
       "none": "No style updated",
       "plural": "styles updated",
@@ -222,7 +222,7 @@
     "provider": "Provider: ",
     "sourceColors": "Source colors",
     "spotText": "Spot text",
-    "theme": "Theme: ",
+    "theme": "Mode: ",
     "unknown": "Unknown",
     "updatedAt": "Updated at: ",
     "visionSimulation": "Vision simulation: ",
@@ -469,9 +469,9 @@
     },
     "contrast": {
       "textColors": {
-        "textDarkColor": "Text dark color",
-        "textLightColor": "Text light color",
-        "textThemeColorsDescription": "The light and dark text colors serve as a reference to simulate contrast and obtain both WCAG 2.1 and APCA scores"
+        "textDarkColor": "Dark foreground color",
+        "textLightColor": "Light foreground color",
+        "textThemeColorsDescription": "The light and dark foreground colors serve as a reference to simulate contrast and obtain both WCAG 2.1 and APCA scores"
       },
       "title": "Contrast management"
     },
@@ -594,22 +594,22 @@
   "themes": {
     "actions": {
       "moreParameters": "More parameters",
-      "removeColor": "Remove theme"
+      "removeColor": "Remove mode",
+      "new": "New UI Mode"
     },
     "callout": {
-      "cta": "Create a color theme",
-      "message": "Create color themes to manage multiple color palettes within one single (e.g. light and dark modes)"
+      "cta": "Create a color mode",
+      "message": "Create color modes to manage multiple color palettes within one single (e.g. light and dark modes)"
     },
     "moreParameters": "$1 parameters",
-    "new": "New UI Theme",
     "paletteBackgroundColor": {
-      "label": "Palette background color"
+      "label": "Document background"
     },
     "switchTheme": {
       "defaultTheme": "None",
-      "label": "Theme"
+      "label": "Mode"
     },
-    "title": "Color themes"
+    "title": "Color modes"
   },
   "url": "www.ui-color-palette.com",
   "user": {
