@@ -19,13 +19,11 @@ import {
 import {
   AlgorithmVersionConfiguration,
   ColorSpaceConfiguration,
-  ExtractOfBaseConfiguration,
   LockedSourceColorsConfiguration,
   PresetConfiguration,
   ScaleConfiguration,
   ShiftConfiguration,
   SourceColorConfiguration,
-  ViewConfiguration,
   VisionSimulationModeConfiguration,
 } from '../../types/configurations'
 import { ActionsList, TextColorsThemeHexModel } from '../../types/models'
@@ -52,10 +50,8 @@ interface CreatePaletteProps extends BaseProps {
   areSourceColorsLocked: LockedSourceColorsConfiguration
   colorSpace: ColorSpaceConfiguration
   visionSimulationMode: VisionSimulationModeConfiguration
-  view: ViewConfiguration
   algorithmVersion: AlgorithmVersionConfiguration
   textColorsTheme: TextColorsThemeHexModel
-  palettesList: Array<ExtractOfBaseConfiguration>
   onChangeColorsFromImport: React.Dispatch<Partial<AppStates>>
   onChangeScale: React.Dispatch<Partial<AppStates>>
   onChangePreset: React.Dispatch<Partial<AppStates>>
