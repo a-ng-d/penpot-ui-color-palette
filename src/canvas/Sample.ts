@@ -290,7 +290,11 @@ export default class Sample {
 
     this.nodeColor.appendChild(propertyNode)
 
-    if (this.status.isClosestToRef || this.status.isLocked) {
+    if (
+      this.status.isClosestToRef ||
+      this.status.isLocked ||
+      this.status.isTransparent
+    ) {
       const statusNode = new Status({
         status: this.status,
         source: this.source
