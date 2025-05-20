@@ -43,7 +43,7 @@ export default class InternalPalettes extends PureComponent<
     }),
     DELETE_PALETTE: new FeatureStatus({
       features: features,
-      featureName: 'ACTIONS',
+      featureName: 'DELETE_PALETTE',
       planStatus: planStatus,
     }),
   })

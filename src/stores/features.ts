@@ -69,7 +69,7 @@ export const featuresScheme: Array<
   },
   {
     name: 'OPEN_PALETTE',
-    description: 'Open the palette',
+    description: 'Opens the palette',
     isActive: true,
     isPro: false,
     isNew: false,
@@ -78,7 +78,7 @@ export const featuresScheme: Array<
   },
   {
     name: 'DUPLICATE_PALETTE',
-    description: 'Duplicate the palette',
+    description: 'Duplicates the palette',
     isActive: true,
     isPro: false,
     isNew: false,
