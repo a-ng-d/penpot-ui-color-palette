@@ -89,7 +89,7 @@ export default class Onboarding extends PureComponent<
     if (this.state.status === 'LOADING')
       return (
         <Dialog
-          title={this.props.locals.pending.onboarding}
+          title={this.props.locals.shortcuts.onboarding}
           isLoading
           onClose={this.props.onCloseOnboarding}
         />
@@ -97,7 +97,7 @@ export default class Onboarding extends PureComponent<
     else if (this.state.status === 'ERROR')
       return (
         <Dialog
-          title={this.props.locals.error.generic}
+          title={this.props.locals.shortcuts.onboarding}
           isMessage
           onClose={this.props.onCloseOnboarding}
         >

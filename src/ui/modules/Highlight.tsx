@@ -65,7 +65,7 @@ export default class Highlight extends PureComponent<
     if (this.state.status === 'LOADING')
       return (
         <Dialog
-          title={this.props.locals.pending.announcements}
+          title={this.props.locals.shortcuts.news}
           isLoading
           onClose={this.props.onCloseHighlight}
         />
@@ -73,7 +73,7 @@ export default class Highlight extends PureComponent<
     else if (this.state.status === 'ERROR')
       return (
         <Dialog
-          title={this.props.locals.error.generic}
+          title={this.props.locals.shortcuts.news}
           isMessage
           onClose={this.props.onCloseHighlight}
         >
