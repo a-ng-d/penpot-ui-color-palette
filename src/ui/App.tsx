@@ -62,7 +62,6 @@ import Shortcuts from './modules/Shortcuts'
 import BrowsePalettes from './services/BrowsePalettes'
 import CreatePalette from './services/CreatePalette'
 import EditPalette from './services/EditPalette'
-import './stylesheets/app-components.css'
 import './stylesheets/app.css'
 import { locals } from '../content/locals'
 

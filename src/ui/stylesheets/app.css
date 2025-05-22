@@ -100,3 +100,17 @@ div.export-palette__preview textarea {
 .preview__cell--no-height {
   min-height: unset;
 }
+
+/* Box resizer grip */
+.box-resizer-grip {
+  display: flex;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  justify-content: end;
+  align-items: end;
+  cursor: nwse-resize;
+  padding: var(--size-xxxsmall);
+  width: var(--size-xxsmall);
+  height: var(--size-xsmall);
+}
