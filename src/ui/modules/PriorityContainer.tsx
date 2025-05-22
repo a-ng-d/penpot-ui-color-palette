@@ -418,6 +418,23 @@ export default class PriorityContainer extends PureComponent<
   }
 
   Store = () => {
+    const theme = document.documentElement.getAttribute('data-theme')
+    let padding
+
+    switch (theme) {
+      case 'penpot':
+        padding = 'var(--size-xxsmall) var(--size-small)'
+        break
+      case 'figma-ui2':
+        padding = 'var(--size-xxsmall)'
+        break
+      case 'figma-ui3':
+        padding = 'var(--size-xxsmall)'
+        break
+      default:
+        padding = 'var(--size-xxsmall)'
+    }
+
     return (
       <Feature
         isActive={PriorityContainer.features(
@@ -429,10 +446,14 @@ export default class PriorityContainer extends PureComponent<
           pin="RIGHT"
           onClose={this.props.onClose}
         >
-          <List padding="var(--size-xsmall)">
+          <List
+            padding={padding}
+            isFullWidth
+          >
             <Card
               src={isb}
               label={this.props.locals.store.isb.label}
+              shouldFill
             >
               <Button
                 type="primary"

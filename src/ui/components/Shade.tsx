@@ -58,8 +58,8 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
       leftSlot={
         <ColorChip
           color={color}
-          w="var(--size-xxsmall)"
-          h="var(--size-xxsmall)"
+          width="var(--size-xxsmall)"
+          height="var(--size-xxsmall)"
           isRounded
         />
       }
@@ -93,15 +93,15 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
       leftSlot={
         <ColorChip
           color={color}
-          w="var(--size-xxsmall)"
-          h="var(--size-xxsmall)"
+          width="var(--size-xxsmall)"
+          height="var(--size-xxsmall)"
           isRounded
         />
       }
       rightSlot={
         <span
           style={{
-            fontSize: this.theme === 'figma-ui3' ? '10px' : '11px',
+            fontSize: '10px',
           }}
         >
           {score <= 45 ? '✘' : '✔'}
@@ -124,6 +124,8 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
             justifyContent: 'center',
             alignItems: 'center',
             '--icon-picto-color': 'black',
+            '--icon-width': 'var(--size-xmsmall)',
+            '--icon-height': 'var(--size-xmsmall)',
           }}
         >
           <Icon
@@ -149,6 +151,8 @@ export default class Shade extends PureComponent<ShadeProps, ShadeStates> {
             justifyContent: 'center',
             alignItems: 'center',
             '--icon-picto-color': 'black',
+            '--icon-width': 'var(--size-xmsmall)',
+            '--icon-height': 'var(--size-xmsmall)',
           }}
         >
           <Icon
