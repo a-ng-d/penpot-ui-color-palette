@@ -3,6 +3,7 @@ import {
   Dropdown,
   DropdownOption,
   layouts,
+  MultipleSlider,
   SectionTitle,
   Select,
   SemanticMessage,
@@ -36,7 +37,6 @@ import doLightnessScale from '../../utils/doLightnessScale'
 import { trackScaleManagementEvent } from '../../utils/eventsTracker'
 import type { AppStates } from '../App'
 import Feature from '../components/Feature'
-import Slider from '../components/Slider'
 
 interface ScaleProps extends BaseProps {
   service: Service
@@ -44,7 +44,7 @@ interface ScaleProps extends BaseProps {
   preset: PresetConfiguration
   namingConvention: NamingConvention
   distributionEasing: Easing
-  scale?: ScaleConfiguration
+  scale: ScaleConfiguration
   shift: ShiftConfiguration
   textColorsTheme: TextColorsThemeHexModel
   onChangePreset?: React.Dispatch<Partial<AppStates>>
@@ -137,8 +137,10 @@ export default class ScaleLightnessChroma extends PureComponent<ScaleProps> {
   lightnessHandler = (
     state: string,
     results: {
-      scale: ScaleConfiguration
-      preset?: PresetConfiguration
+      scale: Record<string, number>
+      stops?: Array<number>
+      min?: number
+      max?: number
     },
     feature?: string
   ) => {
@@ -152,8 +154,17 @@ export default class ScaleLightnessChroma extends PureComponent<ScaleProps> {
 
     const onChangeStop = () => {
       this.palette.setKey('scale', results.scale)
-      if (results.preset !== undefined)
-        this.palette.setKey('preset', results.preset)
+      if (
+        results.stops !== undefined &&
+        results.min !== undefined &&
+        results.max !== undefined
+      )
+        this.palette.setKey('preset', {
+          ...this.palette.get().preset,
+          scale: results.stops,
+          min: results.min,
+          max: results.max,
+        })
 
       const lightForegroundRatio = {} as ScaleConfiguration
       const darkForegroundRatio = {} as ScaleConfiguration
@@ -896,11 +907,14 @@ export default class ScaleLightnessChroma extends PureComponent<ScaleProps> {
             this.props.planStatus
           ).SCALE_CONFIGURATION.isActive()}
         >
-          <Slider
+          <MultipleSlider
             {...this.props}
             type="EDIT"
-            presetName={this.props.preset.name}
-            stops={this.props.preset.scale}
+            stops={{
+              list: this.props.preset.scale,
+              min: Infinity,
+              max: Infinity,
+            }}
             range={{
               min: 0,
               max: 100,
@@ -908,6 +922,9 @@ export default class ScaleLightnessChroma extends PureComponent<ScaleProps> {
             colors={{
               min: 'black',
               max: 'white',
+            }}
+            tips={{
+              minMax: this.props.locals.scale.tips.distributeAsTooltip,
             }}
             isBlocked={ScaleLightnessChroma.features(
               this.props.planStatus
@@ -1034,18 +1051,25 @@ export default class ScaleLightnessChroma extends PureComponent<ScaleProps> {
           ).SCALE_CONFIGURATION.isActive()}
         >
           {this.props.preset.id === 'CUSTOM' ? (
-            <Slider
+            <MultipleSlider
               {...this.props}
               type="FULLY_EDIT"
-              presetName={this.props.preset.name}
-              stops={this.props.preset.scale}
+              stops={{
+                list: this.props.preset.scale,
+                min: 2,
+                max: 24,
+              }}
               range={{
                 min: 0,
                 max: 100,
+                step: 0.1,
               }}
               colors={{
                 min: 'black',
                 max: 'white',
+              }}
+              tips={{
+                minMax: this.props.locals.scale.tips.distributeAsTooltip,
               }}
               isBlocked={ScaleLightnessChroma.features(
                 this.props.planStatus
@@ -1056,11 +1080,14 @@ export default class ScaleLightnessChroma extends PureComponent<ScaleProps> {
               onChange={this.lightnessHandler}
             />
           ) : (
-            <Slider
+            <MultipleSlider
               {...this.props}
               type="EDIT"
-              presetName={this.props.preset.name}
-              stops={this.props.preset.scale}
+              stops={{
+                list: this.props.preset.scale,
+                min: Infinity,
+                max: Infinity,
+              }}
               range={{
                 min: 0,
                 max: 100,
@@ -1068,6 +1095,9 @@ export default class ScaleLightnessChroma extends PureComponent<ScaleProps> {
               colors={{
                 min: 'black',
                 max: 'white',
+              }}
+              tips={{
+                minMax: this.props.locals.scale.tips.distributeAsTooltip,
               }}
               isBlocked={ScaleLightnessChroma.features(
                 this.props.planStatus

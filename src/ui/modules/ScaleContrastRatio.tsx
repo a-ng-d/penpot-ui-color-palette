@@ -1,4 +1,10 @@
-import { layouts, SectionTitle, Select, SimpleItem } from '@a_ng_d/figmug-ui'
+import {
+  layouts,
+  MultipleSlider,
+  SectionTitle,
+  Select,
+  SimpleItem,
+} from '@a_ng_d/figmug-ui'
 import { doClassnames, FeatureStatus } from '@a_ng_d/figmug-utils'
 import { PureComponent } from 'preact/compat'
 import React from 'react'
@@ -14,14 +20,12 @@ import { ScaleMessage } from '../../types/messages'
 import { ActionsList, TextColorsThemeHexModel } from '../../types/models'
 import Contrast from '../../utils/Contrast'
 import Feature from '../components/Feature'
-import Slider from '../components/Slider'
 
 interface ScaleProps extends BaseProps {
   service: Service
   id: string
-  presetName: string
-  stops: Array<number>
-  scale?: ScaleConfiguration
+  preset: PresetConfiguration
+  scale: ScaleConfiguration
   ratioLightForeground: ScaleConfiguration
   ratioDarkForeground: ScaleConfiguration
   textColorsTheme: TextColorsThemeHexModel
@@ -36,10 +40,7 @@ interface ScaleStates {
   ratioDarkForeground: ScaleConfiguration
 }
 
-export default class ScaleContrastRatio extends PureComponent<
-  ScaleProps,
-  ScaleStates
-> {
+export default class ScaleContrastRatio extends PureComponent<ScaleProps, ScaleStates> {
   private scaleMessage: ScaleMessage
   private unsubscribePalette: (() => void) | undefined
   private palette: typeof $palette
@@ -58,6 +59,7 @@ export default class ScaleContrastRatio extends PureComponent<
 
   constructor(props: ScaleProps) {
     super(props)
+    console.log('ScaleContrastRatio', props)
     this.palette = $palette
     this.scaleMessage = {
       type: 'UPDATE_SCALE',
@@ -90,8 +92,10 @@ export default class ScaleContrastRatio extends PureComponent<
   contrastLightForegroundHandler = (
     state: string,
     results: {
-      scale: ScaleConfiguration
-      preset?: PresetConfiguration
+      scale: Record<string, number>
+      stops?: Array<number>
+      min?: number
+      max?: number
     },
     feature?: string
   ) => {
@@ -125,8 +129,6 @@ export default class ScaleContrastRatio extends PureComponent<
       })
 
       this.palette.setKey('scale', scale)
-      if (results.preset !== undefined)
-        this.palette.setKey('preset', results.preset)
 
       this.setState({
         ratioLightForeground: results.scale,
@@ -209,8 +211,10 @@ export default class ScaleContrastRatio extends PureComponent<
   contrastDarkForegroundHandler = (
     state: string,
     results: {
-      scale: ScaleConfiguration
-      preset?: PresetConfiguration
+      scale: Record<string, number>
+      stops?: Array<number>
+      min?: number
+      max?: number
     },
     feature?: string
   ) => {
@@ -244,8 +248,6 @@ export default class ScaleContrastRatio extends PureComponent<
       })
 
       this.palette.setKey('scale', scale)
-      if (results.preset !== undefined)
-        this.palette.setKey('preset', results.preset)
 
       this.setState({
         ratioDarkForeground: results.scale,
@@ -411,10 +413,15 @@ export default class ScaleContrastRatio extends PureComponent<
             isListItem={false}
           />
         </div>
-        <Slider
+        <MultipleSlider
           {...this.props}
           type="EDIT"
           scale={this.state.ratioLightForeground}
+          stops={{
+            list: this.props.preset.scale,
+            min: Infinity,
+            max: Infinity,
+          }}
           range={{
             min: 0,
             max: 21,
@@ -422,6 +429,9 @@ export default class ScaleContrastRatio extends PureComponent<
           colors={{
             min: this.props.textColorsTheme.lightColor,
             max: this.props.textColorsTheme.lightColor,
+          }}
+          tips={{
+            minMax: this.props.locals.scale.tips.distributeAsTooltip,
           }}
           isBlocked={ScaleContrastRatio.features(
             this.props.planStatus
@@ -431,10 +441,15 @@ export default class ScaleContrastRatio extends PureComponent<
           ).SCALE_CONTRAST_RATIO.isNew()}
           onChange={this.contrastLightForegroundHandler}
         />
-        <Slider
+        <MultipleSlider
           {...this.props}
           type="EDIT"
           scale={this.state.ratioDarkForeground}
+          stops={{
+            list: this.props.preset.scale,
+            min: Infinity,
+            max: Infinity,
+          }}
           range={{
             min: 0,
             max: 21,
@@ -442,6 +457,9 @@ export default class ScaleContrastRatio extends PureComponent<
           colors={{
             min: this.props.textColorsTheme.darkColor,
             max: this.props.textColorsTheme.darkColor,
+          }}
+          tips={{
+            minMax: this.props.locals.scale.tips.distributeAsTooltip,
           }}
           isBlocked={ScaleContrastRatio.features(
             this.props.planStatus
