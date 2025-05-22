@@ -256,7 +256,6 @@ export default class Properties {
     const nodeWCAGLightProp = new Tag({
         name: '_wcag21-light',
         content: wcagLightContrast,
-        isCompact: true,
       }).makeNodeTagwithIndicator(chroma(this.lightTextColor).gl()),
       nodeWCAGLightScore = new Tag({
         name: '_wcag21-light-score',
@@ -269,7 +268,6 @@ export default class Properties {
       nodeWCAGDarkProp = new Tag({
         name: '_wcag21-dark',
         content: wcagDarkContrast,
-        isCompact: true,
       }).makeNodeTagwithIndicator(chroma(this.darkTextColor).gl()),
       nodeWCAGDarkScore = new Tag({
         name: '_wcag21-dark-score',
@@ -297,7 +295,6 @@ export default class Properties {
     const nodeAPCALightProp = new Tag({
         name: '_apca-light',
         content: `Lc ${apcaLightContrast}`,
-        isCompact: true,
       }).makeNodeTagwithIndicator(chroma(this.lightTextColor).gl()),
       nodeAPCALightScore = new Tag({
         name: '_apca-light-score',
@@ -310,7 +307,6 @@ export default class Properties {
       nodeAPCADarkProp = new Tag({
         name: '_apca-dark',
         content: `Lc ${apcaDarkContrast}`,
-        isCompact: true,
       }).makeNodeTagwithIndicator(chroma(this.darkTextColor).gl()),
       nodeAPCADarkScore = new Tag({
         name: '_apca-dark-score',
@@ -446,7 +442,6 @@ export default class Properties {
     const nodeWCAGLightProp = new Tag({
         name: '_wcag21-light',
         content: wcagLightContrast,
-        isCompact: true,
       }).makeNodeTagwithIndicator(chroma(this.lightTextColor).gl()),
       nodeWCAGLightScore = new Tag({
         name: '_wcag21-light-score',
@@ -459,7 +454,6 @@ export default class Properties {
       nodeWCAGDarkProp = new Tag({
         name: '_wcag21-dark',
         content: wcagDarkContrast,
-        isCompact: true,
       }).makeNodeTagwithIndicator(chroma(this.darkTextColor).gl()),
       nodeWCAGDarkScore = new Tag({
         name: '_wcag21-dark-score',
@@ -519,7 +513,6 @@ export default class Properties {
     const nodeAPCALightProp = new Tag({
         name: '_apca-light',
         content: `Lc ${apcaLightContrast}`,
-        isCompact: true,
       }).makeNodeTagwithIndicator(chroma(this.lightTextColor).gl()),
       nodeAPCALightScore = new Tag({
         name: '_apca-light-score',
@@ -532,7 +525,6 @@ export default class Properties {
       nodeAPCADarkProp = new Tag({
         name: '_apca-dark',
         content: `Lc ${apcaDarkContrast}`,
-        isCompact: true,
       }).makeNodeTagwithIndicator(chroma(this.darkTextColor).gl()),
       nodeAPCADarkScore = new Tag({
         name: '_apca-dark-score',

@@ -11,7 +11,6 @@ export default class Tag {
     rgb: RgbModel
     alpha: number
   }
-  private isCompact: boolean
   private nodeTag: Board | null
   private nodeTagWithAvatar: Board | null
   private nodeTagwithIndicator: Board | null
@@ -31,7 +30,6 @@ export default class Tag {
       },
       alpha: 0.5,
     },
-    isCompact = false,
     url = null,
   }: {
     name: string
@@ -41,7 +39,6 @@ export default class Tag {
       rgb: RgbModel
       alpha: number
     }
-    isCompact?: boolean
     url?: string | null
   }) {
     this.name = name
@@ -49,7 +46,6 @@ export default class Tag {
     this.fontSize = fontSize
     this.url = url
     this.backgroundColor = backgroundColor
-    this.isCompact = isCompact
     this.nodeTag = null
     this.nodeTagwithIndicator = null
     this.nodeTagWithAvatar = null
@@ -91,9 +87,8 @@ export default class Tag {
     flex.verticalSizing = 'fit-content'
     flex.columnGap = 4
     flex.alignItems = 'center'
-    flex.rightPadding = this.isCompact ? 2 : 8
-    flex.leftPadding = 8
-    flex.verticalPadding = this.isCompact ? 2 : 4
+    flex.horizontalPadding = 8
+    flex.verticalPadding = 4
 
     // Insert
     const textNode = this.makeNodeText()
@@ -135,9 +130,9 @@ export default class Tag {
     flex.verticalSizing = 'fit-content'
     flex.columnGap = 4
     flex.alignItems = 'center'
-    flex.rightPadding = this.isCompact ? 2 : 8
+    flex.rightPadding = 2
     flex.leftPadding = 8
-    flex.verticalPadding = this.isCompact ? 2 : 4
+    flex.verticalPadding = 2
 
     // Insert
     this.nodeTagwithIndicator.appendChild(
@@ -181,8 +176,8 @@ export default class Tag {
     flex.horizontalSizing = 'fit-content'
     flex.verticalSizing = 'fit-content'
     flex.columnGap = 8
-    flex.horizontalPadding = this.isCompact ? 4 : 8
-    flex.verticalPadding = this.isCompact ? 2 : 4
+    flex.horizontalPadding = 4
+    flex.verticalPadding = 4
 
     // Insert
     const textNode = this.makeNodeText()
@@ -203,13 +198,6 @@ export default class Tag {
       this.nodeText.fontWeight = '500'
       this.nodeText.lineHeight = '1'
       this.nodeText.align = 'center'
-      /*if (this.url !== null) {
-      this.nodeText.setRangeHyperlink(0, this.content.length, {
-        type: "URL",
-        value: this.url,
-      });
-      this.nodeText.setRangeTextDecoration(0, this.content.length, "UNDERLINE");
-    }*/
       this.nodeText.fills = [
         {
           fillColor: '#000',
