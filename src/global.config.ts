@@ -42,7 +42,7 @@ const globalConfig: Config = {
       ? 'http://localhost:3000'
       : (import.meta.env.VITE_AUTH_URL as string),
     storeApiUrl: import.meta.env.VITE_LEMONSQUEEZY_URL as string,
-    platformUrl: window.location.origin,
+    platformUrl: '*',
     uiUrl: isDev
       ? 'http://localhost:4400'
       : 'https://figma.ui-color-palette.com',

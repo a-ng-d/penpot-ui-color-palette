@@ -1,10 +1,10 @@
-import { uid } from 'uid'
-
-import { HexModel } from '@a_ng_d/figmug-ui'
+import {
+  HexModel,
+  SourceColorConfiguration,
+} from '@a_ng_d/utils-ui-color-palette'
 import { Board, Fill, Shape } from '@penpot/plugin-types'
 import chroma from 'chroma-js'
-import { SourceColorConfiguration } from '../types/configurations'
-import { ActionsList } from '../types/models'
+import { uid } from 'uid'
 
 export let currentSelection: Array<Shape> = []
 export let previousSelection: Array<Shape> = []
@@ -21,7 +21,7 @@ const processSelection = () => {
 
   const document = selection[0] as Board
   const selectionHandler = (state: string) => {
-    const actions: ActionsList = {
+    const actions: { [key: string]: () => void } = {
       DOCUMENT_SELECTED: async () => {
         penpot.ui.sendMessage({
           type: 'DOCUMENT_SELECTED',
