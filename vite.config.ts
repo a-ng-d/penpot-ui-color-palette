@@ -9,7 +9,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const isDev = mode === 'development'
   const isPlugin = process.env.IS_PLUGIN === 'true'
-  const isHot = process.env.IS_HOT === 'true'
 
   return {
     plugins: [
@@ -49,7 +48,6 @@ export default defineConfig(({ mode }) => {
       sourcemap: isDev,
       minify: !isDev,
       outDir: 'dist',
-      watch: isHot ? {} : null,
       emptyOutDir: false,
       ...(isPlugin
         ? {
