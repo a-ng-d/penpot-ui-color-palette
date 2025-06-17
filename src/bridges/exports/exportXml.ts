@@ -1,7 +1,7 @@
 import { Case } from '@a_ng_d/figmug-utils'
-import { locals } from '../../content/locals'
-import { PaletteData } from '../../types/data'
+import { Data, PaletteData } from '@a_ng_d/utils-ui-color-palette'
 import chroma from 'chroma-js'
+import { locales } from '../../content/locales'
 
 const exportXml = (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
@@ -10,13 +10,15 @@ const exportXml = (id: string) => {
     return penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_XML',
       data: {
-        id: penpot.currentUser.id,
+        id: '',
         context: 'ANDROID_XML',
-        code: locals.get().error.export,
+        code: locales.get().error.export,
       },
     })
 
-  const paletteData: PaletteData = JSON.parse(rawPalette).data,
+  const paletteData: PaletteData = new Data(
+      JSON.parse(rawPalette)
+    ).makePaletteData(),
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -58,10 +60,10 @@ const exportXml = (id: string) => {
 
   resources.pop()
 
-  penpot.ui.sendMessage({
+  return penpot.ui.sendMessage({
     type: 'EXPORT_PALETTE_XML',
     data: {
-      id: penpot.currentUser.id,
+      id: '',
       context: 'ANDROID_XML',
       code: `<?xml version="1.0" encoding="utf-8"?>\n<resources>\n  ${resources.join(
         '\n  '

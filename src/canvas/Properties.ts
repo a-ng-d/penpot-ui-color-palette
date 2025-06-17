@@ -1,24 +1,25 @@
-import { HexModel } from '@a_ng_d/figmug-ui'
-import chroma from 'chroma-js'
-import { Board } from '@penpot/plugin-types'
-import { locals } from '../content/locals'
 import {
+  Channel,
+  Color,
   ColorSpaceConfiguration,
+  Contrast,
+  HexModel,
+  TextColorsThemeConfiguration,
   VisionSimulationModeConfiguration,
-} from '../types/configurations'
-import { RgbComponent, TextColorsThemeHexModel } from '../types/models'
-import Color from '../utils/Color'
-import Contrast from '../utils/Contrast'
+} from '@a_ng_d/utils-ui-color-palette'
+import { Board } from '@penpot/plugin-types'
+import chroma from 'chroma-js'
+import { locales } from '../content/locales'
 import Tag from './Tag'
 
 export default class Properties {
   private name: string
-  private rgb: RgbComponent
+  private rgb: Channel
   private alpha?: number
-  private mixedColor?: RgbComponent
+  private mixedColor?: Channel
   private colorSpace: ColorSpaceConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
-  private textColorsTheme: TextColorsThemeHexModel
+  private textColorsTheme: TextColorsThemeConfiguration<'HEX'>
   private hex: HexModel
   private lch: Array<number>
   private oklch: Array<number>
@@ -26,8 +27,8 @@ export default class Properties {
   private oklab: Array<number>
   private hsl: Array<number>
   private hsluv: Array<number>
-  private lightTextColor: RgbComponent
-  private darkTextColor: RgbComponent
+  private lightTextColor: Channel
+  private darkTextColor: Channel
   private lightTextColorContrast: Contrast
   private darkTextColorContrast: Contrast
   private nodeTopProps: Board | null
@@ -52,12 +53,12 @@ export default class Properties {
     textColorsTheme,
   }: {
     name: string
-    rgb: RgbComponent
+    rgb: Channel
     alpha?: number
-    mixedColor?: RgbComponent
+    mixedColor?: Channel
     colorSpace: ColorSpaceConfiguration
     visionSimulationMode: VisionSimulationModeConfiguration
-    textColorsTheme: TextColorsThemeHexModel
+    textColorsTheme: TextColorsThemeConfiguration<'HEX'>
   }) {
     this.name = name
     this.rgb = rgb
@@ -79,11 +80,11 @@ export default class Properties {
     this.lightTextColor = new Color({
       sourceColor: chroma(this.textColorsTheme.lightColor).rgb(),
       visionSimulationMode: this.visionSimulationMode,
-    }).setColor() as RgbComponent
+    }).setColor() as Channel
     this.darkTextColor = new Color({
       sourceColor: chroma(this.textColorsTheme.darkColor).rgb(),
       visionSimulationMode: this.visionSimulationMode,
-    }).setColor() as RgbComponent
+    }).setColor() as Channel
     this.lightTextColorContrast = new Contrast({
       backgroundColor: this.alpha !== undefined ? this.mixedColor : this.rgb,
       textColor: chroma(this.lightTextColor).hex(),
@@ -391,7 +392,7 @@ export default class Properties {
     this.nodeDetailedBaseProps.appendChild(
       new Tag({
         name: '_title',
-        content: locals.get().paletteProperties.base,
+        content: locales.get().paletteProperties.base,
         fontSize: 10,
       }).makeNodeTag()
     )
@@ -470,7 +471,7 @@ export default class Properties {
     this.nodeDetailedWCAGScoresProps.appendChild(
       new Tag({
         name: '_title',
-        content: locals.get().paletteProperties.wcag,
+        content: locales.get().paletteProperties.wcag,
         fontSize: 10,
       }).makeNodeTag()
     )
@@ -541,7 +542,7 @@ export default class Properties {
     this.nodeDetailedAPCAScoresProps.appendChild(
       new Tag({
         name: '_title',
-        content: locals.get().paletteProperties.apca,
+        content: locales.get().paletteProperties.apca,
         fontSize: 10,
       }).makeNodeTag()
     )
@@ -550,7 +551,7 @@ export default class Properties {
         nodeAPCALightProp,
         new Tag({
           name: '_minimum-font-sizes',
-          content: locals.get().paletteProperties.fontSize,
+          content: locales.get().paletteProperties.fontSize,
         }).makeNodeTag(),
         new Tag({
           name: '_200-light',
@@ -581,7 +582,7 @@ export default class Properties {
         nodeAPCADarkProp,
         new Tag({
           name: '_minimum-font-sizes',
-          content: locals.get().paletteProperties.fontSize,
+          content: locales.get().paletteProperties.fontSize,
         }).makeNodeTag(),
         new Tag({
           name: '_200-dark',

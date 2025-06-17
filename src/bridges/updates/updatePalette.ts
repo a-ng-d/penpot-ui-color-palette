@@ -1,8 +1,15 @@
-import { FullConfiguration } from '../../types/configurations'
+import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { PaletteMessage } from '../../types/messages'
-import Data from '../../utils/Data'
 
-const updatePalette = async (msg: PaletteMessage) => {
+const updatePalette = async ({
+  msg,
+  isAlreadyUpdated = false,
+  shouldLoadPalette = true,
+}: {
+  msg: PaletteMessage
+  isAlreadyUpdated?: boolean
+  shouldLoadPalette?: boolean
+}) => {
   const now = new Date().toISOString()
   const palette: FullConfiguration = JSON.parse(
     penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
@@ -23,15 +30,21 @@ const updatePalette = async (msg: PaletteMessage) => {
     }
   })
 
-  palette.meta.dates.updatedAt = now
-  penpot.ui.sendMessage({
-    type: 'UPDATE_PALETTE_DATE',
-    data: now,
-  })
+  if (!isAlreadyUpdated) {
+    palette.meta.dates.updatedAt = now
+    penpot.ui.sendMessage({
+      type: 'UPDATE_PALETTE_DATE',
+      data: now,
+    })
+  }
 
-  palette.data = new Data(palette).makePaletteData(palette.data)
+  if (shouldLoadPalette)
+    penpot.ui.sendMessage({
+      type: 'LOAD_PALETTE',
+      data: palette,
+    })
 
-  penpot.currentPage?.setPluginData(
+  return penpot.currentPage?.setPluginData(
     `palette_${msg.id}`,
     JSON.stringify(palette)
   )

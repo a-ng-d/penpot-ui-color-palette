@@ -1,21 +1,17 @@
-import { uid } from 'uid'
-import { locals } from '../../content/locals'
 import {
   ColorConfiguration,
-  MetaConfiguration,
+  Data,
+  ExchangeConfiguration,
   SourceColorConfiguration,
   ThemeConfiguration,
-  ExchangeConfiguration,
-} from '../../types/configurations'
-import Data from '../../utils/Data'
+} from '@a_ng_d/utils-ui-color-palette'
+import { uid } from 'uid'
+import { locales } from '../../content/locales'
 
 interface Msg {
   data: {
     sourceColors: Array<SourceColorConfiguration>
     exchange: ExchangeConfiguration
-    themes?: Array<ThemeConfiguration>
-    isRemote?: boolean
-    paletteMeta?: MetaConfiguration
   }
 }
 
@@ -49,7 +45,7 @@ const createPalette = async (msg: Msg) => {
 
   const themes: Array<ThemeConfiguration> = [
     {
-      name: locals.get().themes.switchTheme.defaultTheme,
+      name: locales.get().themes.switchTheme.defaultTheme,
       description: '',
       scale: msg.data.exchange.scale,
       paletteBackground: '#FFFFFF',
@@ -60,6 +56,8 @@ const createPalette = async (msg: Msg) => {
       type: 'default theme',
     },
   ]
+
+  const now = new Date().toISOString()
 
   const palette = new Data({
     base: {
@@ -76,16 +74,15 @@ const createPalette = async (msg: Msg) => {
     meta: {
       id: uid(),
       dates: {
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: now,
+        updatedAt: now,
         publishedAt: '',
+        openedAt: now,
       },
       creatorIdentity: {
-        creatorId: msg.data.paletteMeta?.creatorIdentity?.creatorId ?? '',
-        creatorFullName:
-          msg.data.paletteMeta?.creatorIdentity?.creatorFullName ?? '',
-        creatorAvatar:
-          msg.data.paletteMeta?.creatorIdentity?.creatorAvatar ?? '',
+        creatorId: '',
+        creatorFullName: '',
+        creatorAvatar: '',
       },
       publicationStatus: {
         isShared: false,
@@ -94,12 +91,15 @@ const createPalette = async (msg: Msg) => {
     },
   }).makePaletteFullData()
 
-  penpot.ui.sendMessage({
+  penpot.currentPage?.setPluginData(
+    `palette_${palette.meta.id}`,
+    JSON.stringify(palette)
+  )
+
+  return penpot.ui.sendMessage({
     type: 'LOAD_PALETTE',
     data: palette,
   })
-
-  return true
 }
 
 export default createPalette

@@ -1,6 +1,6 @@
 import { Case } from '@a_ng_d/figmug-utils'
-import { locals } from '../../content/locals'
-import { PaletteData } from '../../types/data'
+import { Data, PaletteData } from '@a_ng_d/utils-ui-color-palette'
+import { locales } from '../../content/locales'
 
 const exportUIKit = (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
@@ -9,13 +9,15 @@ const exportUIKit = (id: string) => {
     return penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_UIKIT',
       data: {
-        id: penpot.currentUser.id,
+        id: '',
         context: 'APPLE_UIKIT',
-        code: locals.get().error.export,
+        code: locales.get().error.export,
       },
     })
 
-  const paletteData: PaletteData = JSON.parse(rawPalette).data,
+  const paletteData: PaletteData = new Data(
+      JSON.parse(rawPalette)
+    ).makePaletteData(),
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -60,10 +62,10 @@ const exportUIKit = (id: string) => {
     else swift.push(`${UIColors.join('\n  ')}`)
   })
 
-  penpot.ui.sendMessage({
+  return penpot.ui.sendMessage({
     type: 'EXPORT_PALETTE_UIKIT',
     data: {
-      id: penpot.currentUser.id,
+      id: '',
       context: 'APPLE_UIKIT',
       code: `import UIKit\n\nstruct Color {\n  ${swift.join('\n\n  ')}\n}`,
     },

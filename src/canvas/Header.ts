@@ -1,10 +1,10 @@
 import { Board } from '@penpot/plugin-types'
-import { locals } from '../content/locals'
+import { locales } from '../content/locales'
 import {
   BaseConfiguration,
   ThemeConfiguration,
   ViewConfiguration,
-} from '../types/configurations'
+} from '@a_ng_d/utils-ui-color-palette'
 import Sample from './Sample'
 
 export default class Header {
@@ -50,7 +50,7 @@ export default class Header {
     // Insert
     this.node.appendChild(
       new Sample({
-        name: locals.get().paletteProperties.sourceColors,
+        name: locales.get().paletteProperties.sourceColors,
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
         visionSimulationMode: this.theme.visionSimulationMode,

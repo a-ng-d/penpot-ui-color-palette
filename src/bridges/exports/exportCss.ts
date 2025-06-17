@@ -1,9 +1,12 @@
 import { Case } from '@a_ng_d/figmug-utils'
-import { locals } from '../../content/locals'
-import { PaletteData, PaletteDataShadeItem } from '../../types/data'
-import { ActionsList } from '../../types/models'
+import {
+  ColorSpaceConfiguration,
+  Data,
+  PaletteData,
+  PaletteDataShadeItem,
+} from '@a_ng_d/utils-ui-color-palette'
 import chroma from 'chroma-js'
-import { ColorSpaceConfiguration } from '../../types/configurations'
+import { locales } from '../../content/locales'
 
 const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
@@ -12,14 +15,16 @@ const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
     return penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_CSS',
       data: {
-        id: penpot.currentUser.id,
+        id: '',
         context: 'CSS',
         colorSpace: colorSpace,
-        code: locals.get().error.export,
+        code: locales.get().error.export,
       },
     })
 
-  const paletteData: PaletteData = JSON.parse(rawPalette).data,
+  const paletteData: PaletteData = new Data(
+      JSON.parse(rawPalette)
+    ).makePaletteData(),
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -28,7 +33,7 @@ const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
     css: Array<string> = []
 
   const setValueAccordingToColorSpace = (shade: PaletteDataShadeItem) => {
-    const actions: ActionsList = {
+    const actions: { [action: string]: () => void } = {
       RGB: () =>
         `rgb(${Math.floor(shade.rgb[0])}, ${Math.floor(
           shade.rgb[1]
@@ -55,7 +60,7 @@ const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
     shade: PaletteDataShadeItem,
     source: PaletteDataShadeItem
   ) => {
-    const actions: ActionsList = {
+    const actions: { [action: string]: () => void } = {
       RGB: () =>
         `rgb(${Math.floor(source.rgb[0])}, ${Math.floor(
           source.rgb[1]
@@ -106,10 +111,10 @@ const exportCss = (id: string, colorSpace: ColorSpaceConfiguration) => {
     )
   })
 
-  penpot.ui.sendMessage({
+  return penpot.ui.sendMessage({
     type: 'EXPORT_PALETTE_CSS',
     data: {
-      id: penpot.currentUser.id,
+      id: '',
       context: 'CSS',
       colorSpace: colorSpace,
       code: css.join('\n\n'),

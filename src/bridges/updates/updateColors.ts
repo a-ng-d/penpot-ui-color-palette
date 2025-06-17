@@ -1,6 +1,5 @@
-import { FullConfiguration } from '../../types/configurations'
+import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { ColorsMessage } from '../../types/messages'
-import Data from '../../utils/Data'
 
 const updateColors = async (msg: ColorsMessage) => {
   const now = new Date().toISOString()
@@ -16,9 +15,7 @@ const updateColors = async (msg: ColorsMessage) => {
     data: now,
   })
 
-  palette.data = new Data(palette).makePaletteData(palette.data)
-
-  penpot.currentPage?.setPluginData(
+  return penpot.currentPage?.setPluginData(
     `palette_${msg.id}`,
     JSON.stringify(palette)
   )

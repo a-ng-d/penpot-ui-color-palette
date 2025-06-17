@@ -1,12 +1,12 @@
 import { Board } from '@penpot/plugin-types'
-import { locals } from '../content/locals'
+import { locales } from '../content/locales'
 import {
   BaseConfiguration,
   MetaConfiguration,
   ThemeConfiguration,
   ViewConfiguration,
-} from '../types/configurations'
-import { PaletteDataThemeItem } from '../types/data'
+  PaletteDataThemeItem,
+} from '@a_ng_d/utils-ui-color-palette'
 import Header from './Header'
 import Sample from './Sample'
 import Signature from './Signature'
@@ -77,7 +77,7 @@ export default class Sheet {
     // Insert
     this.nodeEmpty.appendChild(
       new Sample({
-        name: locals.get().warning.emptySourceColors,
+        name: locales.get().warning.emptySourceColors,
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
         visionSimulationMode: this.theme.visionSimulationMode,
@@ -235,7 +235,7 @@ export default class Sheet {
   makeNode = () => {
     // Base
     this.node = penpot.createBoard()
-    this.node.name = `_colors${locals.get().separator}do not edit any layer`
+    this.node.name = `_colors${locales.get().separator}do not edit any layer`
     this.node.fills = []
     this.node.blocked = true
     this.node.horizontalSizing = 'auto'

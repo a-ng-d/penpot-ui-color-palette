@@ -1,5 +1,5 @@
 import { Board } from '@penpot/plugin-types'
-import { locals } from '../content/locals'
+import { locales } from '../content/locales'
 import Tag from './Tag'
 
 export default class Status {
@@ -54,7 +54,7 @@ export default class Status {
       this.node.appendChild(
         new Tag({
           name: '_close',
-          content: locals.get().paletteProperties.closest,
+          content: locales.get().paletteProperties.closest,
           fontSize: 10,
         }).makeNodeTagwithIndicator([
           this.source.r,
@@ -68,7 +68,7 @@ export default class Status {
       this.node.appendChild(
         new Tag({
           name: '_lock',
-          content: locals.get().paletteProperties.locked,
+          content: locales.get().paletteProperties.locked,
           fontSize: 10,
         }).makeNodeTag()
       )

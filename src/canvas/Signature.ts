@@ -1,5 +1,5 @@
 import { Board, Group } from '@penpot/plugin-types'
-import { locals } from '../content/locals'
+import { locales } from '../content/locales'
 import Tag from './Tag'
 
 export default class Signature {
@@ -34,14 +34,14 @@ export default class Signature {
     this.nodeInfo.appendChild(
       new Tag({
         name: '_tagline',
-        content: locals.get().tagline,
+        content: locales.get().tagline,
         fontSize: 10,
       }).makeNodeTag()
     )
     this.nodeInfo.appendChild(
       new Tag({
         name: '_url',
-        content: locals.get().url,
+        content: locales.get().url,
         url: 'https://ui-color-palette.com',
       }).makeNodeTag()
     )

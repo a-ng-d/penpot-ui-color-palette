@@ -1,13 +1,12 @@
 import LocalStyle from '../../canvas/LocalStyle'
-import { locals } from '../../content/locals'
-import { FullConfiguration } from '../../types/configurations'
-import { PaletteData } from '../../types/data'
+import { locales } from '../../content/locales'
+import { FullConfiguration, PaletteData } from '@a_ng_d/utils-ui-color-palette'
 
 const createLocalStyles = async (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locals.get().error.styles)
+    throw new Error(locales.get().error.styles)
 
   const palette = JSON.parse(rawPalette) as FullConfiguration
 
@@ -57,11 +56,11 @@ const createLocalStyles = async (id: string) => {
         JSON.stringify(palette)
       )
 
-      if (i > 1) return `${i} ${locals.get().info.createdLocalStyles.plural}`
-      else if (i === 1) return locals.get().info.createdLocalStyle.single
-      else return locals.get().info.createdLocalStyles.none
+      if (i > 1) return `${i} ${locales.get().info.createdLocalStyles.plural}`
+      else if (i === 1) return locales.get().info.createdLocalStyles.single
+      else return locales.get().info.createdLocalStyles.none
     })
-    .catch(() => locals.get().error.generic)
+    .catch(() => locales.get().error.generic)
 
   return await createdLocalStylesStatusMessage
 }

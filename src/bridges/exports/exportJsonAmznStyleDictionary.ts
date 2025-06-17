@@ -1,10 +1,11 @@
-import chroma from 'chroma-js'
-import { locals } from '../../content/locals'
 import {
+  Data,
   PaletteData,
   PaletteDataColorItem,
   PaletteDataShadeItem,
-} from '../../types/data'
+} from '@a_ng_d/utils-ui-color-palette'
+import chroma from 'chroma-js'
+import { locales } from '../../content/locales'
 
 const exportJsonAmznStyleDictionary = (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
@@ -13,13 +14,15 @@ const exportJsonAmznStyleDictionary = (id: string) => {
     return penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_JSON',
       data: {
-        id: penpot.currentUser.id,
+        id: '',
         context: 'TOKENS_AMZN_STYLE_DICTIONARY',
-        code: locals.get().error.export,
+        code: locales.get().error.export,
       },
     })
 
-  const paletteData: PaletteData = JSON.parse(rawPalette).data,
+  const paletteData: PaletteData = new Data(
+      JSON.parse(rawPalette)
+    ).makePaletteData(),
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -43,7 +46,7 @@ const exportJsonAmznStyleDictionary = (id: string) => {
         : shade.hex,
       comment:
         color.description !== ''
-          ? color.description + locals.get().separator + shade.description
+          ? color.description + locales.get().separator + shade.description
           : shade.description,
     }
   }
@@ -85,10 +88,10 @@ const exportJsonAmznStyleDictionary = (id: string) => {
       })
     })
 
-  penpot.ui.sendMessage({
+  return penpot.ui.sendMessage({
     type: 'EXPORT_PALETTE_JSON',
     data: {
-      id: penpot.currentUser.id,
+      id: '',
       context: 'TOKENS_AMZN_STYLE_DICTIONARY',
       code: JSON.stringify(json, null, '  '),
     },

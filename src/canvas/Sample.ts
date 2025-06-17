@@ -1,12 +1,13 @@
-import { RgbModel } from '@a_ng_d/figmug-ui'
-import { Board } from '@penpot/plugin-types'
-import chroma from 'chroma-js'
-import { RgbComponent, TextColorsThemeHexModel } from '../types/models'
 import {
+  Channel,
   ColorSpaceConfiguration,
+  RgbModel,
+  TextColorsThemeConfiguration,
   ViewConfiguration,
   VisionSimulationModeConfiguration,
-} from '../types/configurations'
+} from '@a_ng_d/utils-ui-color-palette'
+import { Board } from '@penpot/plugin-types'
+import chroma from 'chroma-js'
 import Paragraph from './Paragraph'
 import Properties from './Properties'
 import Property from './Property'
@@ -16,14 +17,14 @@ export default class Sample {
   private name: string
   private source?: RgbModel
   private scale?: string
-  private rgb: RgbComponent
+  private rgb: Channel
   private alpha?: number
-  private backgroundColor?: RgbComponent
-  private mixedColor?: RgbComponent
+  private backgroundColor?: Channel
+  private mixedColor?: Channel
   private colorSpace: ColorSpaceConfiguration
   private visionSimulationMode: VisionSimulationModeConfiguration
   private view: ViewConfiguration
-  private textColorsTheme: TextColorsThemeHexModel
+  private textColorsTheme: TextColorsThemeConfiguration<'HEX'>
   private status: {
     isClosestToRef: boolean
     isLocked: boolean
@@ -55,14 +56,14 @@ export default class Sample {
     name: string
     source?: RgbModel
     scale?: string
-    rgb: RgbComponent
+    rgb: Channel
     alpha?: number
-    backgroundColor?: RgbComponent
-    mixedColor?: RgbComponent
+    backgroundColor?: Channel
+    mixedColor?: Channel
     colorSpace: ColorSpaceConfiguration
     visionSimulationMode: VisionSimulationModeConfiguration
     view: ViewConfiguration
-    textColorsTheme: TextColorsThemeHexModel
+    textColorsTheme: TextColorsThemeConfiguration<'HEX'>
     status?: {
       isClosestToRef: boolean
       isLocked: boolean

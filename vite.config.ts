@@ -1,7 +1,9 @@
 import preact from '@preact/preset-vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
+import path from 'path'
 import { defineConfig, loadEnv } from 'vite'
-import basicSsl from '@vitejs/plugin-basic-ssl'
+import { visualizer } from 'rollup-plugin-visualizer'
+
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
@@ -17,7 +19,11 @@ export default defineConfig(({ mode }) => {
         project: 'ui-color-palette',
         authToken: env.SENTRY_AUTH_TOKEN,
       }),
-      basicSsl(),
+      visualizer({
+        open: true,
+        filename: 'dist/stats.html',
+      }),
+      // basicSsl(),
     ],
 
     resolve: {
@@ -26,7 +32,17 @@ export default defineConfig(({ mode }) => {
         'react-dom/test-utils': 'preact/test-utils',
         'react-dom': 'preact/compat',
         'react/jsx-runtime': 'preact/jsx-runtime',
+        '@ui-lib': path.resolve(
+          __dirname,
+          './packages/ui-ui-color-palette/src'
+        ),
       },
+    },
+
+    define: {
+      __PLATFORM__: JSON.stringify('penpot'),
+      __COLOR_MODE__: JSON.stringify('penpot-dark'),
+      __EDITOR__: JSON.stringify('penpot'),
     },
 
     build: {
@@ -37,7 +53,6 @@ export default defineConfig(({ mode }) => {
       emptyOutDir: false,
       ...(isPlugin
         ? {
-            // Configuration pour le build du plugin
             lib: {
               entry: 'src/index.ts',
               name: 'PenpotPlugin',
@@ -46,9 +61,9 @@ export default defineConfig(({ mode }) => {
             },
           }
         : {
-            // Configuration pour le build de développement
             rollupOptions: {
               input: 'index.html',
+              //external: ['packages/ui-ui-color-palette/**'],
               output: {
                 dir: 'dist',
                 entryFileNames: '[name].js',
@@ -57,9 +72,21 @@ export default defineConfig(({ mode }) => {
             },
           }),
     },
-
     preview: {
       port: 4400,
+      watch: {
+        usePolling: false,
+        ignored: ['**/node_modules/**', '!**/node_modules/@a_ng_d/**'],
+      },
+      hmr: {
+        protocol: 'ws',
+        host: 'localhost',
+        port: 4400,
+        clientPort: 4400,
+        timeout: 20000,
+        overlay: true,
+        preserveState: false,
+      },
       headers: {
         'Access-Control-Allow-Origin': '*',
       },

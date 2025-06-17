@@ -1,6 +1,6 @@
 import { Board } from '@penpot/plugin-types'
 import { uid } from 'uid'
-import { FullConfiguration } from '../../types/configurations'
+import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 
 const createPaletteFromDocument = async () => {
   const document = penpot.selection[0] as Board
@@ -8,7 +8,6 @@ const createPaletteFromDocument = async () => {
     document.getPluginData('backup')
   ) as FullConfiguration
 
-  // Update
   const now = new Date().toISOString()
   backup.meta.id = uid()
   backup.meta.dates.createdAt = now
@@ -23,12 +22,10 @@ const createPaletteFromDocument = async () => {
     JSON.stringify(backup)
   )
 
-  penpot.ui.sendMessage({
+  return penpot.ui.sendMessage({
     type: 'LOAD_PALETTE',
     data: backup,
   })
-
-  return true
 }
 
 export default createPaletteFromDocument

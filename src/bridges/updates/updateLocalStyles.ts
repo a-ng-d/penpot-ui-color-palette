@@ -1,11 +1,14 @@
-import { locals } from '../../content/locals'
-import { PaletteData, PaletteDataThemeItem } from '../../types/data'
+import {
+  PaletteData,
+  PaletteDataThemeItem,
+} from '@a_ng_d/utils-ui-color-palette'
+import { locales } from '../../content/locales'
 
 const updateLocalStyles = async (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locals.get().error.styles)
+    throw new Error(locales.get().error.styles)
 
   const paletteData: PaletteData = JSON.parse(rawPalette).data,
     workingThemes =
@@ -127,20 +130,20 @@ const updateLocalStyles = async (id: string) => {
       })
 
       if (i > 1)
-        messages.push(`${i} ${locals.get().info.updatedLocalStyles.plural}`)
+        messages.push(`${i} ${locales.get().info.updatedLocalStyles.plural}`)
       else if (i === 1)
-        messages.push(locals.get().info.updatedLocalStyles.single)
-      else messages.push(locals.get().info.updatedLocalStyles.none)
+        messages.push(locales.get().info.updatedLocalStyles.single)
+      else messages.push(locales.get().info.updatedLocalStyles.none)
 
       if (k > 1)
-        messages.push(`${k} ${locals.get().info.removedLocalStyles.plural}`)
+        messages.push(`${k} ${locales.get().info.removedLocalStyles.plural}`)
       else if (k === 1)
-        messages.push(locals.get().info.removedLocalStyles.single)
-      else messages.push(locals.get().info.removedLocalStyles.none)
+        messages.push(locales.get().info.removedLocalStyles.single)
+      else messages.push(locales.get().info.removedLocalStyles.none)
 
-      return messages.join(locals.get().separator)
+      return messages.join(locales.get().separator)
     })
-    .catch(() => locals.get().error.generic)
+    .catch(() => locales.get().error.generic)
 
   return await updatedLocalStylesStatusMessage
 }

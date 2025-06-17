@@ -3,9 +3,9 @@ import {
   BaseConfiguration,
   MetaConfiguration,
   ThemeConfiguration,
-} from '../types/configurations'
-import { PaletteDataThemeItem } from '../types/data'
-import { locals } from '../content/locals'
+  PaletteDataThemeItem,
+} from '@a_ng_d/utils-ui-color-palette'
+import { locales } from '../content/locales'
 import Paragraph from './Paragraph'
 import Tag from './Tag'
 
@@ -59,7 +59,7 @@ export default class Title {
     this.nodeGlobalInfo.appendChild(
       new Tag({
         name: '_name',
-        content: this.base.name === '' ? locals.get().name : this.base.name,
+        content: this.base.name === '' ? locales.get().name : this.base.name,
         fontSize: 20,
       }).makeNodeTag()
     )
@@ -129,21 +129,21 @@ export default class Title {
       this.nodeProps.appendChild(
         new Tag({
           name: '_theme',
-          content: `${locals.get().paletteProperties.theme}${this.data.name}`,
+          content: `${locales.get().paletteProperties.theme}${this.data.name}`,
           fontSize: 12,
         }).makeNodeTag()
       )
     this.nodeProps.appendChild(
       new Tag({
         name: '_preset',
-        content: `${locals.get().paletteProperties.preset}${this.base.preset.name}`,
+        content: `${locales.get().paletteProperties.preset}${this.base.preset.name}`,
         fontSize: 12,
       }).makeNodeTag()
     )
     this.nodeProps.appendChild(
       new Tag({
         name: '_color-space',
-        content: `${locals.get().paletteProperties.colorSpace}${this.base.colorSpace}`,
+        content: `${locales.get().paletteProperties.colorSpace}${this.base.colorSpace}`,
         fontSize: 12,
       }).makeNodeTag()
     )
@@ -151,7 +151,7 @@ export default class Title {
       this.nodeProps.appendChild(
         new Tag({
           name: '_vision-simulation',
-          content: `${locals.get().paletteProperties.visionSimulation}${
+          content: `${locales.get().paletteProperties.visionSimulation}${
             this.theme.visionSimulationMode.charAt(0) +
             this.theme.visionSimulationMode.toLocaleLowerCase().slice(1)
           }`,
@@ -161,7 +161,7 @@ export default class Title {
     this.nodeProps.appendChild(
       new Tag({
         name: '_updated_at',
-        content: `${locals.get().paletteProperties.updatedAt}${new Date(
+        content: `${locales.get().paletteProperties.updatedAt}${new Date(
           this.meta.dates.updatedAt
         ).toDateString()}`,
         fontSize: 12,

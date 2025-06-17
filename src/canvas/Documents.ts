@@ -1,11 +1,12 @@
-import { Board } from '@penpot/plugin-types'
-import { PaletteData, PaletteDataThemeItem } from '../types/data'
 import {
   BaseConfiguration,
   MetaConfiguration,
+  PaletteData,
+  PaletteDataThemeItem,
   ThemeConfiguration,
   ViewConfiguration,
-} from '../types/configurations'
+} from '@a_ng_d/utils-ui-color-palette'
+import { Board } from '@penpot/plugin-types'
 import setPaletteName from '../utils/setPaletteName'
 import Palette from './Palette'
 import Sheet from './Sheet'

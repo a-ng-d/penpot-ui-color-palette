@@ -1,7 +1,5 @@
 const deletePalette = async (id: string) => {
-  penpot.currentPage?.setPluginData(`palette_${id}`, '')
-
-  return true
+  return penpot.currentPage?.setPluginData(`palette_${id}`, '')
 }
 
 export default deletePalette

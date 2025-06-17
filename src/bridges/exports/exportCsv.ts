@@ -1,5 +1,5 @@
-import { locals } from '../../content/locals'
-import { PaletteData } from '../../types/data'
+import { Data, PaletteData } from '@a_ng_d/utils-ui-color-palette'
+import { locales } from '../../content/locales'
 
 interface colorCsv {
   name: string
@@ -19,13 +19,15 @@ const exportCsv = (id: string) => {
     return penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_CSV',
       data: {
-        id: penpot.currentUser.id,
+        id: '',
         context: 'CSV',
-        code: locals.get().error.export,
+        code: locales.get().error.export,
       },
     })
 
-  const paletteData: PaletteData = JSON.parse(rawPalette).data,
+  const paletteData: PaletteData = new Data(
+      JSON.parse(rawPalette)
+    ).makePaletteData(),
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -67,17 +69,17 @@ const exportCsv = (id: string) => {
     colorCsv.splice(0, colorCsv.length)
   })
 
-  penpot.ui.sendMessage({
+  return penpot.ui.sendMessage({
     type: 'EXPORT_PALETTE_CSV',
     data: {
-      id: penpot.currentUser.id,
+      id: '',
       context: 'CSV',
       code:
         paletteData.themes[0].colors.length === 0
           ? [
               {
                 name: 'empty',
-                colors: [{ csv: locals.get().warning.emptySourceColors }],
+                colors: [{ csv: locales.get().warning.emptySourceColors }],
               },
             ]
           : themeCsv,

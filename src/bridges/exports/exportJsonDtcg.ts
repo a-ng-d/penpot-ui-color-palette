@@ -1,7 +1,10 @@
-import { locals } from '../../content/locals'
-import { ColorSpaceConfiguration } from '../../types/configurations'
-import { PaletteData, PaletteDataShadeItem } from '../../types/data'
-import { ActionsList } from '../../types/models'
+import {
+  ColorSpaceConfiguration,
+  Data,
+  PaletteData,
+  PaletteDataShadeItem,
+} from '@a_ng_d/utils-ui-color-palette'
+import { locales } from '../../content/locales'
 
 const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
@@ -10,22 +13,25 @@ const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
     return penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_JSON',
       data: {
-        id: penpot.currentUser.id,
+        id: '',
         context: 'TOKENS_AMZN_STYLE_DICTIONARY',
-        code: locals.get().error.export,
+        code: locales.get().error.export,
       },
     })
 
-  const paletteData: PaletteData = JSON.parse(rawPalette).data,
+  const paletteData: PaletteData = new Data(
+      JSON.parse(rawPalette)
+    ).makePaletteData(),
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
         ? paletteData.themes.filter((theme) => theme.type === 'default theme')
         : paletteData.themes.filter((theme) => theme.type === 'custom theme'),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     json: { [key: string]: any } = {}
 
   const setValueAccordingToColorSpace = (shade: PaletteDataShadeItem) => {
-    const actions: ActionsList = {
+    const actions: { [action: string]: () => void } = {
       RGB: () => {
         return {
           colorSpace: 'srgb',
@@ -57,7 +63,7 @@ const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
     source: PaletteDataShadeItem,
     shade: PaletteDataShadeItem
   ) => {
-    const actions: ActionsList = {
+    const actions: { [action: string]: () => void } = {
       RGB: () => {
         return {
           colorSpace: 'srgb',
@@ -135,7 +141,7 @@ const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
               $description:
                 color.description !== ''
                   ? color.description +
-                    locals.get().separator +
+                    locales.get().separator +
                     shade.description
                   : shade.description,
             }
@@ -143,10 +149,10 @@ const exportJsonDtcg = (id: string, colorSpace: ColorSpaceConfiguration) => {
       })
     })
 
-  penpot.ui.sendMessage({
+  return penpot.ui.sendMessage({
     type: 'EXPORT_PALETTE_JSON',
     data: {
-      id: penpot.currentUser.id,
+      id: '',
       context: 'TOKENS_DTCG',
       colorSpace: colorSpace,
       code: JSON.stringify(json, null, '  '),

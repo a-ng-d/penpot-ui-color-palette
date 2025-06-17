@@ -1,5 +1,9 @@
-import { locals } from '../../content/locals'
-import { PaletteData, PaletteDataShadeItem } from '../../types/data'
+import {
+  Data,
+  PaletteData,
+  PaletteDataShadeItem,
+} from '@a_ng_d/utils-ui-color-palette'
+import { locales } from '../../content/locales'
 
 const exportJson = (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
@@ -8,13 +12,15 @@ const exportJson = (id: string) => {
     return penpot.ui.sendMessage({
       type: 'EXPORT_PALETTE_JSON',
       data: {
-        id: penpot.currentUser.id,
+        id: '',
         context: 'TOKENS_GLOBAL',
-        code: locals.get().error.export,
+        code: locales.get().error.export,
       },
     })
 
-  const paletteData: PaletteData = JSON.parse(rawPalette).data,
+  const paletteData: PaletteData = new Data(
+      JSON.parse(rawPalette)
+    ).makePaletteData(),
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0
@@ -166,10 +172,10 @@ const exportJson = (id: string) => {
   json['descrption'] = paletteData.description
   json['type'] = 'color palette'
 
-  penpot.ui.sendMessage({
+  return penpot.ui.sendMessage({
     type: 'EXPORT_PALETTE_JSON',
     data: {
-      id: penpot.currentUser.id,
+      id: '',
       context: 'TOKENS_GLOBAL',
       code: JSON.stringify(json, null, '  '),
     },

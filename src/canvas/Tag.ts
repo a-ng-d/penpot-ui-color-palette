@@ -1,4 +1,4 @@
-import { RgbModel } from '@a_ng_d/figmug-ui'
+import { RgbModel } from '@a_ng_d/utils-ui-color-palette'
 import { Board, Ellipse, ImageData, Text } from '@penpot/plugin-types'
 import chroma from 'chroma-js'
 

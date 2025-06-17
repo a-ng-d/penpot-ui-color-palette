@@ -5,8 +5,8 @@ import {
   FullConfiguration,
   ThemeConfiguration,
   ViewConfiguration,
-} from '../../types/configurations'
-import { PaletteDataThemeItem } from '../../types/data'
+  PaletteDataThemeItem,
+} from '@a_ng_d/utils-ui-color-palette'
 
 const updateDocument = async (view: ViewConfiguration) => {
   const document = penpot.selection[0] as Board

@@ -1,7 +1,6 @@
-import { FullConfiguration } from '../../types/configurations'
+import { doScale } from '@a_ng_d/figmug-utils'
+import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { ScaleMessage } from '../../types/messages'
-import Data from '../../utils/Data'
-import doLightnessScale from '../../utils/doLightnessScale'
 
 const updateScale = async (msg: ScaleMessage) => {
   const now = new Date().toISOString()
@@ -15,7 +14,7 @@ const updateScale = async (msg: ScaleMessage) => {
   if (msg.feature === 'ADD_STOP' || msg.feature === 'DELETE_STOP')
     palette.themes.forEach((theme) => {
       if (!theme.isEnabled)
-        theme.scale = doLightnessScale(
+        theme.scale = doScale(
           Object.keys(msg.data.scale).map((stop) => {
             return parseFloat(stop)
           }),
@@ -28,6 +27,7 @@ const updateScale = async (msg: ScaleMessage) => {
 
   palette.base.preset = msg.data.preset
   palette.base.shift = msg.data.shift
+  palette.base.preset = msg.data.preset
 
   palette.meta.dates.updatedAt = now
   penpot.ui.sendMessage({
@@ -35,9 +35,7 @@ const updateScale = async (msg: ScaleMessage) => {
     data: now,
   })
 
-  palette.data = new Data(palette).makePaletteData(palette.data)
-
-  penpot.currentPage?.setPluginData(
+  return penpot.currentPage?.setPluginData(
     `palette_${msg.data.id}`,
     JSON.stringify(palette)
   )
