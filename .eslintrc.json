@@ -19,13 +19,51 @@
   },
   "plugins": [
     "react",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "import"
   ],
   "rules": {
     "@typescript-eslint/no-explicit-any": [1],
     "eqeqeq": ["error", "always", { "null": "ignore" }],
     "curly": ["warn", "multi"],
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "@a_ng_d/**",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "*/**/ui",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "*.css",
+            "group": "sibling",
+            "position": "after"
+          }
+        ],
+        "newlines-between": "never",
+        "alphabetize": {
+          "order": "desc",
+          "caseInsensitive": true
+        }
+      }
+    ]
   },
   "root": true,
   "settings" : {

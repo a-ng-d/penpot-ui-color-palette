@@ -61,7 +61,6 @@
     "eslint-watch": "^8.0.0",
     "prettier": "^3.2.5",
     "prettier-plugin-css-order": "^2.1.2",
-    "prettier-plugin-organize-imports": "^4.1.0",
     "rollup-plugin-visualizer": "^6.0.3",
     "typescript": "^5.4.3",
     "vite": "^6.2.5",
