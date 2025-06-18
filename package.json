@@ -82,9 +82,9 @@
     "hsluv": "^1.0.1",
     "jszip": "^3.10.1",
     "mixpanel-figma": "^2.0.4",
+    "preact": "^10.6.4",
     "react": "npm:@preact/compat",
     "react-dom": "npm:@preact/compat",
-    "preact": "^10.6.4",
     "uid": "^2.0.2"
   }
 }
