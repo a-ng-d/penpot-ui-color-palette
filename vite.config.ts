@@ -1,9 +1,7 @@
 import path from 'path'
 import { defineConfig, loadEnv } from 'vite'
-import { visualizer } from 'rollup-plugin-visualizer'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import preact from '@preact/preset-vite'
-
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
@@ -18,10 +16,10 @@ export default defineConfig(({ mode }) => {
         project: 'ui-color-palette',
         authToken: env.SENTRY_AUTH_TOKEN,
       }),
-      visualizer({
+      /*visualizer({
         open: true,
         filename: 'dist/stats.html',
-      }),
+      }),*/
       // basicSsl(),
     ],
 
@@ -38,16 +36,11 @@ export default defineConfig(({ mode }) => {
       },
     },
 
-    define: {
-      __PLATFORM__: JSON.stringify('penpot'),
-      __COLOR_MODE__: JSON.stringify('penpot-dark'),
-      __EDITOR__: JSON.stringify('penpot'),
-    },
-
     build: {
       sourcemap: isDev,
       minify: !isDev,
       outDir: 'dist',
+      watch: isDev ? {} : null,
       emptyOutDir: false,
       ...(isPlugin
         ? {
@@ -61,7 +54,6 @@ export default defineConfig(({ mode }) => {
         : {
             rollupOptions: {
               input: 'index.html',
-              //external: ['packages/ui-ui-color-palette/**'],
               output: {
                 dir: 'dist',
                 entryFileNames: '[name].js',
