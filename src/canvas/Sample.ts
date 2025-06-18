@@ -1,3 +1,5 @@
+import chroma from 'chroma-js'
+import { Board } from '@penpot/plugin-types'
 import {
   Channel,
   ColorSpaceConfiguration,
@@ -6,12 +8,10 @@ import {
   ViewConfiguration,
   VisionSimulationModeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { Board } from '@penpot/plugin-types'
-import chroma from 'chroma-js'
-import Paragraph from './Paragraph'
-import Properties from './Properties'
-import Property from './Property'
 import Status from './Status'
+import Property from './Property'
+import Properties from './Properties'
+import Paragraph from './Paragraph'
 
 export default class Sample {
   private name: string

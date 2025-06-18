@@ -1,10 +1,10 @@
+import { uid } from 'uid'
+import chroma from 'chroma-js'
+import { Board, Fill, Shape } from '@penpot/plugin-types'
 import {
   HexModel,
   SourceColorConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { Board, Fill, Shape } from '@penpot/plugin-types'
-import chroma from 'chroma-js'
-import { uid } from 'uid'
 
 export let currentSelection: Array<Shape> = []
 export let previousSelection: Array<Shape> = []

@@ -1,5 +1,5 @@
-import { doScale } from '@a_ng_d/figmug-utils'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { doScale } from '@a_ng_d/figmug-utils'
 import { ScaleMessage } from '../../types/messages'
 
 const updateScale = async (msg: ScaleMessage) => {

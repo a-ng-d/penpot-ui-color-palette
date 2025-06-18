@@ -1,5 +1,5 @@
-import { Board } from '@penpot/plugin-types'
 import { uid } from 'uid'
+import { Board } from '@penpot/plugin-types'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 
 const createPaletteFromDocument = async () => {

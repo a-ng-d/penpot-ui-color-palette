@@ -1,3 +1,4 @@
+import { Board } from '@penpot/plugin-types'
 import {
   Data,
   FullConfiguration,
@@ -5,10 +6,9 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { Board } from '@penpot/plugin-types'
-import Palette from '../../canvas/Palette'
-import Sheet from '../../canvas/Sheet'
 import { locales } from '../../content/locales'
+import Sheet from '../../canvas/Sheet'
+import Palette from '../../canvas/Palette'
 
 const updateDocument = async (view: ViewConfiguration) => {
   const document = penpot.selection[0] as Board

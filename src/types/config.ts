@@ -1,5 +1,5 @@
-import { Feature } from '@a_ng_d/figmug-utils'
 import { AlgorithmVersionConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { Feature } from '@a_ng_d/figmug-utils'
 import { Translations } from './translations'
 
 export interface Config {

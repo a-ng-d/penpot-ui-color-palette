@@ -1,5 +1,5 @@
-import { HexModel } from '@a_ng_d/utils-ui-color-palette'
 import { LibraryColor } from '@penpot/plugin-types'
+import { HexModel } from '@a_ng_d/utils-ui-color-palette'
 
 export default class LocalStyle {
   private name: string

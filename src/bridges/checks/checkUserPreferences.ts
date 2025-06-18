@@ -1,5 +1,5 @@
-import { locales } from '../../content/locales'
 import { Language } from '../../types/translations'
+import { locales } from '../../content/locales'
 
 const checkUserPreferences = async () => {
   const isWCAGDisplayed = penpot.root?.getPluginData('is_wcag_displayed')

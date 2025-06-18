@@ -3,8 +3,8 @@ import {
   FullConfiguration,
   PaletteData,
 } from '@a_ng_d/utils-ui-color-palette'
-import LocalStyle from '../../canvas/LocalStyle'
 import { locales } from '../../content/locales'
+import LocalStyle from '../../canvas/LocalStyle'
 
 const createLocalStyles = async (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)

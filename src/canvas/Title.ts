@@ -6,8 +6,8 @@ import {
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
 import { locales } from '../content/locales'
-import Paragraph from './Paragraph'
 import Tag from './Tag'
+import Paragraph from './Paragraph'
 
 export default class Title {
   private base: BaseConfiguration

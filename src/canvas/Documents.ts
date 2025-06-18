@@ -1,3 +1,4 @@
+import { Board } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -6,10 +7,9 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { Board } from '@penpot/plugin-types'
 import setPaletteName from '../utils/setPaletteName'
-import Palette from './Palette'
 import Sheet from './Sheet'
+import Palette from './Palette'
 
 export default class Documents {
   private base: BaseConfiguration

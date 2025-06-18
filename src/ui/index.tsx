@@ -1,12 +1,12 @@
-import * as Sentry from '@sentry/react'
+import { createRoot } from 'react-dom/client'
+import React from 'react'
 import mixpanel from 'mixpanel-figma'
 import App from '@ui-lib/ui/App'
-import React from 'react'
-import { createRoot } from 'react-dom/client'
-import { ConfigProvider } from '@ui-lib/config/ConfigContext'
-import { ThemeProvider } from '@ui-lib/config/ThemeContext'
-import globalConfig from '../global.config'
 import { initSupabase } from '@ui-lib/external/auth/client'
+import { ThemeProvider } from '@ui-lib/config/ThemeContext'
+import { ConfigProvider } from '@ui-lib/config/ConfigContext'
+import * as Sentry from '@sentry/react'
+import globalConfig from '../global.config'
 
 const container = document.getElementById('app'),
   root = createRoot(container)

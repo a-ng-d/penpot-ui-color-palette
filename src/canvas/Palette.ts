@@ -1,5 +1,4 @@
 import { Board } from '@penpot/plugin-types'
-import { locales } from '../content/locales'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -7,10 +6,11 @@ import {
   ViewConfiguration,
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
-import Header from './Header'
-import Sample from './Sample'
-import Signature from './Signature'
+import { locales } from '../content/locales'
 import Title from './Title'
+import Signature from './Signature'
+import Sample from './Sample'
+import Header from './Header'
 
 export default class Palette {
   private base: BaseConfiguration
