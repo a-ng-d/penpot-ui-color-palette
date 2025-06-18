@@ -23,7 +23,7 @@ const globalConfig: Config = {
   },
   plan: {
     isProEnabled: true,
-    isTrialEnabled: true,
+    isTrialEnabled: false,
     trialTime: 72,
   },
   dbs: {
@@ -78,10 +78,7 @@ const globalConfig: Config = {
     [
       'SYNC_LOCAL_VARIABLES',
       'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
-      //'BACKSTAGE_AUTHENTICATION',
-      //'PUBLICATION',
-      //'PUBLISH_PALETTE',
-      //'REMOTE_PALETTES',
+      'RESIZE_UI',
     ],
     [
       'LOCAL_PALETTES',
