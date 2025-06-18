@@ -10,8 +10,14 @@ const createPaletteFromDocument = async () => {
 
   const now = new Date().toISOString()
   backup.meta.id = uid()
+  backup.meta.dates.openedAt = now
   backup.meta.dates.createdAt = now
   backup.meta.dates.updatedAt = now
+  backup.meta.publicationStatus.isPublished = false
+  backup.meta.publicationStatus.isShared = false
+  backup.meta.creatorIdentity.creatorId = ''
+  backup.meta.creatorIdentity.creatorFullName = ''
+  backup.meta.creatorIdentity.creatorAvatar = ''
 
   document.setPluginData('id', backup.meta.id)
   document.setPluginData('createdAt', now)

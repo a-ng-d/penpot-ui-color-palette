@@ -24,10 +24,11 @@ import exportCsv from './exports/exportCsv'
 import exportCss from './exports/exportCss'
 import enableTrial from './enableTrial'
 import deletePalette from './creations/deletePalette'
-import createPaletteFromDocument from './creations/createPaletteFromDocument'
 import createPalette from './creations/createPalette'
 import createLocalStyles from './creations/createLocalStyles'
-import createPaletteFromDuplication from './creations/createFromDuplication'
+import createFromRemote from './creations/createFromRemote'
+import createFromDuplication from './creations/createFromDuplication'
+import createFromDocument from './creations/createFromDocument'
 import createDocument from './creations/createDocument'
 import checkUserPreferences from './checks/checkUserPreferences'
 import checkUserConsent from './checks/checkUserConsent'
@@ -120,7 +121,7 @@ const loadUI = async () => {
               type: 'POST_MESSAGE',
               data: {
                 type: 'ERROR',
-                message: error,
+                message: error.message,
               },
             })
           }),
@@ -134,9 +135,21 @@ const loadUI = async () => {
           penpot.ui.sendMessage({ type: 'STOP_LOADER' })
         ),
       CREATE_PALETTE_FROM_DOCUMENT: () =>
-        createPaletteFromDocument().finally(() =>
+        createFromDocument().finally(() =>
           penpot.ui.sendMessage({ type: 'STOP_LOADER' })
         ),
+      CREATE_PALETTE_FROM_REMOTE: () =>
+        createFromRemote(path)
+          .catch((error) => {
+            penpot.ui.sendMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'INFO',
+                message: error.message,
+              },
+            })
+          })
+          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' })),
       SYNC_LOCAL_STYLES: async () =>
         createLocalStyles(path.id)
           .then(async (message) => [message, await updateLocalStyles(path.id)])
@@ -156,7 +169,7 @@ const loadUI = async () => {
               type: 'POST_MESSAGE',
               data: {
                 type: 'ERROR',
-                message: error,
+                message: error.message,
               },
             })
           }),
@@ -168,7 +181,7 @@ const loadUI = async () => {
               type: 'POST_MESSAGE',
               data: {
                 type: 'ERROR',
-                message: error,
+                message: error.message,
               },
             })
           }),
@@ -246,19 +259,19 @@ const loadUI = async () => {
             type: 'POST_MESSAGE',
             data: {
               type: 'ERROR',
-              message: error,
+              message: error.message,
             },
           })
         ),
       DUPLICATE_PALETTE: async () =>
-        await createPaletteFromDuplication(path.id)
+        await createFromDuplication(path.id)
           .finally(async () => await getPalettesOnCurrentPage())
           .catch((error) => {
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
                 type: 'ERROR',
-                message: error,
+                message: error.message,
               },
             })
           }),
