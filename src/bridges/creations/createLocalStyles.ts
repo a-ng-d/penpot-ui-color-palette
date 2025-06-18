@@ -1,16 +1,20 @@
+import {
+  Data,
+  FullConfiguration,
+  PaletteData,
+} from '@a_ng_d/utils-ui-color-palette'
 import LocalStyle from '../../canvas/LocalStyle'
 import { locales } from '../../content/locales'
-import { FullConfiguration, PaletteData } from '@a_ng_d/utils-ui-color-palette'
 
 const createLocalStyles = async (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locales.get().error.styles)
+    throw new Error(locales.get().error.unfoundPalette)
 
   const palette = JSON.parse(rawPalette) as FullConfiguration
 
-  const paletteData: PaletteData = palette.data,
+  const paletteData: PaletteData = new Data(palette).makePaletteData(),
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0

@@ -7,7 +7,7 @@ const createPaletteFromDuplication = async (id: string) => {
   const now = new Date().toISOString()
 
   if (rawPalette === undefined || rawPalette === null)
-    throw new Error('No palette found')
+    throw new Error(locales.get().error.unfoundPalette)
 
   const palette = JSON.parse(rawPalette) as FullConfiguration
 

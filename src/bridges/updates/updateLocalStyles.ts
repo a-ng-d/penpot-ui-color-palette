@@ -1,4 +1,6 @@
 import {
+  Data,
+  FullConfiguration,
   PaletteData,
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
@@ -8,9 +10,11 @@ const updateLocalStyles = async (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locales.get().error.styles)
+    throw new Error(locales.get().error.unfoundPalette)
 
-  const paletteData: PaletteData = JSON.parse(rawPalette).data,
+  const palette = JSON.parse(rawPalette) as FullConfiguration
+
+  const paletteData: PaletteData = new Data(palette).makePaletteData(),
     workingThemes =
       paletteData.themes.filter((theme) => theme.type === 'custom theme')
         .length === 0

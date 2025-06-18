@@ -116,7 +116,13 @@ const loadUI = async () => {
         updateDocument(path.view)
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            throw error
+            penpot.ui.sendMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error,
+              },
+            })
           }),
       UPDATE_LANGUAGE: () => {
         penpot.root?.setPluginData('user_language', path.data.lang)
@@ -150,16 +156,21 @@ const loadUI = async () => {
               type: 'POST_MESSAGE',
               data: {
                 type: 'ERROR',
-                message: locales.get().error.generic,
+                message: error,
               },
             })
-            throw error
           }),
       CREATE_DOCUMENT: () =>
         createDocument(path.id, path.view)
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            throw error
+            penpot.ui.sendMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error,
+              },
+            })
           }),
       //
       EXPORT_PALETTE: () => {
@@ -230,12 +241,12 @@ const loadUI = async () => {
       OPEN_IN_BROWSER: () => window.open(msg.url, '_blank'),
       GET_PALETTES: async () => await getPalettesOnCurrentPage(),
       JUMP_TO_PALETTE: async () =>
-        await jumpToPalette(path.id).catch(() =>
+        await jumpToPalette(path.id).catch((error) =>
           penpot.ui.sendMessage({
             type: 'POST_MESSAGE',
             data: {
               type: 'ERROR',
-              message: locales.get().error.fetchPalette,
+              message: error,
             },
           })
         ),
@@ -243,14 +254,18 @@ const loadUI = async () => {
         await createPaletteFromDuplication(path.id)
           .finally(async () => await getPalettesOnCurrentPage())
           .catch((error) => {
-            throw error
+            penpot.ui.sendMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error,
+              },
+            })
           }),
       DELETE_PALETTE: async () =>
-        await deletePalette(path.id)
-          .finally(async () => await getPalettesOnCurrentPage())
-          .catch((error) => {
-            throw error
-          }),
+        await deletePalette(path.id).finally(
+          async () => await getPalettesOnCurrentPage()
+        ),
       //
       GET_PRO_PLAN: async () =>
         window.open(globalConfig.urls.storeUrl, '_blank')?.focus(),
