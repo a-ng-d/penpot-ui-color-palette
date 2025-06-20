@@ -31,6 +31,7 @@ import createFromDuplication from './creations/createFromDuplication'
 import createFromDocument from './creations/createFromDocument'
 import createDocument from './creations/createDocument'
 import checkUserPreferences from './checks/checkUserPreferences'
+import checkUserLicense from './checks/checkUserLicense'
 import checkUserConsent from './checks/checkUserConsent'
 import checkTrialStatus from './checks/checkTrialStatus'
 import checkAnnouncementsStatus from './checks/checkAnnouncementsStatus'
@@ -68,6 +69,7 @@ const loadUI = async () => {
     checkUserConsent()
       .then(() => checkTrialStatus())
       .then(() => checkUserPreferences())
+      .then(() => checkUserLicense())
       .then(() => processSelection())
 
     // Canvas > UI
@@ -237,7 +239,7 @@ const loadUI = async () => {
         ),
       SET_DATA: () =>
         path.items.forEach((item: { key: string; value: string }) =>
-          palette.setPluginData(item.key, JSON.stringify(item.value))
+          penpot.root?.setPluginData(item.key, JSON.stringify(item.value))
         ),
       GET_DATA: async () =>
         path.items.map(async (item: string) =>
