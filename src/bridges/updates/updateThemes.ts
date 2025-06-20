@@ -1,4 +1,4 @@
-import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { ThemesMessage } from '../../types/messages'
 
 const updateThemes = async (msg: ThemesMessage) => {
@@ -8,6 +8,11 @@ const updateThemes = async (msg: ThemesMessage) => {
   )
 
   palette.themes = msg.data
+
+  palette.libraryData = new Data(palette).makeLibraryData(
+    ['style_id'],
+    palette.libraryData
+  )
 
   palette.meta.dates.updatedAt = now
   penpot.ui.sendMessage({

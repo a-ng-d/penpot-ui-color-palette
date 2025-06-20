@@ -1,4 +1,3 @@
-import { Board } from '@penpot/plugin-types'
 import globalConfig from '../global.config'
 import { locales } from '../content/locales'
 import updateThemes from './updates/updateThemes'
@@ -97,7 +96,6 @@ const loadUI = async () => {
   // UI > Canvas
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   penpot.ui.onMessage(async (msg: any) => {
-    const palette = penpot.selection[0] as Board
     const path = msg.pluginMessage
 
     const actions: { [key: string]: () => void } = {

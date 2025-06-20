@@ -9,6 +9,7 @@ const createPaletteFromDocument = async () => {
   ) as FullConfiguration
 
   const now = new Date().toISOString()
+  delete (backup as Partial<FullConfiguration>).libraryData
   backup.meta.id = uid()
   backup.meta.dates.openedAt = now
   backup.meta.dates.createdAt = now

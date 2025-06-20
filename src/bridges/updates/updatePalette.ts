@@ -1,4 +1,4 @@
-import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { PaletteMessage } from '../../types/messages'
 
 const updatePalette = async ({
@@ -29,6 +29,11 @@ const updatePalette = async ({
       current[pathParts[pathParts.length - 1]] = item.value
     }
   })
+
+  palette.libraryData = new Data(palette).makeLibraryData(
+    ['style_id'],
+    palette.libraryData
+  )
 
   if (!isAlreadyUpdated) {
     palette.meta.dates.updatedAt = now

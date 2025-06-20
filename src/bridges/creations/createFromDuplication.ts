@@ -14,6 +14,7 @@ const createPaletteFromDuplication = async (id: string) => {
   palette.base.name = locales
     .get()
     .browse.copy.replace('{$1}', palette.base.name)
+  delete (palette as Partial<FullConfiguration>).libraryData
   palette.meta.id = uid()
   palette.meta.publicationStatus.isPublished = false
   palette.meta.publicationStatus.isShared = false

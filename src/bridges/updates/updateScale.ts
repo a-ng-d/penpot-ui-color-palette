@@ -1,4 +1,4 @@
-import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { doScale } from '@a_ng_d/figmug-utils'
 import { ScaleMessage } from '../../types/messages'
 
@@ -28,6 +28,11 @@ const updateScale = async (msg: ScaleMessage) => {
   palette.base.preset = msg.data.preset
   palette.base.shift = msg.data.shift
   palette.base.preset = msg.data.preset
+
+  palette.libraryData = new Data(palette).makeLibraryData(
+    ['style_id'],
+    palette.libraryData
+  )
 
   palette.meta.dates.updatedAt = now
   penpot.ui.sendMessage({
