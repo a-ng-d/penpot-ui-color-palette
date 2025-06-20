@@ -71,7 +71,7 @@
   "dependencies": {
     "@a_ng_d/figmug-ui": "^1.11.2",
     "@a_ng_d/figmug-utils": "^0.3.5",
-    "@a_ng_d/utils-ui-color-palette": "^1.3.4",
+    "@a_ng_d/utils-ui-color-palette": "^1.3.5",
     "@nanostores/preact": "^0.5.2",
     "@sentry/react": "^8.8.0",
     "@supabase/supabase-js": "^2.44.2",
