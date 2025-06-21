@@ -64,13 +64,6 @@ const loadUI = async () => {
   )
 
   setTimeout(() => {
-    // Checks
-    checkUserConsent()
-      .then(() => checkTrialStatus())
-      .then(() => checkUserPreferences())
-      .then(() => checkUserLicense())
-      .then(() => processSelection())
-
     // Canvas > UI
     penpot.ui.sendMessage({
       type: 'CHECK_USER_AUTHENTICATION',
@@ -91,6 +84,13 @@ const loadUI = async () => {
     penpot.ui.sendMessage({
       type: 'CHECK_ANNOUNCEMENTS_VERSION',
     })
+
+    // Checks
+    checkUserConsent()
+      .then(() => checkTrialStatus())
+      .then(() => checkUserPreferences())
+      .then(() => checkUserLicense())
+      .then(() => processSelection())
   }, 1000)
 
   // UI > Canvas
