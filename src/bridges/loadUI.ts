@@ -341,6 +341,9 @@ const loadUI = async () => {
     penpot.ui.sendMessage({
       type: 'LOAD_PALETTES',
     })
+    penpot.ui.sendMessage({
+      type: 'RESET_PALETTE',
+    })
     setTimeout(() => getPalettesOnCurrentPage(), 1000)
   })
 
