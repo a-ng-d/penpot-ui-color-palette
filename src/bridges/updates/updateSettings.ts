@@ -1,5 +1,6 @@
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { SettingsMessage } from '../../types/messages'
+import { locales } from '../../content/locales'
 
 const updateSettings = async (msg: SettingsMessage) => {
   const now = new Date().toISOString()
@@ -28,6 +29,10 @@ const updateSettings = async (msg: SettingsMessage) => {
     type: 'UPDATE_PALETTE_DATE',
     data: now,
   })
+
+  penpot.currentFile?.saveVersion(
+    `${palette.base.name} - ${locales.get().events.settingsUpdated}`
+  )
 
   return penpot.currentPage?.setPluginData(
     `palette_${msg.id}`,

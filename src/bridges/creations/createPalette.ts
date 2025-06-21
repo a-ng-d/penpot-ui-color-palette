@@ -96,6 +96,10 @@ const createPalette = async (msg: Msg) => {
     JSON.stringify(palette)
   )
 
+  penpot.currentFile?.saveVersion(
+    `${palette.base.name} - ${locales.get().events.paletteCreated}`
+  )
+
   return penpot.ui.sendMessage({
     type: 'LOAD_PALETTE',
     data: palette,

@@ -1,6 +1,7 @@
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { doScale } from '@a_ng_d/figmug-utils'
 import { ScaleMessage } from '../../types/messages'
+import { locales } from '../../content/locales'
 
 const updateScale = async (msg: ScaleMessage) => {
   const now = new Date().toISOString()
@@ -39,6 +40,10 @@ const updateScale = async (msg: ScaleMessage) => {
     type: 'UPDATE_PALETTE_DATE',
     data: now,
   })
+
+  penpot.currentFile?.saveVersion(
+    `${palette.base.name} - ${locales.get().events.scaleUpdated}`
+  )
 
   return penpot.currentPage?.setPluginData(
     `palette_${msg.data.id}`,

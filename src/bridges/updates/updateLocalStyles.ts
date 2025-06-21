@@ -81,6 +81,10 @@ const updateLocalStyles = async (id: string) => {
       messages.push(locales.get().info.removedLocalStyles.single)
     else messages.push(locales.get().info.removedLocalStyles.none)
 
+    penpot.currentFile?.saveVersion(
+      `${palette.base.name} - ${locales.get().events.stylesSynced}`
+    )
+
     return messages.join(locales.get().separator)
   })
 

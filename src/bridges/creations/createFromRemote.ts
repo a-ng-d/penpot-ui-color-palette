@@ -58,6 +58,10 @@ const createFromRemote = async (msg: Msg) => {
     JSON.stringify(palette)
   )
 
+  penpot.currentFile?.saveVersion(
+    `${palette.base.name} - ${locales.get().events.palettePulled}`
+  )
+
   return penpot.ui.sendMessage({
     type: 'LOAD_PALETTE',
     data: palette,

@@ -26,6 +26,10 @@ const createPaletteFromDuplication = async (id: string) => {
   palette.meta.creatorIdentity.creatorFullName = ''
   palette.meta.creatorIdentity.creatorAvatar = ''
 
+  penpot.currentFile?.saveVersion(
+    `${palette.base.name} - ${locales.get().events.paletteDuplicated}`
+  )
+
   return penpot.currentPage?.setPluginData(
     `palette_${palette.meta.id}`,
     JSON.stringify(palette)

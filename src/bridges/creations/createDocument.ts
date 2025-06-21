@@ -25,6 +25,10 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
   penpot.selection = documents.documents
   penpot.viewport.zoomIntoView(penpot.selection)
 
+  penpot.currentFile?.saveVersion(
+    `${palette.base.name} - ${locales.get().events.documentCreated}`
+  )
+
   return true
 }
 

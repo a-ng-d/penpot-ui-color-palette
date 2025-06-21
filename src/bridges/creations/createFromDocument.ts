@@ -1,6 +1,7 @@
 import { uid } from 'uid'
 import { Board } from '@penpot/plugin-types'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { locales } from '../../content/locales'
 
 const createPaletteFromDocument = async () => {
   const document = penpot.selection[0] as Board
@@ -28,6 +29,11 @@ const createPaletteFromDocument = async () => {
     `palette_${backup.meta.id}`,
     JSON.stringify(backup)
   )
+
+  penpot.currentFile?.saveVersion(
+    `${backup.base.name} - ${locales.get().events.paletteCreatedFromDocument}`
+  )
+  
 
   return penpot.ui.sendMessage({
     type: 'LOAD_PALETTE',
