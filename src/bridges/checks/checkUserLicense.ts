@@ -6,8 +6,8 @@ const checkUserLicense = async () => {
     return penpot.ui.sendMessage({
       type: 'CHECK_USER_LICENSE',
       data: {
-        licenseKey: licenseKey?.slice(1, -1),
-        instanceId: instanceId?.slice(1, -1),
+        licenseKey: licenseKey,
+        instanceId: instanceId,
       },
     })
   return false
