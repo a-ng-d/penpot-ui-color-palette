@@ -26,6 +26,7 @@
       "paletteWithProperties": "Generate a detailed color palette",
       "sheet": "Generate a color sheet"
     },
+    "moreActions": "More actions",
     "publishOrSyncPalette": "Publish or Synchronize palette",
     "publishPalette": "Publish palette",
     "pushUpdates": "Push updates to the document",
