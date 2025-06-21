@@ -230,7 +230,7 @@ const loadUI = async () => {
           if (value && typeof value === 'string')
             penpot.ui.sendMessage({
               type: `GET_ITEM_${item.toUpperCase()}`,
-              value: JSON.parse(value),
+              value: value,
             })
         }),
       DELETE_ITEMS: () =>
@@ -247,7 +247,7 @@ const loadUI = async () => {
           if (value && typeof value === 'string')
             penpot.ui.sendMessage({
               type: `GET_DATA_${item.toUpperCase()}`,
-              value: JSON.parse(value),
+              value: value,
             })
         }),
       DELETE_DATA: () =>
@@ -255,7 +255,14 @@ const loadUI = async () => {
           penpot.root?.setPluginData(item, '')
         ),
       //
-      OPEN_IN_BROWSER: () => window.open(msg.url, '_blank'),
+      OPEN_IN_BROWSER: () =>
+        penpot.ui.sendMessage({
+          type: 'OPEN_IN_BROWSER',
+          data: {
+            url: path.url,
+            isNewTab: true,
+          },
+        }),
       GET_PALETTES: async () => await getPalettesOnCurrentPage(),
       JUMP_TO_PALETTE: async () =>
         await jumpToPalette(path.id).catch((error) =>
@@ -285,7 +292,13 @@ const loadUI = async () => {
         ),
       //
       GET_PRO_PLAN: async () =>
-        window.open(globalConfig.urls.storeUrl, '_blank')?.focus(),
+        penpot.ui.sendMessage({
+          type: 'OPEN_IN_BROWSER',
+          data: {
+            url: globalConfig.urls.storeUrl,
+            isNewTab: true,
+          },
+        }),
       GET_TRIAL: async () =>
         penpot.ui.sendMessage({
           type: 'GET_TRIAL',
