@@ -4,6 +4,7 @@ export default class Paragraph {
   private name: string
   private content: string
   private fontSize: number
+  private fontFamily: 'Martian Mono' | 'Lexend'
   private type: 'FILL' | 'FIXED'
   private width?: number
   private nodeText: Text | null
@@ -15,16 +16,19 @@ export default class Paragraph {
     type,
     width,
     fontSize = 12,
+    fontFamily = 'Martian Mono',
   }: {
     name: string
     content: string
     type: 'FILL' | 'FIXED'
     width?: number
     fontSize?: number
+    fontFamily?: 'Martian Mono' | 'Lexend'
   }) {
     this.name = name
     this.content = content
     this.fontSize = fontSize
+    this.fontFamily = fontFamily
     this.type = type
     this.width = width
     this.nodeText = null
@@ -35,7 +39,7 @@ export default class Paragraph {
     // Base
     this.nodeText = penpot.createText(this.content)
     if (this.nodeText) {
-      this.nodeText.fontFamily = 'Martian Mono'
+      this.nodeText.fontFamily = this.fontFamily
       this.nodeText.fontSize = this.fontSize.toString()
       this.nodeText.fontWeight = '500'
       this.nodeText.lineHeight = '1.3'

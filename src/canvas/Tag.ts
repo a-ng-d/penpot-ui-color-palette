@@ -6,6 +6,7 @@ export default class Tag {
   private name: string
   private content: string
   private fontSize: number
+  private fontFamily: 'Martian Mono' | 'Lexend'
   private url: string | null
   private backgroundColor: {
     rgb: RgbModel
@@ -22,6 +23,7 @@ export default class Tag {
     name,
     content,
     fontSize = 8,
+    fontFamily = 'Martian Mono',
     backgroundColor = {
       rgb: {
         r: 1,
@@ -35,6 +37,7 @@ export default class Tag {
     name: string
     content: string
     fontSize?: number
+    fontFamily?: 'Martian Mono' | 'Lexend'
     backgroundColor?: {
       rgb: RgbModel
       alpha: number
@@ -44,6 +47,7 @@ export default class Tag {
     this.name = name
     this.content = content
     this.fontSize = fontSize
+    this.fontFamily = fontFamily
     this.url = url
     this.backgroundColor = backgroundColor
     this.nodeTag = null
@@ -193,7 +197,7 @@ export default class Tag {
     this.nodeText = penpot.createText(this.content)
     if (this.nodeText) {
       this.nodeText.name = '_text'
-      this.nodeText.fontFamily = 'Martian Mono'
+      this.nodeText.fontFamily = this.fontFamily
       this.nodeText.fontSize = this.fontSize.toString()
       this.nodeText.fontWeight = '500'
       this.nodeText.lineHeight = '1'

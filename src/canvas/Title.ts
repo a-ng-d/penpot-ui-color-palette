@@ -79,8 +79,8 @@ export default class Title {
 
     // Layout
     const flex = this.nodeDescriptions.addFlexLayout()
-    flex.dir = 'row'
-    flex.columnGap = 8
+    flex.dir = 'column'
+    flex.rowGap = 8
     flex.horizontalSizing = 'fit-content'
     flex.verticalSizing = 'fit-content'
 
@@ -93,6 +93,7 @@ export default class Title {
           type: 'FIXED',
           width: 644,
           fontSize: 12,
+          fontFamily: 'Lexend',
         }).node
       )
 
@@ -109,6 +110,7 @@ export default class Title {
           type: 'FIXED',
           width: 644,
           fontSize: 12,
+          fontFamily: 'Lexend',
         }).node
       )
 

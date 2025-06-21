@@ -320,6 +320,7 @@ export default class Sample {
         content: description,
         type: 'FILL',
         fontSize: 8,
+        fontFamily: 'Lexend',
       }).node
 
       this.node.appendChild(paragraphNode)

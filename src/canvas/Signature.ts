@@ -43,6 +43,7 @@ export default class Signature {
         name: '_url',
         content: locales.get().url,
         url: 'https://ui-color-palette.com',
+        fontFamily: 'Lexend',
       }).makeNodeTag()
     )
 

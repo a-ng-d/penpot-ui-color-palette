@@ -50,7 +50,7 @@ const loadUI = async () => {
       penpot.root?.getPluginData('plugin_window_width') ?? '640'
     ),
     height: parseFloat(
-      penpot.root?.getPluginData('plugin_window_height') ?? '400'
+      penpot.root?.getPluginData('plugin_window_height') ?? '640'
     ),
   }
 
