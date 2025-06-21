@@ -159,7 +159,7 @@ const loadUI = async () => {
               data: {
                 type: 'INFO',
                 message: messages.join(locales.get().separator),
-                timeout: 10000,
+                timer: 10000,
               },
             })
           )
