@@ -225,12 +225,14 @@ const loadUI = async () => {
         })
       },
       GET_ITEMS: async () =>
-        path.items.map(async (item: string) =>
-          penpot.ui.sendMessage({
-            type: `GET_ITEM_${item.toUpperCase()}`,
-            value: penpot.root?.getPluginData(item),
-          })
-        ),
+        path.items.map(async (item: string) => {
+          const value = penpot.root?.getPluginData(item)
+          if (value && typeof value === 'string')
+            penpot.ui.sendMessage({
+              type: `GET_ITEM_${item.toUpperCase()}`,
+              value: JSON.parse(value),
+            })
+        }),
       DELETE_ITEMS: () =>
         path.items.forEach(async (item: string) =>
           penpot.root?.setPluginData(item, '')
@@ -240,12 +242,14 @@ const loadUI = async () => {
           penpot.root?.setPluginData(item.key, JSON.stringify(item.value))
         ),
       GET_DATA: async () =>
-        path.items.map(async (item: string) =>
-          penpot.ui.sendMessage({
-            type: `GET_ITEM_${item.toUpperCase()}`,
-            value: penpot.root?.getPluginData(item),
-          })
-        ),
+        path.items.map(async (item: string) => {
+          const value = penpot.root?.getPluginData(item)
+          if (value && typeof value === 'string')
+            penpot.ui.sendMessage({
+              type: `GET_DATA_${item.toUpperCase()}`,
+              value: JSON.parse(value),
+            })
+        }),
       DELETE_DATA: () =>
         path.items.forEach(async (item: string) =>
           penpot.root?.setPluginData(item, '')
