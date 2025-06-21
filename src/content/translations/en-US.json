@@ -194,6 +194,21 @@
       "tokensStudio": "Tokens Studio (JSON)"
     }
   },
+  "events": {
+    "paletteCreated": "Palette created",
+    "paletteDuplicated": "Palette duplicated",
+    "paletteCreatedFromDocument": "Palette created from document",
+    "palettePulled": "Palette pulled",
+    "paletteRemoved": "Palette removed",
+    "documentCreated": "Document created",
+    "documentUpdated": "Document updated",
+    "scaleUpdated": "Scale updated",
+    "colorsUpdated": "Source colors updated",
+    "themesUpdated": "Modes updated",
+    "settingsUpdated": "Settings updated",
+    "paletteUpdated": "Palette updated",
+    "stylesSynced": "Styles synchronized"
+  },
   "global": {
     "description": {
       "label": "Description",
@@ -279,7 +294,7 @@
     "base": "Base",
     "bodyText": "Body text",
     "closest": "Closest to source",
-    "colorSpace": "Color space: ",
+    "colorSpace": "Color space: {$1}",
     "contentText": "Content text",
     "fail": "Fail",
     "fluentText": "Fluent text",
@@ -288,16 +303,17 @@
     "locked": "Locked source color",
     "nonText": "Non-text",
     "pass": "Pass",
-    "preset": "Preset: ",
-    "provider": "Provider: ",
+    "preset": "Preset: {$1}",
+    "provider": "Provider: {$1}",
     "sourceColors": "Source colors",
     "spotText": "Spot text",
-    "theme": "Mode: ",
+    "theme": "Mode: {$1}",
     "unknown": "Unknown",
-    "updatedAt": "Updated at: ",
-    "visionSimulation": "Vision simulation: ",
+    "updatedAt": "Updated at: {$1}",
+    "visionSimulation": "Vision simulation: {$1}",
     "wcag": "WCAG 2.1 scores",
-    "transparent": "Transparent"
+    "transparent": "Transparent",
+    "themeDescription": "Mode description: {$1}"
   },
   "dev": {
     "vscode": {

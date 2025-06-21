@@ -80,7 +80,7 @@ export default class Title {
     // Layout
     const flex = this.nodeDescriptions.addFlexLayout()
     flex.dir = 'row'
-    flex.rowGap = 8
+    flex.columnGap = 8
     flex.horizontalSizing = 'fit-content'
     flex.verticalSizing = 'fit-content'
 
@@ -100,7 +100,12 @@ export default class Title {
       this.nodeDescriptions.appendChild(
         new Paragraph({
           name: '_theme-description',
-          content: 'Theme description: ' + this.theme.description,
+          content: locales
+            .get()
+            .paletteProperties.themeDescription.replace(
+              '{$1}',
+              this.theme.description
+            ),
           type: 'FIXED',
           width: 644,
           fontSize: 12,
@@ -129,21 +134,27 @@ export default class Title {
       this.nodeProps.appendChild(
         new Tag({
           name: '_theme',
-          content: `${locales.get().paletteProperties.theme}${this.data.name}`,
+          content: locales
+            .get()
+            .paletteProperties.theme.replace('{$1}', this.data.name),
           fontSize: 12,
         }).makeNodeTag()
       )
     this.nodeProps.appendChild(
       new Tag({
         name: '_preset',
-        content: `${locales.get().paletteProperties.preset}${this.base.preset.name}`,
+        content: locales
+          .get()
+          .paletteProperties.preset.replace('{$1}', this.base.preset.name),
         fontSize: 12,
       }).makeNodeTag()
     )
     this.nodeProps.appendChild(
       new Tag({
         name: '_color-space',
-        content: `${locales.get().paletteProperties.colorSpace}${this.base.colorSpace}`,
+        content: locales
+          .get()
+          .paletteProperties.colorSpace.replace('{$1}', this.base.colorSpace),
         fontSize: 12,
       }).makeNodeTag()
     )
@@ -151,19 +162,25 @@ export default class Title {
       this.nodeProps.appendChild(
         new Tag({
           name: '_vision-simulation',
-          content: `${locales.get().paletteProperties.visionSimulation}${
-            this.theme.visionSimulationMode.charAt(0) +
-            this.theme.visionSimulationMode.toLocaleLowerCase().slice(1)
-          }`,
+          content: locales
+            .get()
+            .paletteProperties.visionSimulation.replace(
+              '{$1}',
+              this.theme.visionSimulationMode.charAt(0) +
+                this.theme.visionSimulationMode.toLocaleLowerCase().slice(1)
+            ),
           fontSize: 12,
         }).makeNodeTag()
       )
     this.nodeProps.appendChild(
       new Tag({
         name: '_updated_at',
-        content: `${locales.get().paletteProperties.updatedAt}${new Date(
-          this.meta.dates.updatedAt
-        ).toDateString()}`,
+        content: locales
+          .get()
+          .paletteProperties.updatedAt.replace(
+            '{$1}',
+            new Date(this.meta.dates.updatedAt).toDateString()
+          ),
         fontSize: 12,
       }).makeNodeTag()
     )

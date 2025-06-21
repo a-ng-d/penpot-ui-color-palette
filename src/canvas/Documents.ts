@@ -108,7 +108,7 @@ export default class Documents {
       'backup',
       JSON.stringify({
         base: this.base,
-        data: this.data,
+        themes: this.themes,
         meta: this.meta,
         type: 'UI_COLOR_PALETTE',
       })
