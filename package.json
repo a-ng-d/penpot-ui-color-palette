@@ -20,9 +20,7 @@
     "build": "npx vite build --mode development & IS_PLUGIN=true npx vite build --mode development",
     "build:prod": "npx vite build --mode production",
     "typecheck": "npx tsc --noEmit",
-    "typecheck:watch": "npx tsc --noEmit --watch",
     "lint": "npx eslint ./src/** --fix --ext .ts,.tsx .",
-    "lint:watch": "esw ./src/** --fix --watch --ext .ts,.tsx .",
     "format": "npx prettier './src' --write"
   },
   "keywords": [
