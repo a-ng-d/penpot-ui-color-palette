@@ -6,7 +6,8 @@ const checkTrialStatus = async () => {
       ? parseFloat(penpot.root?.getPluginData('trial_start_date') || '')
       : null
   const currentTrialVersion: string =
-    penpot.root?.getPluginData('trial_version') || ''
+    penpot.root?.getPluginData('trial_version') ||
+    globalConfig.versions.trialVersion
   const currentTrialTime: number = parseFloat(
     penpot.root?.getPluginData('trial_time') || '72'
   )

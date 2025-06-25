@@ -23,11 +23,11 @@ import exportCsv from './exports/exportCsv'
 import exportCss from './exports/exportCss'
 import enableTrial from './enableTrial'
 import deletePalette from './creations/deletePalette'
+import createPaletteFromRemote from './creations/createPaletteFromRemote'
+import createPaletteFromDuplication from './creations/createPaletteFromDuplication'
+import createPaletteFromDocument from './creations/createPaletteFromDocument'
 import createPalette from './creations/createPalette'
 import createLocalStyles from './creations/createLocalStyles'
-import createFromRemote from './creations/createFromRemote'
-import createFromDuplication from './creations/createFromDuplication'
-import createFromDocument from './creations/createFromDocument'
 import createDocument from './creations/createDocument'
 import checkUserPreferences from './checks/checkUserPreferences'
 import checkUserLicense from './checks/checkUserLicense'
@@ -135,11 +135,12 @@ const loadUI = async () => {
           penpot.ui.sendMessage({ type: 'STOP_LOADER' })
         ),
       CREATE_PALETTE_FROM_DOCUMENT: () =>
-        createFromDocument().finally(() =>
+        createPaletteFromDocument().finally(() =>
           penpot.ui.sendMessage({ type: 'STOP_LOADER' })
         ),
       CREATE_PALETTE_FROM_REMOTE: () =>
-        createFromRemote(path)
+        createPaletteFromRemote(path)
+          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
@@ -148,8 +149,7 @@ const loadUI = async () => {
                 message: error.message,
               },
             })
-          })
-          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' })),
+          }),
       SYNC_LOCAL_STYLES: async () =>
         createLocalStyles(path.id)
           .then(async (message) => [message, await updateLocalStyles(path.id)])
@@ -275,7 +275,7 @@ const loadUI = async () => {
           })
         ),
       DUPLICATE_PALETTE: async () =>
-        await createFromDuplication(path.id)
+        await createPaletteFromDuplication(path.id)
           .finally(async () => await getPalettesOnCurrentPage())
           .catch((error) => {
             penpot.ui.sendMessage({

@@ -14,12 +14,13 @@ interface Msg {
   }
 }
 
-const createFromRemote = async (msg: Msg) => {
+const createPaletteFromRemote = async (msg: Msg) => {
   const localPalette = penpot.currentPage?.getPluginData(
     `palette_${msg.data.meta.id}`
   )
 
-  if (localPalette) throw new Error(locales.get().info.addToLocal)
+  if (localPalette !== null || localPalette !== undefined)
+    throw new Error(locales.get().info.addToLocal)
 
   const palette = new Data({
     base: {
@@ -68,4 +69,4 @@ const createFromRemote = async (msg: Msg) => {
   })
 }
 
-export default createFromRemote
+export default createPaletteFromRemote
