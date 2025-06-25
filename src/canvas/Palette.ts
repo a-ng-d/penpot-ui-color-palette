@@ -154,8 +154,6 @@ export default class Palette {
 
       // Insert
       const sampleNode = new Sample({
-        id: color.shades.find((color) => color.type === 'source color')
-          ?.styleId,
         name: color.name,
         rgb: sourceColor.rgb,
         colorSpace: this.base.colorSpace,
@@ -176,7 +174,6 @@ export default class Palette {
         .forEach((shade) => {
           this.nodeRowShades?.appendChild(
             new Sample({
-              id: shade.styleId,
               name: color.name,
               source: {
                 r: sourceColor.rgb[0] / 255,

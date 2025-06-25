@@ -52,7 +52,6 @@ export default class Sample {
       isTransparent: false,
     },
   }: {
-    id?: string
     name: string
     source?: RgbModel
     scale?: string
@@ -266,7 +265,7 @@ export default class Sample {
     flex.verticalPadding = 8
     flex.rowGap = 8
 
-    // color
+    // Color
     this.nodeColor = penpot.createBoard()
     this.nodeColor.name = '_color'
     this.nodeColor.resize(96, 96)
