@@ -16,11 +16,6 @@ export default defineConfig(({ mode }) => {
         project: 'ui-color-palette',
         authToken: env.SENTRY_AUTH_TOKEN,
       }),
-      /*visualizer({
-        open: true,
-        filename: 'dist/stats.html',
-      }),*/
-      // basicSsl(),
     ],
 
     resolve: {
