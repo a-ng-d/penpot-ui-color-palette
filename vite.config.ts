@@ -1,4 +1,5 @@
 import path from 'path'
+import { viteSingleFile } from 'vite-plugin-singlefile'
 import { defineConfig, loadEnv } from 'vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import preact from '@preact/preset-vite'
@@ -16,6 +17,7 @@ export default defineConfig(({ mode }) => {
         project: 'ui-color-palette',
         authToken: env.SENTRY_AUTH_TOKEN,
       }),
+      viteSingleFile(),
     ],
 
     resolve: {
@@ -31,6 +33,7 @@ export default defineConfig(({ mode }) => {
     },
 
     build: {
+      target: 'es2015',
       sourcemap: isDev,
       minify: !isDev,
       outDir: 'dist',
@@ -50,12 +53,13 @@ export default defineConfig(({ mode }) => {
               input: 'index.html',
               output: {
                 dir: 'dist',
-                entryFileNames: '[name].js',
+                entryFileNames: 'ui.js',
                 assetFileNames: 'assets/[name].[hash][extname]',
               },
             },
           }),
     },
+
     preview: {
       port: 4400,
       watch: {
