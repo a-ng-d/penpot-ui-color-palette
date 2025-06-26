@@ -49,16 +49,16 @@ const updateLocalStyles = async (id: string) => {
         }
 
         if (item.alpha !== undefined) {
-          if (item.hex?.substring(0, 7) !== styleMatch.color) {
+          if (styleMatch.color !== item.hex?.substring(0, 7)) {
             styleMatch.color = item.hex?.substring(0, 7)
             j++
           }
 
-          if (item.alpha !== styleMatch.opacity) {
+          if (styleMatch.opacity !== item.alpha) {
             styleMatch.opacity = item.alpha
             j++
           }
-        } else if (item.hex !== styleMatch.color) {
+        } else if (styleMatch.color !== item.hex) {
           styleMatch.color = item.hex?.substring(0, 7)
           styleMatch.opacity = 1
           j++

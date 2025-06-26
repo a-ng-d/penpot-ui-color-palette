@@ -88,8 +88,8 @@ const loadUI = async () => {
     // Checks
     checkUserConsent()
       .then(() => checkTrialStatus())
-      .then(() => checkUserPreferences())
       .then(() => checkUserLicense())
+      .then(() => checkUserPreferences())
       .then(() => processSelection())
   }, 1000)
 
