@@ -114,7 +114,7 @@ root.render(
       userConsentVersion: globalConfig.versions.userConsentVersion,
       trialVersion: globalConfig.versions.trialVersion,
       algorithmVersion: globalConfig.versions.algorithmVersion,
-      paletteDataVersion: globalConfig.versions.paletteDataVersion,
+      paletteVersion: globalConfig.versions.paletteVersion,
     }}
     features={globalConfig.features}
     locales={globalConfig.locales}

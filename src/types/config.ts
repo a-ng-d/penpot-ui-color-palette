@@ -56,7 +56,7 @@ export interface Config {
     userConsentVersion: string
     trialVersion: string
     algorithmVersion: AlgorithmVersionConfiguration
-    paletteDataVersion: string
+    paletteVersion: string
   }
   features: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT' | 'TRANSFER'>>
   locales: Translations

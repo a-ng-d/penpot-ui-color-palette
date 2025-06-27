@@ -8,6 +8,7 @@ import {
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
 import setPaletteName from '../utils/setPaletteName'
+import globalConfig from '../global.config'
 import Sheet from './Sheet'
 import Palette from './Palette'
 
@@ -99,6 +100,7 @@ export default class Documents {
 
     // data
     document.setPluginData('type', 'UI_COLOR_PALETTE')
+    document.setPluginData('version', globalConfig.versions.paletteVersion)
     document.setPluginData('view', this.view)
     document.setPluginData('id', this.meta.id)
     document.setPluginData('themeId', theme.id)
