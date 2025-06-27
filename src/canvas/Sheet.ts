@@ -185,7 +185,7 @@ export default class Sheet {
           flexShades.wrap = 'wrap'
           flexShades.rowGap = this.gap
           this.nodeRowShades?.resize(
-            this.sampleSize * this.sampleScale * 4 + this.gap * 3,
+            this.sampleSize * this.sampleRatio * 4 + this.gap * 2,
             100
           )
           flexShades.horizontalSizing = 'fit-content'

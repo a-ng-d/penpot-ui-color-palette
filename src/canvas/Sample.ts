@@ -157,7 +157,6 @@ export default class Sample {
     this.node.name = name
     this.node.resize(width, height)
     this.node.fills = newFills
-    this.node.fills = this.node.fills.filter(Boolean)
     this.node.horizontalSizing = 'fix'
     this.node.verticalSizing = 'fix'
 

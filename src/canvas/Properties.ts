@@ -153,6 +153,7 @@ export default class Properties {
     this.nodeBaseProps.fills = []
     this.nodeBaseProps.horizontalSizing = 'auto'
     this.nodeBaseProps.verticalSizing = 'auto'
+    this.nodeBaseProps.clipContent = true
 
     // Layout
     const flex = this.nodeBaseProps.addFlexLayout()

@@ -1,4 +1,4 @@
-import { Board } from '@penpot/plugin-types'
+import { Board, ImageData } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -132,6 +132,27 @@ export default class Title {
     flex.alignItems = 'end'
 
     // Insert
+    if (
+      this.meta.publicationStatus.isPublished &&
+      this.meta.creatorIdentity.creatorAvatar !== ''
+    )
+      penpot
+        .uploadMediaUrl(
+          'Creator avatar',
+          this.meta.creatorIdentity.creatorAvatar
+        )
+        .then(async (image: ImageData) =>
+          new Tag({
+            name: '_theme',
+            content: locales
+              .get()
+              .paletteProperties.provider.replace(
+                '{$1}',
+                this.meta.creatorIdentity.creatorFullName
+              ),
+            fontSize: 12,
+          }).makeNodeTagWithAvatar(image)
+        )
     if (this.data.type !== 'default theme')
       this.nodeProps.appendChild(
         new Tag({
