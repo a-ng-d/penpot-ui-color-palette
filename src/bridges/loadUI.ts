@@ -263,9 +263,9 @@ const loadUI = async () => {
             isNewTab: true,
           },
         }),
-      GET_PALETTES: async () => await getPalettesOnCurrentPage(),
+      GET_PALETTES: async () => getPalettesOnCurrentPage(),
       JUMP_TO_PALETTE: async () =>
-        await jumpToPalette(path.id).catch((error) =>
+        jumpToPalette(path.id).catch((error) =>
           penpot.ui.sendMessage({
             type: 'POST_MESSAGE',
             data: {
@@ -275,8 +275,11 @@ const loadUI = async () => {
           })
         ),
       DUPLICATE_PALETTE: async () =>
-        await createPaletteFromDuplication(path.id)
-          .finally(async () => await getPalettesOnCurrentPage())
+        createPaletteFromDuplication(path.id)
+          .finally(async () => {
+            getPalettesOnCurrentPage()
+            penpot.ui.sendMessage({ type: 'STOP_LOADER' })
+          })
           .catch((error) => {
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
@@ -287,9 +290,10 @@ const loadUI = async () => {
             })
           }),
       DELETE_PALETTE: async () =>
-        await deletePalette(path.id).finally(
-          async () => await getPalettesOnCurrentPage()
-        ),
+        deletePalette(path.id).finally(async () => {
+          getPalettesOnCurrentPage()
+          penpot.ui.sendMessage({ type: 'STOP_LOADER' })
+        }),
       //
       GET_PRO_PLAN: async () =>
         penpot.ui.sendMessage({
