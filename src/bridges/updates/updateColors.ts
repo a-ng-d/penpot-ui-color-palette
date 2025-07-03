@@ -21,14 +21,17 @@ const updateColors = async (msg: ColorsMessage) => {
     palette.libraryData
   )
 
-  penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.colorsUpdated}`
-  )
-
-  return penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setPluginData(
     `palette_${msg.id}`,
     JSON.stringify(palette)
   )
+
+  await new Promise((r) => setTimeout(r, 1000))
+  await penpot.currentFile?.saveVersion(
+    `${palette.base.name} - ${locales.get().events.colorsUpdated}`
+  )
+
+  return palette
 }
 
 export default updateColors

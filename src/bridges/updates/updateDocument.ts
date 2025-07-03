@@ -62,11 +62,12 @@ const updateDocument = async (view: ViewConfiguration) => {
   document.setPluginData('updatedAt', palette.meta.dates.updatedAt.toString())
   document.setPluginData('backup', JSON.stringify(palette))
 
-  penpot.currentFile?.saveVersion(
+  await new Promise((r) => setTimeout(r, 1000))
+  await penpot.currentFile?.saveVersion(
     `${palette.base.name} - ${locales.get().events.documentUpdated}`
   )
 
-  return true
+  return palette
 }
 
 export default updateDocument

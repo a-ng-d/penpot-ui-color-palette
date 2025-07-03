@@ -29,15 +29,18 @@ const updateSettings = async (msg: SettingsMessage) => {
     type: 'UPDATE_PALETTE_DATE',
     data: now,
   })
-
-  penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.settingsUpdated}`
-  )
-
-  return penpot.currentPage?.setPluginData(
+  
+  penpot.currentPage?.setPluginData(
     `palette_${msg.id}`,
     JSON.stringify(palette)
   )
+
+  await new Promise((r) => setTimeout(r, 1000))
+  await penpot.currentFile?.saveVersion(
+    `${palette.base.name} - ${locales.get().events.settingsUpdated}`
+  )
+
+  return palette
 }
 
 export default updateSettings

@@ -30,17 +30,18 @@ const createPaletteFromDocument = async () => {
     `palette_${backup.meta.id}`,
     JSON.stringify(backup)
   )
-
-  penpot.currentFile?.saveVersion(
-    `${backup.base.name} - ${locales.get().events.paletteCreatedFromDocument}`
-  )
-
-  processSelection()
-
-  return penpot.ui.sendMessage({
+  penpot.ui.sendMessage({
     type: 'LOAD_PALETTE',
     data: backup,
   })
+  processSelection()
+
+  await new Promise((r) => setTimeout(r, 1000))
+  await penpot.currentFile?.saveVersion(
+    `${backup.base.name} - ${locales.get().events.paletteCreatedFromDocument}`
+  )
+
+  return backup
 }
 
 export default createPaletteFromDocument

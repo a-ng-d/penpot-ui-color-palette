@@ -41,14 +41,21 @@ const updateScale = async (msg: ScaleMessage) => {
     data: now,
   })
 
-  penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.scaleUpdated}`
-  )
-
-  return penpot.currentPage?.setPluginData(
+  penpot.ui.sendMessage({
+    type: 'LOAD_PALETTE',
+    data: palette,
+  })
+  penpot.currentPage?.setPluginData(
     `palette_${msg.data.id}`,
     JSON.stringify(palette)
   )
+
+  await new Promise((r) => setTimeout(r, 1000))
+  await penpot.currentFile?.saveVersion(
+    `${palette.base.name} - ${locales.get().events.scaleUpdated}`
+  )
+
+  return palette
 }
 
 export default updateScale

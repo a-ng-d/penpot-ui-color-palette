@@ -50,14 +50,17 @@ const updatePalette = async ({
       data: palette,
     })
 
-  penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.paletteUpdated}`
-  )
-
-  return penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setPluginData(
     `palette_${msg.id}`,
     JSON.stringify(palette)
   )
+
+  await new Promise((r) => setTimeout(r, 1000))
+  await penpot.currentFile?.saveVersion(
+    `${palette.base.name} - ${locales.get().events.paletteUpdated}`
+  )
+
+  return palette
 }
 
 const flattenObject = (
