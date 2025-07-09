@@ -95,13 +95,21 @@ const updateLocalStyles = async (id: string) => {
       })
 
     if (i > 1)
-      messages.push(`${i} ${locales.get().info.updatedLocalStyles.plural}`)
+      messages.push(
+        locales
+          .get()
+          .info.updatedLocalStyles.plural.replace('{$1}', i.toString())
+      )
     else if (i === 1)
       messages.push(locales.get().info.updatedLocalStyles.single)
     else messages.push(locales.get().info.updatedLocalStyles.none)
 
     if (k > 1)
-      messages.push(`${k} ${locales.get().info.removedLocalStyles.plural}`)
+      messages.push(
+        locales
+          .get()
+          .info.removedLocalStyles.plural.replace('{$1}', k.toString())
+      )
     else if (k === 1)
       messages.push(locales.get().info.removedLocalStyles.single)
     else messages.push(locales.get().info.removedLocalStyles.none)
