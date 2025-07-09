@@ -1,4 +1,4 @@
-import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { locales } from '../../content/locales'
 
 const updateLocalStyles = async (id: string) => {
@@ -9,8 +9,16 @@ const updateLocalStyles = async (id: string) => {
 
   const palette = JSON.parse(rawPalette) as FullConfiguration
 
+  palette.libraryData = new Data(palette).makeLibraryData(
+    ['style_id', 'alpha', 'hex'],
+    palette.libraryData
+  )
+
   const canDeepSyncStyles =
     penpot.root?.getPluginData('can_deep_sync_styles') === 'true'
+  const hasThemes = palette.libraryData.some(
+    (item) => !item.id.includes('00000000000')
+  )
 
   const updatedLocalStylesStatusMessage = await Promise.all(
     penpot.library.local.colors
@@ -32,42 +40,59 @@ const updateLocalStyles = async (id: string) => {
         }
       })
 
-    palette.libraryData?.forEach((item) => {
-      const styleMatch = localStyles.find(
-        (localStyle) => localStyle.id === item.styleId
-      )
+    palette.libraryData
+      .filter((item) => {
+        return hasThemes
+          ? !item.id.includes('00000000000')
+          : item.id.includes('00000000000')
+      })
+      .forEach((item) => {
+        const styleMatch = localStyles.find(
+          (localStyle) => localStyle.id === item.styleId
+        )
+        const path = [
+          item.paletteName,
+          item.themeName === ''
+            ? locales.get().themes.defaultName
+            : item.themeName,
+          item.colorName === ''
+            ? locales.get().colors.defaultName
+            : item.colorName,
+        ]
+          .filter((item) => item !== '' && item !== 'None')
+          .join(' / ')
 
-      if (styleMatch !== undefined) {
-        if (styleMatch.name !== item.name) {
-          styleMatch.name = item.name
-          j++
-        }
+        if (styleMatch !== undefined) {
+          if (styleMatch.name !== item.shadeName) {
+            styleMatch.name = item.shadeName
+            j++
+          }
 
-        if (styleMatch.path !== item.path) {
-          styleMatch.path = item.path
-          j++
-        }
+          if (styleMatch.path !== path) {
+            styleMatch.path = path
+            j++
+          }
 
-        if (item.alpha !== undefined) {
-          if (styleMatch.color !== item.hex?.substring(0, 7)) {
+          if (item.alpha !== undefined) {
+            if (styleMatch.color !== item.hex?.substring(0, 7)) {
+              styleMatch.color = item.hex?.substring(0, 7)
+              j++
+            }
+
+            if (styleMatch.opacity !== item.alpha) {
+              styleMatch.opacity = item.alpha
+              j++
+            }
+          } else if (styleMatch.color !== item.hex) {
             styleMatch.color = item.hex?.substring(0, 7)
+            styleMatch.opacity = 1
             j++
           }
 
-          if (styleMatch.opacity !== item.alpha) {
-            styleMatch.opacity = item.alpha
-            j++
-          }
-        } else if (styleMatch.color !== item.hex) {
-          styleMatch.color = item.hex?.substring(0, 7)
-          styleMatch.opacity = 1
-          j++
+          j > 0 ? i++ : i
+          j = 0
         }
-
-        j > 0 ? i++ : i
-        j = 0
-      }
-    })
+      })
 
     if (i > 1)
       messages.push(`${i} ${locales.get().info.updatedLocalStyles.plural}`)
