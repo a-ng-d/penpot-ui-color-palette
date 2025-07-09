@@ -50,8 +50,7 @@ const globalConfig: Config = {
     repositoryUrl: 'https://uicp.ylb.lt/repository',
     communityUrl: 'https://uicp.ylb.lt/community',
     supportEmail: 'https://uicp.ylb.lt/contact',
-    feedbackUrl:
-      'https://angd.notion.site/ebd/13df8c62fd868018989de53f17ad6df3',
+    feedbackUrl: 'https://uicp.ylb.lt/feedback',
     trialFeedbackUrl: 'https://uicp.ylb.lt/feedback-trial',
     requestsUrl: 'https://uicp.ylb.lt/ideas',
     networkUrl: 'https://uicp.ylb.lt/network',
@@ -79,6 +78,7 @@ const globalConfig: Config = {
       'SYNC_LOCAL_VARIABLES',
       'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
       'RESIZE_UI',
+      'HELP_CHAT',
     ],
     [
       'LOCAL_PALETTES',
