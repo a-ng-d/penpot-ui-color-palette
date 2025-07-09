@@ -49,7 +49,7 @@ const createPalette = async (msg: Msg) => {
       description: '',
       scale: msg.data.exchange.scale,
       paletteBackground: '#FFFFFF',
-      visionSimulationMode: 'NONE',
+      visionSimulationMode: msg.data.exchange.visionSimulationMode,
       textColorsTheme: msg.data.exchange.textColorsTheme,
       isEnabled: true,
       id: '00000000000',
