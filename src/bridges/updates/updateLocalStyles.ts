@@ -15,7 +15,7 @@ const updateLocalStyles = async (id: string) => {
   )
 
   const canDeepSyncStyles =
-    penpot.root?.getPluginData('can_deep_sync_styles') === 'true'
+    penpot.localStorage.getItem('can_deep_sync_styles') === 'true'
   const hasThemes = palette.libraryData.some(
     (item) => !item.id.includes('00000000000')
   )

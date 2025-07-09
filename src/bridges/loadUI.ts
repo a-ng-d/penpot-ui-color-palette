@@ -47,10 +47,10 @@ interface Window {
 const loadUI = async () => {
   const windowSize: Window = {
     width: parseFloat(
-      penpot.root?.getPluginData('plugin_window_width') ?? '640'
+      penpot.localStorage.getItem('plugin_window_width') ?? '640'
     ),
     height: parseFloat(
-      penpot.root?.getPluginData('plugin_window_height') ?? '640'
+      penpot.localStorage.getItem('plugin_window_height') ?? '640'
     ),
   }
 
@@ -71,8 +71,8 @@ const loadUI = async () => {
         id: penpot.currentUser.id,
         fullName: penpot.currentUser.name,
         avatar: penpot.currentUser.avatarUrl,
-        accessToken: penpot.root?.getPluginData('supabase_access_token'),
-        refreshToken: penpot.root?.getPluginData('supabase_refresh_token'),
+        accessToken: penpot.localStorage.getItem('supabase_access_token'),
+        refreshToken: penpot.localStorage.getItem('supabase_refresh_token'),
       },
     })
     penpot.ui.sendMessage({
@@ -126,7 +126,7 @@ const loadUI = async () => {
             })
           }),
       UPDATE_LANGUAGE: () => {
-        penpot.root?.setPluginData('user_language', path.data.lang)
+        penpot.localStorage.setItem('user_language', path.data.lang)
         locales.set(path.data.lang)
       },
       //
@@ -215,18 +215,18 @@ const loadUI = async () => {
       SET_ITEMS: () => {
         path.items.forEach((item: { key: string; value: unknown }) => {
           if (typeof item.value === 'object')
-            penpot.root?.setPluginData(item.key, JSON.stringify(item.value))
+            penpot.localStorage.setItem(item.key, JSON.stringify(item.value))
           else if (
             typeof item.value === 'boolean' ||
             typeof item.value === 'number'
           )
-            penpot.root?.setPluginData(item.key, item.value.toString())
-          else penpot.root?.setPluginData(item.key, item.value as string)
+            penpot.localStorage.setItem(item.key, item.value.toString())
+          else penpot.localStorage.setItem(item.key, item.value as string)
         })
       },
       GET_ITEMS: async () =>
         path.items.map(async (item: string) => {
-          const value = penpot.root?.getPluginData(item)
+          const value = penpot.localStorage.getItem(item)
           if (value && typeof value === 'string')
             penpot.ui.sendMessage({
               type: `GET_ITEM_${item.toUpperCase()}`,
@@ -235,15 +235,18 @@ const loadUI = async () => {
         }),
       DELETE_ITEMS: () =>
         path.items.forEach(async (item: string) =>
-          penpot.root?.setPluginData(item, '')
+          penpot.localStorage.removeItem(item)
         ),
       SET_DATA: () =>
         path.items.forEach((item: { key: string; value: string }) =>
-          penpot.root?.setPluginData(item.key, JSON.stringify(item.value))
+          penpot.currentPage?.setPluginData(
+            item.key,
+            JSON.stringify(item.value)
+          )
         ),
       GET_DATA: async () =>
         path.items.map(async (item: string) => {
-          const value = penpot.root?.getPluginData(item)
+          const value = penpot.currentPage?.getPluginData(item)
           if (value && typeof value === 'string')
             penpot.ui.sendMessage({
               type: `GET_DATA_${item.toUpperCase()}`,
@@ -252,7 +255,7 @@ const loadUI = async () => {
         }),
       DELETE_DATA: () =>
         path.items.forEach(async (item: string) =>
-          penpot.root?.setPluginData(item, '')
+          penpot.currentPage?.setPluginData(item, '')
         ),
       //
       OPEN_IN_BROWSER: () =>

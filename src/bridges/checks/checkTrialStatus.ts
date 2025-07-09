@@ -2,14 +2,14 @@ import globalConfig from '../../global.config'
 
 const checkTrialStatus = async () => {
   const trialStartDate =
-    penpot.root?.getPluginData('trial_start_date') !== ''
-      ? parseFloat(penpot.root?.getPluginData('trial_start_date') || '')
+    penpot.localStorage.getItem('trial_start_date') !== ''
+      ? parseFloat(penpot.localStorage.getItem('trial_start_date') || '')
       : null
   const currentTrialVersion: string =
-    penpot.root?.getPluginData('trial_version') ||
+    penpot.localStorage.getItem('trial_version') ||
     globalConfig.versions.trialVersion
   const currentTrialTime: number = parseFloat(
-    penpot.root?.getPluginData('trial_time') || '72'
+    penpot.localStorage.getItem('trial_time') || '72'
   )
 
   let consumedTime = 0,

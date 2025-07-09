@@ -2,7 +2,7 @@ import { userConsent } from '../../utils/userConsent'
 import globalConfig from '../../global.config'
 
 const checkUserConsent = async () => {
-  const currentUserConsentVersion = penpot.root?.getPluginData(
+  const currentUserConsentVersion = penpot.localStorage.getItem(
     'user_consent_version'
   )
 
@@ -11,7 +11,7 @@ const checkUserConsent = async () => {
       return {
         ...consent,
         isConsented:
-          penpot.root?.getPluginData(`${consent.id}_user_consent`) === 'true',
+          penpot.localStorage.getItem(`${consent.id}_user_consent`) === 'true',
       }
     })
   )

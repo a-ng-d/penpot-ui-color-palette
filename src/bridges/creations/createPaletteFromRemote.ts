@@ -21,7 +21,11 @@ const createPaletteFromRemote = async (msg: Msg) => {
 
   console.log(localPalette)
 
-  if (localPalette !== null && localPalette !== undefined)
+  if (
+    localPalette !== null &&
+    localPalette !== undefined &&
+    localPalette !== ''
+  )
     throw new Error(locales.get().info.addToLocal)
 
   const palette = new Data({

@@ -1,6 +1,6 @@
 const checkAnnouncementsStatus = (remoteVersion: string) => {
-  const localVersion = penpot.root?.getPluginData('announcements_version')
-  const isOnboardingRead = penpot.root?.getPluginData('is_onboarding_read')
+  const localVersion = penpot.localStorage.getItem('announcements_version')
+  const isOnboardingRead = penpot.localStorage.getItem('is_onboarding_read')
 
   if (localVersion === '' && remoteVersion === '')
     return {

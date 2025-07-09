@@ -2,34 +2,34 @@ import { Language } from '../../types/translations'
 import { locales } from '../../content/locales'
 
 const checkUserPreferences = async () => {
-  const isWCAGDisplayed = penpot.root?.getPluginData('is_wcag_displayed')
-  const isAPCADisplayed = penpot.root?.getPluginData('is_apca_displayed')
-  const canDeepSyncStyles = penpot.root?.getPluginData('can_deep_sync_styles')
-  const canDeepSyncVariables = penpot.root?.getPluginData(
+  const isWCAGDisplayed = penpot.localStorage.getItem('is_wcag_displayed')
+  const isAPCADisplayed = penpot.localStorage.getItem('is_apca_displayed')
+  const canDeepSyncStyles = penpot.localStorage.getItem('can_deep_sync_styles')
+  const canDeepSyncVariables = penpot.localStorage.getItem(
     'can_deep_sync_variables'
   )
-  const isVsCodeMessageDisplayed = penpot.root?.getPluginData(
+  const isVsCodeMessageDisplayed = penpot.localStorage.getItem(
     'is_vscode_message_displayed'
   )
-  const userLanguage = penpot.root?.getPluginData('user_language')
+  const userLanguage = penpot.localStorage.getItem('user_language')
 
   if (isWCAGDisplayed === null)
-    penpot.root?.setPluginData('is_wcag_displayed', 'true')
+    penpot.localStorage.setItem('is_wcag_displayed', 'true')
 
   if (isAPCADisplayed === null)
-    penpot.root?.setPluginData('is_apca_displayed', 'true')
+    penpot.localStorage.setItem('is_apca_displayed', 'true')
 
   if (canDeepSyncStyles === null)
-    penpot.root?.setPluginData('can_deep_sync_styles', 'false')
+    penpot.localStorage.setItem('can_deep_sync_styles', 'false')
 
   if (canDeepSyncVariables === null)
-    penpot.root?.setPluginData('can_deep_sync_variables', 'false')
+    penpot.localStorage.setItem('can_deep_sync_variables', 'false')
 
   if (isVsCodeMessageDisplayed === null)
-    penpot.root?.setPluginData('is_vscode_message_displayed', 'true')
+    penpot.localStorage.setItem('is_vscode_message_displayed', 'true')
 
   if (userLanguage === null)
-    penpot.root?.setPluginData('user_language', 'en-US')
+    penpot.localStorage.setItem('user_language', 'en-US')
 
   locales.set((userLanguage as Language) ?? 'en-US')
 

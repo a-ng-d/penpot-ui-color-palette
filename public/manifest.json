@@ -11,6 +11,7 @@
     "selection:read",
     "file:read",
     "file:write",
-    "allow:downloads"
+    "allow:downloads",
+    "allow:localstorage"
   ]
 }
