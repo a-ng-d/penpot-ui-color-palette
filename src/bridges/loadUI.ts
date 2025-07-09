@@ -295,14 +295,11 @@ const loadUI = async () => {
           penpot.ui.sendMessage({ type: 'STOP_LOADER' })
         }),
       //
-      GET_PRO_PLAN: async () =>
-        penpot.ui.sendMessage({
-          type: 'OPEN_IN_BROWSER',
-          data: {
-            url: globalConfig.urls.storeUrl,
-            isNewTab: true,
-          },
-        }),
+      ENABLE_TRIAL: async () => {
+        enableTrial(path.data.trialTime, path.data.trialVersion).then(() =>
+          checkTrialStatus()
+        )
+      },
       GET_TRIAL: async () =>
         penpot.ui.sendMessage({
           type: 'GET_TRIAL',
@@ -310,11 +307,11 @@ const loadUI = async () => {
             id: penpot.currentUser.id,
           },
         }),
-      WELCOME_TO_PRO: async () =>
+      GET_PRO_PLAN: async () =>
         penpot.ui.sendMessage({
-          type: 'WELCOME_TO_PRO',
+          type: 'GET_PRICING',
           data: {
-            id: penpot.currentUser.id,
+            plans: ['ONE'],
           },
         }),
       ENABLE_PRO_PLAN: async () =>
@@ -331,11 +328,13 @@ const loadUI = async () => {
             id: penpot.currentUser.id,
           },
         }),
-      ENABLE_TRIAL: async () => {
-        enableTrial(path.data.trialTime, path.data.trialVersion).then(() =>
-          checkTrialStatus()
-        )
-      },
+      WELCOME_TO_PRO: async () =>
+        penpot.ui.sendMessage({
+          type: 'WELCOME_TO_PRO',
+          data: {
+            id: penpot.currentUser.id,
+          },
+        }),
       SIGN_OUT: () =>
         penpot.ui.sendMessage({
           type: 'SIGN_OUT',
