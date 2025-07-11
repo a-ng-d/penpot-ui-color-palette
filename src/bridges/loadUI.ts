@@ -234,9 +234,9 @@ const loadUI = async () => {
             })
         }),
       DELETE_ITEMS: () =>
-        path.items.forEach(async (item: string) =>
-          penpot.localStorage.removeItem(item)
-        ),
+        path.items.forEach(async (item: string) => {
+          penpot.localStorage.setItem(item, '')
+        }),
       SET_DATA: () =>
         path.items.forEach((item: { key: string; value: string }) =>
           penpot.currentPage?.setPluginData(
