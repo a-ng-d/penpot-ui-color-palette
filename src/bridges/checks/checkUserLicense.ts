@@ -10,7 +10,7 @@ const checkUserLicense = async () => {
         instanceId: instanceId,
       },
     })
-  return false
+  return true
 }
 
 export default checkUserLicense
