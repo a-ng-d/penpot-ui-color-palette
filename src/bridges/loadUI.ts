@@ -235,7 +235,7 @@ const loadUI = async () => {
         }),
       DELETE_ITEMS: () =>
         path.items.forEach(async (item: string) => {
-          penpot.localStorage.setItem(item, '')
+          penpot.localStorage.setItem(item, null)
         }),
       SET_DATA: () =>
         path.items.forEach((item: { key: string; value: string }) =>
