@@ -180,6 +180,7 @@ export default class Tag {
     flex.horizontalSizing = 'fit-content'
     flex.verticalSizing = 'fit-content'
     flex.columnGap = 8
+    flex.alignItems = 'center'
     flex.leftPadding = 8
     flex.rightPadding = 4
     flex.verticalPadding = 4

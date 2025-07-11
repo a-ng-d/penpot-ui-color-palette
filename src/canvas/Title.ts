@@ -142,16 +142,19 @@ export default class Title {
           this.meta.creatorIdentity.creatorAvatar
         )
         .then(async (image: ImageData) =>
-          new Tag({
-            name: '_theme',
-            content: locales
-              .get()
-              .paletteProperties.provider.replace(
-                '{name}',
-                this.meta.creatorIdentity.creatorFullName
-              ),
-            fontSize: 12,
-          }).makeNodeTagWithAvatar(image)
+          this.nodeProps?.insertChild(
+            0,
+            new Tag({
+              name: '_provider',
+              content: locales
+                .get()
+                .paletteProperties.provider.replace(
+                  '{name}',
+                  this.meta.creatorIdentity.creatorFullName
+                ),
+              fontSize: 12,
+            }).makeNodeTagWithAvatar(image)
+          )
         )
     if (this.data.type !== 'default theme')
       this.nodeProps.appendChild(
