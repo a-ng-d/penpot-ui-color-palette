@@ -237,26 +237,6 @@ const loadUI = async () => {
         path.items.forEach(async (item: string) => {
           penpot.localStorage.setItem(item, '')
         }),
-      SET_DATA: () =>
-        path.items.forEach((item: { key: string; value: string }) =>
-          penpot.currentPage?.setPluginData(
-            item.key,
-            JSON.stringify(item.value)
-          )
-        ),
-      GET_DATA: async () =>
-        path.items.map(async (item: string) => {
-          const value = penpot.currentPage?.getPluginData(item)
-          if (value && typeof value === 'string')
-            penpot.ui.sendMessage({
-              type: `GET_DATA_${item.toUpperCase()}`,
-              value: value,
-            })
-        }),
-      DELETE_DATA: () =>
-        path.items.forEach(async (item: string) =>
-          penpot.currentPage?.setPluginData(item, '')
-        ),
       //
       OPEN_IN_BROWSER: () =>
         penpot.ui.sendMessage({
