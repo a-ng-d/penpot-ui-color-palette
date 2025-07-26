@@ -20,7 +20,7 @@ const updateThemes = async (msg: ThemesMessage) => {
     type: 'UPDATE_PALETTE_DATE',
     data: now,
   })
-  
+
   penpot.currentPage?.setPluginData(
     `palette_${msg.id}`,
     JSON.stringify(palette)

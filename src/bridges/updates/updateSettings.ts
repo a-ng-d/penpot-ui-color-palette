@@ -29,7 +29,7 @@ const updateSettings = async (msg: SettingsMessage) => {
     type: 'UPDATE_PALETTE_DATE',
     data: now,
   })
-  
+
   penpot.currentPage?.setPluginData(
     `palette_${msg.id}`,
     JSON.stringify(palette)
