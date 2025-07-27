@@ -1,5 +1,6 @@
 {
   "name": "UI Color Palette・WCAG Palette Manager for Apps & Websites",
+  "description": "UI Color Palette is a Sketch plugin that creates, manages, deploys, and publishes consistent and accessible color palettes.",
   "code": "/plugin.js",
   "icon": "/plugin_icon.webp",
   "permissions": [
