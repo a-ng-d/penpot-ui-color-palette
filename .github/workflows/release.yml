@@ -6,8 +6,6 @@ on:
     branches:
       - dev
 
-  workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
@@ -18,9 +16,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  deploy-plugin:
     name: Deploy Penpot UI Color Palette to GitHub Pages
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -77,8 +76,9 @@ jobs:
         
   create-release:
     name: Create release
-    needs: deploy
+    needs: deploy-plugin
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
     permissions:
       contents: write
     steps:
@@ -95,7 +95,6 @@ jobs:
 
     - name: Create release
       id: create_release
-      if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
