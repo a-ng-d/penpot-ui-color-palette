@@ -19,8 +19,6 @@ const createPaletteFromRemote = async (msg: Msg) => {
     `palette_${msg.data.meta.id}`
   )
 
-  console.log(localPalette)
-
   if (
     localPalette !== null &&
     localPalette !== undefined &&

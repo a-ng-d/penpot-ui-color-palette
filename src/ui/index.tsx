@@ -3,6 +3,7 @@ import React from 'react'
 import mixpanel from 'mixpanel-browser'
 import App from '@ui-lib/ui/App'
 import { initMixpanel } from '@ui-lib/external/tracking/client'
+import { initSentry } from '@ui-lib/external/monitoring/client'
 import { initSupabase } from '@ui-lib/external/auth/client'
 import { ThemeProvider } from '@ui-lib/config/ThemeContext'
 import { ConfigProvider } from '@ui-lib/config/ConfigContext'
@@ -12,8 +13,12 @@ import globalConfig from '../global.config'
 const container = document.getElementById('app'),
   root = createRoot(container)
 
-if (globalConfig.env.isMixpanelEnabled) {
-  mixpanel.init(import.meta.env.VITE_MIXPANEL_TOKEN as string, {
+const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN
+const sentryDsn = import.meta.env.VITE_SENTRY_DSN
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLIC_ANON_KEY
+
+if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
+  mixpanel.init(mixpanelToken, {
     api_host: 'https://api-eu.mixpanel.com',
     debug: globalConfig.env.isDev,
     disable_persistence: true,
@@ -26,10 +31,17 @@ if (globalConfig.env.isMixpanelEnabled) {
   initMixpanel(mixpanel)
 }
 
-if (globalConfig.env.isMixpanelEnabled && !globalConfig.env.isDev)
+if (
+  globalConfig.env.isMixpanelEnabled &&
+  !globalConfig.env.isDev &&
+  sentryDsn !== undefined
+) {
   Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_AUTH_TOKEN as string,
+    dsn: sentryDsn,
     environment: 'production',
+    initialScope: {
+      tags: { platform: globalConfig.env.platform },
+    },
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration(),
@@ -40,9 +52,11 @@ if (globalConfig.env.isMixpanelEnabled && !globalConfig.env.isDev)
     ],
     tracesSampleRate: 0.1,
     replaysSessionSampleRate: 0.05,
-    replaysOnErrorSampleRate: 0.5,
+    replaysOnErrorSampleRate: 0.1,
   })
-else if (globalConfig.env.isDev) {
+
+  initSentry(Sentry)
+} else {
   const devLogger = {
     captureException: (error: Error) => {
       console.group('🐛 Dev Error Logger')
@@ -60,11 +74,19 @@ else if (globalConfig.env.isDev) {
   ;(window as any).Sentry = devLogger
 }
 
-if (globalConfig.env.isSupabaseEnabled)
+if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
   initSupabase(
     globalConfig.urls.databaseUrl,
     import.meta.env.VITE_SUPABASE_PUBLIC_ANON_KEY
   )
+
+window.addEventListener('message', (event) => {
+  const data = event.data
+  const pluginEvent = new CustomEvent('pluginMessage', {
+    detail: data,
+  })
+  window.dispatchEvent(pluginEvent)
+})
 
 root.render(
   <ConfigProvider

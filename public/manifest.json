@@ -1,5 +1,6 @@
 {
-  "name": "UI Color Palette・WCAG-Compliant Color Palette Suite",
+  "name": "UI Color Palette・WCAG Palette Manager for Apps & Websites",
+  "description": "Create, Manage, Deploy & Publish WCAG-compliant color palettes for Apps & Websites",
   "code": "/plugin.js",
   "icon": "/plugin_icon.webp",
   "permissions": [

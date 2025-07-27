@@ -13,23 +13,20 @@ const checkUserPreferences = async () => {
   )
   const userLanguage = penpot.localStorage.getItem('user_language')
 
-  if (isWCAGDisplayed === null)
-    penpot.localStorage.setItem('is_wcag_displayed', 'true')
+  if (!isWCAGDisplayed) penpot.localStorage.setItem('is_wcag_displayed', 'true')
 
-  if (isAPCADisplayed === null)
-    penpot.localStorage.setItem('is_apca_displayed', 'true')
+  if (isAPCADisplayed) penpot.localStorage.setItem('is_apca_displayed', 'true')
 
-  if (canDeepSyncStyles === null)
+  if (!canDeepSyncStyles)
     penpot.localStorage.setItem('can_deep_sync_styles', 'false')
 
-  if (canDeepSyncVariables === null)
+  if (!canDeepSyncVariables)
     penpot.localStorage.setItem('can_deep_sync_variables', 'false')
 
-  if (isVsCodeMessageDisplayed === null)
+  if (!isVsCodeMessageDisplayed)
     penpot.localStorage.setItem('is_vscode_message_displayed', 'true')
 
-  if (userLanguage === null)
-    penpot.localStorage.setItem('user_language', 'en-US')
+  if (!userLanguage) penpot.localStorage.setItem('user_language', 'en-US')
 
   locales.set((userLanguage as Language) ?? 'en-US')
 
@@ -40,11 +37,9 @@ const checkUserPreferences = async () => {
       isAPCADisplayed: isAPCADisplayed === 'true',
       canDeepSyncStyles: canDeepSyncStyles === 'true',
       canDeepSyncVariables: canDeepSyncVariables === 'true',
-      isVsCodeMessageDisplayed:
-        isVsCodeMessageDisplayed === null ||
-        isVsCodeMessageDisplayed === undefined
-          ? true
-          : isVsCodeMessageDisplayed === 'true',
+      isVsCodeMessageDisplayed: !isVsCodeMessageDisplayed
+        ? true
+        : isVsCodeMessageDisplayed === 'true',
       userLanguage: userLanguage ?? 'en-US',
     },
   })

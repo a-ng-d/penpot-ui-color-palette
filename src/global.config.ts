@@ -46,8 +46,8 @@ const globalConfig: Config = {
     uiUrl: isDev
       ? 'http://localhost:4400'
       : 'https://figma.ui-color-palette.com',
-    documentationUrl: 'https://uicp.ylb.lt/docs',
-    repositoryUrl: 'https://uicp.ylb.lt/repository',
+    documentationUrl: 'https://uicp.ylb.lt/docs-penpot-plugin',
+    repositoryUrl: 'https://uicp.ylb.lt/repository-penpot-plugin',
     communityUrl: 'https://uicp.ylb.lt/community',
     supportEmail: 'https://uicp.ylb.lt/contact',
     feedbackUrl: 'https://uicp.ylb.lt/feedback',
@@ -57,10 +57,9 @@ const globalConfig: Config = {
     authorUrl: 'https://uicp.ylb.lt/author',
     licenseUrl: 'https://uicp.ylb.lt/license',
     privacyUrl: 'https://uicp.ylb.lt/privacy',
-    vsCodeFigmaPluginUrl:
-      'https://marketplace.visualstudio.com/items?itemName=figma.figma-vscode-extension',
-    isbUrl: 'https://isb.ylb.lt/run-figma',
-    uicpUrl: 'https://uicp.ylb.lt/run-figma-one',
+    vsCodeFigmaPluginUrl: 'https://uicp.ylb.lt/vscode-figma-plugin',
+    isbUrl: 'https://isb.ylb.lt/run-figma-plugin',
+    uicpUrl: 'https://uicp.ylb.lt/run-penpot-plugin',
     storeUrl: isDev
       ? 'https://uicp.ylb.lt/store-dev'
       : 'https://uicp.ylb.lt/store',

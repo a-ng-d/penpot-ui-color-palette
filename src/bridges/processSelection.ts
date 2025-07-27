@@ -20,6 +20,7 @@ const processSelection = () => {
   const viableSelection: Array<SourceColorConfiguration> = []
 
   const document = selection[0] as Board
+
   const selectionHandler = (state: string) => {
     const actions: { [key: string]: () => void } = {
       DOCUMENT_SELECTED: async () => {
