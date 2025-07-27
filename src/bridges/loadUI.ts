@@ -63,6 +63,9 @@ const loadUI = async () => {
     }
   )
 
+  const accessToken = penpot.localStorage.getItem('supabase_access_token')
+  const refreshToken = penpot.localStorage.getItem('supabase_refresh_token')
+
   setTimeout(() => {
     // Canvas > UI
     penpot.ui.sendMessage({
@@ -71,10 +74,8 @@ const loadUI = async () => {
         id: penpot.currentUser.id,
         fullName: penpot.currentUser.name,
         avatar: penpot.currentUser.avatarUrl,
-        accessToken:
-          penpot.localStorage.getItem('supabase_access_token') ?? undefined,
-        refreshToken:
-          penpot.localStorage.getItem('supabase_refresh_token') ?? undefined,
+        accessToken: accessToken ? accessToken : undefined,
+        refreshToken: refreshToken ? refreshToken : undefined,
       },
     })
     penpot.ui.sendMessage({
@@ -232,7 +233,7 @@ const loadUI = async () => {
           if (value && typeof value === 'string')
             penpot.ui.sendMessage({
               type: `GET_ITEM_${item.toUpperCase()}`,
-              value: value,
+              data: { value: value },
             })
         }),
       DELETE_ITEMS: () =>

@@ -2,21 +2,21 @@ const checkAnnouncementsStatus = (remoteVersion: string) => {
   const localVersion = penpot.localStorage.getItem('announcements_version')
   const isOnboardingRead = penpot.localStorage.getItem('is_onboarding_read')
 
-  if (localVersion === null && remoteVersion === '')
+  if (!localVersion && !remoteVersion)
     return {
       type: 'PUSH_ANNOUNCEMENTS_STATUS',
       data: {
         status: 'NO_ANNOUNCEMENTS',
       },
     }
-  else if (localVersion === null && isOnboardingRead === null)
+  else if (!localVersion && !isOnboardingRead)
     return penpot.ui.sendMessage({
       type: 'PUSH_ONBOARDING_STATUS',
       data: {
         status: 'DISPLAY_ONBOARDING_DIALOG',
       },
     })
-  else if (localVersion === null)
+  else if (!localVersion)
     return penpot.ui.sendMessage({
       type: 'PUSH_ANNOUNCEMENTS_STATUS',
       data: {
