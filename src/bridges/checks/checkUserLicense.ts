@@ -2,7 +2,7 @@ const checkUserLicense = async () => {
   const licenseKey = penpot.localStorage.getItem('user_license_key')
   const instanceId = penpot.localStorage.getItem('user_license_instance_id')
 
-  if (licenseKey !== '' && instanceId !== '')
+  if (licenseKey !== null && instanceId !== null)
     return penpot.ui.sendMessage({
       type: 'CHECK_USER_LICENSE',
       data: {

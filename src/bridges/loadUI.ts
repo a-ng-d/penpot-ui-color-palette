@@ -71,8 +71,10 @@ const loadUI = async () => {
         id: penpot.currentUser.id,
         fullName: penpot.currentUser.name,
         avatar: penpot.currentUser.avatarUrl,
-        accessToken: penpot.localStorage.getItem('supabase_access_token'),
-        refreshToken: penpot.localStorage.getItem('supabase_refresh_token'),
+        accessToken:
+          penpot.localStorage.getItem('supabase_access_token') ?? undefined,
+        refreshToken:
+          penpot.localStorage.getItem('supabase_refresh_token') ?? undefined,
       },
     })
     penpot.ui.sendMessage({
