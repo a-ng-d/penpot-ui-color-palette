@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client'
 import React from 'react'
 import mixpanel from 'mixpanel-browser'
 import App from '@ui-lib/ui/App'
-import { initMixpanel } from '@ui-lib/external/tracking/client'
+import { initMixpanel, setMixpanelEnv } from '@ui-lib/external/tracking/client'
 import { initSentry } from '@ui-lib/external/monitoring/client'
 import { initSupabase } from '@ui-lib/external/auth/client'
 import { ThemeProvider } from '@ui-lib/config/ThemeContext'
@@ -28,6 +28,7 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
   })
   mixpanel.opt_in_tracking()
 
+  setMixpanelEnv(import.meta.env.MODE as 'development' | 'production')
   initMixpanel(mixpanel)
 }
 
@@ -75,10 +76,7 @@ if (
 }
 
 if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
-  initSupabase(
-    globalConfig.urls.databaseUrl,
-    import.meta.env.VITE_SUPABASE_PUBLIC_ANON_KEY
-  )
+  initSupabase(globalConfig.urls.databaseUrl, supabaseAnonKey)
 
 window.addEventListener('message', (event) => {
   const data = event.data
