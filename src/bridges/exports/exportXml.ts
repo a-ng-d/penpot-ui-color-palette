@@ -31,13 +31,6 @@ const exportXml = (id: string) => {
       const source = color.shades.find((shade) => shade.type === 'source color')
       const colors: Array<string> = []
 
-      colors.push(
-        `${'<'}!--${
-          workingThemes[0].type === 'custom theme'
-            ? `${theme.name} - ${color.name}--${'>'}`
-            : `${color.name}--${'>'}`
-        }`
-      )
       color.shades.reverse().forEach((shade) => {
         colors.push(
           `<color name="${
