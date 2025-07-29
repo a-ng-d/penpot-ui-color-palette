@@ -45,7 +45,7 @@ const globalConfig: Config = {
     platformUrl: '*',
     uiUrl: isDev
       ? 'http://localhost:4400'
-      : 'https://figma.ui-color-palette.com',
+      : 'https://penpot.ui-color-palette.com',
     documentationUrl: 'https://uicp.ylb.lt/docs-penpot-plugin',
     repositoryUrl: 'https://uicp.ylb.lt/repository-penpot-plugin',
     communityUrl: 'https://uicp.ylb.lt/community',
