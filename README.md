@@ -46,4 +46,4 @@ Go to the [Issues](https://uicp.ylb.lt/report-for-penpot-plugin) section and bro
 
 ## Support
 - [Follow the plugin LinkedIn page](https://uicp.ylb.lt/network).
-- [Connect to my Penpot resources page](https://uicp.ylb.lt/author).
+- [Connect to my personal LinkedIn](https://uicp.ylb.lt/author).
