@@ -28,8 +28,8 @@
     "update:uicp": "npm i @a_ng_d/utils-ui-color-palette@latest",
     "start:ext": "npm run start:packages -w ui-ui-color-palette",
     "start:dev": "npm run build & vite preview",
-    "build": "cross-env npx vite build --mode development & IS_PLUGIN=true npx vite build --mode development",
-    "build:prod": "cross-env npx vite build --mode production & IS_PLUGIN=true npx vite build --mode production",
+    "build": "cross-env npx vite build --mode development & IS_PLUGIN=true cross-env npx vite build --mode development",
+    "build:prod": "cross-env npx vite build --mode production & IS_PLUGIN=true cross-env npx vite build --mode production",
     "typecheck": "npx tsc --noEmit",
     "lint": "npx eslint ./src/** --fix --ext .ts,.tsx .",
     "format": "npx prettier './src' --write"
