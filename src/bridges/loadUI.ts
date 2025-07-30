@@ -55,7 +55,7 @@ const loadUI = async () => {
   }
 
   penpot.ui.open(
-    `${locales.get().name}${locales.get().separator}${locales.get().tagline}`,
+    `${locales.get().name}${locales.get().separator}${locales.get().tagline}${globalConfig.env.isDev ? `${locales.get().separator}${locales.get().plan.dev}` : ''}`,
     globalConfig.urls.uiUrl,
     {
       width: windowSize.width,
