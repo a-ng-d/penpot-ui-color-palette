@@ -12,6 +12,8 @@ This plugin will allow you to:
 - Generate code in various languages.
 - Publish the palette for reuse across multiple documents or add shared palettes from the community.
 
+---
+
 ## Documentation
 The full documentation can be consulted on [docs.ui-color-palette.com](https://uicp.ylb.lt/docs-penpot-plugin).
 
@@ -39,6 +41,8 @@ Go to the [Issues](https://uicp.ylb.lt/report-for-penpot-plugin) section and bro
 - You can use a third-party tool to create a local server from the unzipped artifact, such as MAMP, WAMP, LAMP, etc.
 - Go to Penpot, then `Plugins`, type this url: `http://localhost:{customPort}/manifest.json` and validate.
 - _Enjoy!_
+
+---
 
 ## Attribution
 - The colors are managed thanks to the [chroma.js](https://github.com/gka/chroma.js) library by [Gregor Aisch](https://github.com/gka).
