@@ -245,7 +245,7 @@ const loadUI = async () => {
         penpot.ui.sendMessage({
           type: 'OPEN_IN_BROWSER',
           data: {
-            url: path.url,
+            url: path.data.url,
             isNewTab: true,
           },
         }),
