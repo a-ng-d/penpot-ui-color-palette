@@ -26,13 +26,14 @@
     "update:packages": "git submodule update --remote --merge",
     "update:figmug": "npm i @a_ng_d/figmug-ui@latest @a_ng_d/figmug-utils@latest",
     "update:uicp": "npm i @a_ng_d/utils-ui-color-palette@latest",
-    "start:ext": "npm run start:packages -w ui-ui-color-palette",
+    "start:ext": "npm run start:ext -w ui-ui-color-palette",
     "start:dev": "npm run build & vite preview",
     "build": "cross-env npx vite build --mode development & IS_PLUGIN=true cross-env npx vite build --mode development",
     "build:prod": "cross-env npx vite build --mode production & IS_PLUGIN=true cross-env npx vite build --mode production",
     "typecheck": "npx tsc --noEmit",
     "lint": "npx eslint ./src/** --fix --ext .ts,.tsx .",
-    "format": "npx prettier './src' --write"
+    "format": "npx prettier './src' --write",
+    "clean": "pkill -f 'next dev' && pkill -f 'esbuild' && pkill -f 'workerd'"
   },
   "devDependencies": {
     "@penpot/plugin-types": "^1.3.2",
