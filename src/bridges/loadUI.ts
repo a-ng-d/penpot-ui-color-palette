@@ -10,17 +10,6 @@ import updateColors from './updates/updateColors'
 import processSelection from './processSelection'
 import jumpToPalette from './jumpToPalette'
 import getPalettesOnCurrentPage from './getPalettesOnCurrentPage'
-import exportXml from './exports/exportXml'
-import exportUIKit from './exports/exportUIKit'
-import exportTailwind from './exports/exportTailwind'
-import exportSwiftUI from './exports/exportSwiftUI'
-import exportKt from './exports/exportKt'
-import exportJsonTokensStudio from './exports/exportJsonTokensStudio'
-import exportJsonDtcg from './exports/exportJsonDtcg'
-import exportJsonAmznStyleDictionary from './exports/exportJsonAmznStyleDictionary'
-import exportJson from './exports/exportJson'
-import exportCsv from './exports/exportCsv'
-import exportCss from './exports/exportCss'
 import enableTrial from './enableTrial'
 import deletePalette from './creations/deletePalette'
 import createPaletteFromRemote from './creations/createPaletteFromRemote'
@@ -55,7 +44,7 @@ const loadUI = async () => {
   }
 
   penpot.ui.open(
-    `${locales.get().name}${locales.get().separator}${locales.get().tagline}${globalConfig.env.isDev ? `${locales.get().separator}${locales.get().plan.dev}` : ''}`,
+    `${locales.get().name} /One${locales.get().separator}${locales.get().tagline}${globalConfig.env.isDev ? `${locales.get().separator}${locales.get().plan.dev}` : ''}`,
     globalConfig.urls.uiUrl,
     {
       width: windowSize.width,
@@ -188,23 +177,6 @@ const loadUI = async () => {
               },
             })
           }),
-      //
-      EXPORT_PALETTE: () => {
-        path.export === 'TOKENS_DTCG' &&
-          exportJsonDtcg(path.id, path.colorSpace)
-        path.export === 'TOKENS_GLOBAL' && exportJson(path.id)
-        path.export === 'TOKENS_AMZN_STYLE_DICTIONARY' &&
-          exportJsonAmznStyleDictionary(path.id)
-        path.export === 'TOKENS_TOKENS_STUDIO' &&
-          exportJsonTokensStudio(path.id)
-        path.export === 'CSS' && exportCss(path.id, path.colorSpace)
-        path.export === 'TAILWIND' && exportTailwind(path.id)
-        path.export === 'APPLE_SWIFTUI' && exportSwiftUI(path.id)
-        path.export === 'APPLE_UIKIT' && exportUIKit(path.id)
-        path.export === 'ANDROID_COMPOSE' && exportKt(path.id)
-        path.export === 'ANDROID_XML' && exportXml(path.id)
-        path.export === 'CSV' && exportCsv(path.id)
-      },
       //
       POST_MESSAGE: () => {
         penpot.ui.sendMessage({
