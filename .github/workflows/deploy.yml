@@ -1,4 +1,4 @@
-name: Release production version
+name: Force deploy production version
 
 on:
   workflow_dispatch:
