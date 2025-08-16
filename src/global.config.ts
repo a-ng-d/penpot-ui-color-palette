@@ -23,7 +23,7 @@ const globalConfig: Config = {
     pluginId: '123456789',
   },
   plan: {
-    isProEnabled: false,
+    isProEnabled: true,
     isTrialEnabled: false,
     trialTime: 72,
   },
@@ -109,8 +109,10 @@ const globalConfig: Config = {
       'COLORS_CHROMA_SHIFTING',
       'COLORS_ALPHA',
       'COLORS_BACKGROUND_COLOR',
-      'EXPORT_TOKENS_JSON_AMZN_STYLE_DICTIONARY',
-      'EXPORT_TAILWIND',
+      'EXPORT_STYLESHEET_SCSS',
+      'EXPORT_STYLESHEET_LESS',
+      'EXPORT_TAILWIND_V3',
+      'EXPORT_TAILWIND_V4',
       'EXPORT_APPLE_SWIFTUI',
       'EXPORT_APPLE_UIKIT',
       'EXPORT_ANDROID_COMPOSE',
@@ -125,7 +127,7 @@ const globalConfig: Config = {
       'SETTINGS_VISION_SIMULATION_MODE_ACHROMATOMALY',
       'SETTINGS_VISION_SIMULATION_MODE_ACHROMATOPSIA',
     ],
-    ['SCALE_CONTRAST_RATIO']
+    ['SCALE_CONTRAST_RATIO', 'INVOLVE_COMMUNITY']
   ),
   locales: locales.get(),
 }
