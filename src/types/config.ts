@@ -25,8 +25,8 @@ export interface Config {
     trialTime: number
   }
   dbs: {
+    palettesDbViewName: string
     palettesDbTableName: string
-    palettesStorageName: string
   }
   urls: {
     authWorkerUrl: string
@@ -54,10 +54,11 @@ export interface Config {
     storeManagementUrl: string
   }
   versions: {
-    userConsentVersion: string
-    trialVersion: string
-    algorithmVersion: AlgorithmVersionConfiguration
-    paletteVersion: string
+    readonly userConsentVersion: string
+    readonly trialVersion: string
+    readonly algorithmVersion: AlgorithmVersionConfiguration
+    readonly paletteVersion: string
+    readonly pluginVersion: string
   }
   features: Array<Feature<'BROWSE' | 'CREATE' | 'EDIT' | 'TRANSFER'>>
   locales: Translations

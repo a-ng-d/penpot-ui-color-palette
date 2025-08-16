@@ -33,7 +33,7 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
 }
 
 if (
-  globalConfig.env.isMixpanelEnabled &&
+  globalConfig.env.isSentryEnabled &&
   !globalConfig.env.isDev &&
   sentryDsn !== undefined
 ) {
@@ -110,8 +110,8 @@ root.render(
       trialTime: globalConfig.plan.trialTime,
     }}
     dbs={{
+      palettesDbViewName: globalConfig.dbs.palettesDbViewName,
       palettesDbTableName: globalConfig.dbs.palettesDbTableName,
-      palettesStorageName: globalConfig.dbs.palettesStorageName,
     }}
     urls={{
       authWorkerUrl: globalConfig.urls.authWorkerUrl,
@@ -143,6 +143,7 @@ root.render(
       trialVersion: globalConfig.versions.trialVersion,
       algorithmVersion: globalConfig.versions.algorithmVersion,
       paletteVersion: globalConfig.versions.paletteVersion,
+      pluginVersion: globalConfig.versions.pluginVersion,
     }}
     features={globalConfig.features}
     locales={globalConfig.locales}
