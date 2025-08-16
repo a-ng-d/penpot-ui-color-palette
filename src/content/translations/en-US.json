@@ -19,7 +19,7 @@
     "createPalette": "Create a UI Color Palette",
     "savePalette": "Save the UI Color Palette",
     "duplicate": "Duplicate",
-    "export": "Export the UI Color Palette to",
+    "export": "Export palette as {format}",
     "generateDocument": {
       "label": "Generate a document",
       "palette": "Generate a color palette",
@@ -31,8 +31,8 @@
     "publishPalette": "Publish palette",
     "pushUpdates": "Push updates to the document",
     "shadesNumber": {
-      "several": "{count} shades",
-      "single": "{count} shade"
+      "several": "{count} shades/tints",
+      "single": "{count} shade/tint"
     },
     "sourceColorsNumber": {
       "several": "{count} source colors",
@@ -59,7 +59,7 @@
       "title": "Delete palette"
     },
     "document": {
-      "create": "Create from document",
+      "restore": "Restore palette",
       "open": "Open document"
     },
     "copy": "Copy of {name}",
@@ -109,7 +109,7 @@
     },
     "callout": {
       "cta": "Create a source color",
-      "message": "Create a source color to split it into multiple shades according to your lightness scale"
+      "message": "Create a source color to split it into multiple shades/tints according to your lightness scale"
     },
     "chromaShifting": {
       "label": "Shift chroma"
@@ -151,7 +151,7 @@
     "nonPublication": "The palette cannot be unpublished",
     "onboarding": "The onboarding cannot be loaded",
     "palettesPicking": "The palettes cannot be picked for now",
-    "paletteSizeExceeded": "The palette size exceeds the limit. Please reduce the number of color modes, source colors or shades.",
+    "paletteSizeExceeded": "The palette size exceeds the limit. Please reduce the number of color modes, source colors or shades/tints.",
     "publication": "The palette cannot be published",
     "share": "The palette has not been shared with the community",
     "styles": "The styles cannot be synchronized",
@@ -165,7 +165,8 @@
   },
   "export": {
     "actions": {
-      "selectColorSpace": "Select a color space"
+      "selectColorSpace": "Select a color space",
+      "copyCode": "Copy code to the clipboard"
     },
     "android": {
       "compose": "Compose (KT)",
@@ -186,8 +187,11 @@
       "p3": "P3",
       "rgb": "RGB"
     },
-    "css": {
-      "customProperties": "Custom Properties (CSS)"
+    "stylesheet": {
+      "label": "Stylesheet",
+      "customProperties": "Custom Properties (CSS)",
+      "scss": "SCSS Variables (SCSS)",
+      "less": "Less Variables (LESS)"
     },
     "csv": {
       "spreadsheet": "Spreadsheet (CSV)"
@@ -195,18 +199,22 @@
     "format": "Code",
     "preview": "Preview",
     "tailwind": {
-      "config": "Tailwind (JS)"
+      "label": "Tailwind",
+      "v3": "Tailwind v3 (JS)",
+      "v4": "Tailwind v4 (CSS)"
     },
     "tokens": {
-      "amznStyleDictionary": "Amazon Style Dictionary v3 (JSON)",
+      "styleDictionary": "Style Dictionary v3 (JSON)",
       "dtcg": {
-        "label": "DTCG format (JSON)",
+        "label": "DTCG tokens (JSON)",
         "message": "DTCG tokens format is an ongoing work in progress led by a W3C group and can be changed in the future"
       },
-      "global": "Global (JSON)",
-      "label": "Tokens (JSON)",
-      "nativeTokens": "Native tokens (JSON)",
-      "tokensStudio": "Tokens Studio (JSON)"
+      "global": "Universal (JSON)",
+      "label": "Tokens",
+      "nativeTokens": {
+        "label": "Native tokens (JSON)",
+        "message": "Native tokens can be imported on Tokens Studio or Penpot"
+      } 
     }
   },
   "events": {
@@ -252,9 +260,9 @@
       "plural": "{count} variables created",
       "single": "1 variable created"
     },
-    "maxNumberOfSourceColors": "You cannot add more than {maxCount} source colors",
-    "maxNumberOfStops": "You cannot add more than {maxCount} stops",
-    "maxNumberOfLocalPalettes": "You cannot add more than {maxCount} local palettes",
+    "maxNumberOfSourceColors": "Upgrade to Pro to add more than {maxCount} source colors",
+    "maxNumberOfStops": "Upgrade to Pro to add more than {maxCount} stops",
+    "maxNumberOfLocalPalettes": "Upgrade to Pro to add more than {maxCount} local palettes",
     "noResult": "No palette matches your search",
     "paletteCreated": "{name} palette created",
     "removedLocalStyles": {
@@ -268,7 +276,7 @@
       "single": "1 variable removed"
     },
     "signOut": "See you later",
-    "themesOnFree": "You cannot add or edit modes in the current plan",
+    "themesOnFree": "Upgrade to Pro to add or edit modes",
     "updatedLocalStyles": {
       "none": "No style updated",
       "plural": "{count} styles updated",
@@ -311,7 +319,8 @@
       "singlePlural": "1 variable and {modeCount} modes removed",
       "pluralSingle": "{variableCount} variables and 1 mode removed",
       "pluralPlural": "{variableCount} variables and {modeCount} modes removed"
-    }
+    },
+    "copiedCode": "The code has been copied to the clipboard"
   },
   "name": "UI Color Palette",
   "onboarding": {
@@ -363,7 +372,7 @@
   },
   "plan": {
     "dev": "Developer plan",
-    "free": "Free plan",
+    "free": "Basic plan",
     "getPro": "Get Pro",
     "pro": "Pro plan",
     "trial": "Trial",
@@ -393,7 +402,7 @@
       "label": "Lock source colors",
       "preview": "Lock the source colors to include them in the palette",
       "tag": "Locked",
-      "warning": "You cannot save a palette with locked source colors"
+      "warning": "Upgrade to Pro to save a palette with locked source colors"
     },
     "score": {
       "apca": "Display APCA scores",
@@ -460,11 +469,11 @@
       "label": "Create a UI Color Palette"
     },
     "edit": {
-      "description": "Manage, publish, transfer shades",
+      "description": "Manage, export, publish shades/tints",
       "label": "Edit a UI Color Palette"
     },
     "open": {
-      "description": "WCAG Palette Manager for Apps & Websites",
+      "description": "WCAG Color Palette Manager for Apps & Websites",
       "label": "Open UI Color Palette"
     }
   },
@@ -535,7 +544,7 @@
     "shift": {
       "chroma": {
         "label": "Chroma",
-        "warning": "You cannot save a palette with a modified chroma shift. Reset it to 100% to save it."
+        "warning": "Upgrade to Pro to save a palette with a modified chroma shift. Reset it to 100% or upgrade."
       }
     },
     "tips": {
@@ -595,7 +604,7 @@
         "protanopia": "Protanopia (red-blind)",
         "tritanomaly": "Tritanomaly (blue-weak)",
         "tritanopia": "Tritanopia (blue-blind)",
-        "warning": "You cannot save a palette with this vision simulation mode"
+        "warning": "Update to Pro to save a palette with this vision simulation mode"
       }
     },
     "contexts": {
@@ -726,7 +735,7 @@
     "activatedLicense": "The license key \"{licenseKey}\" has been activated",
     "unlinkedLicense": "Your license key \"{licenseKey}\" has been unlinked"
   },
-  "tagline": "WCAG Palette Manager for Apps & Websites",
+  "tagline": "WCAG Color Palette Manager for Apps & Websites",
   "themes": {
     "actions": {
       "moreParameters": "More parameters",
@@ -828,7 +837,8 @@
     "noSelfPaletteOnRemote": "This is quite empty around here! Publish your palette to reuse it across multiple documents",
     "paletteNameRecommendation": "64 characters max is recommended",
     "tooManyThemesToCreateModes": "You cannot create more than 4 modes in the current plan",
-    "unselectedColor": "Select a layer that is filled with at least one solid color"
+    "unselectedColor": "Select a layer that is filled with at least one solid color",
+    "uncopiedCode": "The code has not been copied to the clipboard"
   },
   "platform": {
     "figma": "Figma",
