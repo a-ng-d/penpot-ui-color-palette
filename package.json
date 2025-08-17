@@ -2,7 +2,7 @@
   "name": "penpot-ui-color-palette",
   "version": "5.0.0",
   "private": true,
-  "description": "UI Color Palette is a Penpot plugin that creates, manages, deploys, and publishes consistent and accessible color palettes.",
+  "description": "UI Color Palette is a Penpot plugin that creates, manages, exports, and publishes consistent and accessible color palettes.",
   "author": "Aurélien Grimaud",
   "license": "MIT",
   "repository": "https://github.com/a-ng-d/penpot-ui-color-palette",
