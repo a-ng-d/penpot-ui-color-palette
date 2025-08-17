@@ -29,20 +29,20 @@ const updateLocalStyles = async (id: string) => {
     const messages: Array<string> = []
 
     if (canDeepSyncStyles ?? false)
-        localStyles.forEach((localStyle) => {
-          const hasStyleMatch = palette.libraryData
-            .filter((item) => {
-              return hasThemes
-                ? !item.id.includes('00000000000')
-                : item.id.includes('00000000000')
-            })
-            .some((libraryItem) => libraryItem.styleId === localStyle.id)
+      localStyles.forEach((localStyle) => {
+        const hasStyleMatch = palette.libraryData
+          .filter((item) => {
+            return hasThemes
+              ? !item.id.includes('00000000000')
+              : item.id.includes('00000000000')
+          })
+          .some((libraryItem) => libraryItem.styleId === localStyle.id)
 
-          if (!hasStyleMatch) {
-            localStyle.remove()
-            k++
-          }
-        })
+        if (!hasStyleMatch) {
+          localStyle.remove()
+          k++
+        }
+      })
 
     palette.libraryData
       .filter((item) => {
