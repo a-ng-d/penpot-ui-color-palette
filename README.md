@@ -23,7 +23,7 @@ Ask questions, submit your ideas or requests on [Canny](https://uicp.ylb.lt/idea
 
 ### Issues
 Have you encountered a bug? Could a feature be improved?
-Go to the [Issues](https://uicp.ylb.lt/report-for-penpot-plugin) section and browse the existing tickets or create a new one.
+Go to the `Issues` section and browse the existing tickets or create a new one.
 
 ### Development
 - Clone this repository (or fork it)
@@ -35,7 +35,7 @@ Go to the [Issues](https://uicp.ylb.lt/report-for-penpot-plugin) section and bro
 - _Let's do this_
 
 ### Beta test
-- Go to the [Actions](https://github.com/a-ng-d/penpot-ui-color-palette/actions) sections and access the `Build and Download UI Color Palette` tab
+- Go to the `Actions` sections and access the `Build and Download UI Color Palette` tab
 - Click `Run workflow`, then select a branch and confirm
 - Wait a minute, and once finished, download the artifact (which is a ZIP file containing the plugin)
 - You can use a third-party tool to create a local server from the unzipped artifact, such as MAMP, WAMP, LAMP, etc
