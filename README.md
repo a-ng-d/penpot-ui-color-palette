@@ -8,7 +8,7 @@ The idea to make this Penpot plugin comes from the article: [Accessible Palette:
 This plugin will allow you to:
 - Create a complete palette from any existing color to help you build a color scaling (or Primitive colors)
 - Manage the color palette in real-time to control the contrast
-- Sync the color shades and tints with local styles
+- Sync the color shades/tints with local styles
 - Generate code in various languages
 - Publish the palette for reuse across multiple documents or add shared palettes from the community
 
