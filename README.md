@@ -1,14 +1,14 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/a-ng-d/penpot-ui-color-palette?color=informational) ![GitHub last commit](https://img.shields.io/github/last-commit/a-ng-d/penpot-ui-color-palette?color=informational) ![GitHub license](https://img.shields.io/github/license/a-ng-d/penpot-ui-color-palette?color=informational) ![GitHub deployment](https://img.shields.io/github/deployments/a-ng-d/penpot-ui-color-palette/production?label=Production)
 
 # UI Color Palette
-UI Color Palette is a Penpot plugin that creates consistent and accessible color palettes specifically for UI. The plugin uses alternative color spaces, like `LCH`, `OKLCH`, `CIELAB`, `OKLAB`, and `HSLuv`, to create color shades based on the configured lightness scale. These spaces ensure [WCAG standards](https://www.w3.org/WAI/standards-guidelines/wcag/) compliance and sufficient contrast between information and background color.
+UI Color Palette is a Penpot plugin that creates consistent and accessible color palettes specifically for UI. The plugin uses alternative color spaces, like `LCH`, `OKLCH`, `CIELAB`, `OKLAB`, and `HSLuv`, to create color shades and tints based on the configured lightness scale. These spaces ensure [WCAG standards](https://www.w3.org/WAI/standards-guidelines/wcag/) compliance and sufficient contrast between information and background color.
 
 The idea to make this Penpot plugin comes from the article: [Accessible Palette: stop using HSL for color systems](https://wildbit.com/blog/accessible-palette-stop-using-hsl-for-color-systems).
 
 This plugin will allow you to:
 - Create a complete palette from any existing color to help you build a color scaling (or Primitive colors)
 - Manage the color palette in real-time to control the contrast
-- Sync the color shades with local styles
+- Sync the color shades and tints with local styles
 - Generate code in various languages
 - Publish the palette for reuse across multiple documents or add shared palettes from the community
 
