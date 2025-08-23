@@ -17,7 +17,18 @@ export default defineConfig(({ mode }) => {
         project: 'ui-color-palette',
         authToken: env.SENTRY_AUTH_TOKEN,
         sourcemaps: {
-          filesToDeleteAfterUpload: '**/*.map',
+          assets: './dist/**',
+          filesToDeleteAfterUpload: isDev ? undefined : '**/*.map',
+        },
+        release: {
+          name: env.VITE_APP_VERSION,
+          setCommits: {
+            auto: true,
+          },
+          finalize: true,
+          deploy: {
+            env: 'production',
+          },
         },
         telemetry: false,
       }),
@@ -49,7 +60,7 @@ export default defineConfig(({ mode }) => {
               entry: 'src/index.ts',
               name: 'PenpotPlugin',
               fileName: () => 'plugin.js',
-              formats: ['iife'],
+              formats: ['iife' as const],
             },
           }
         : {
@@ -59,6 +70,7 @@ export default defineConfig(({ mode }) => {
                 dir: 'dist',
                 entryFileNames: 'ui.js',
                 assetFileNames: 'assets/[name].[hash][extname]',
+                sourcemapExcludeSources: false,
               },
             },
           }),

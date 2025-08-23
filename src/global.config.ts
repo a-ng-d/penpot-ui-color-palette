@@ -1,5 +1,4 @@
 import { doSpecificMode } from '@ui-lib/stores/features'
-import package_json from '../package.json'
 import { Config } from './types/config'
 import { locales } from './content/locales'
 
@@ -75,7 +74,7 @@ const globalConfig: Config = {
     trialVersion: '2024.03',
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
-    pluginVersion: package_json.version,
+    pluginVersion: import.meta.env.VITE_APP_VERSION,
   },
   features: doSpecificMode(
     [

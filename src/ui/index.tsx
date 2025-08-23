@@ -41,7 +41,10 @@ if (
     dsn: sentryDsn,
     environment: 'production',
     initialScope: {
-      tags: { platform: globalConfig.env.platform },
+      tags: {
+        platform: globalConfig.env.platform,
+        version: import.meta.env.VITE_APP_VERSION,
+      },
     },
     integrations: [
       Sentry.browserTracingIntegration(),
@@ -51,9 +54,14 @@ if (
         autoInject: false,
       }),
     ],
-    tracesSampleRate: 0.1,
-    replaysSessionSampleRate: 0.05,
-    replaysOnErrorSampleRate: 0.1,
+    attachStacktrace: true,
+    normalizeDepth: 15,
+    maxValueLength: 5000,
+    maxBreadcrumbs: 150,
+    tracesSampleRate: 1.0,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+    release: import.meta.env.VITE_APP_VERSION,
   })
 
   initSentry(Sentry)
