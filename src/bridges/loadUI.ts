@@ -24,10 +24,6 @@ import checkUserConsent from './checks/checkUserConsent'
 import checkTrialStatus from './checks/checkTrialStatus'
 import checkAnnouncementsStatus from './checks/checkAnnouncementsStatus'
 
-/*penpot.currentPage?.getPluginDataKeys().forEach((key) => {
-  if (key.startsWith('palette_')) penpot.currentPage?.setPluginData(key, '')
-})*/
-
 interface Window {
   width: number
   height: number
@@ -270,6 +266,14 @@ const loadUI = async () => {
           type: 'GET_PRICING',
           data: {
             plans: ['ONE'],
+          },
+        }),
+      GO_TO_ONE: () =>
+        penpot.ui.sendMessage({
+          type: 'OPEN_IN_BROWSER',
+          data: {
+            url: globalConfig.urls.storeUrl,
+            isNewTab: true,
           },
         }),
       ENABLE_PRO_PLAN: async () =>
