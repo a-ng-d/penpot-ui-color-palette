@@ -24,10 +24,6 @@ import checkUserConsent from './checks/checkUserConsent'
 import checkTrialStatus from './checks/checkTrialStatus'
 import checkAnnouncementsStatus from './checks/checkAnnouncementsStatus'
 
-/*penpot.currentPage?.getPluginDataKeys().forEach((key) => {
-  if (key.startsWith('palette_')) penpot.currentPage?.setPluginData(key, '')
-})*/
-
 interface Window {
   width: number
   height: number
@@ -272,6 +268,14 @@ const loadUI = async () => {
             plans: ['ONE'],
           },
         }),
+      GO_TO_ONE: () =>
+        penpot.ui.sendMessage({
+          type: 'OPEN_IN_BROWSER',
+          data: {
+            url: globalConfig.urls.storeUrl,
+            isNewTab: true,
+          },
+        }),
       ENABLE_PRO_PLAN: async () =>
         penpot.ui.sendMessage({
           type: 'ENABLE_PRO_PLAN',
@@ -279,13 +283,15 @@ const loadUI = async () => {
             id: penpot.currentUser.id,
           },
         }),
-      LEAVE_PRO_PLAN: async () =>
+      LEAVE_PRO_PLAN: async () => {
         penpot.ui.sendMessage({
           type: 'LEAVE_PRO_PLAN',
           data: {
             id: penpot.currentUser.id,
           },
-        }),
+        })
+        checkTrialStatus()
+      },
       WELCOME_TO_PRO: async () =>
         penpot.ui.sendMessage({
           type: 'WELCOME_TO_PRO',

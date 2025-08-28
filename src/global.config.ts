@@ -3,6 +3,7 @@ import { Config } from './types/config'
 import { locales } from './content/locales'
 
 const isDev = import.meta.env.MODE === 'development'
+declare const __APP_VERSION__: string
 
 const globalConfig: Config = {
   limits: {
@@ -74,7 +75,7 @@ const globalConfig: Config = {
     trialVersion: '2024.03',
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
-    pluginVersion: import.meta.env.VITE_APP_VERSION,
+    pluginVersion: __APP_VERSION__,
   },
   features: doSpecificMode(
     [
@@ -98,7 +99,6 @@ const globalConfig: Config = {
       'PRESETS_POLARIS',
       'PRESETS_CUSTOM_ADD',
       'SCALE_CHROMA',
-      'SCALE_HELPER_DISTRIBUTION',
       'THEMES',
       'THEMES_NAME',
       'THEMES_PARAMS',

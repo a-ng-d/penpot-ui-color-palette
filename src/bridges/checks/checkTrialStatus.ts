@@ -32,13 +32,16 @@ const checkTrialStatus = async () => {
     else trialStatus = 'UNUSED'
   }
 
+  let planStatus
+
+  if (trialStatus === 'PENDING' || !globalConfig.plan.isProEnabled)
+    planStatus = 'PAID'
+  else planStatus = undefined
+
   penpot.ui.sendMessage({
     type: 'CHECK_TRIAL_STATUS',
     data: {
-      planStatus:
-        trialStatus === 'PENDING' || !globalConfig.plan.isProEnabled
-          ? 'PAID'
-          : 'UNPAID',
+      planStatus: planStatus,
       trialStatus: trialStatus,
       trialRemainingTime: Math.ceil(
         currentTrialVersion !== globalConfig.versions.trialVersion
@@ -48,9 +51,9 @@ const checkTrialStatus = async () => {
     },
   })
 
-  return trialStatus === 'PENDING' || !globalConfig.plan.isProEnabled
-    ? 'PAID'
-    : 'UNPAID'
+  if (trialStatus === 'PENDING' || !globalConfig.plan.isProEnabled)
+    return 'PAID'
+  else return undefined
 }
 
 export default checkTrialStatus
