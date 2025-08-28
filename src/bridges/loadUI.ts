@@ -283,13 +283,15 @@ const loadUI = async () => {
             id: penpot.currentUser.id,
           },
         }),
-      LEAVE_PRO_PLAN: async () =>
+      LEAVE_PRO_PLAN: async () => {
         penpot.ui.sendMessage({
           type: 'LEAVE_PRO_PLAN',
           data: {
             id: penpot.currentUser.id,
           },
-        }),
+        })
+        checkTrialStatus()
+      },
       WELCOME_TO_PRO: async () =>
         penpot.ui.sendMessage({
           type: 'WELCOME_TO_PRO',
