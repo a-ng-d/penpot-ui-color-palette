@@ -1,6 +1,11 @@
 const checkAnnouncementsStatus = (remoteVersion: string) => {
   const localVersion = penpot.localStorage.getItem('announcements_version')
-  const isOnboardingRead = penpot.localStorage.getItem('is_onboarding_read')
+  let isOnboardingRead = penpot.localStorage.getItem('is_onboarding_read')
+
+  if (!isOnboardingRead) {
+    penpot.localStorage.setItem('is_onboarding_read', 'false')
+    isOnboardingRead = 'false'
+  }
 
   if (!localVersion && !remoteVersion)
     return {

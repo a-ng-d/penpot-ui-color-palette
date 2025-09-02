@@ -1,6 +1,6 @@
 {
   "name": "penpot-ui-color-palette",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "private": true,
   "description": "UI Color Palette is a Penpot plugin that creates, manages, exports, and publishes consistent and accessible color palettes.",
   "author": "Aurélien Grimaud",
@@ -41,7 +41,7 @@
     "@sentry/vite-plugin": "^3.3.1",
     "@types/chroma-js": "^2.4.0",
     "@types/file-saver": "^2.0.5",
-    "@types/mixpanel-browser": "^2.60.0",
+    "@types/mixpanel-browser": "^2.66.0",
     "@types/node": "^22.14.0",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
@@ -62,7 +62,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
-    "@a_ng_d/figmug-ui": "^1.17.2",
+    "@a_ng_d/figmug-ui": "^1.17.3",
     "@a_ng_d/figmug-utils": "^0.7.1",
     "@a_ng_d/utils-ui-color-palette": "^1.6.3",
     "@nanostores/preact": "^0.5.2",
