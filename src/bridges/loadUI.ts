@@ -72,6 +72,13 @@ const loadUI = async () => {
     penpot.ui.sendMessage({
       type: 'CHECK_ANNOUNCEMENTS_VERSION',
     })
+    penpot.ui.sendMessage({
+      type: 'CHECK_EDITOR',
+      data: {
+        id: penpot.currentUser.id,
+        editor: globalConfig.env.editor,
+      },
+    })
 
     // Checks
     checkUserConsent()
