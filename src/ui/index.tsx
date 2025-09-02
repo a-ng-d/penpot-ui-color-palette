@@ -29,7 +29,7 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
     disable_cookie: true,
     ignore_dnt: true,
     opt_out_tracking_by_default: true,
-    record_sessions_percent: 50,
+    record_sessions_percent: 5,
     record_mask_text_selector: '*',
     record_block_selector: 'img',
     // @ts-expect-error: 'record_heatmap_data' is not in the Mixpanel type definitions
