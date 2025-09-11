@@ -155,6 +155,7 @@ root.render(
       uicpUrl: globalConfig.urls.uicpUrl,
       storeUrl: globalConfig.urls.storeUrl,
       storeManagementUrl: globalConfig.urls.storeManagementUrl,
+      howToUseUrl: globalConfig.urls.howToUseUrl,
     }}
     versions={{
       userConsentVersion: globalConfig.versions.userConsentVersion,
