@@ -123,7 +123,7 @@
     "title": "Source colors",
     "alpha": {
       "label": "Alpha mode",
-      "message": "The scale is applied to the color alpha channel instead of the lightness"
+      "helper": "The scale is applied to the color alpha channel instead of the lightness"
     }
   },
   "contexts": {
@@ -398,7 +398,7 @@
   "preview": {
     "actions": {
       "collapsePreview": "Collapse preview",
-      "displayScores": "Display scores",
+      "displayScores": "Show scores",
       "expandPreview": "Expand preview",
       "resetImportedColors": "Reset imported colors",
       "colorSpace": "Color space",
@@ -414,8 +414,8 @@
       "warning": "Upgrade to /pro to save a palette with locked source colors"
     },
     "score": {
-      "apca": "Display APCA scores",
-      "wcag": "Display WCAG 2.1 scores"
+      "apca": "Show APCA scores",
+      "wcag": "Show WCAG 2.1 scores"
     },
     "source": {
       "tag": "Source"
@@ -512,8 +512,10 @@
     "actions": {
       "addStop": "Add stop",
       "removeStop": "Remove stop",
-      "resetScale": "Reset lightness and chroma",
-      "resetLightness": "Reset lightness"
+      "resetScale": "Reset stops and chroma",
+      "resetStops": "Reset stops",
+      "reverseStops": "Reverse stops",
+      "applyEasing": "Apply directly the easing to the stops"
     },
     "contrast": {
       "label": "Contrast mode",
@@ -530,7 +532,7 @@
       "linear": "Linear",
       "preview": "Distribute the color stops to balance your color palette in several ways"
     },
-    "howTo": "How to adjust",
+    "howTo": "How to use",
     "keyboardShortcuts": "Review the keyboard shortcuts",
     "namingConvention": {
       "hundreds": "100 - 1000",
@@ -782,7 +784,7 @@
   "user": {
     "cookies": {
       "back": "Back",
-      "close": "Continue without accepting",
+      "close": "Close",
       "consent": "Accept all",
       "customize": "Customize cookies",
       "deny": "Deny all",
