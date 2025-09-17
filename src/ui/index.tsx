@@ -102,11 +102,18 @@ if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
 // Bridge Canvas <> UI
 window.addEventListener('message', (event) => {
   const data = event.data
-  const pluginEvent = new CustomEvent('pluginMessage', {
+  const pluginEvent = new CustomEvent('platformMessage', {
     detail: data,
   })
   window.dispatchEvent(pluginEvent)
 })
+
+window.addEventListener('pluginMessage', ((event: MessageEvent) => {
+  if (event instanceof CustomEvent && window.parent !== window) {
+    const { message, targetOrigin } = event.detail
+    parent.postMessage(message, targetOrigin)
+  }
+}) as EventListener)
 
 // Render
 root.render(
