@@ -1,4 +1,4 @@
-import { locales } from '../../content/locales'
+import { locales } from '@ui-lib/content/locales'
 
 const deletePalette = async (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)

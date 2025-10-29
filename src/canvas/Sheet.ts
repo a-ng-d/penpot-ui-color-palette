@@ -1,3 +1,4 @@
+import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
@@ -6,7 +7,6 @@ import {
   ViewConfiguration,
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../content/locales'
 import Title from './Title'
 import Signature from './Signature'
 import Sample from './Sample'

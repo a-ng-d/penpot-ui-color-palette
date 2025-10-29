@@ -1,5 +1,5 @@
+import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../content/locales'
 import LocalStyle from '../../canvas/LocalStyle'
 
 const createLocalStyles = async (id: string) => {

@@ -1,5 +1,5 @@
+import { locales } from '@ui-lib/content/locales'
 import { Board, Group } from '@penpot/plugin-types'
-import { locales } from '../content/locales'
 import Tag from './Tag'
 
 export default class Signature {

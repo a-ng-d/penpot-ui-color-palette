@@ -1,7 +1,7 @@
+import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import processSelection from '../processSelection'
-import { locales } from '../../content/locales'
 
 const createPaletteFromDocument = async () => {
   const document = penpot.selection[0] as Board

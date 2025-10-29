@@ -1,3 +1,4 @@
+import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
 import {
   Data,
@@ -6,7 +7,6 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../content/locales'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
 
