@@ -12,3 +12,4 @@ declare module '*.json' {
   export default value
 }
 declare module 'react-dom/client'
+declare module 'mixpanel-browser'
