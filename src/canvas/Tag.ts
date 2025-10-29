@@ -210,7 +210,7 @@ export default class Tag {
       this.nodeText.align = 'center'
       this.nodeText.fills = [
         {
-          fillColor: '#000000',
+          fillColor: darkColor,
         },
       ]
     }
