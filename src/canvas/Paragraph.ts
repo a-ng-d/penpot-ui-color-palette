@@ -1,4 +1,5 @@
 import { Board, Text } from '@penpot/plugin-types'
+import { darkColor } from './styles'
 
 export default class Paragraph {
   private name: string
@@ -45,7 +46,7 @@ export default class Paragraph {
       this.nodeText.lineHeight = '1.3'
       this.nodeText.fills = [
         {
-          fillColor: '#000',
+          fillColor: darkColor,
         },
       ]
 
@@ -61,13 +62,13 @@ export default class Paragraph {
     this.node.name = this.name
     this.node.fills = [
       {
-        fillColor: '#FFF',
+        fillColor: '#FFFFFF',
         fillOpacity: 0.5,
       },
     ]
     this.node.strokes = [
       {
-        strokeColor: 'darkColor',
+        strokeColor: darkColor,
         strokeOpacity: 0.05,
         strokeAlignment: 'inner',
       },

@@ -1,6 +1,7 @@
 import { locales } from '@ui-lib/content/locales'
 import { Board, Group } from '@penpot/plugin-types'
 import Tag from './Tag'
+import { darkColor } from './styles'
 
 export default class Signature {
   private nodeInfo: Board | null
@@ -56,13 +57,13 @@ export default class Signature {
     this.nodeLogotype.name = '_logotype'
     this.nodeLogotype.fills = [
       {
-        fillColor: '#FFF',
+        fillColor: '#FFFFFF',
         fillOpacity: 0.5,
       },
     ]
     this.nodeLogotype.strokes = [
       {
-        strokeColor: '#000',
+        strokeColor: darkColor,
         strokeOpacity: 0.05,
         strokeAlignment: 'inner',
       },

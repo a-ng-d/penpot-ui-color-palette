@@ -102,7 +102,10 @@ export default class Tag {
     return this.nodeTag
   }
 
-  makeNodeTagwithIndicator = (gl: Array<number> = [0, 0, 0, 1]) => {
+  makeNodeTagwithIndicator = (
+    gl: Array<number> = [0, 0, 0, 1],
+    isCompact = true
+  ) => {
     // Base
     this.nodeTagwithIndicator = penpot.createBoard()
     this.nodeTagwithIndicator.name = this.name
@@ -135,9 +138,9 @@ export default class Tag {
     flex.verticalSizing = 'fit-content'
     flex.columnGap = 4
     flex.alignItems = 'center'
-    flex.rightPadding = 2
+    flex.rightPadding = isCompact ? 2 : 8
     flex.leftPadding = 8
-    flex.verticalPadding = 2
+    flex.verticalPadding = isCompact ? 2 : 4
 
     // Insert
     this.nodeTagwithIndicator.appendChild(
@@ -207,7 +210,7 @@ export default class Tag {
       this.nodeText.align = 'center'
       this.nodeText.fills = [
         {
-          fillColor: '#000',
+          fillColor: '#000000',
         },
       ]
     }
