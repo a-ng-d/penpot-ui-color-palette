@@ -22,7 +22,7 @@ jobs:
       name: production
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/ui-color-palette/')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -83,7 +83,7 @@ jobs:
     name: Create release
     needs: deploy-plugin
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/ui-color-palette/')
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/ui-color-palette/')
     permissions:
       contents: write
     steps:
