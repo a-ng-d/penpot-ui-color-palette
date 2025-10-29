@@ -1,6 +1,7 @@
 import chroma from 'chroma-js'
 import { Board, Ellipse, ImageData, Text } from '@penpot/plugin-types'
 import { RgbModel } from '@a_ng_d/utils-ui-color-palette'
+import { darkColor } from './styles'
 
 export default class Tag {
   private name: string
@@ -74,7 +75,7 @@ export default class Tag {
     ]
     this.nodeTag.strokes = [
       {
-        strokeColor: '#000000',
+        strokeColor: darkColor,
         strokeOpacity: 0.05,
         strokeAlignment: 'inner',
         strokeWidth: 1,
@@ -117,7 +118,7 @@ export default class Tag {
     ]
     this.nodeTagwithIndicator.strokes = [
       {
-        strokeColor: '#000000',
+        strokeColor: darkColor,
         strokeOpacity: 0.05,
         strokeAlignment: 'inner',
         strokeWidth: 1,
@@ -164,7 +165,7 @@ export default class Tag {
     ]
     this.nodeTagWithAvatar.strokes = [
       {
-        strokeColor: '#000000',
+        strokeColor: darkColor,
         strokeOpacity: 0.05,
         strokeAlignment: 'inner',
         strokeWidth: 1,
@@ -226,7 +227,7 @@ export default class Tag {
     ]
     this.nodeIndicator.strokes = [
       {
-        strokeColor: '#000000',
+        strokeColor: darkColor,
         strokeOpacity: 0.1,
         strokeAlignment: 'inner',
         strokeWidth: 1,

@@ -8,6 +8,7 @@ import {
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
 import Title from './Title'
+import { darkColor } from './styles'
 import Signature from './Signature'
 import Sample from './Sample'
 import Header from './Header'
@@ -123,7 +124,7 @@ export default class Sheet {
     this.data?.colors.forEach((color) => {
       const sourceColor = color.shades.find(
         (shade) => shade.name === 'source'
-      ) ?? { hex: '#000000', rgb: [0, 0, 0] }
+      ) ?? { hex: darkColor, rgb: [0, 0, 0] }
 
       // Base
       this.nodeRow = penpot.createBoard()

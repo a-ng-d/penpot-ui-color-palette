@@ -67,7 +67,7 @@ export default class Paragraph {
     ]
     this.node.strokes = [
       {
-        strokeColor: '#000000',
+        strokeColor: 'darkColor',
         strokeOpacity: 0.05,
         strokeAlignment: 'inner',
       },
