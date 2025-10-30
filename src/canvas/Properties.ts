@@ -198,14 +198,14 @@ export default class Properties {
         name: '_lch',
         content: `L ${Math.floor(this.lch[0])} • C ${Math.floor(
           this.lch[1]
-        )} • H ${Math.floor(this.lch[2])}`,
+        )} • H ${isNaN(this.lch[2]) ? 0 : Math.floor(this.lch[2])}`,
       }).makeNodeTag()
     else if (this.colorSpace === 'OKLCH')
       basePropViaColorSpace = new Tag({
         name: '_oklch',
         content: `L ${parseFloat(this.oklch[0].toFixed(2))} • C ${parseFloat(
           this.oklch[1].toFixed(2)
-        )} • H ${Math.floor(this.oklch[2])}`,
+        )} • H ${isNaN(this.oklch[2]) ? 0 : Math.floor(this.oklch[2])}`,
       }).makeNodeTag()
     else if (this.colorSpace === 'LAB')
       basePropViaColorSpace = new Tag({
@@ -224,7 +224,7 @@ export default class Properties {
     else if (this.colorSpace === 'HSL')
       basePropViaColorSpace = new Tag({
         name: '_hsl',
-        content: `H ${Math.floor(this.hsl[0])} • S ${Math.floor(
+        content: `H ${isNaN(this.hsl[0]) ? 0 : Math.floor(this.hsl[0])} • S ${Math.floor(
           this.hsl[1] * 100
         )} • L ${Math.floor(this.hsl[2] * 100)}`,
       }).makeNodeTag()
@@ -382,14 +382,14 @@ export default class Properties {
         name: '_lch',
         content: `L ${Math.floor(this.lch[0])} • C ${Math.floor(
           this.lch[1]
-        )} • H ${Math.floor(this.lch[2])}`,
+        )} • H ${isNaN(this.lch[2]) ? 0 : Math.floor(this.lch[2])}`,
       }).makeNodeTag()
     else if (this.colorSpace === 'OKLCH')
       basePropViaColorSpace = new Tag({
         name: '_oklch',
         content: `L ${parseFloat(this.oklch[0].toFixed(2))} • C ${parseFloat(
           this.oklch[1].toFixed(2)
-        )} • H ${Math.floor(this.oklch[2])}`,
+        )} • H ${isNaN(this.oklch[2]) ? 0 : Math.floor(this.oklch[2])}`,
       }).makeNodeTag()
     else if (this.colorSpace === 'LAB')
       basePropViaColorSpace = new Tag({
@@ -415,7 +415,7 @@ export default class Properties {
     else if (this.colorSpace === 'HSLUV')
       basePropViaColorSpace = new Tag({
         name: '_hsluv',
-        content: `H ${Math.floor(this.hsluv[0])} • S ${Math.floor(
+        content: `H ${isNaN(this.hsluv[0]) ? 0 : Math.floor(this.hsluv[0])} • S ${Math.floor(
           this.hsluv[1]
         )} • L ${Math.floor(this.hsluv[2])}`,
       }).makeNodeTag()
