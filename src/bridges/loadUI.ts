@@ -304,7 +304,7 @@ const loadUI = async () => {
         penpot.ui.sendMessage({
           type: 'GET_PRICING',
           data: {
-            plans: ['ONE'],
+            plans: ['ONE', 'ACTIVATE'],
           },
         }),
       GO_TO_ONE: () =>
