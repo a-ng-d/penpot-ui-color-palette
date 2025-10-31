@@ -151,7 +151,7 @@ export default class Palette {
           'fit-content'
 
       // Insert
-      const sampleNode = new Sample({
+      const nodeSample = new Sample({
         name: color.name,
         rgb: sourceColor.rgb,
         colorSpace: this.base.colorSpace,
@@ -165,7 +165,7 @@ export default class Palette {
         isColorName: true,
       })
 
-      this.nodeRowSource.appendChild(sampleNode)
+      this.nodeRowSource.appendChild(nodeSample)
 
       color.shades
         .filter((shade) => shade.name !== 'source')
@@ -227,21 +227,21 @@ export default class Palette {
     flex.rowGap = 16
 
     // Insert
-    const titleNode = new Title({
+    const nodeTitle = new Title({
       base: this.base,
       theme: this.theme,
       data: this.data,
       meta: this.meta,
     }).node
-    const signatureNode = new Signature().node
+    const nodeSignature = new Signature().node
 
-    this.node.appendChild(titleNode)
+    this.node.appendChild(nodeTitle)
     this.node.appendChild(this.makeNodeShades())
-    this.node.appendChild(signatureNode)
+    this.node.appendChild(nodeSignature)
 
-    if (titleNode.layoutChild) titleNode.layoutChild.horizontalSizing = 'fill'
-    if (signatureNode.layoutChild)
-      signatureNode.layoutChild.horizontalSizing = 'fill'
+    if (nodeTitle.layoutChild) nodeTitle.layoutChild.horizontalSizing = 'fill'
+    if (nodeSignature.layoutChild)
+      nodeSignature.layoutChild.horizontalSizing = 'fill'
 
     return this.node
   }

@@ -96,8 +96,8 @@ export default class Tag {
     flex.verticalPadding = 4
 
     // Insert
-    const textNode = this.makeNodeText()
-    if (textNode) this.nodeTag.appendChild(textNode)
+    const nodeText = this.makeNodeText()
+    if (nodeText) this.nodeTag.appendChild(nodeText)
 
     return this.nodeTag
   }
@@ -146,8 +146,8 @@ export default class Tag {
     this.nodeTagwithIndicator.appendChild(
       this.makeNodeIndicator([gl[0], gl[1], gl[2]])
     )
-    const textNode = this.makeNodeText()
-    if (textNode) this.nodeTagwithIndicator.appendChild(textNode)
+    const nodeText = this.makeNodeText()
+    if (nodeText) this.nodeTagwithIndicator.appendChild(nodeText)
 
     return this.nodeTagwithIndicator
   }
@@ -190,8 +190,8 @@ export default class Tag {
     flex.verticalPadding = 4
 
     // Insert
-    const textNode = this.makeNodeText()
-    if (textNode) this.nodeTagWithAvatar.appendChild(textNode)
+    const nodeText = this.makeNodeText()
+    if (nodeText) this.nodeTagWithAvatar.appendChild(nodeText)
 
     this.nodeTagWithAvatar.appendChild(this.makeNodeAvatar(image))
 
@@ -246,12 +246,21 @@ export default class Tag {
     this.nodeAvatar.resize(24, 24)
     this.nodeAvatar.name = '_avatar'
 
-    if (image !== null && image !== undefined)
+    if (image !== null && image !== undefined) {
       this.nodeAvatar.fills = [
         {
           fillImage: image,
         },
       ]
+      this.nodeAvatar.strokes = [
+        {
+          strokeColor: darkColor,
+          strokeOpacity: 0.1,
+          strokeAlignment: 'inner',
+          strokeWidth: 1,
+        },
+      ]
+    }
 
     return this.nodeAvatar
   }

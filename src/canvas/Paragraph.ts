@@ -87,10 +87,10 @@ export default class Paragraph {
     flex.horizontalPadding = flex.verticalPadding = 8
 
     // Insert
-    const textNode = this.makeNodeText()
-    if (textNode) this.node.appendChild(textNode)
+    const nodeText = this.makeNodeText()
+    if (nodeText) this.node.appendChild(nodeText)
 
-    if (textNode?.layoutChild) textNode.layoutChild.horizontalSizing = 'fill'
+    if (nodeText?.layoutChild) nodeText.layoutChild.horizontalSizing = 'fill'
 
     return this.node
   }
