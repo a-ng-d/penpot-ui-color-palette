@@ -114,10 +114,17 @@ export default class Palette {
       }).node
     )
 
-    this.data?.colors.forEach((color) => {
+    this.data?.colors.forEach((color, index) => {
       const sourceColor = color.shades.find(
         (shade) => shade.name === 'source'
       ) ?? { hex: darkColor, rgb: [0, 0, 0] }
+
+      let radii = []
+      if (index === 0) radii = [16, 16, 0, 0]
+      else if (index === this.data.colors.length - 1) radii = [0, 0, 16, 16]
+      else radii = [0, 0, 0, 0]
+
+      if (this.data.colors.length === 1) radii = [16, 16, 16, 16]
 
       // Base
       this.nodeRow = penpot.createBoard()
@@ -135,6 +142,11 @@ export default class Palette {
         this.nodeRowSource.verticalSizing =
         this.nodeRowShades.verticalSizing =
           'auto'
+
+      this.nodeRow.borderRadiusTopLeft = radii[0]
+      this.nodeRow.borderRadiusTopRight = radii[1]
+      this.nodeRow.borderRadiusBottomRight = radii[2]
+      this.nodeRow.borderRadiusBottomLeft = radii[3]
 
       // Layout
       const flex = this.nodeRow.addFlexLayout()
