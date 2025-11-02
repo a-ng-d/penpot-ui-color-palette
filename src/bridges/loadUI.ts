@@ -311,7 +311,10 @@ const loadUI = async () => {
         penpot.ui.sendMessage({
           type: 'OPEN_IN_BROWSER',
           data: {
-            url: globalConfig.urls.storeUrl,
+            url:
+              path.data.context === 'REGULAR'
+                ? globalConfig.urls.storeUrl
+                : globalConfig.urls.storeWithDiscountUrl,
             isNewTab: true,
           },
         }),
