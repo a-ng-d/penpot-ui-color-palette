@@ -7,6 +7,7 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import setPaletteName from '../../utils/setPaletteName'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
 
@@ -56,6 +57,13 @@ const updateDocument = async (view: ViewConfiguration) => {
       fillColor: currentTheme.paletteBackground,
     },
   ]
+  document.name = setPaletteName(
+    palette.base.name,
+    currentTheme.name,
+    palette.base.preset.name,
+    palette.base.colorSpace,
+    currentTheme.visionSimulationMode
+  )
 
   // Update
   document.setPluginData('view', view)
