@@ -1,5 +1,5 @@
+import { locales } from '@ui-lib/content/locales'
 import globalConfig from '../global.config'
-import { locales } from '../content/locales'
 import updateThemes from './updates/updateThemes'
 import updateSettings from './updates/updateSettings'
 import updateScale from './updates/updateScale'
@@ -7,11 +7,11 @@ import updatePalette from './updates/updatePalette'
 import updateLocalStyles from './updates/updateLocalStyles'
 import updateDocument from './updates/updateDocument'
 import updateColors from './updates/updateColors'
-import processSelection from './processSelection'
-import jumpToPalette from './jumpToPalette'
-import getPalettesOnCurrentPage from './getPalettesOnCurrentPage'
-import enableTrial from './enableTrial'
-import deletePalette from './creations/deletePalette'
+import enableTrial from './plans/enableTrial'
+import processSelection from './gets/processSelection'
+import jumpToPalette from './gets/jumpToPalette'
+import getPalettesOnCurrentPage from './gets/getPalettesOnCurrentPage'
+import deletePalette from './deletions/deletePalette'
 import createPaletteFromRemote from './creations/createPaletteFromRemote'
 import createPaletteFromDuplication from './creations/createPaletteFromDuplication'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
@@ -22,6 +22,7 @@ import checkUserPreferences from './checks/checkUserPreferences'
 import checkUserLicense from './checks/checkUserLicense'
 import checkUserConsent from './checks/checkUserConsent'
 import checkTrialStatus from './checks/checkTrialStatus'
+import checkCredits from './checks/checkCredits'
 import checkAnnouncementsStatus from './checks/checkAnnouncementsStatus'
 
 interface Window {
@@ -83,6 +84,7 @@ const loadUI = async () => {
     // Checks
     checkUserConsent()
       .then(() => checkTrialStatus())
+      .then(() => checkCredits())
       .then(() => checkUserLicense())
       .then(() => checkUserPreferences())
       .then(() => processSelection())
@@ -112,6 +114,8 @@ const loadUI = async () => {
         updateDocument(path.view)
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
+            console.error(error)
+
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -126,17 +130,39 @@ const loadUI = async () => {
       },
       //
       CREATE_PALETTE: () =>
-        createPalette(path).finally(() =>
-          penpot.ui.sendMessage({ type: 'STOP_LOADER' })
-        ),
+        createPalette(path)
+          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
+          .catch((error) => {
+            console.error(error)
+
+            penpot.ui.sendMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error.message,
+              },
+            })
+          }),
       CREATE_PALETTE_FROM_DOCUMENT: () =>
-        createPaletteFromDocument().finally(() =>
-          penpot.ui.sendMessage({ type: 'STOP_LOADER' })
-        ),
+        createPaletteFromDocument()
+          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
+          .catch((error) => {
+            console.error(error)
+
+            penpot.ui.sendMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'INFO',
+                message: error.message,
+              },
+            })
+          }),
       CREATE_PALETTE_FROM_REMOTE: () =>
         createPaletteFromRemote(path)
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
+            console.error(error)
+
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -160,6 +186,8 @@ const loadUI = async () => {
           )
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
+            console.error(error)
+
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -172,6 +200,8 @@ const loadUI = async () => {
         createDocument(path.id, path.view)
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
+            console.error(error)
+
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -242,6 +272,8 @@ const loadUI = async () => {
             penpot.ui.sendMessage({ type: 'STOP_LOADER' })
           })
           .catch((error) => {
+            console.error(error)
+
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -272,14 +304,17 @@ const loadUI = async () => {
         penpot.ui.sendMessage({
           type: 'GET_PRICING',
           data: {
-            plans: ['ONE'],
+            plans: ['ONE', 'ACTIVATE'],
           },
         }),
       GO_TO_ONE: () =>
         penpot.ui.sendMessage({
           type: 'OPEN_IN_BROWSER',
           data: {
-            url: globalConfig.urls.storeUrl,
+            url:
+              path.data.context === 'REGULAR'
+                ? globalConfig.urls.storeUrl
+                : globalConfig.urls.storeWithDiscountUrl,
             isNewTab: true,
           },
         }),

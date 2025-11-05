@@ -1,6 +1,6 @@
+import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { ThemesMessage } from '../../types/messages'
-import { locales } from '../../content/locales'
 
 const updateThemes = async (msg: ThemesMessage) => {
   const now = new Date().toISOString()

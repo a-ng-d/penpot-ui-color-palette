@@ -1,10 +1,10 @@
+import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../content/locales'
 import Sample from './Sample'
 
 export default class Header {

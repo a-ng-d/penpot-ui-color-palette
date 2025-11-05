@@ -89,7 +89,8 @@ const processSelection = () => {
     if (
       element.type !== 'group' &&
       element.type !== 'image' &&
-      element.type !== 'boolean'
+      element.type !== 'boolean' &&
+      element.type !== 'text'
     )
       if (foundColors.length > 0 && element.getPluginDataKeys().length === 0) {
         foundColors.forEach((color) => {

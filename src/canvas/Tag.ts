@@ -1,12 +1,13 @@
 import chroma from 'chroma-js'
 import { Board, Ellipse, ImageData, Text } from '@penpot/plugin-types'
 import { RgbModel } from '@a_ng_d/utils-ui-color-palette'
+import { darkColor, FontFamily, propertyFontFamily } from './styles'
 
 export default class Tag {
   private name: string
   private content: string
   private fontSize: number
-  private fontFamily: 'Martian Mono' | 'Lexend'
+  private fontFamily: FontFamily
   private url: string | null
   private backgroundColor: {
     rgb: RgbModel
@@ -23,7 +24,7 @@ export default class Tag {
     name,
     content,
     fontSize = 8,
-    fontFamily = 'Martian Mono',
+    fontFamily = propertyFontFamily,
     backgroundColor = {
       rgb: {
         r: 1,
@@ -37,7 +38,7 @@ export default class Tag {
     name: string
     content: string
     fontSize?: number
-    fontFamily?: 'Martian Mono' | 'Lexend'
+    fontFamily?: FontFamily
     backgroundColor?: {
       rgb: RgbModel
       alpha: number
@@ -74,7 +75,7 @@ export default class Tag {
     ]
     this.nodeTag.strokes = [
       {
-        strokeColor: '#000000',
+        strokeColor: darkColor,
         strokeOpacity: 0.05,
         strokeAlignment: 'inner',
         strokeWidth: 1,
@@ -95,13 +96,16 @@ export default class Tag {
     flex.verticalPadding = 4
 
     // Insert
-    const textNode = this.makeNodeText()
-    if (textNode) this.nodeTag.appendChild(textNode)
+    const nodeText = this.makeNodeText()
+    if (nodeText) this.nodeTag.appendChild(nodeText)
 
     return this.nodeTag
   }
 
-  makeNodeTagwithIndicator = (gl: Array<number> = [0, 0, 0, 1]) => {
+  makeNodeTagwithIndicator = (
+    gl: Array<number> = [0, 0, 0, 1],
+    isCompact = true
+  ) => {
     // Base
     this.nodeTagwithIndicator = penpot.createBoard()
     this.nodeTagwithIndicator.name = this.name
@@ -117,7 +121,7 @@ export default class Tag {
     ]
     this.nodeTagwithIndicator.strokes = [
       {
-        strokeColor: '#000000',
+        strokeColor: darkColor,
         strokeOpacity: 0.05,
         strokeAlignment: 'inner',
         strokeWidth: 1,
@@ -134,16 +138,16 @@ export default class Tag {
     flex.verticalSizing = 'fit-content'
     flex.columnGap = 4
     flex.alignItems = 'center'
-    flex.rightPadding = 2
+    flex.rightPadding = isCompact ? 2 : 8
     flex.leftPadding = 8
-    flex.verticalPadding = 2
+    flex.verticalPadding = isCompact ? 2 : 4
 
     // Insert
     this.nodeTagwithIndicator.appendChild(
       this.makeNodeIndicator([gl[0], gl[1], gl[2]])
     )
-    const textNode = this.makeNodeText()
-    if (textNode) this.nodeTagwithIndicator.appendChild(textNode)
+    const nodeText = this.makeNodeText()
+    if (nodeText) this.nodeTagwithIndicator.appendChild(nodeText)
 
     return this.nodeTagwithIndicator
   }
@@ -164,7 +168,7 @@ export default class Tag {
     ]
     this.nodeTagWithAvatar.strokes = [
       {
-        strokeColor: '#000000',
+        strokeColor: darkColor,
         strokeOpacity: 0.05,
         strokeAlignment: 'inner',
         strokeWidth: 1,
@@ -186,8 +190,8 @@ export default class Tag {
     flex.verticalPadding = 4
 
     // Insert
-    const textNode = this.makeNodeText()
-    if (textNode) this.nodeTagWithAvatar.appendChild(textNode)
+    const nodeText = this.makeNodeText()
+    if (nodeText) this.nodeTagWithAvatar.appendChild(nodeText)
 
     this.nodeTagWithAvatar.appendChild(this.makeNodeAvatar(image))
 
@@ -206,7 +210,7 @@ export default class Tag {
       this.nodeText.align = 'center'
       this.nodeText.fills = [
         {
-          fillColor: '#000',
+          fillColor: darkColor,
         },
       ]
     }
@@ -226,7 +230,7 @@ export default class Tag {
     ]
     this.nodeIndicator.strokes = [
       {
-        strokeColor: '#000000',
+        strokeColor: darkColor,
         strokeOpacity: 0.1,
         strokeAlignment: 'inner',
         strokeWidth: 1,
@@ -242,12 +246,21 @@ export default class Tag {
     this.nodeAvatar.resize(24, 24)
     this.nodeAvatar.name = '_avatar'
 
-    if (image !== null && image !== undefined)
+    if (image !== null && image !== undefined) {
       this.nodeAvatar.fills = [
         {
           fillImage: image,
         },
       ]
+      this.nodeAvatar.strokes = [
+        {
+          strokeColor: darkColor,
+          strokeOpacity: 0.1,
+          strokeAlignment: 'inner',
+          strokeWidth: 1,
+        },
+      ]
+    }
 
     return this.nodeAvatar
   }

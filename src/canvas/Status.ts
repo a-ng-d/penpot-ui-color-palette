@@ -1,5 +1,5 @@
+import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
-import { locales } from '../content/locales'
 import Tag from './Tag'
 
 export default class Status {
@@ -56,12 +56,10 @@ export default class Status {
           name: '_close',
           content: locales.get().paletteProperties.closest,
           fontSize: 10,
-        }).makeNodeTagwithIndicator([
-          this.source.r,
-          this.source.g,
-          this.source.b,
-          1,
-        ])
+        }).makeNodeTagwithIndicator(
+          [this.source.r, this.source.g, this.source.b, 1],
+          false
+        )
       )
 
     if (this.status.isLocked)

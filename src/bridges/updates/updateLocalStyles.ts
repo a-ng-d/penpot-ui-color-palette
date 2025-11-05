@@ -1,5 +1,5 @@
+import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../../content/locales'
 
 const updateLocalStyles = async (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)

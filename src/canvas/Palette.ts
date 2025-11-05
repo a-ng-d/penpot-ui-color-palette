@@ -1,3 +1,4 @@
+import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
@@ -6,8 +7,8 @@ import {
   ViewConfiguration,
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../content/locales'
 import Title from './Title'
+import { darkColor } from './styles'
 import Signature from './Signature'
 import Sample from './Sample'
 import Header from './Header'
@@ -113,10 +114,17 @@ export default class Palette {
       }).node
     )
 
-    this.data?.colors.forEach((color) => {
+    this.data?.colors.forEach((color, index) => {
       const sourceColor = color.shades.find(
         (shade) => shade.name === 'source'
-      ) ?? { hex: '#000000', rgb: [0, 0, 0] }
+      ) ?? { hex: darkColor, rgb: [0, 0, 0] }
+
+      let radii = []
+      if (index === 0) radii = [16, 16, 0, 0]
+      else if (index === this.data.colors.length - 1) radii = [0, 0, 16, 16]
+      else radii = [0, 0, 0, 0]
+
+      if (this.data.colors.length === 1) radii = [16, 16, 16, 16]
 
       // Base
       this.nodeRow = penpot.createBoard()
@@ -135,6 +143,11 @@ export default class Palette {
         this.nodeRowShades.verticalSizing =
           'auto'
 
+      this.nodeRow.borderRadiusTopLeft = radii[0]
+      this.nodeRow.borderRadiusTopRight = radii[1]
+      this.nodeRow.borderRadiusBottomRight = radii[2]
+      this.nodeRow.borderRadiusBottomLeft = radii[3]
+
       // Layout
       const flex = this.nodeRow.addFlexLayout()
       const flexSource = this.nodeRowSource.addFlexLayout()
@@ -150,7 +163,7 @@ export default class Palette {
           'fit-content'
 
       // Insert
-      const sampleNode = new Sample({
+      const nodeSample = new Sample({
         name: color.name,
         rgb: sourceColor.rgb,
         colorSpace: this.base.colorSpace,
@@ -164,7 +177,7 @@ export default class Palette {
         isColorName: true,
       })
 
-      this.nodeRowSource.appendChild(sampleNode)
+      this.nodeRowSource.appendChild(nodeSample)
 
       color.shades
         .filter((shade) => shade.name !== 'source')
@@ -226,21 +239,21 @@ export default class Palette {
     flex.rowGap = 16
 
     // Insert
-    const titleNode = new Title({
+    const nodeTitle = new Title({
       base: this.base,
       theme: this.theme,
       data: this.data,
       meta: this.meta,
     }).node
-    const signatureNode = new Signature().node
+    const nodeSignature = new Signature().node
 
-    this.node.appendChild(titleNode)
+    this.node.appendChild(nodeTitle)
     this.node.appendChild(this.makeNodeShades())
-    this.node.appendChild(signatureNode)
+    this.node.appendChild(nodeSignature)
 
-    if (titleNode.layoutChild) titleNode.layoutChild.horizontalSizing = 'fill'
-    if (signatureNode.layoutChild)
-      signatureNode.layoutChild.horizontalSizing = 'fill'
+    if (nodeTitle.layoutChild) nodeTitle.layoutChild.horizontalSizing = 'fill'
+    if (nodeSignature.layoutChild)
+      nodeSignature.layoutChild.horizontalSizing = 'fill'
 
     return this.node
   }

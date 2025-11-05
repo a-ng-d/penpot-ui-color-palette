@@ -1,10 +1,11 @@
 import { Board, Text } from '@penpot/plugin-types'
+import { bodyFontFamily, darkColor, FontFamily } from './styles'
 
 export default class Paragraph {
   private name: string
   private content: string
   private fontSize: number
-  private fontFamily: 'Martian Mono' | 'Lexend'
+  private fontFamily: FontFamily
   private type: 'FILL' | 'FIXED'
   private width?: number
   private nodeText: Text | null
@@ -16,14 +17,14 @@ export default class Paragraph {
     type,
     width,
     fontSize = 12,
-    fontFamily = 'Martian Mono',
+    fontFamily = bodyFontFamily,
   }: {
     name: string
     content: string
     type: 'FILL' | 'FIXED'
     width?: number
     fontSize?: number
-    fontFamily?: 'Martian Mono' | 'Lexend'
+    fontFamily?: FontFamily
   }) {
     this.name = name
     this.content = content
@@ -45,7 +46,7 @@ export default class Paragraph {
       this.nodeText.lineHeight = '1.3'
       this.nodeText.fills = [
         {
-          fillColor: '#000',
+          fillColor: darkColor,
         },
       ]
 
@@ -61,13 +62,13 @@ export default class Paragraph {
     this.node.name = this.name
     this.node.fills = [
       {
-        fillColor: '#FFF',
+        fillColor: '#FFFFFF',
         fillOpacity: 0.5,
       },
     ]
     this.node.strokes = [
       {
-        strokeColor: '#000000',
+        strokeColor: darkColor,
         strokeOpacity: 0.05,
         strokeAlignment: 'inner',
       },
@@ -86,10 +87,10 @@ export default class Paragraph {
     flex.horizontalPadding = flex.verticalPadding = 8
 
     // Insert
-    const textNode = this.makeNodeText()
-    if (textNode) this.node.appendChild(textNode)
+    const nodeText = this.makeNodeText()
+    if (nodeText) this.node.appendChild(nodeText)
 
-    if (textNode?.layoutChild) textNode.layoutChild.horizontalSizing = 'fill'
+    if (nodeText?.layoutChild) nodeText.layoutChild.horizontalSizing = 'fill'
 
     return this.node
   }

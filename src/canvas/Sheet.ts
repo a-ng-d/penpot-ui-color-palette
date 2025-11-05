@@ -1,3 +1,4 @@
+import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
@@ -6,8 +7,8 @@ import {
   ViewConfiguration,
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
-import { locales } from '../content/locales'
 import Title from './Title'
+import { darkColor } from './styles'
 import Signature from './Signature'
 import Sample from './Sample'
 import Header from './Header'
@@ -123,7 +124,7 @@ export default class Sheet {
     this.data?.colors.forEach((color) => {
       const sourceColor = color.shades.find(
         (shade) => shade.name === 'source'
-      ) ?? { hex: '#000000', rgb: [0, 0, 0] }
+      ) ?? { hex: darkColor, rgb: [0, 0, 0] }
 
       // Base
       this.nodeRow = penpot.createBoard()
@@ -161,7 +162,7 @@ export default class Sheet {
       flex.rowGap = this.gap
 
       // Insert
-      const sampleNode = new Sample({
+      const nodeSample = new Sample({
         name: color.name,
         rgb: sourceColor.rgb,
         colorSpace: this.base.colorSpace,
@@ -176,7 +177,7 @@ export default class Sheet {
         isColorName: true,
       })
 
-      this.nodeRowSource.appendChild(sampleNode)
+      this.nodeRowSource.appendChild(nodeSample)
 
       color.shades
         .filter((shade) => shade.name !== 'source')
@@ -246,21 +247,21 @@ export default class Sheet {
     flex.rowGap = 16
 
     // Insert
-    const titleNode = new Title({
+    const nodeTitle = new Title({
       base: this.base,
       theme: this.theme,
       data: this.data,
       meta: this.meta,
     }).node
-    const signatureNode = new Signature().node
+    const nodeSignature = new Signature().node
 
-    this.node.appendChild(titleNode)
+    this.node.appendChild(nodeTitle)
     this.node.appendChild(this.makeNodeShades())
-    this.node.appendChild(signatureNode)
+    this.node.appendChild(nodeSignature)
 
-    if (titleNode.layoutChild) titleNode.layoutChild.horizontalSizing = 'fill'
-    if (signatureNode.layoutChild)
-      signatureNode.layoutChild.horizontalSizing = 'fill'
+    if (nodeTitle.layoutChild) nodeTitle.layoutChild.horizontalSizing = 'fill'
+    if (nodeSignature.layoutChild)
+      nodeSignature.layoutChild.horizontalSizing = 'fill'
 
     return this.node
   }
