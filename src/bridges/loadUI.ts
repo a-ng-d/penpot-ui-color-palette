@@ -41,7 +41,7 @@ const loadUI = async () => {
   }
 
   penpot.ui.open(
-    `${locales.get().name} /One${locales.get().separator}${locales.get().tagline}${globalConfig.env.isDev ? `${locales.get().separator}${locales.get().plan.dev}` : ''}`,
+    `${locales.get().name} /one${locales.get().separator}${locales.get().tagline}${globalConfig.env.isDev ? `${locales.get().separator}${locales.get().plan.dev}` : ''}`,
     globalConfig.urls.uiUrl,
     {
       width: windowSize.width,
@@ -49,53 +49,51 @@ const loadUI = async () => {
     }
   )
 
-  const accessToken = penpot.localStorage.getItem('supabase_access_token')
-  const refreshToken = penpot.localStorage.getItem('supabase_refresh_token')
-
-  setTimeout(() => {
-    // Canvas > UI
-    penpot.ui.sendMessage({
-      type: 'CHECK_USER_AUTHENTICATION',
-      data: {
-        id: penpot.currentUser.id,
-        fullName: penpot.currentUser.name,
-        avatar: penpot.currentUser.avatarUrl,
-        accessToken: accessToken ? accessToken : undefined,
-        refreshToken: refreshToken ? refreshToken : undefined,
-      },
-    })
-    penpot.ui.sendMessage({
-      type: 'SET_THEME',
-      data: {
-        theme: penpot.theme === 'light' ? 'penpot-light' : 'penpot-dark',
-      },
-    })
-    penpot.ui.sendMessage({
-      type: 'CHECK_ANNOUNCEMENTS_VERSION',
-    })
-    penpot.ui.sendMessage({
-      type: 'CHECK_EDITOR',
-      data: {
-        id: penpot.currentUser.id,
-        editor: globalConfig.env.editor,
-      },
-    })
-
-    // Checks
-    checkUserConsent()
-      .then(() => checkTrialStatus())
-      .then(() => checkCredits())
-      .then(() => checkUserLicense())
-      .then(() => checkUserPreferences())
-      .then(() => processSelection())
-  }, 1000)
-
-  // UI > Canvas
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   penpot.ui.onMessage(async (msg: any) => {
     const path = msg.pluginMessage
 
     const actions: { [key: string]: () => void } = {
+      LOAD_DATA: () => {
+        const accessToken = penpot.localStorage.getItem('supabase_access_token')
+        const refreshToken = penpot.localStorage.getItem(
+          'supabase_refresh_token'
+        )
+
+        penpot.ui.sendMessage({
+          type: 'CHECK_USER_AUTHENTICATION',
+          data: {
+            id: penpot.currentUser.id,
+            fullName: penpot.currentUser.name,
+            avatar: penpot.currentUser.avatarUrl,
+            accessToken: accessToken ? accessToken : undefined,
+            refreshToken: refreshToken ? refreshToken : undefined,
+          },
+        })
+        penpot.ui.sendMessage({
+          type: 'SET_THEME',
+          data: {
+            theme: penpot.theme === 'light' ? 'penpot-light' : 'penpot-dark',
+          },
+        })
+        penpot.ui.sendMessage({
+          type: 'CHECK_ANNOUNCEMENTS_VERSION',
+        })
+        penpot.ui.sendMessage({
+          type: 'CHECK_EDITOR',
+          data: {
+            id: penpot.currentUser.id,
+            editor: globalConfig.env.editor,
+          },
+        })
+
+        checkUserConsent()
+          .then(() => checkTrialStatus())
+          .then(() => checkCredits())
+          .then(() => checkUserLicense())
+          .then(() => checkUserPreferences())
+          .then(() => processSelection())
+      },
       CHECK_USER_CONSENT: () => checkUserConsent(),
       CHECK_ANNOUNCEMENTS_STATUS: () =>
         checkAnnouncementsStatus(path.data.version),

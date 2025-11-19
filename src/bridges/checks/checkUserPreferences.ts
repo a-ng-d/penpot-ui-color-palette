@@ -1,5 +1,6 @@
 import { Language } from '@ui-lib/types/translations'
 import { locales } from '@ui-lib/content/locales'
+import globalConfig from '../../global.config'
 
 const checkUserPreferences = async () => {
   let isWCAGDisplayed = penpot.localStorage.getItem('is_wcag_displayed')
@@ -39,11 +40,11 @@ const checkUserPreferences = async () => {
   }
 
   if (!userLanguage) {
-    penpot.localStorage.setItem('user_language', 'en-US')
-    userLanguage = 'en-US'
+    penpot.localStorage.setItem('user_language', globalConfig.lang)
+    userLanguage = globalConfig.lang
   }
 
-  locales.set((userLanguage as Language) ?? 'en-US')
+  locales.set((userLanguage as Language) ?? globalConfig.lang)
 
   return penpot.ui.sendMessage({
     type: 'CHECK_USER_PREFERENCES',
