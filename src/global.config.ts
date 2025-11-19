@@ -149,6 +149,9 @@ const globalConfig: Config = {
       'REMOTE_PALETTES_STARRED',
       'REMOTE_PALETTES_ORG',
       'INVOLVE_COMMUNITY',
+      'USER_PREFERENCES',
+      'USER_LANGUAGE',
+      'USER_LANGUAGE_FR_FR',
     ]
   ),
   locales: locales.get(),
