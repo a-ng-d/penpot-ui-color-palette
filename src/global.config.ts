@@ -50,7 +50,6 @@ const globalConfig: Config = {
       ? 'http://localhost:3000'
       : (import.meta.env.VITE_AUTH_URL as string),
     storeApiUrl: import.meta.env.VITE_LEMONSQUEEZY_URL as string,
-    aiApiUrl: import.meta.env.VITE_MISTRAL_AI_API_URL as string,
     platformUrl: '*',
     uiUrl: isDev
       ? 'http://localhost:4400'
@@ -88,6 +87,8 @@ const globalConfig: Config = {
       'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
       'RESIZE_UI',
       'HELP_CHAT',
+      'USER_LANGUAGE_ZH_CN',
+      'USER_LANGUAGE_PT_BR',
     ],
     [
       'LOCAL_PALETTES',
@@ -148,6 +149,9 @@ const globalConfig: Config = {
       'REMOTE_PALETTES_STARRED',
       'REMOTE_PALETTES_ORG',
       'INVOLVE_COMMUNITY',
+      'USER_PREFERENCES',
+      'USER_LANGUAGE',
+      'USER_LANGUAGE_FR_FR',
     ]
   ),
   locales: locales.get(),
@@ -157,7 +161,7 @@ const globalConfig: Config = {
     coolorsImport: 50,
     realtimeColorsImport: 50,
     imageColorsExtract: 100,
-    harmonyCreate: 50,
+    harmonyCreate: 100,
     aiColorsGenerate: 100,
   },
 }
