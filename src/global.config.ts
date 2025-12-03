@@ -27,7 +27,7 @@ const globalConfig: Config = {
     pluginId: '123456789',
   },
   plan: {
-    isProEnabled: false,
+    isProEnabled: true,
     isTrialEnabled: false,
     trialTime: 72,
     creditsLimit: 200,
