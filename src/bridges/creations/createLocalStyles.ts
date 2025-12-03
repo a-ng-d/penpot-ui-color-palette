@@ -1,12 +1,12 @@
-import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import LocalStyle from '../../canvas/LocalStyle'
+import { tolgee } from '../..'
 
 const createLocalStyles = async (id: string) => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
-    throw new Error(locales.get().error.unfoundPalette)
+    throw new Error(tolgee.t('error.unfoundPalette'))
 
   const palette = JSON.parse(rawPalette) as FullConfiguration
 
@@ -34,10 +34,10 @@ const createLocalStyles = async (id: string) => {
         const path = [
           item.paletteName,
           item.themeName === ''
-            ? locales.get().themes.defaultName
+            ? tolgee.t('themes.defaultName')
             : item.themeName,
           item.colorName === ''
-            ? locales.get().colors.defaultName
+            ? tolgee.t('colors.defaultName')
             : item.colorName,
           item.shadeName,
         ]
@@ -69,12 +69,9 @@ const createLocalStyles = async (id: string) => {
 
     penpot.currentPage?.setPluginData(`palette_${id}`, JSON.stringify(palette))
 
-    if (i > 1)
-      return locales
-        .get()
-        .info.createdLocalStyles.plural.replace('{count}', i.toString())
-    else if (i === 1) return locales.get().info.createdLocalStyles.single
-    else return locales.get().info.createdLocalStyles.none
+    return tolgee.t('info.createdLocalStyles', {
+      count: i,
+    })
   })
 
   return createdLocalStylesStatusMessage

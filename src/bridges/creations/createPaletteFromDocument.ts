@@ -1,7 +1,7 @@
-import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
 import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import processSelection from '../gets/processSelection'
+import { tolgee } from '../..'
 
 const createPaletteFromDocument = async () => {
   const document = penpot.selection[0] as Board
@@ -21,7 +21,7 @@ const createPaletteFromDocument = async () => {
 
   await new Promise((r) => setTimeout(r, 1000))
   await penpot.currentFile?.saveVersion(
-    `${backup.base.name} - ${locales.get().events.paletteCreatedFromDocument}`
+    `${backup.base.name} - ${tolgee.t('events.paletteCreatedFromDocument')}`
   )
 
   return backup

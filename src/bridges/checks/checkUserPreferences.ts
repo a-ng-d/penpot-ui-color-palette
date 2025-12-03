@@ -1,6 +1,5 @@
-import { Language } from '@ui-lib/types/translations'
-import { locales } from '@ui-lib/content/locales'
 import globalConfig from '../../global.config'
+import { tolgee } from '../..'
 
 const checkUserPreferences = async () => {
   let isWCAGDisplayed = penpot.localStorage.getItem('is_wcag_displayed')
@@ -44,7 +43,7 @@ const checkUserPreferences = async () => {
     userLanguage = globalConfig.lang
   }
 
-  locales.set((userLanguage as Language) ?? globalConfig.lang)
+  tolgee.changeLanguage(userLanguage)
 
   return penpot.ui.sendMessage({
     type: 'CHECK_USER_PREFERENCES',

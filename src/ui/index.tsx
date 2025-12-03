@@ -17,7 +17,7 @@ import fr_FR from '@ui-lib/content/translations/fr-FR.json'
 import en_US from '@ui-lib/content/translations/en-US.json'
 import { ThemeProvider } from '@ui-lib/config/ThemeContext'
 import { ConfigProvider } from '@ui-lib/config/ConfigContext'
-import { TolgeeProvider } from '@tolgee/react/lib/TolgeeProvider'
+import { TolgeeProvider } from '@tolgee/react'
 import * as Sentry from '@sentry/react'
 import globalConfig from '../global.config'
 

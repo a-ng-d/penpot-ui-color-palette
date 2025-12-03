@@ -1,5 +1,4 @@
 import chroma from 'chroma-js'
-import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
 import {
   Channel,
@@ -10,6 +9,7 @@ import {
   TextColorsThemeConfiguration,
   VisionSimulationModeConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '..'
 import Tag from './Tag'
 
 export default class Properties {
@@ -117,21 +117,20 @@ export default class Properties {
       | 'CONTENT_TEXT'
       | 'FLUENT_TEXT'
   ) => {
-    if (recommendedUsage === 'AVOID')
-      return locales.get().paletteProperties.avoid
+    if (recommendedUsage === 'AVOID') return tolgee.t('paletteProperties.avoid')
     else if (recommendedUsage === 'NON_TEXT')
-      return locales.get().paletteProperties.nonText
+      return tolgee.t('paletteProperties.nonText')
     else if (recommendedUsage === 'SPOT_TEXT')
-      return locales.get().paletteProperties.spotText
+      return tolgee.t('paletteProperties.spotText')
     else if (recommendedUsage === 'HEADLINES')
-      return locales.get().paletteProperties.headlines
+      return tolgee.t('paletteProperties.headlines')
     else if (recommendedUsage === 'BODY_TEXT')
-      return locales.get().paletteProperties.bodyText
+      return tolgee.t('paletteProperties.bodyText')
     else if (recommendedUsage === 'CONTENT_TEXT')
-      return locales.get().paletteProperties.contentText
+      return tolgee.t('paletteProperties.contentText')
     else if (recommendedUsage === 'FLUENT_TEXT')
-      return locales.get().paletteProperties.fluentText
-    return locales.get().paletteProperties.unknown
+      return tolgee.t('paletteProperties.fluentText')
+    return tolgee.t('paletteProperties.unknown')
   }
 
   makeNodeTopProps = () => {
@@ -424,7 +423,7 @@ export default class Properties {
     this.nodeDetailedBaseProps.appendChild(
       new Tag({
         name: '_title',
-        content: locales.get().paletteProperties.base,
+        content: tolgee.t('paletteProperties.base'),
         fontSize: 10,
       }).makeNodeTag()
     )
@@ -503,7 +502,7 @@ export default class Properties {
     this.nodeDetailedWCAGScoresProps.appendChild(
       new Tag({
         name: '_title',
-        content: locales.get().paletteProperties.wcag,
+        content: tolgee.t('paletteProperties.wcag'),
         fontSize: 10,
       }).makeNodeTag()
     )
@@ -577,7 +576,7 @@ export default class Properties {
     this.nodeDetailedAPCAScoresProps.appendChild(
       new Tag({
         name: '_title',
-        content: locales.get().paletteProperties.apca,
+        content: tolgee.t('paletteProperties.apca'),
         fontSize: 10,
       }).makeNodeTag()
     )
@@ -586,7 +585,7 @@ export default class Properties {
         nodeAPCALightProp,
         new Tag({
           name: '_minimum-font-sizes',
-          content: locales.get().paletteProperties.fontSize,
+          content: tolgee.t('paletteProperties.fontSize'),
         }).makeNodeTag(),
         new Tag({
           name: '_200-light',
@@ -617,7 +616,7 @@ export default class Properties {
         nodeAPCADarkProp,
         new Tag({
           name: '_minimum-font-sizes',
-          content: locales.get().paletteProperties.fontSize,
+          content: tolgee.t('paletteProperties.fontSize'),
         }).makeNodeTag(),
         new Tag({
           name: '_200-dark',

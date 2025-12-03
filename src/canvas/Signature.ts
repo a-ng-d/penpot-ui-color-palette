@@ -1,5 +1,5 @@
-import { locales } from '@ui-lib/content/locales'
 import { Board, Group } from '@penpot/plugin-types'
+import { tolgee } from '..'
 import Tag from './Tag'
 import { darkColor } from './styles'
 
@@ -35,14 +35,14 @@ export default class Signature {
     this.nodeInfo.appendChild(
       new Tag({
         name: '_tagline',
-        content: locales.get().tagline,
+        content: tolgee.t('tagline'),
         fontSize: 10,
       }).makeNodeTag()
     )
     this.nodeInfo.appendChild(
       new Tag({
         name: '_url',
-        content: locales.get().url,
+        content: tolgee.t('url'),
         url: 'https://ui-color-palette.com',
         fontFamily: 'Lexend',
       }).makeNodeTag()

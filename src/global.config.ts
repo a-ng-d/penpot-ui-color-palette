@@ -7,6 +7,8 @@ declare const __APP_VERSION__: string
 const globalConfig: Config = {
   limits: {
     pageSize: 20,
+    width: 640,
+    height: 640,
     minWidth: 640,
     minHeight: 420,
   },
@@ -25,7 +27,7 @@ const globalConfig: Config = {
     pluginId: '123456789',
   },
   plan: {
-    isProEnabled: true,
+    isProEnabled: false,
     isTrialEnabled: false,
     trialTime: 72,
     creditsLimit: 200,
@@ -88,7 +90,7 @@ const globalConfig: Config = {
       'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
       'RESIZE_UI',
       'HELP_CHAT',
-      'USER_LANGUAGE_PT_BR',
+      'USER_LANGUAGE_ZH_CN',
     ],
     [
       'LOCAL_PALETTES',
@@ -152,6 +154,7 @@ const globalConfig: Config = {
       'USER_PREFERENCES',
       'USER_LANGUAGE',
       'USER_LANGUAGE_FR_FR',
+      'USER_LANGUAGE_PT_BR',
     ]
   ),
   lang: 'en-US',

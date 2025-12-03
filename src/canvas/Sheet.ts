@@ -1,4 +1,3 @@
-import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
@@ -7,6 +6,7 @@ import {
   ViewConfiguration,
   PaletteDataThemeItem,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '..'
 import Title from './Title'
 import { darkColor } from './styles'
 import Signature from './Signature'
@@ -78,7 +78,7 @@ export default class Sheet {
     // Insert
     this.nodeEmpty.appendChild(
       new Sample({
-        name: locales.get().warning.emptySourceColors,
+        name: tolgee.t('warning.emptySourceColors'),
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
         visionSimulationMode: this.theme.visionSimulationMode,
@@ -233,7 +233,7 @@ export default class Sheet {
   makeNode = () => {
     // Base
     this.node = penpot.createBoard()
-    this.node.name = `_colors${locales.get().separator}do not edit any layer`
+    this.node.name = `_colors${tolgee.t('separator')}do not edit any layer`
     this.node.fills = []
     this.node.blocked = true
     this.node.horizontalSizing = 'auto'
