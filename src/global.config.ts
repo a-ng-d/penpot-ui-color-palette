@@ -1,6 +1,5 @@
 import { Config } from '@ui-lib/types/config'
 import { doSpecificMode } from '@ui-lib/stores/features'
-import { locales } from '@ui-lib/content/locales'
 
 const isDev = import.meta.env.MODE === 'development'
 declare const __APP_VERSION__: string
@@ -8,6 +7,8 @@ declare const __APP_VERSION__: string
 const globalConfig: Config = {
   limits: {
     pageSize: 20,
+    minWidth: 640,
+    minHeight: 420,
   },
   env: {
     platform: 'penpot',
@@ -27,7 +28,7 @@ const globalConfig: Config = {
     isProEnabled: true,
     isTrialEnabled: false,
     trialTime: 72,
-    creditsLimit: 400,
+    creditsLimit: 200,
     creditsRenewalPeriodDays: 1,
     creditsRenewalPeriodHours: 24,
   },
@@ -79,7 +80,7 @@ const globalConfig: Config = {
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
     pluginVersion: __APP_VERSION__,
-    creditsVersion: '2025.10',
+    creditsVersion: '2025.12',
   },
   features: doSpecificMode(
     [
@@ -87,7 +88,6 @@ const globalConfig: Config = {
       'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
       'RESIZE_UI',
       'HELP_CHAT',
-      'USER_LANGUAGE_ZH_CN',
       'USER_LANGUAGE_PT_BR',
     ],
     [
@@ -154,7 +154,6 @@ const globalConfig: Config = {
       'USER_LANGUAGE_FR_FR',
     ]
   ),
-  locales: locales.get(),
   lang: 'en-US',
   fees: {
     colourLoversImport: 50,
