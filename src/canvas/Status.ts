@@ -47,8 +47,10 @@ export default class Status {
     const flex = this.node.addFlexLayout()
     flex.dir = 'column'
     flex.rowGap = 4
+    flex.columnGap = 4
     flex.horizontalSizing = 'fill'
     flex.verticalSizing = 'fit-content'
+    flex.wrap = 'wrap'
 
     if (this.status.isClosestToRef)
       this.node.appendChild(
