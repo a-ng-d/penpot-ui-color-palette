@@ -33,7 +33,7 @@ const globalConfig: Config = {
     isProEnabled: true,
     isTrialEnabled: false,
     trialTime: 72,
-    creditsLimit: 200,
+    creditsLimit: 250,
     creditsRenewalPeriodDays: 1,
     creditsRenewalPeriodHours: 24,
   },
@@ -183,5 +183,18 @@ const globalConfig: Config = {
     localVariablesSync: 200,
   },
 }
+
+const limitsMapping: { [key: string]: keyof typeof globalConfig.limits } = {
+  LOCAL_PALETTES: 'localPalettes',
+  SOURCE: 'sourceColors',
+  COLORS: 'sourceColors',
+  PRESETS_CUSTOM_ADD: 'customStops',
+}
+
+globalConfig.features.forEach((feature) => {
+  const limitKey = limitsMapping[feature.name]
+  if (limitKey && globalConfig.limits[limitKey] !== undefined)
+    feature.limit = globalConfig.limits[limitKey]
+})
 
 export default globalConfig
