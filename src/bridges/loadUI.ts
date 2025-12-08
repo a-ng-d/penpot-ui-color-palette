@@ -1,5 +1,5 @@
-import { locales } from '@ui-lib/content/locales'
 import globalConfig from '../global.config'
+import { tolgee } from '..'
 import updateThemes from './updates/updateThemes'
 import updateSettings from './updates/updateSettings'
 import updateScale from './updates/updateScale'
@@ -32,16 +32,14 @@ interface Window {
 
 const loadUI = async () => {
   const windowSize: Window = {
-    width: parseFloat(
-      penpot.localStorage.getItem('plugin_window_width') ?? '640'
-    ),
-    height: parseFloat(
-      penpot.localStorage.getItem('plugin_window_height') ?? '640'
-    ),
+    width: globalConfig.limits.width,
+    height: globalConfig.limits.height,
   }
 
   penpot.ui.open(
-    `${locales.get().name} /one${locales.get().separator}${locales.get().tagline}${globalConfig.env.isDev ? `${locales.get().separator}${locales.get().plan.dev}` : ''}`,
+    tolgee.t('fullName', {
+      instance: globalConfig.env.isDev ? '/dev' : '/one',
+    }),
     globalConfig.urls.uiUrl,
     {
       width: windowSize.width,
@@ -87,14 +85,13 @@ const loadUI = async () => {
           },
         })
 
-        checkUserConsent()
+        checkUserConsent(path.data.userConsent)
           .then(() => checkTrialStatus())
           .then(() => checkCredits())
           .then(() => checkUserLicense())
           .then(() => checkUserPreferences())
           .then(() => processSelection())
       },
-      CHECK_USER_CONSENT: () => checkUserConsent(),
       CHECK_ANNOUNCEMENTS_STATUS: () =>
         checkAnnouncementsStatus(path.data.version),
       //
@@ -124,7 +121,7 @@ const loadUI = async () => {
           }),
       UPDATE_LANGUAGE: () => {
         penpot.localStorage.setItem('user_language', path.data.lang)
-        locales.set(path.data.lang)
+        tolgee.changeLanguage(path.data.lang)
       },
       //
       CREATE_PALETTE: () =>
@@ -177,7 +174,7 @@ const loadUI = async () => {
               type: 'POST_MESSAGE',
               data: {
                 type: 'INFO',
-                message: messages.join(locales.get().separator),
+                message: messages.join(tolgee.t('separator')),
                 timer: 10000,
               },
             })

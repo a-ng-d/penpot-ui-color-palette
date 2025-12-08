@@ -1,6 +1,5 @@
 import { Config } from '@ui-lib/types/config'
 import { doSpecificMode } from '@ui-lib/stores/features'
-import { locales } from '@ui-lib/content/locales'
 
 const isDev = import.meta.env.MODE === 'development'
 declare const __APP_VERSION__: string
@@ -8,6 +7,13 @@ declare const __APP_VERSION__: string
 const globalConfig: Config = {
   limits: {
     pageSize: 20,
+    width: 640,
+    height: 640,
+    minWidth: 240,
+    minHeight: 420,
+    localPalettes: 1,
+    sourceColors: 5,
+    customStops: 8,
   },
   env: {
     platform: 'penpot',
@@ -27,7 +33,7 @@ const globalConfig: Config = {
     isProEnabled: true,
     isTrialEnabled: false,
     trialTime: 72,
-    creditsLimit: 400,
+    creditsLimit: 250,
     creditsRenewalPeriodDays: 1,
     creditsRenewalPeriodHours: 24,
   },
@@ -79,7 +85,7 @@ const globalConfig: Config = {
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
     pluginVersion: __APP_VERSION__,
-    creditsVersion: '2025.10',
+    creditsVersion: '2025.12',
   },
   features: doSpecificMode(
     [
@@ -88,7 +94,6 @@ const globalConfig: Config = {
       'RESIZE_UI',
       'HELP_CHAT',
       'USER_LANGUAGE_ZH_CN',
-      'USER_LANGUAGE_PT_BR',
     ],
     [
       'LOCAL_PALETTES',
@@ -97,6 +102,13 @@ const globalConfig: Config = {
       'USER_PREFERENCES_SYNC_DEEP_STYLES',
       'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
       'PREVIEW_LOCK_SOURCE_COLORS',
+      'DOCUMENT_PALETTE',
+      'DOCUMENT_PALETTE_PROPERTIES',
+      'DOCUMENT_SHEET',
+      'DOCUMENT_PUSH_UPDATES',
+      'VIEWS_PALETTE',
+      'VIEWS_PALETTE_WITH_PROPERTIES',
+      'VIEWS_SHEET',
       'SOURCE',
       'SOURCE_COOLORS_ADD',
       'SOURCE_REALTIME_COLORS_ADD',
@@ -152,9 +164,9 @@ const globalConfig: Config = {
       'USER_PREFERENCES',
       'USER_LANGUAGE',
       'USER_LANGUAGE_FR_FR',
+      'USER_LANGUAGE_PT_BR',
     ]
   ),
-  locales: locales.get(),
   lang: 'en-US',
   fees: {
     colourLoversImport: 50,
@@ -163,7 +175,26 @@ const globalConfig: Config = {
     imageColorsExtract: 100,
     harmonyCreate: 100,
     aiColorsGenerate: 100,
+    paletteGenerate: 50,
+    paletteWithPropsGenerate: 100,
+    sheetGenerate: 200,
+    paletteUpdates: 50,
+    localStylesSync: 200,
+    localVariablesSync: 200,
   },
 }
+
+const limitsMapping: { [key: string]: keyof typeof globalConfig.limits } = {
+  LOCAL_PALETTES: 'localPalettes',
+  SOURCE: 'sourceColors',
+  COLORS: 'sourceColors',
+  PRESETS_CUSTOM_ADD: 'customStops',
+}
+
+globalConfig.features.forEach((feature) => {
+  const limitKey = limitsMapping[feature.name]
+  if (limitKey && globalConfig.limits[limitKey] !== undefined)
+    feature.limit = globalConfig.limits[limitKey]
+})
 
 export default globalConfig

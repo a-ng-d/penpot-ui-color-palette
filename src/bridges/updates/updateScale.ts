@@ -1,7 +1,7 @@
-import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { doScale } from '@a_ng_d/figmug-utils'
 import { ScaleMessage } from '../../types/messages'
+import { tolgee } from '../..'
 
 const updateScale = async (msg: ScaleMessage) => {
   const now = new Date().toISOString()
@@ -72,7 +72,7 @@ const updateScale = async (msg: ScaleMessage) => {
 
   await new Promise((r) => setTimeout(r, 1000))
   await penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.scaleUpdated}`
+    `${palette.base.name} - ${tolgee.t('events.scaleUpdated')}`
   )
 
   return palette

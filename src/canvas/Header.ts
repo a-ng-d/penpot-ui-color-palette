@@ -1,10 +1,10 @@
-import { locales } from '@ui-lib/content/locales'
 import { Board } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
   ThemeConfiguration,
   ViewConfiguration,
 } from '@a_ng_d/utils-ui-color-palette'
+import { tolgee } from '..'
 import Sample from './Sample'
 
 export default class Header {
@@ -50,7 +50,7 @@ export default class Header {
     // Insert
     this.node.appendChild(
       new Sample({
-        name: locales.get().paletteProperties.sourceColors,
+        name: tolgee.t('paletteProperties.sourceColors'),
         rgb: [255, 255, 255],
         colorSpace: this.base.colorSpace,
         visionSimulationMode: this.theme.visionSimulationMode,

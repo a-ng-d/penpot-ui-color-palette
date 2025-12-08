@@ -1,6 +1,6 @@
-import { locales } from '@ui-lib/content/locales'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { ThemesMessage } from '../../types/messages'
+import { tolgee } from '../..'
 
 const updateThemes = async (msg: ThemesMessage) => {
   const now = new Date().toISOString()
@@ -28,7 +28,7 @@ const updateThemes = async (msg: ThemesMessage) => {
 
   await new Promise((r) => setTimeout(r, 1000))
   await penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${locales.get().events.themesUpdated}`
+    `${palette.base.name} - ${tolgee.t('events.themesUpdated')}`
   )
 
   return palette
