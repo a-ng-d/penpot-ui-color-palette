@@ -8,8 +8,8 @@ const checkUserPreferences = async () => {
   let canDeepSyncVariables = penpot.localStorage.getItem(
     'can_deep_sync_variables'
   )
-  let isVsCodeMessageDisplayed = penpot.localStorage.getItem(
-    'is_vscode_message_displayed'
+  let isSuggestedLanguageDisplayed = penpot.localStorage.getItem(
+    'is_suggested_language_displayed'
   )
   let userLanguage = penpot.localStorage.getItem('user_language')
 
@@ -33,9 +33,9 @@ const checkUserPreferences = async () => {
     canDeepSyncVariables = 'false'
   }
 
-  if (!isVsCodeMessageDisplayed) {
-    penpot.localStorage.setItem('is_vscode_message_displayed', 'true')
-    isVsCodeMessageDisplayed = 'true'
+  if (!isSuggestedLanguageDisplayed) {
+    penpot.localStorage.setItem('is_suggested_language_displayed', 'true')
+    isSuggestedLanguageDisplayed = 'true'
   }
 
   if (!userLanguage) {
@@ -52,7 +52,7 @@ const checkUserPreferences = async () => {
       isAPCADisplayed: isAPCADisplayed,
       canDeepSyncStyles: canDeepSyncStyles,
       canDeepSyncVariables: canDeepSyncVariables,
-      isVsCodeMessageDisplayed: isVsCodeMessageDisplayed,
+      isSuggestedLanguageDisplayed: isSuggestedLanguageDisplayed,
       userLanguage: userLanguage,
     },
   })
