@@ -45,27 +45,31 @@ export default defineConfig(({ mode }) => {
     plugins: [
       excludeUnwantedCssPlugin(),
       preact(),
-      sentryVitePlugin({
-        org: 'yelbolt',
-        project: 'ui-color-palette',
-        authToken: env.SENTRY_AUTH_TOKEN,
-        sourcemaps: {
-          assets: './dist/**',
-          filesToDeleteAfterUpload: isDev ? undefined : '**/*.map',
-        },
-        release: {
-          name: env.VITE_APP_VERSION,
-          setCommits: {
-            auto: true,
-          },
-          finalize: true,
-          deploy: {
-            env: 'production',
-          },
-        },
-        telemetry: false,
-      }),
       viteSingleFile(),
+      ...(!isDev
+        ? [
+            sentryVitePlugin({
+              org: 'yelbolt',
+              project: 'ui-color-palette',
+              authToken: env.SENTRY_AUTH_TOKEN,
+              sourcemaps: {
+                assets: './dist/**',
+                filesToDeleteAfterUpload: isDev ? undefined : '**/*.map',
+              },
+              release: {
+                name: env.VITE_APP_VERSION,
+                setCommits: {
+                  auto: true,
+                },
+                finalize: true,
+                deploy: {
+                  env: 'production',
+                },
+              },
+              telemetry: false,
+            }),
+          ]
+        : []),
     ],
 
     define: {
