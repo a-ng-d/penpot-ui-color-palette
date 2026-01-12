@@ -31,7 +31,7 @@
     "update:uicp": "npm i @a_ng_d/utils-ui-color-palette@latest",
     "start:ext": "npm run start:ext -w ui-ui-color-palette",
     "start:dev": "npm run build & vite preview",
-    "build": "cross-env npx vite build --mode development && IS_PLUGIN=true cross-env npx vite build --mode development",
+    "build": "cross-env npx vite build --mode development & IS_PLUGIN=true cross-env npx vite build --mode development",
     "build:prod": "cross-env npx vite build --mode production && IS_PLUGIN=true cross-env npx vite build --mode production",
     "typecheck": "npx tsc --noEmit",
     "lint": "npx eslint ./src/** --fix --ext .ts,.tsx .",
@@ -67,7 +67,7 @@
   "dependencies": {
     "@a_ng_d/figmug-ui": "^1.19.43",
     "@a_ng_d/figmug-utils": "^0.7.3",
-    "@a_ng_d/utils-ui-color-palette": "^1.7.6",
+    "@a_ng_d/utils-ui-color-palette": "^1.7.8",
     "@mistralai/mistralai": "^1.10.0",
     "@nanostores/preact": "^0.5.2",
     "@sentry/react": "^9.27.0",

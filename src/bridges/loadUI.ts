@@ -109,8 +109,10 @@ const loadUI = async () => {
         updateDocument(path.view)
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            console.error(error)
-
+            penpot.ui.sendMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -128,8 +130,10 @@ const loadUI = async () => {
         createPalette(path)
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            console.error(error)
-
+            penpot.ui.sendMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -142,8 +146,10 @@ const loadUI = async () => {
         createPaletteFromDocument()
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            console.error(error)
-
+            penpot.ui.sendMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -156,8 +162,10 @@ const loadUI = async () => {
         createPaletteFromRemote(path)
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            console.error(error)
-
+            penpot.ui.sendMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -181,8 +189,10 @@ const loadUI = async () => {
           )
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            console.error(error)
-
+            penpot.ui.sendMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -195,8 +205,10 @@ const loadUI = async () => {
         createDocument(path.id, path.view)
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
-            console.error(error)
-
+            penpot.ui.sendMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
@@ -267,8 +279,10 @@ const loadUI = async () => {
             penpot.ui.sendMessage({ type: 'STOP_LOADER' })
           })
           .catch((error) => {
-            console.error(error)
-
+            penpot.ui.sendMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
