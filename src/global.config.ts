@@ -209,12 +209,12 @@ const globalConfig: Config = {
     imageColorsExtract: 50,
     harmonyCreate: 50,
     aiColorsGenerate: 50,
-    paletteGenerate: 100,
-    paletteWithPropsGenerate: 150,
-    sheetGenerate: 200,
+    paletteGenerate: 150,
+    paletteWithPropsGenerate: 200,
+    sheetGenerate: 250,
     paletteUpdates: 25,
-    localStylesSync: 200,
-    localVariablesSync: 200,
+    localStylesSync: 250,
+    localVariablesSync: 300,
   },
 }
 
