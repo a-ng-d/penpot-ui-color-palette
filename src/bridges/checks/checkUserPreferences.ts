@@ -64,13 +64,13 @@ const checkUserPreferences = async () => {
   return penpot.ui.sendMessage({
     type: 'CHECK_USER_PREFERENCES',
     data: {
-      isWCAGDisplayed: isWCAGDisplayed,
-      isAPCADisplayed: isAPCADisplayed,
-      isWCAGIntervalDisplayed: isWCAGIntervalDisplayed,
-      isAPCAIntervalDisplayed: isAPCAIntervalDisplayed,
-      canDeepSyncStyles: canDeepSyncStyles,
-      canDeepSyncVariables: canDeepSyncVariables,
-      isSuggestedLanguageDisplayed: isSuggestedLanguageDisplayed,
+      isWCAGDisplayed: isWCAGDisplayed === 'true',
+      isAPCADisplayed: isAPCADisplayed === 'true',
+      isWCAGIntervalDisplayed: isWCAGIntervalDisplayed === 'true',
+      isAPCAIntervalDisplayed: isAPCAIntervalDisplayed === 'true',
+      canDeepSyncStyles: canDeepSyncStyles === 'true',
+      canDeepSyncVariables: canDeepSyncVariables === 'true',
+      isSuggestedLanguageDisplayed: isSuggestedLanguageDisplayed === 'true',
       userLanguage: userLanguage,
     },
   })

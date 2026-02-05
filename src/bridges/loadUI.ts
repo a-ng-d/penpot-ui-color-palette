@@ -313,7 +313,7 @@ const loadUI = async () => {
         penpot.ui.sendMessage({
           type: 'GET_PRICING',
           data: {
-            licenseTrigger: 'JUMP',
+            licenseTrigger: 'ACTIVATE',
           },
         }),
       GET_LICENSE: async () =>
