@@ -35,8 +35,8 @@ const globalConfig: Config = {
     isCreditsEnabled: true,
     trialTime: 72,
     creditsLimit: 500,
-    creditsRenewalPeriodDays: 3,
-    creditsRenewalPeriodHours: 72,
+    creditsRenewalPeriodDays: 2,
+    creditsRenewalPeriodHours: 48,
   },
   dbs: {
     palettesDbViewName: isDev
@@ -92,7 +92,7 @@ const globalConfig: Config = {
     algorithmVersion: 'v3',
     paletteVersion: '2025.06',
     pluginVersion: __APP_VERSION__,
-    creditsVersion: '2026.01',
+    creditsVersion: '2026.02',
   },
   features: doSpecificMode(
     [
