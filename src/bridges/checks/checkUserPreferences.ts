@@ -4,6 +4,12 @@ import { tolgee } from '../..'
 const checkUserPreferences = async () => {
   let isWCAGDisplayed = penpot.localStorage.getItem('is_wcag_displayed')
   let isAPCADisplayed = penpot.localStorage.getItem('is_apca_displayed')
+  let isWCAGIntervalDisplayed = penpot.localStorage.getItem(
+    'is_wcag_interval_displayed'
+  )
+  let isAPCAIntervalDisplayed = penpot.localStorage.getItem(
+    'is_apca_interval_displayed'
+  )
   let canDeepSyncStyles = penpot.localStorage.getItem('can_deep_sync_styles')
   let canDeepSyncVariables = penpot.localStorage.getItem(
     'can_deep_sync_variables'
@@ -18,9 +24,19 @@ const checkUserPreferences = async () => {
     isWCAGDisplayed = 'true'
   }
 
-  if (isAPCADisplayed) {
+  if (!isAPCADisplayed) {
     penpot.localStorage.setItem('is_apca_displayed', 'true')
     isAPCADisplayed = 'true'
+  }
+
+  if (!isWCAGIntervalDisplayed) {
+    penpot.localStorage.setItem('is_wcag_interval_displayed', 'false')
+    isWCAGIntervalDisplayed = 'false'
+  }
+
+  if (!isAPCAIntervalDisplayed) {
+    penpot.localStorage.setItem('is_apca_interval_displayed', 'false')
+    isAPCAIntervalDisplayed = 'false'
   }
 
   if (!canDeepSyncStyles) {
@@ -48,11 +64,13 @@ const checkUserPreferences = async () => {
   return penpot.ui.sendMessage({
     type: 'CHECK_USER_PREFERENCES',
     data: {
-      isWCAGDisplayed: isWCAGDisplayed,
-      isAPCADisplayed: isAPCADisplayed,
-      canDeepSyncStyles: canDeepSyncStyles,
-      canDeepSyncVariables: canDeepSyncVariables,
-      isSuggestedLanguageDisplayed: isSuggestedLanguageDisplayed,
+      isWCAGDisplayed: isWCAGDisplayed === 'true',
+      isAPCADisplayed: isAPCADisplayed === 'true',
+      isWCAGIntervalDisplayed: isWCAGIntervalDisplayed === 'true',
+      isAPCAIntervalDisplayed: isAPCAIntervalDisplayed === 'true',
+      canDeepSyncStyles: canDeepSyncStyles === 'true',
+      canDeepSyncVariables: canDeepSyncVariables === 'true',
+      isSuggestedLanguageDisplayed: isSuggestedLanguageDisplayed === 'true',
       userLanguage: userLanguage,
     },
   })
