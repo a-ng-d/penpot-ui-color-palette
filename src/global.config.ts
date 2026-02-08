@@ -143,6 +143,7 @@ const globalConfig: Config = {
       'PRESETS_FLUENT',
       'PRESETS_POLARIS',
       'PRESETS_CUSTOM_ADD',
+      'SCALE_CONTRAST_RATIO',
       'SCALE_CHROMA',
       'SCALE_HUE',
       'THEMES',
