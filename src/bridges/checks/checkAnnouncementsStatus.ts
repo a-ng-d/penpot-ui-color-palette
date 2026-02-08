@@ -14,7 +14,7 @@ const checkAnnouncementsStatus = (remoteVersion: string) => {
         status: 'NO_ANNOUNCEMENTS',
       },
     }
-  else if (!localVersion && !isOnboardingRead)
+  else if (!localVersion && isOnboardingRead !== 'true')
     return penpot.ui.sendMessage({
       type: 'PUSH_ONBOARDING_STATUS',
       data: {
