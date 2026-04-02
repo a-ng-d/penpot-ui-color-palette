@@ -31,7 +31,7 @@ const globalConfig: Config = {
     pluginId: '123456789',
   },
   plan: {
-    isProEnabled: true,
+    isProEnabled: false,
     isTrialEnabled: false,
     isCreditsEnabled: true,
     trialTime: 72,
@@ -96,12 +96,7 @@ const globalConfig: Config = {
     creditsVersion: '2026.02.02',
   },
   features: doSpecificMode(
-    [
-      'SYNC_LOCAL_VARIABLES',
-      'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
-      'RESIZE_UI',
-      'HELP_CHAT',
-    ],
+    ['RESIZE_UI', 'HELP_CHAT'],
     [
       'CREATE_PALETTE',
       'DOCUMENT_CREATE',
