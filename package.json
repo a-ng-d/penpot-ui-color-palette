@@ -72,7 +72,7 @@
     "@supabase/supabase-js": "^2.44.2",
     "@tolgee/format-icu": "^6.2.7",
     "@tolgee/react": "^6.2.7",
-    "@unoff/ui": "^1.21.3",
+    "@unoff/ui": "^1.23.13",
     "@unoff/utils": "^0.8.2",
     "chroma-js": "^3.1.2",
     "color-names": "^2.0.0",
