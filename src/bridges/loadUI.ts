@@ -4,6 +4,7 @@ import updateThemes from './updates/updateThemes'
 import updateSettings from './updates/updateSettings'
 import updateScale from './updates/updateScale'
 import updatePalette from './updates/updatePalette'
+import updateLocalVariables from './updates/updateLocalVariables'
 import updateLocalStyles from './updates/updateLocalStyles'
 import updateDocument from './updates/updateDocument'
 import updateColors from './updates/updateColors'
@@ -16,6 +17,7 @@ import createPaletteFromRemote from './creations/createPaletteFromRemote'
 import createPaletteFromDuplication from './creations/createPaletteFromDuplication'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
 import createPalette from './creations/createPalette'
+import createLocalVariables from './creations/createLocalVariables'
 import createLocalStyles from './creations/createLocalStyles'
 import createDocument from './creations/createDocument'
 import checkUserPreferences from './checks/checkUserPreferences'
@@ -177,6 +179,36 @@ const loadUI = async () => {
       SYNC_LOCAL_STYLES: async () =>
         createLocalStyles(path.id)
           .then(async (message) => [message, await updateLocalStyles(path.id)])
+          .then((messages) =>
+            penpot.ui.sendMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'INFO',
+                message: messages.join(tolgee.t('separator')),
+                timer: 10000,
+              },
+            })
+          )
+          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
+          .catch((error) => {
+            penpot.ui.sendMessage({
+              type: 'REPORT_ERROR',
+              data: error,
+            })
+            penpot.ui.sendMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error.message,
+              },
+            })
+          }),
+      SYNC_LOCAL_VARIABLES: async () =>
+        createLocalVariables(path.id)
+          .then(async (message) => [
+            message,
+            await updateLocalVariables(path.id),
+          ])
           .then((messages) =>
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
