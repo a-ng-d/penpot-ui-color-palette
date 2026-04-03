@@ -31,7 +31,7 @@ const globalConfig: Config = {
     pluginId: '123456789',
   },
   plan: {
-    isProEnabled: false,
+    isProEnabled: true,
     isTrialEnabled: false,
     isCreditsEnabled: true,
     trialTime: 72,
@@ -101,9 +101,9 @@ const globalConfig: Config = {
       'CREATE_PALETTE',
       'DOCUMENT_CREATE',
       'SYNC_LOCAL_STYLES',
-      'SYNC_LOCAL_VARIABLES',
+      'SYNC_LOCAL_TOKENS',
       'USER_PREFERENCES_SYNC_DEEP_STYLES',
-      'USER_PREFERENCES_SYNC_DEEP_VARIABLES',
+      'USER_PREFERENCES_SYNC_DEEP_TOKENS',
       'PREVIEW_LOCK_SOURCE_COLORS',
       'PREVIEW_SCORES_WCAG_INTERVAL',
       'PREVIEW_SCORES_APCA_INTERVAL',
@@ -195,6 +195,7 @@ const globalConfig: Config = {
     paletteUpdates: 25,
     localStylesSync: 250,
     localVariablesSync: 300,
+    localTokensSync: 300,
   },
 }
 

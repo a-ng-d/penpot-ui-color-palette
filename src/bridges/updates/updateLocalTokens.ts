@@ -6,7 +6,7 @@ type TokenCatalog = any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TokenSet = any
 
-const updateLocalVariables = async (id: string): Promise<string> => {
+const updateLocalTokens = async (id: string): Promise<string> => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
@@ -34,10 +34,10 @@ const updateLocalVariables = async (id: string): Promise<string> => {
     k = 0
   const messages: Array<string> = []
 
-  const canDeepSyncVariables =
-    penpot.localStorage.getItem('can_deep_sync_variables') === 'true'
+  const canDeepSyncTokens =
+    penpot.localStorage.getItem('can_deep_sync_tokens') === 'true'
 
-  if (canDeepSyncVariables) {
+  if (canDeepSyncTokens) {
     catalog.themes
       .filter((s: TokenSet) => s.group === name)
       .forEach((theme: TokenSet) => {
@@ -239,10 +239,10 @@ const updateLocalVariables = async (id: string): Promise<string> => {
   if (i + j + l + m === 0) messages.push(tolgee.t('info.noChange'))
 
   penpot.currentFile?.saveVersion(
-    `${palette.base.name} - ${tolgee.t('events.variablesSynced')}`
+    `${palette.base.name} - ${tolgee.t('events.tokensSynced')}`
   )
 
   return messages.join(tolgee.t('separator'))
 }
 
-export default updateLocalVariables
+export default updateLocalTokens

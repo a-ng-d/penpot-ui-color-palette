@@ -8,7 +8,7 @@ type TokenCatalog = any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TokenSet = any
 
-const createLocalVariables = async (id: string): Promise<string> => {
+const createLocalTokens = async (id: string): Promise<string> => {
   const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
 
   if (rawPalette === undefined || rawPalette === null)
@@ -154,13 +154,13 @@ const createLocalVariables = async (id: string): Promise<string> => {
 
   if (i > 0)
     messages.push(
-      tolgee.t('info.createdLocalVariables', {
+      tolgee.t('info.createdLocalTokens', {
         count: i,
       })
     )
   if (j > 0)
     messages.push(
-      tolgee.t('info.createdLocalModes', {
+      tolgee.t('info.createdLocalThemes', {
         count: j,
       })
     )
@@ -170,4 +170,4 @@ const createLocalVariables = async (id: string): Promise<string> => {
   return messages.join(tolgee.t('separator'))
 }
 
-export default createLocalVariables
+export default createLocalTokens

@@ -4,7 +4,7 @@ import updateThemes from './updates/updateThemes'
 import updateSettings from './updates/updateSettings'
 import updateScale from './updates/updateScale'
 import updatePalette from './updates/updatePalette'
-import updateLocalVariables from './updates/updateLocalVariables'
+import updateLocalTokens from './updates/updateLocalTokens'
 import updateLocalStyles from './updates/updateLocalStyles'
 import updateDocument from './updates/updateDocument'
 import updateColors from './updates/updateColors'
@@ -17,7 +17,7 @@ import createPaletteFromRemote from './creations/createPaletteFromRemote'
 import createPaletteFromDuplication from './creations/createPaletteFromDuplication'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
 import createPalette from './creations/createPalette'
-import createLocalVariables from './creations/createLocalVariables'
+import createLocalTokens from './creations/createLocalTokens'
 import createLocalStyles from './creations/createLocalStyles'
 import createDocument from './creations/createDocument'
 import checkUserPreferences from './checks/checkUserPreferences'
@@ -203,12 +203,9 @@ const loadUI = async () => {
               },
             })
           }),
-      SYNC_LOCAL_VARIABLES: async () =>
-        createLocalVariables(path.id)
-          .then(async (message) => [
-            message,
-            await updateLocalVariables(path.id),
-          ])
+      SYNC_LOCAL_TOKENS: async () =>
+        createLocalTokens(path.id)
+          .then(async (message) => [message, await updateLocalTokens(path.id)])
           .then((messages) =>
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
