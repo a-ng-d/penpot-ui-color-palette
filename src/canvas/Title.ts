@@ -52,8 +52,8 @@ export default class Title {
     const flex = this.nodeGlobalInfo.addFlexLayout()
     flex.dir = 'column'
     flex.rowGap = 8
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
 
     // Insert
     this.nodeGlobalInfo.appendChild(
@@ -81,8 +81,8 @@ export default class Title {
     const flex = this.nodeDescriptions.addFlexLayout()
     flex.dir = 'column'
     flex.rowGap = 8
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
 
     // Insert
     if (this.base.description !== '')
@@ -222,7 +222,7 @@ export default class Title {
     const flex = this.node.addFlexLayout()
     flex.dir = 'row'
     flex.justifyContent = 'space-between'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
 
     // Insert
     this.node.appendChild(this.makeNodeGlobalInfo())

@@ -49,7 +49,7 @@ export default class Status {
     flex.rowGap = 4
     flex.columnGap = 4
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
     flex.wrap = 'wrap'
 
     if (this.status.isClosestToRef)

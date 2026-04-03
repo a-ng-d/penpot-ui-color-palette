@@ -44,8 +44,8 @@ export default class Header {
     // Layout
     const flex = this.node.addFlexLayout()
     flex.dir = 'row'
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
 
     // Insert
     this.node.appendChild(

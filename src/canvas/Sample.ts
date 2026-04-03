@@ -166,8 +166,6 @@ export default class Sample {
     flex.justifyContent = 'end'
     flex.verticalPadding = flex.horizontalPadding = 8
     flex.rowGap = 8
-    flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fill'
 
     // Insert
     if (this.view === 'PALETTE_WITH_PROPERTIES' && !isColorName) {
