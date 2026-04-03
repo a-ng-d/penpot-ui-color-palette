@@ -86,6 +86,9 @@
     "uid": "^2.0.2"
   },
   "overrides": {
-    "prismjs": "^1.30.0"
+    "prismjs": "^1.30.0",
+    "miniflare": {
+      "undici": "^7.24.3"
+    }
   }
 }
