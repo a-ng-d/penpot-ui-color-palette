@@ -14,6 +14,7 @@ const checkUserPreferences = async () => {
   let canDeepSyncVariables = penpot.localStorage.getItem(
     'can_deep_sync_variables'
   )
+  let canDeepSyncTokens = penpot.localStorage.getItem('can_deep_sync_tokens')
   let isSuggestedLanguageDisplayed = penpot.localStorage.getItem(
     'is_suggested_language_displayed'
   )
@@ -49,6 +50,11 @@ const checkUserPreferences = async () => {
     canDeepSyncVariables = 'false'
   }
 
+  if (!canDeepSyncTokens) {
+    penpot.localStorage.setItem('can_deep_sync_tokens', 'false')
+    canDeepSyncTokens = 'false'
+  }
+
   if (!isSuggestedLanguageDisplayed) {
     penpot.localStorage.setItem('is_suggested_language_displayed', 'true')
     isSuggestedLanguageDisplayed = 'true'
@@ -70,6 +76,7 @@ const checkUserPreferences = async () => {
       isAPCAIntervalDisplayed: isAPCAIntervalDisplayed === 'true',
       canDeepSyncStyles: canDeepSyncStyles === 'true',
       canDeepSyncVariables: canDeepSyncVariables === 'true',
+      canDeepSyncTokens: canDeepSyncTokens === 'true',
       isSuggestedLanguageDisplayed: isSuggestedLanguageDisplayed === 'true',
       userLanguage: userLanguage,
     },

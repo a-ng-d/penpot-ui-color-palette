@@ -11,7 +11,7 @@ const createLocalStyles = async (id: string) => {
   const palette = JSON.parse(rawPalette) as FullConfiguration
 
   palette.libraryData = new Data(palette).makeLibraryData(
-    ['style_id', 'alpha', 'hex'],
+    ['style_id', 'theme_id', 'set_id', 'token_id', 'alpha', 'hex'],
     palette.libraryData
   )
 
@@ -67,7 +67,7 @@ const createLocalStyles = async (id: string) => {
       })
 
     palette.libraryData = new Data(palette).makeLibraryData(
-      ['style_id'],
+      ['style_id', 'theme_id', 'set_id', 'token_id'],
       palette.libraryData
     )
 

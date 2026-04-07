@@ -83,7 +83,7 @@ export default class Paragraph {
     const flex = this.node.addFlexLayout()
     flex.dir = 'row'
 
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
     flex.horizontalPadding = flex.verticalPadding = 8
 
     // Insert

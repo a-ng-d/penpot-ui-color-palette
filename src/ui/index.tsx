@@ -20,6 +20,7 @@ import { ConfigProvider } from '@ui-lib/config/ConfigContext'
 import { TolgeeProvider } from '@tolgee/react'
 import * as Sentry from '@sentry/react'
 import globalConfig from '../global.config'
+import { initNotion } from '../../packages/ui-ui-color-palette/src/external/cms'
 
 const container = document.getElementById('app'),
   root = createRoot(container)
@@ -28,6 +29,7 @@ const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLIC_ANON_KEY
 const mistralApiKey = import.meta.env.VITE_MISTRAL_AI_API_KEY
+const notionApiKey = import.meta.env.VITE_NOTION_API_KEY
 const tolgeeUrl = import.meta.env.VITE_TOLGEE_URL
 const tolgeeApiKey = import.meta.env.VITE_TOLGEE_API_KEY
 
@@ -46,6 +48,13 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
     record_heatmap_data: true,
   })
   mixpanel.opt_in_tracking()
+
+  const now = new Date()
+  const cohort = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  mixpanel.register({
+    Cohort: cohort,
+    Version: globalConfig.versions.pluginVersion,
+  })
 
   setMixpanelEnv(import.meta.env.MODE as 'development' | 'production')
   initMixpanel(mixpanel)
@@ -110,6 +119,10 @@ if (globalConfig.env.isSupabaseEnabled && supabaseAnonKey !== undefined)
 
 // Mistral AI
 if (globalConfig.env.isMistralAiEnabled) initMistral(mistralApiKey)
+
+// Notion
+if (globalConfig.env.isNotionEnabled && notionApiKey !== undefined)
+  initNotion(notionApiKey)
 
 // Tolgee
 const tolgee = initTolgee(tolgeeUrl, tolgeeApiKey, globalConfig.lang, {

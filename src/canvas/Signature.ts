@@ -27,8 +27,8 @@ export default class Signature {
     // Layout
     const flex = this.nodeInfo.addFlexLayout()
     flex.dir = 'column'
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
     flex.rowGap = 4
 
     // Insert
@@ -75,8 +75,8 @@ export default class Signature {
     // Layout
     const flex = this.nodeLogotype.addFlexLayout()
     flex.dir = 'row'
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
     flex.horizontalPadding = 8
     flex.verticalPadding = 4
 
@@ -117,7 +117,7 @@ export default class Signature {
     // Layout
     const flex = this.node.addFlexLayout()
     flex.dir = 'row'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
     flex.justifyContent = 'space-between'
 
     // Insert

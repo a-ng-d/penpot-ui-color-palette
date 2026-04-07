@@ -1,6 +1,6 @@
 {
   "name": "penpot-ui-color-palette",
-  "version": "5.2.4",
+  "version": "5.3.0",
   "private": true,
   "description": "UI Color Palette is a Penpot plugin that creates, manages, exports, and publishes consistent and accessible color palettes.",
   "author": "Aurélien Grimaud",
@@ -38,7 +38,7 @@
     "format": "npx prettier './src' --write"
   },
   "devDependencies": {
-    "@penpot/plugin-types": "^1.3.2",
+    "@penpot/plugin-types": "^1.4.2",
     "@preact/preset-vite": "^2.10.1",
     "@sentry/vite-plugin": "^3.3.1",
     "@types/chroma-js": "^3.1.1",
@@ -65,14 +65,14 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
-    "@a_ng_d/utils-ui-color-palette": "^1.8.1",
+    "@a_ng_d/utils-ui-color-palette": "^1.8.2",
     "@mistralai/mistralai": "^1.10.0",
     "@nanostores/preact": "^0.5.2",
     "@sentry/react": "^9.27.0",
     "@supabase/supabase-js": "^2.44.2",
     "@tolgee/format-icu": "^6.2.7",
     "@tolgee/react": "^6.2.7",
-    "@unoff/ui": "^1.21.3",
+    "@unoff/ui": "^1.23.15",
     "@unoff/utils": "^0.8.2",
     "chroma-js": "^3.1.2",
     "color-names": "^2.0.0",
@@ -86,6 +86,9 @@
     "uid": "^2.0.2"
   },
   "overrides": {
-    "prismjs": "^1.30.0"
+    "prismjs": "^1.30.0",
+    "miniflare": {
+      "undici": "^7.24.3"
+    }
   }
 }

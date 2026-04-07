@@ -95,8 +95,8 @@ export default class Documents {
     const flex = document.addFlexLayout()
     flex.dir = 'column'
     flex.verticalPadding = flex.horizontalPadding = 32
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
 
     // Data
     document.setPluginData('type', 'UI_COLOR_PALETTE')

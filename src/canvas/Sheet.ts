@@ -73,7 +73,7 @@ export default class Sheet {
     flex.justifyContent = 'center'
     flex.alignItems = 'stretch'
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
 
     // Insert
     this.nodeEmpty.appendChild(
@@ -105,8 +105,8 @@ export default class Sheet {
     // Layout
     const flex = this.nodeShades.addFlexLayout()
     flex.dir = 'column'
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
 
     // Insert
     this.nodeShades.appendChild(
@@ -154,11 +154,11 @@ export default class Sheet {
       flex.horizontalSizing =
         flexSource.horizontalSizing =
         flexShades.horizontalSizing =
-          'fit-content'
+          'auto'
       flex.verticalSizing =
         flexSource.verticalSizing =
         flexShades.verticalSizing =
-          'fit-content'
+          'auto'
       flex.rowGap = this.gap
 
       // Insert
@@ -189,7 +189,7 @@ export default class Sheet {
             this.sampleSize * this.sampleRatio * 4 + this.gap * 2,
             100
           )
-          flexShades.horizontalSizing = 'fit-content'
+          flexShades.horizontalSizing = 'auto'
           this.nodeRowShades?.appendChild(
             new Sample({
               name: color.name,
@@ -242,8 +242,8 @@ export default class Sheet {
     // Layout
     const flex = this.node.addFlexLayout()
     flex.dir = 'column'
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
     flex.rowGap = 16
 
     // Insert

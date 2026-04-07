@@ -69,7 +69,7 @@ export default class Palette {
     flex.justifyContent = 'center'
     flex.alignItems = 'stretch'
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
 
     // Insert
     this.nodeEmpty.appendChild(
@@ -101,8 +101,8 @@ export default class Palette {
     // Layout
     const flex = this.nodeShades.addFlexLayout()
     flex.dir = 'column'
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
 
     // Insert
     this.nodeShades.appendChild(
@@ -156,11 +156,11 @@ export default class Palette {
       flex.horizontalSizing =
         flexSource.horizontalSizing =
         flexShades.horizontalSizing =
-          'fit-content'
+          'auto'
       flex.verticalSizing =
         flexSource.verticalSizing =
         flexShades.verticalSizing =
-          'fit-content'
+          'auto'
 
       // Insert
       const nodeSample = new Sample({
@@ -234,8 +234,8 @@ export default class Palette {
     // Layout
     const flex = this.node.addFlexLayout()
     flex.dir = 'column'
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
     flex.rowGap = 16
 
     // Insert

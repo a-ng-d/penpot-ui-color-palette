@@ -143,7 +143,7 @@ export default class Properties {
     const flex = this.nodeTopProps.addFlexLayout()
     flex.dir = 'row'
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
 
     return this.nodeTopProps
   }
@@ -160,7 +160,7 @@ export default class Properties {
     const flex = this.nodeBottomProps.addFlexLayout()
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
 
     // Insert
     const nodeContrastScoresProps = this.makeNodeContrastScoresProps()
@@ -186,7 +186,7 @@ export default class Properties {
     const flex = this.nodeBaseProps.addFlexLayout()
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
     flex.rowGap = 4
     flex.alignItems = 'end'
 
@@ -269,7 +269,7 @@ export default class Properties {
     flex.dir = 'column'
     flex.rowGap = 4
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
 
     // Insert
     // WCAG
@@ -371,7 +371,7 @@ export default class Properties {
     const flex = this.nodeDetailedBaseProps.addFlexLayout()
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
     flex.rowGap = 4
 
     let basePropViaColorSpace
@@ -458,7 +458,7 @@ export default class Properties {
     const flex = this.nodeDetailedWCAGScoresProps.addFlexLayout()
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
     flex.rowGap = 4
 
     // Insert
@@ -528,7 +528,7 @@ export default class Properties {
     const flex = this.nodeDetailedAPCAScoresProps.addFlexLayout()
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
     flex.rowGap = 4
 
     // Insert
@@ -674,19 +674,19 @@ export default class Properties {
     const flex = this.nodeColumns.addFlexLayout()
     flex.dir = 'row'
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
     flex.columnGap = 8
 
     const flexLeft = this.nodeRightColumn.addFlexLayout()
     flexLeft.dir = 'column'
     flexLeft.horizontalSizing = 'fill'
-    flexLeft.verticalSizing = 'fit-content'
+    flexLeft.verticalSizing = 'auto'
     flexLeft.rowGap = 4
 
     const flexRight = this.nodeLeftColumn.addFlexLayout()
     flexRight.dir = 'column'
     flexRight.horizontalSizing = 'fill'
-    flexRight.verticalSizing = 'fit-content'
+    flexRight.verticalSizing = 'auto'
     flexRight.rowGap = 4
 
     // Insert
@@ -713,7 +713,7 @@ export default class Properties {
     const flex = this.node.addFlexLayout()
     flex.dir = 'column'
     flex.horizontalSizing = 'fill'
-    flex.verticalSizing = 'fit-content'
+    flex.verticalSizing = 'auto'
     flex.rowGap = 16
 
     // Insert

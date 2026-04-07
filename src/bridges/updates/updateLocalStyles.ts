@@ -10,7 +10,7 @@ const updateLocalStyles = async (id: string) => {
   const palette = JSON.parse(rawPalette) as FullConfiguration
 
   palette.libraryData = new Data(palette).makeLibraryData(
-    ['style_id', 'alpha', 'hex'],
+    ['style_id', 'theme_id', 'set_id', 'token_id', 'alpha', 'hex'],
     palette.libraryData
   )
 

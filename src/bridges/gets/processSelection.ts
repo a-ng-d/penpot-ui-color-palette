@@ -104,7 +104,7 @@ const processSelection = () => {
             },
             source: 'CANVAS',
             id: uid(),
-            isRemovable: false,
+            isRemovable: true,
             hue: {
               shift: 0,
               isLocked: false,

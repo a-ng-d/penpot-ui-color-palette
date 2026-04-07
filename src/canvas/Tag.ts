@@ -88,8 +88,8 @@ export default class Tag {
     // Layout
     const flex = this.nodeTag.addFlexLayout()
     flex.dir = 'row'
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
     flex.columnGap = 4
     flex.alignItems = 'center'
     flex.horizontalPadding = 8
@@ -134,8 +134,8 @@ export default class Tag {
     // Layout
     const flex = this.nodeTagwithIndicator.addFlexLayout()
     flex.dir = 'row'
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
     flex.columnGap = 4
     flex.alignItems = 'center'
     flex.rightPadding = isCompact ? 2 : 8
@@ -181,8 +181,8 @@ export default class Tag {
     // Layout
     const flex = this.nodeTagWithAvatar.addFlexLayout()
     flex.dir = 'row'
-    flex.horizontalSizing = 'fit-content'
-    flex.verticalSizing = 'fit-content'
+    flex.horizontalSizing = 'auto'
+    flex.verticalSizing = 'auto'
     flex.columnGap = 8
     flex.alignItems = 'center'
     flex.leftPadding = 8
