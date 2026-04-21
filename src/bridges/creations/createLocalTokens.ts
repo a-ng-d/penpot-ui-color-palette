@@ -40,7 +40,11 @@ const createLocalTokens = async (id: string): Promise<string> => {
       item.id.includes('00000000000')
     )
 
-    const existingSet = catalog.getSetById(firstBaseItem?.setId ?? '')
+    const existingSet = firstBaseItem?.setId
+      ? catalog.getSetById(firstBaseItem.setId)
+      : undefined
+
+    console.log(existingSet)
 
     let baseSet: TokenSet
     if (!existingSet) baseSet = catalog.addSet({ name })
@@ -61,16 +65,20 @@ const createLocalTokens = async (id: string): Promise<string> => {
           .map((n) => n.replace(/\s+/g, '-'))
           .join('.')
 
-        const existingToken = baseSet.getTokenById(item.tokenId)
+        const existingToken = item.tokenId
+          ? baseSet.getTokenById(item.tokenId)
+          : undefined
         if (!existingToken) {
           const token = baseSet.addToken({
             type: 'color',
             name: tokenName,
             value: item.hex ?? '#000000',
-            description: item.description,
+            description: item.description ?? '',
           })
-          item.tokenId = token.id
-          i++
+          if (token) {
+            item.tokenId = token.id
+            i++
+          }
         }
       })
   } else {
@@ -103,7 +111,9 @@ const createLocalTokens = async (id: string): Promise<string> => {
       else themeSet = catalog.getSetById(existingSet.id)
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const existingTheme = catalog.getThemeById(uniqueThemeItem.themeId)
+      const existingTheme = uniqueThemeItem.themeId
+        ? catalog.getThemeById(uniqueThemeItem.themeId)
+        : undefined
       if (!existingTheme) {
         const theme = catalog.addTheme({ group: name, name: themeName })
         // theme.addSet(themeSet)
@@ -128,16 +138,20 @@ const createLocalTokens = async (id: string): Promise<string> => {
             .map((n) => n.replace(/\s+/g, '-'))
             .join('.')
 
-          const existingToken = themeSet.getTokenById(themeItem.tokenId)
+          const existingToken = themeItem.tokenId
+            ? themeSet.getTokenById(themeItem.tokenId)
+            : undefined
           if (!existingToken) {
             const token = themeSet.addToken({
               type: 'color',
               name: tokenName,
               value: themeItem.hex ?? '#000000',
-              description: themeItem.description,
+              description: themeItem.description ?? '',
             })
-            themeItem.tokenId = token.id
-            i++
+            if (token) {
+              themeItem.tokenId = token.id
+              i++
+            }
           }
         })
     })
