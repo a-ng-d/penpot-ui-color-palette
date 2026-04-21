@@ -44,8 +44,6 @@ const createLocalTokens = async (id: string): Promise<string> => {
       ? catalog.getSetById(firstBaseItem.setId)
       : undefined
 
-    console.log(existingSet)
-
     let baseSet: TokenSet
     if (!existingSet) baseSet = catalog.addSet({ name })
     else baseSet = catalog.getSetById(existingSet.id)
@@ -65,8 +63,6 @@ const createLocalTokens = async (id: string): Promise<string> => {
           .map((n) => n.replace(/\s+/g, '-'))
           .join('.')
           .replace('・', '_')
-
-        console.log(tokenName)
 
         const existingToken = item.tokenId
           ? baseSet.getTokenById(item.tokenId)
@@ -141,8 +137,6 @@ const createLocalTokens = async (id: string): Promise<string> => {
             .map((n) => n.replace(/\s+/g, '-'))
             .join('.')
             .replace('・', '_')
-
-          console.log(tokenName)
 
           const existingToken = themeItem.tokenId
             ? themeSet.getTokenById(themeItem.tokenId)
