@@ -57,13 +57,16 @@ const createLocalTokens = async (id: string): Promise<string> => {
 
         const tokenName = [
           item.colorName === ''
-            ? new Case(tolgee.t('colors.defaultName')).doPascalCase()
-            : new Case(item.colorName).doPascalCase(),
+            ? new Case(tolgee.t('colors.defaultName')).doSnakeCase()
+            : new Case(item.colorName).doSnakeCase(),
           item.shadeName,
         ]
           .filter((n) => n !== '' && n !== 'None')
           .map((n) => n.replace(/\s+/g, '-'))
           .join('.')
+          .replace('・', '_')
+
+        console.log(tokenName)
 
         const existingToken = item.tokenId
           ? baseSet.getTokenById(item.tokenId)
@@ -130,13 +133,16 @@ const createLocalTokens = async (id: string): Promise<string> => {
 
           const tokenName = [
             themeItem.colorName === ''
-              ? new Case(tolgee.t('colors.defaultName')).doPascalCase()
-              : new Case(themeItem.colorName).doPascalCase(),
+              ? new Case(tolgee.t('colors.defaultName')).doSnakeCase()
+              : new Case(themeItem.colorName).doSnakeCase(),
             themeItem.shadeName,
           ]
             .filter((n) => n !== '' && n !== 'None')
             .map((n) => n.replace(/\s+/g, '-'))
             .join('.')
+            .replace('・', '_')
+
+          console.log(tokenName)
 
           const existingToken = themeItem.tokenId
             ? themeSet.getTokenById(themeItem.tokenId)
@@ -144,7 +150,7 @@ const createLocalTokens = async (id: string): Promise<string> => {
           if (!existingToken) {
             const token = themeSet.addToken({
               type: 'color',
-              name: tokenName,
+              name: tokenName.replace('・', ''),
               value: themeItem.hex ?? '#000000',
               description: themeItem.description ?? '',
             })

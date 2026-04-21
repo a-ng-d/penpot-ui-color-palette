@@ -1,3 +1,4 @@
+import { Case } from '@unoff/utils'
 import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import { tolgee } from '../..'
 
@@ -77,13 +78,14 @@ const updateLocalTokens = async (id: string): Promise<string> => {
       .forEach((item) => {
         const tokenName = [
           item.colorName === ''
-            ? tolgee.t('colors.defaultName')
-            : item.colorName,
+            ? new Case(tolgee.t('colors.defaultName')).doSnakeCase()
+            : new Case(item.colorName).doSnakeCase(),
           item.shadeName,
         ]
           .filter((n) => n !== '' && n !== 'None')
           .map((n) => n.replace(/\s+/g, '-'))
           .join('.')
+          .replace('・', '_')
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const tokenMatch = catalog.sets
@@ -174,13 +176,14 @@ const updateLocalTokens = async (id: string): Promise<string> => {
         .forEach((themeItem) => {
           const tokenName = [
             themeItem.colorName === ''
-              ? tolgee.t('colors.defaultName')
-              : themeItem.colorName,
+              ? new Case(tolgee.t('colors.defaultName')).doSnakeCase()
+              : new Case(themeItem.colorName).doSnakeCase(),
             themeItem.shadeName,
           ]
             .filter((n) => n !== '' && n !== 'None')
             .map((n) => n.replace(/\s+/g, '-'))
             .join('.')
+            .replace('・', '_')
 
           const tokenMatch = catalog.sets
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
