@@ -15,7 +15,7 @@
       "DOM.Iterable",
       "ScriptHost"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "module": "ESNext",
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -27,7 +27,6 @@
     "types": ["plugin-types"],
     "jsx": "react",
     "skipLibCheck": true,
-    "baseUrl": "./",
     "paths": {
       "react": ["./node_modules/preact/compat/"],
       "react/jsx-runtime": ["./node_modules/preact/jsx-runtime"],
