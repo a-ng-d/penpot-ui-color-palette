@@ -349,38 +349,6 @@ const loadUI = async () => {
         penpot.ui.sendMessage({
           type: 'GET_LICENSE',
         }),
-      GO_TO_PRO_WEEK: async () =>
-        penpot.ui.sendMessage({
-          type: 'OPEN_IN_BROWSER',
-          data: {
-            url: globalConfig.urls.storeProWeekUrl,
-            isNewTab: true,
-          },
-        }),
-      GO_TO_PRO_MONTH: async () =>
-        penpot.ui.sendMessage({
-          type: 'OPEN_IN_BROWSER',
-          data: {
-            url: globalConfig.urls.storeProMonthUrl,
-            isNewTab: true,
-          },
-        }),
-      GO_TO_PRO_YEAR: async () =>
-        penpot.ui.sendMessage({
-          type: 'OPEN_IN_BROWSER',
-          data: {
-            url: globalConfig.urls.storeProYearUrl,
-            isNewTab: true,
-          },
-        }),
-      GO_TO_PRO_LIFETIME: async () =>
-        penpot.ui.sendMessage({
-          type: 'OPEN_IN_BROWSER',
-          data: {
-            url: globalConfig.urls.storeProLifetimeUrl,
-            isNewTab: true,
-          },
-        }),
       GO_TO_ULTIMATE_REQUEST: async () =>
         penpot.ui.sendMessage({
           type: 'OPEN_IN_BROWSER',
