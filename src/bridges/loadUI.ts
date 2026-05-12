@@ -94,6 +94,10 @@ const loadUI = async () => {
           .then(() => checkUserPreferences())
           .then(() => processSelection())
       },
+      OPEN_DOCUMENT: async () => {
+        processSelection()
+      },
+      //
       CHECK_ANNOUNCEMENTS_STATUS: () =>
         checkAnnouncementsStatus(path.data.version),
       //
