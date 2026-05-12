@@ -96,7 +96,14 @@ const globalConfig: Config = {
     creditsVersion: '2026.05',
   },
   features: doSpecificMode(
-    ['RESIZE_UI', 'HELP_CHAT'],
+    [
+      'RESIZE_UI',
+      'HELP_CHAT',
+      'VIEWS',
+      'VIEWS_PALETTE',
+      'VIEWS_PALETTE_WITH_PROPERTIES',
+      'VIEWS_SHEET',
+    ],
     [
       'CREATE_PALETTE',
       'DOCUMENT_CREATE',
@@ -107,8 +114,8 @@ const globalConfig: Config = {
       'PREVIEW_LOCK_SOURCE_COLORS',
       'PREVIEW_SCORES_WCAG_INTERVAL',
       'PREVIEW_SCORES_APCA_INTERVAL',
-      'PREVIEW_FILTER_WCAG',
-      'PREVIEW_FILTER_APCA',
+      'PREVIEW_FILTER_PASS',
+      'PREVIEW_FILTER_FAIL',
       'DOCUMENT_PALETTE',
       'DOCUMENT_PALETTE_PROPERTIES',
       'DOCUMENT_SHEET',
