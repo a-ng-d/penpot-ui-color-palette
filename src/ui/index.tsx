@@ -1,5 +1,4 @@
-import { createRoot } from 'react-dom/client'
-import React from 'react'
+import { render } from 'preact'
 import mixpanel from 'mixpanel-browser'
 import App from '@ui-lib/ui/App'
 import { initTolgee } from '@ui-lib/external/translation'
@@ -26,8 +25,7 @@ import globalConfig from '../global.config'
 import { initPolar } from '../../packages/ui-ui-color-palette/src/external/transactional'
 import { initNotion } from '../../packages/ui-ui-color-palette/src/external/cms'
 
-const container = document.getElementById('app'),
-  root = createRoot(container)
+const container = document.getElementById('app')!
 
 const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN
@@ -166,7 +164,7 @@ window.addEventListener('pluginMessage', ((event: MessageEvent) => {
 
 // Render
 tolgee?.run().then(() => {
-  root.render(
+  render(
     <TolgeeProvider
       tolgee={tolgee}
       fallback="Loading..."
@@ -189,6 +187,7 @@ tolgee?.run().then(() => {
           <App />
         </ThemeProvider>
       </ConfigProvider>
-    </TolgeeProvider>
+    </TolgeeProvider>,
+    container
   )
 })
