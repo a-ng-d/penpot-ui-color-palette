@@ -35,7 +35,7 @@ const globalConfig: Config = {
   plan: {
     isProEnabled: true,
     isTrialEnabled: false,
-    isCreditsEnabled: true,
+    isCreditsEnabled: false,
     trialTime: 72,
     creditsLimit: 500,
     creditsRenewalPeriodDays: 7,
