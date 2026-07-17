@@ -25,6 +25,7 @@ import globalConfig from '../global.config'
 import { initPolar } from '../../packages/ui-ui-color-palette/src/external/transactional'
 import { initNotion } from '../../packages/ui-ui-color-palette/src/external/cms'
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const container = document.getElementById('app')!
 
 const mixpanelToken = import.meta.env.VITE_MIXPANEL_TOKEN
@@ -45,7 +46,7 @@ if (globalConfig.env.isMixpanelEnabled && mixpanelToken !== undefined) {
     disable_cookie: true,
     ignore_dnt: true,
     opt_out_tracking_by_default: true,
-    record_sessions_percent: 25,
+    record_sessions_percent: 50,
     record_mask_text_selector: '*',
     record_block_selector: 'img',
     record_heatmap_data: true,
