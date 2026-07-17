@@ -1,5 +1,5 @@
 import { Case } from '@unoff/utils'
-import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { getJsonSize } from '../../utils/getSize'
 import { tolgee } from '../..'
 

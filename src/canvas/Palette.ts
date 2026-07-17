@@ -5,7 +5,7 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
   PaletteDataThemeItem,
-} from '@a_ng_d/utils-ui-color-palette'
+} from '@yelbolt/engine-ui-color-palette'
 import { tolgee } from '..'
 import Title from './Title'
 import { darkColor } from './styles'

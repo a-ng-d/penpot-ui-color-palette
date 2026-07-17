@@ -4,7 +4,7 @@ import { Board, Fill, Shape } from '@penpot/plugin-types'
 import {
   HexModel,
   SourceColorConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
+} from '@yelbolt/engine-ui-color-palette'
 
 export let currentSelection: Array<Shape> = []
 export let previousSelection: Array<Shape> = []

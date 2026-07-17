@@ -3,7 +3,7 @@ import {
   BaseConfiguration,
   ThemeConfiguration,
   ViewConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
+} from '@yelbolt/engine-ui-color-palette'
 import { tolgee } from '..'
 import Sample from './Sample'
 

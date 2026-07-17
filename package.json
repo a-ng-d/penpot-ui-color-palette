@@ -28,7 +28,7 @@
     "install:ext": "npm install --workspaces && npm install --workspace=packages/ui-ui-color-palette/packages/auth-yelbolt --workspaces && npm install --prefix packages/ui-ui-color-palette/packages/auth-yelbolt/ui-color-palette",
     "update:ext": "git submodule update --remote --merge",
     "update:unoff": "npm i @unoff/ui@latest @unoff/utils@latest",
-    "update:uicp": "npm i @a_ng_d/utils-ui-color-palette@latest",
+    "update:uicp": "npm i @yelbolt/engine-ui-color-palette@latest",
     "start:ext": "npm run start:ext -w ui-ui-color-palette",
     "start:dev": "npm run build & vite preview",
     "build": "cross-env npx vite build --mode development & IS_PLUGIN=true cross-env npx vite build --mode development",
@@ -65,7 +65,6 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
-    "@a_ng_d/utils-ui-color-palette": "^1.10.1",
     "@mistralai/mistralai": "^1.10.0",
     "@nanostores/preact": "^0.5.2",
     "@sentry/react": "^9.27.0",
@@ -74,6 +73,7 @@
     "@tolgee/react": "^6.2.7",
     "@unoff/ui": "^1.24.2",
     "@unoff/utils": "^0.8.2",
+    "@yelbolt/engine-ui-color-palette": "^1.10.2",
     "chroma-js": "^3.1.2",
     "color-names": "^2.0.0",
     "fflate": "^0.8.2",
