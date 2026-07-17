@@ -134,7 +134,10 @@ const loadUI = async () => {
       //
       CREATE_PALETTE: () =>
         createPalette(path)
-          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
+          .finally(() => {
+            getPalettesOnCurrentPage()
+            penpot.ui.sendMessage({ type: 'STOP_LOADER' })
+          })
           .catch((error) => {
             penpot.ui.sendMessage({
               type: 'REPORT_ERROR',
@@ -150,7 +153,10 @@ const loadUI = async () => {
           }),
       CREATE_PALETTE_FROM_DOCUMENT: () =>
         createPaletteFromDocument()
-          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
+          .finally(() => {
+            getPalettesOnCurrentPage()
+            penpot.ui.sendMessage({ type: 'STOP_LOADER' })
+          })
           .catch((error) => {
             penpot.ui.sendMessage({
               type: 'REPORT_ERROR',
@@ -166,7 +172,10 @@ const loadUI = async () => {
           }),
       CREATE_PALETTE_FROM_REMOTE: () =>
         createPaletteFromRemote(path)
-          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
+          .finally(() => {
+            getPalettesOnCurrentPage()
+            penpot.ui.sendMessage({ type: 'STOP_LOADER' })
+          })
           .catch((error) => {
             penpot.ui.sendMessage({
               type: 'REPORT_ERROR',
