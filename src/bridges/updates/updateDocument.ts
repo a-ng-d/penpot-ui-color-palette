@@ -1,4 +1,3 @@
-import { Board } from '@penpot/plugin-types'
 import {
   Data,
   FullConfiguration,
@@ -6,6 +5,7 @@ import {
   ThemeConfiguration,
   ViewConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import { Board } from '@penpot/plugin-types'
 import setPaletteName from '../../utils/setPaletteName'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'

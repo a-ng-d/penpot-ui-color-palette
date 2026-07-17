@@ -1,5 +1,4 @@
 import chroma from 'chroma-js'
-import { Board } from '@penpot/plugin-types'
 import {
   Channel,
   Color,
@@ -9,6 +8,7 @@ import {
   TextColorsThemeConfiguration,
   VisionSimulationModeConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import { Board } from '@penpot/plugin-types'
 import { tolgee } from '..'
 import Tag from './Tag'
 

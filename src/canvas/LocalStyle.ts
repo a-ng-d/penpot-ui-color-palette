@@ -1,5 +1,5 @@
-import { LibraryColor } from '@penpot/plugin-types'
 import { HexModel } from '@yelbolt/engine-ui-color-palette'
+import { LibraryColor } from '@penpot/plugin-types'
 
 export default class LocalStyle {
   private name: string

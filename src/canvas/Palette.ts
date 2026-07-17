@@ -1,4 +1,3 @@
-import { Board } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -6,6 +5,7 @@ import {
   ViewConfiguration,
   PaletteDataThemeItem,
 } from '@yelbolt/engine-ui-color-palette'
+import { Board } from '@penpot/plugin-types'
 import { tolgee } from '..'
 import Title from './Title'
 import { darkColor } from './styles'

@@ -1,5 +1,5 @@
-import { Board } from '@penpot/plugin-types'
 import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import { Board } from '@penpot/plugin-types'
 import processSelection from '../gets/processSelection'
 import { tolgee } from '../..'
 

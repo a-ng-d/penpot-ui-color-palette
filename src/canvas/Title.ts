@@ -1,10 +1,10 @@
-import { Board, ImageData } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
   MetaConfiguration,
   ThemeConfiguration,
   PaletteDataThemeItem,
 } from '@yelbolt/engine-ui-color-palette'
+import { Board, ImageData } from '@penpot/plugin-types'
 import { tolgee } from '..'
 import Tag from './Tag'
 import Paragraph from './Paragraph'

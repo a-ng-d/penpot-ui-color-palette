@@ -1,5 +1,5 @@
-import { Case } from '@unoff/utils'
 import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import { Case } from '@unoff/utils'
 import { tolgee } from '../..'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

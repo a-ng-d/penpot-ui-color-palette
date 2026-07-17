@@ -1,5 +1,5 @@
-import { doScale } from '@unoff/utils'
 import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import { doScale } from '@unoff/utils'
 import { ScaleMessage } from '../../types/messages'
 import { tolgee } from '../..'
 
