@@ -1,22 +1,26 @@
-import { Board } from '@penpot/plugin-types'
 import {
   Data,
   FullConfiguration,
   PaletteDataThemeItem,
   ThemeConfiguration,
   ViewConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
+} from '@yelbolt/engine-ui-color-palette'
+import { Board } from '@penpot/plugin-types'
 import setPaletteName from '../../utils/setPaletteName'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
 import { tolgee } from '../..'
 
 const updateDocument = async (view: ViewConfiguration) => {
   const document = penpot.selection[0] as Board
-  const id = document.getPluginData('id')
-  const themeId = document.getPluginData('themeId')
+  const id = document.getSharedPluginData('uicp', 'id')
+  const themeId = document.getSharedPluginData('uicp', 'themeId')
 
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
+    `palette_${id}`
+  )
 
   if (rawPalette === undefined || rawPalette === null)
     throw new Error(tolgee.t('error.unfoundPalette'))
@@ -66,9 +70,13 @@ const updateDocument = async (view: ViewConfiguration) => {
   )
 
   // Update
-  document.setPluginData('view', view)
-  document.setPluginData('updatedAt', palette.meta.dates.updatedAt.toString())
-  document.setPluginData('backup', JSON.stringify(palette))
+  document.setSharedPluginData('uicp', 'view', view)
+  document.setSharedPluginData(
+    'uicp',
+    'updatedAt',
+    palette.meta.dates.updatedAt.toString()
+  )
+  document.setSharedPluginData('uicp', 'backup', JSON.stringify(palette))
 
   penpot.ui.sendMessage({
     type: 'DOCUMENT_SELECTED',
@@ -80,8 +88,7 @@ const updateDocument = async (view: ViewConfiguration) => {
     },
   })
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
+  scheduleSaveVersion(
     `${palette.base.name} - ${tolgee.t('events.documentUpdated')}`
   )
 

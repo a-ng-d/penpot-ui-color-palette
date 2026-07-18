@@ -1,5 +1,4 @@
 import chroma from 'chroma-js'
-import { Board } from '@penpot/plugin-types'
 import {
   Channel,
   ColorSpaceConfiguration,
@@ -7,7 +6,8 @@ import {
   TextColorsThemeConfiguration,
   ViewConfiguration,
   VisionSimulationModeConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
+} from '@yelbolt/engine-ui-color-palette'
+import { Board } from '@penpot/plugin-types'
 import Status from './Status'
 import Property from './Property'
 import Properties from './Properties'

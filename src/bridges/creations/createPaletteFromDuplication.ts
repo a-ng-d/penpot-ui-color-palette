@@ -1,9 +1,13 @@
 import { uid } from 'uid'
-import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { tolgee } from '../..'
 
 const createPaletteFromDuplication = async (id: string) => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
+    `palette_${id}`
+  )
   const now = new Date().toISOString()
 
   if (rawPalette === undefined || rawPalette === null)
@@ -26,13 +30,13 @@ const createPaletteFromDuplication = async (id: string) => {
   palette.meta.creatorIdentity.creatorFullName = ''
   palette.meta.creatorIdentity.creatorAvatar = ''
 
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${palette.meta.id}`,
     JSON.stringify(palette)
   )
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
+  scheduleSaveVersion(
     `${palette.base.name} - ${tolgee.t('events.paletteDuplicated')}`
   )
 

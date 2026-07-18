@@ -1,5 +1,6 @@
+import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { Case } from '@unoff/utils'
-import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { tolgee } from '../..'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -8,7 +9,10 @@ type TokenCatalog = any
 type TokenSet = any
 
 const updateLocalTokens = async (id: string): Promise<string> => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
+    `palette_${id}`
+  )
 
   if (rawPalette === undefined || rawPalette === null)
     throw new Error(tolgee.t('error.unfoundPalette'))
@@ -241,7 +245,7 @@ const updateLocalTokens = async (id: string): Promise<string> => {
 
   if (i + j + l + m === 0) messages.push(tolgee.t('info.noChange'))
 
-  penpot.currentFile?.saveVersion(
+  scheduleSaveVersion(
     `${palette.base.name} - ${tolgee.t('events.tokensSynced')}`
   )
 

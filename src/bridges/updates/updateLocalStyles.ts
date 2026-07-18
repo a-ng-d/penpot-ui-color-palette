@@ -1,8 +1,12 @@
-import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { tolgee } from '../..'
 
 const updateLocalStyles = async (id: string) => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
+    `palette_${id}`
+  )
 
   if (rawPalette === undefined || rawPalette === null)
     throw new Error(tolgee.t('error.unfoundPalette'))
@@ -113,7 +117,7 @@ const updateLocalStyles = async (id: string) => {
       })
     )
 
-    penpot.currentFile?.saveVersion(
+    scheduleSaveVersion(
       `${palette.base.name} - ${tolgee.t('events.stylesSynced')}`
     )
 

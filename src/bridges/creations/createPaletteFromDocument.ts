@@ -1,15 +1,17 @@
+import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { Board } from '@penpot/plugin-types'
-import { FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
 import processSelection from '../gets/processSelection'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { tolgee } from '../..'
 
 const createPaletteFromDocument = async () => {
   const document = penpot.selection[0] as Board
   const backup = JSON.parse(
-    document.getPluginData('backup')
+    document.getSharedPluginData('uicp', 'backup')
   ) as FullConfiguration
 
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${backup.meta.id}`,
     JSON.stringify(backup)
   )
@@ -19,8 +21,7 @@ const createPaletteFromDocument = async () => {
   })
   processSelection()
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
+  scheduleSaveVersion(
     `${backup.base.name} - ${tolgee.t('events.paletteCreatedFromDocument')}`
   )
 

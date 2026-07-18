@@ -1,11 +1,12 @@
-import { Data, FullConfiguration } from '@a_ng_d/utils-ui-color-palette'
+import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { ThemesMessage } from '../../types/messages'
 import { tolgee } from '../..'
 
 const updateThemes = async (msg: ThemesMessage) => {
   const now = new Date().toISOString()
   const palette: FullConfiguration = JSON.parse(
-    penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
+    penpot.currentPage?.getSharedPluginData('uicp', `palette_${msg.id}`) ?? '{}'
   )
 
   palette.themes = msg.data
@@ -21,13 +22,13 @@ const updateThemes = async (msg: ThemesMessage) => {
     data: now,
   })
 
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${msg.id}`,
     JSON.stringify(palette)
   )
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
+  scheduleSaveVersion(
     `${palette.base.name} - ${tolgee.t('events.themesUpdated')}`
   )
 

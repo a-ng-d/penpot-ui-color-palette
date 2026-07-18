@@ -1,4 +1,3 @@
-import { Board } from '@penpot/plugin-types'
 import {
   BaseConfiguration,
   MetaConfiguration,
@@ -6,7 +5,8 @@ import {
   PaletteDataThemeItem,
   ThemeConfiguration,
   ViewConfiguration,
-} from '@a_ng_d/utils-ui-color-palette'
+} from '@yelbolt/engine-ui-color-palette'
+import { Board } from '@penpot/plugin-types'
 import setPaletteName from '../utils/setPaletteName'
 import globalConfig from '../global.config'
 import Sheet from './Sheet'
@@ -99,14 +99,23 @@ export default class Documents {
     flex.verticalSizing = 'auto'
 
     // Data
-    document.setPluginData('type', 'UI_COLOR_PALETTE')
-    document.setPluginData('version', globalConfig.versions.paletteVersion)
-    document.setPluginData('view', this.view)
-    document.setPluginData('id', this.meta.id)
-    document.setPluginData('themeId', theme.id)
-    document.setPluginData('createdAt', new Date().toISOString())
-    document.setPluginData('updatedAt', this.meta.dates.updatedAt as string)
-    document.setPluginData(
+    document.setSharedPluginData('uicp', 'type', 'UI_COLOR_PALETTE')
+    document.setSharedPluginData(
+      'uicp',
+      'version',
+      globalConfig.versions.paletteVersion
+    )
+    document.setSharedPluginData('uicp', 'view', this.view)
+    document.setSharedPluginData('uicp', 'id', this.meta.id)
+    document.setSharedPluginData('uicp', 'themeId', theme.id)
+    document.setSharedPluginData('uicp', 'createdAt', new Date().toISOString())
+    document.setSharedPluginData(
+      'uicp',
+      'updatedAt',
+      this.meta.dates.updatedAt as string
+    )
+    document.setSharedPluginData(
+      'uicp',
       'backup',
       JSON.stringify({
         base: this.base,
