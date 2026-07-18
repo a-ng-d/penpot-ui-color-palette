@@ -26,12 +26,30 @@ export const tolgee: ReturnType<typeof createI18n> = createI18n(
 loadUI()
 
 // Migration
-const dataKeys = penpot.currentPage?.getPluginDataKeys()
-  if (dataKeys !== undefined)
-    dataKeys
-      .filter((data: string) => data.includes('palette_'))
-      .forEach((key: string) => {
-        const data = penpot.currentPage?.getPluginData(key)
-        if (data !== undefined)
-          penpot.currentPage?.setSharedPluginData('uicp', key, data)
-      })
+const legacyDataKeys = penpot.currentPage?.getPluginDataKeys()
+if (legacyDataKeys !== undefined)
+  legacyDataKeys
+    .filter((key: string) => key.includes('palette_'))
+    .forEach((key: string) => {
+      const migratedData = penpot.currentPage?.getSharedPluginData('uicp', key)
+      if (migratedData)
+        try {
+          if (JSON.parse(migratedData)?.type === 'UI_COLOR_PALETTE') return
+        } catch {
+          return
+        }
+
+      const legacyData = penpot.currentPage?.getPluginData(key)
+      if (legacyData === undefined || legacyData === '') return
+
+      let parsedLegacyData: { type?: string } | undefined
+      try {
+        parsedLegacyData = JSON.parse(legacyData)
+      } catch {
+        return
+      }
+      if (parsedLegacyData?.type !== 'UI_COLOR_PALETTE') return
+
+      penpot.currentPage?.setSharedPluginData('uicp', key, legacyData)
+      penpot.currentPage?.setPluginData(key, '')
+    })
