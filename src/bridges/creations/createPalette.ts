@@ -6,6 +6,7 @@ import {
   SourceColorConfiguration,
   ThemeConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { tolgee } from '../..'
 
 interface Msg {
@@ -101,8 +102,7 @@ const createPalette = async (msg: Msg) => {
     data: palette,
   })
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
+  scheduleSaveVersion(
     `${palette.base.name} - ${tolgee.t('events.paletteCreated')}`
   )
 

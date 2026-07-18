@@ -1,4 +1,5 @@
 import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { ThemesMessage } from '../../types/messages'
 import { tolgee } from '../..'
 
@@ -27,8 +28,7 @@ const updateThemes = async (msg: ThemesMessage) => {
     JSON.stringify(palette)
   )
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
+  scheduleSaveVersion(
     `${palette.base.name} - ${tolgee.t('events.themesUpdated')}`
   )
 

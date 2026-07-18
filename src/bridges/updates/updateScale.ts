@@ -1,5 +1,6 @@
 import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { doScale } from '@unoff/utils'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { ScaleMessage } from '../../types/messages'
 import { tolgee } from '../..'
 
@@ -72,8 +73,7 @@ const updateScale = async (msg: ScaleMessage) => {
     JSON.stringify(palette)
   )
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
+  scheduleSaveVersion(
     `${palette.base.name} - ${tolgee.t('events.scaleUpdated')}`
   )
 

@@ -1,5 +1,6 @@
 import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { Case } from '@unoff/utils'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { tolgee } from '../..'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -244,7 +245,7 @@ const updateLocalTokens = async (id: string): Promise<string> => {
 
   if (i + j + l + m === 0) messages.push(tolgee.t('info.noChange'))
 
-  penpot.currentFile?.saveVersion(
+  scheduleSaveVersion(
     `${palette.base.name} - ${tolgee.t('events.tokensSynced')}`
   )
 

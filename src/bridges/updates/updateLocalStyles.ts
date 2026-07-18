@@ -1,4 +1,5 @@
 import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { tolgee } from '../..'
 
 const updateLocalStyles = async (id: string) => {
@@ -116,7 +117,7 @@ const updateLocalStyles = async (id: string) => {
       })
     )
 
-    penpot.currentFile?.saveVersion(
+    scheduleSaveVersion(
       `${palette.base.name} - ${tolgee.t('events.stylesSynced')}`
     )
 

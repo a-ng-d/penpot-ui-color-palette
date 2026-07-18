@@ -3,6 +3,7 @@ import {
   FullConfiguration,
   ViewConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import Documents from '../../canvas/Documents'
 import { tolgee } from '../..'
 
@@ -28,8 +29,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
   penpot.selection = documents.documents
   penpot.viewport.zoomIntoView(penpot.selection)
 
-  await new Promise((r) => setTimeout(r, 1000))
-  await penpot.currentFile?.saveVersion(
+  scheduleSaveVersion(
     `${palette.base.name} - ${tolgee.t('events.documentCreated')}`
   )
 
