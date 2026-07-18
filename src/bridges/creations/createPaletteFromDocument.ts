@@ -6,10 +6,11 @@ import { tolgee } from '../..'
 const createPaletteFromDocument = async () => {
   const document = penpot.selection[0] as Board
   const backup = JSON.parse(
-    document.getPluginData('backup')
+    document.getSharedPluginData('uicp', 'backup')
   ) as FullConfiguration
 
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${backup.meta.id}`,
     JSON.stringify(backup)
   )

@@ -5,7 +5,7 @@ import { tolgee } from '../..'
 const updateSettings = async (msg: SettingsMessage) => {
   const now = new Date().toISOString()
   const palette: FullConfiguration = JSON.parse(
-    penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
+    penpot.currentPage?.getSharedPluginData('uicp', `palette_${msg.id}`) ?? '{}'
   )
 
   const theme = palette.themes.find((theme) => theme.isEnabled)
@@ -30,7 +30,8 @@ const updateSettings = async (msg: SettingsMessage) => {
     data: now,
   })
 
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${msg.id}`,
     JSON.stringify(palette)
   )

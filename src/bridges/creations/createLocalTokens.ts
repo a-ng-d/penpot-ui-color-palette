@@ -9,7 +9,10 @@ type TokenCatalog = any
 type TokenSet = any
 
 const createLocalTokens = async (id: string): Promise<string> => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
+    `palette_${id}`
+  )
 
   if (rawPalette === undefined || rawPalette === null)
     throw new Error(tolgee.t('error.unfoundPalette'))
@@ -163,7 +166,11 @@ const createLocalTokens = async (id: string): Promise<string> => {
   )
 
   if (getJsonSize(palette) < 100)
-    penpot.currentPage?.setPluginData(`palette_${id}`, JSON.stringify(palette))
+    penpot.currentPage?.setSharedPluginData(
+      'uicp',
+      `palette_${id}`,
+      JSON.stringify(palette)
+    )
   else throw new Error(tolgee.t('error.paletteSizeExceeded'))
 
   if (i > 0)

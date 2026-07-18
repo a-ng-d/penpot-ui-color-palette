@@ -2,7 +2,10 @@ import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { tolgee } from '../..'
 
 const updateLocalStyles = async (id: string) => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
+    `palette_${id}`
+  )
 
   if (rawPalette === undefined || rawPalette === null)
     throw new Error(tolgee.t('error.unfoundPalette'))

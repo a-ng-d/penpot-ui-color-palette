@@ -3,7 +3,10 @@ import { FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import { tolgee } from '../..'
 
 const createPaletteFromDuplication = async (id: string) => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
+    `palette_${id}`
+  )
   const now = new Date().toISOString()
 
   if (rawPalette === undefined || rawPalette === null)
@@ -26,7 +29,8 @@ const createPaletteFromDuplication = async (id: string) => {
   palette.meta.creatorIdentity.creatorFullName = ''
   palette.meta.creatorIdentity.creatorAvatar = ''
 
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${palette.meta.id}`,
     JSON.stringify(palette)
   )

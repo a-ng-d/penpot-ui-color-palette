@@ -7,7 +7,10 @@ import Documents from '../../canvas/Documents'
 import { tolgee } from '../..'
 
 const createDocument = async (id: string, view: ViewConfiguration) => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
+    `palette_${id}`
+  )
 
   if (rawPalette === undefined || rawPalette === null)
     throw new Error(tolgee.t('error.unfoundPalette'))

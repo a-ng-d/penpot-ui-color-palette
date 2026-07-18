@@ -91,7 +91,8 @@ const createPalette = async (msg: Msg) => {
     },
   }).makePaletteFullData()
 
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${palette.meta.id}`,
     JSON.stringify(palette)
   )

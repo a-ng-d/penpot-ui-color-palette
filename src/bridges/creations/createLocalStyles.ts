@@ -3,7 +3,10 @@ import LocalStyle from '../../canvas/LocalStyle'
 import { tolgee } from '../..'
 
 const createLocalStyles = async (id: string) => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
+    `palette_${id}`
+  )
 
   if (rawPalette === undefined || rawPalette === null)
     throw new Error(tolgee.t('error.unfoundPalette'))
@@ -71,7 +74,11 @@ const createLocalStyles = async (id: string) => {
       palette.libraryData
     )
 
-    penpot.currentPage?.setPluginData(`palette_${id}`, JSON.stringify(palette))
+    penpot.currentPage?.setSharedPluginData(
+      'uicp',
+      `palette_${id}`,
+      JSON.stringify(palette)
+    )
 
     return tolgee.t('info.createdLocalStyles', {
       count: i,

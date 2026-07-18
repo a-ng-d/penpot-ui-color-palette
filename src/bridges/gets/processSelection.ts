@@ -27,12 +27,13 @@ const processSelection = () => {
         penpot.ui.sendMessage({
           type: 'DOCUMENT_SELECTED',
           data: {
-            view: document.getPluginData('view'),
-            id: document.getPluginData('id'),
-            updatedAt: document.getPluginData('updatedAt'),
+            view: document.getSharedPluginData('uicp', 'view'),
+            id: document.getSharedPluginData('uicp', 'id'),
+            updatedAt: document.getSharedPluginData('uicp', 'updatedAt'),
             isLinkedToPalette:
-              penpot.currentPage?.getPluginData(
-                `palette_${document.getPluginData('id')}`
+              penpot.currentPage?.getSharedPluginData(
+                'uicp',
+                `palette_${document.getSharedPluginData('uicp', 'id')}`
               ) !== '',
           },
         })
@@ -57,18 +58,21 @@ const processSelection = () => {
 
   if (
     selection.length === 1 &&
-    document.getPluginData('type') === 'UI_COLOR_PALETTE' &&
+    document.getSharedPluginData('uicp', 'type') === 'UI_COLOR_PALETTE' &&
     !(document.isComponentInstance() || document.isComponentMainInstance())
   )
     selectionHandler('DOCUMENT_SELECTED')
   else if (
     selection.length === 1 &&
-    document.getPluginDataKeys().length > 0 &&
+    document.getSharedPluginDataKeys('uicp').length > 0 &&
     !(document.isComponentInstance() || document.isComponentMainInstance())
   )
     selectionHandler('DOCUMENT_SELECTED')
   else if (selection.length === 0) selectionHandler('EMPTY_SELECTION')
-  else if (selection.length > 1 && document.getPluginDataKeys().length !== 0)
+  else if (
+    selection.length > 1 &&
+    document.getSharedPluginDataKeys('uicp').length !== 0
+  )
     selectionHandler('EMPTY_SELECTION')
   else if (
     selection[0].isComponentInstance() ||
@@ -92,7 +96,10 @@ const processSelection = () => {
       element.type !== 'boolean' &&
       element.type !== 'text'
     )
-      if (foundColors.length > 0 && element.getPluginDataKeys().length === 0) {
+      if (
+        foundColors.length > 0 &&
+        element.getSharedPluginDataKeys('uicp').length === 0
+      ) {
         foundColors.forEach((color) => {
           const hexToGl = chroma(color.fillColor as HexModel).gl()
           viableSelection.push({

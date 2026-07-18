@@ -8,7 +8,10 @@ type TokenCatalog = any
 type TokenSet = any
 
 const updateLocalTokens = async (id: string): Promise<string> => {
-  const rawPalette = penpot.currentPage?.getPluginData(`palette_${id}`)
+  const rawPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
+    `palette_${id}`
+  )
 
   if (rawPalette === undefined || rawPalette === null)
     throw new Error(tolgee.t('error.unfoundPalette'))

@@ -5,7 +5,7 @@ import { tolgee } from '../..'
 const updateColors = async (msg: ColorsMessage) => {
   const now = new Date().toISOString()
   const palette: FullConfiguration = JSON.parse(
-    penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
+    penpot.currentPage?.getSharedPluginData('uicp', `palette_${msg.id}`) ?? '{}'
   )
 
   palette.base.colors = msg.data
@@ -21,7 +21,8 @@ const updateColors = async (msg: ColorsMessage) => {
     palette.libraryData
   )
 
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${msg.id}`,
     JSON.stringify(palette)
   )

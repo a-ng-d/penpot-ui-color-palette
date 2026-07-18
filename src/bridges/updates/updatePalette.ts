@@ -13,7 +13,7 @@ const updatePalette = async ({
 }) => {
   const now = new Date().toISOString()
   const palette: FullConfiguration = JSON.parse(
-    penpot.currentPage?.getPluginData(`palette_${msg.id}`) ?? '{}'
+    penpot.currentPage?.getSharedPluginData('uicp', `palette_${msg.id}`) ?? '{}'
   )
 
   msg.items.forEach((item) => {
@@ -48,7 +48,8 @@ const updatePalette = async ({
       data: palette,
     })
 
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${msg.id}`,
     JSON.stringify(palette)
   )

@@ -6,7 +6,8 @@ import { tolgee } from '../..'
 const updateScale = async (msg: ScaleMessage) => {
   const now = new Date().toISOString()
   const palette: FullConfiguration = JSON.parse(
-    penpot.currentPage?.getPluginData(`palette_${msg.data.id}`) ?? '{}'
+    penpot.currentPage?.getSharedPluginData('uicp', `palette_${msg.data.id}`) ??
+      '{}'
   )
 
   const theme = palette.themes.find((theme) => theme.isEnabled)
@@ -65,7 +66,8 @@ const updateScale = async (msg: ScaleMessage) => {
     type: 'LOAD_PALETTE',
     data: palette,
   })
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${msg.data.id}`,
     JSON.stringify(palette)
   )

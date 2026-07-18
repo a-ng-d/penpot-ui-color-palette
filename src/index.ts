@@ -24,3 +24,14 @@ export const tolgee: ReturnType<typeof createI18n> = createI18n(
 
 // UI
 loadUI()
+
+// Migration
+const dataKeys = penpot.currentPage?.getPluginDataKeys()
+  if (dataKeys !== undefined)
+    dataKeys
+      .filter((data: string) => data.includes('palette_'))
+      .forEach((key: string) => {
+        const data = penpot.currentPage?.getPluginData(key)
+        if (data !== undefined)
+          penpot.currentPage?.setSharedPluginData('uicp', key, data)
+      })

@@ -15,7 +15,8 @@ interface Msg {
 }
 
 const createPaletteFromRemote = async (msg: Msg) => {
-  const localPalette = penpot.currentPage?.getPluginData(
+  const localPalette = penpot.currentPage?.getSharedPluginData(
+    'uicp',
     `palette_${msg.data.meta.id}`
   )
 
@@ -58,7 +59,8 @@ const createPaletteFromRemote = async (msg: Msg) => {
     },
   }).makePaletteFullData()
 
-  penpot.currentPage?.setPluginData(
+  penpot.currentPage?.setSharedPluginData(
+    'uicp',
     `palette_${palette.meta.id}`,
     JSON.stringify(palette)
   )
