@@ -1,3 +1,4 @@
+import setPagePalettesMigration from '../utils/setPagePalettesMigration'
 import globalConfig from '../global.config'
 import { tolgee } from '..'
 import updateThemes from './updates/updateThemes'
@@ -416,6 +417,7 @@ const loadUI = async () => {
 
   // Listeners
   penpot.on('pagechange', () => {
+    setPagePalettesMigration()
     penpot.ui.sendMessage({
       type: 'LOAD_PALETTES',
     })

@@ -5,6 +5,7 @@ import ja_JP from '@ui-lib/content/translations/ja-JP.json'
 import fr_FR from '@ui-lib/content/translations/fr-FR.json'
 import es_ES from '@ui-lib/content/translations/es-ES.json'
 import en_US from '@ui-lib/content/translations/en-US.json'
+import setPagePalettesMigration from './utils/setPagePalettesMigration'
 import { createI18n } from './utils/i18n'
 import globalConfig from './global.config'
 import loadUI from './bridges/loadUI'
@@ -53,3 +54,4 @@ if (legacyDataKeys !== undefined)
       penpot.currentPage?.setSharedPluginData('uicp', key, legacyData)
       penpot.currentPage?.setPluginData(key, '')
     })
+setPagePalettesMigration()
