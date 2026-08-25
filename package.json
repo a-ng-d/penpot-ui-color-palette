@@ -32,7 +32,7 @@
     "start:ext": "npm run start:ext -w ui-ui-color-palette",
     "start:dev": "npm run build & vite preview",
     "build": "cross-env npx vite build --mode development & IS_PLUGIN=true cross-env npx vite build --mode development",
-    "build:prod": "cross-env npx vite build --mode production & IS_PLUGIN=true cross-env npx vite build --mode production",
+    "build:prod": "cross-env npx vite build --mode production && IS_PLUGIN=true cross-env npx vite build --mode production",
     "typecheck": "npx tsc --noEmit",
     "lint": "npx eslint ./src/** --fix --ext .ts,.tsx .",
     "format": "npx prettier './src' --write"
