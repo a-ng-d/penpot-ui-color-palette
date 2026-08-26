@@ -50,12 +50,18 @@ export default defineConfig(({ mode }) => {
           './packages/ui-ui-color-palette/src'
         ),
       },
+      preserveSymlinks: true,
     },
 
-    css: {
-      postcss: {
-        plugins: [],
-      },
+    optimizeDeps: {
+      include: [
+        'preact',
+        'preact/hooks',
+        'preact/compat',
+        'preact/jsx-runtime',
+        '@unoff/ui',
+        '@unoff/utils',
+      ],
     },
 
     build: {
