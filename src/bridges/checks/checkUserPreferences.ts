@@ -19,10 +19,12 @@ const checkUserPreferences = async () => {
     'is_suggested_language_displayed'
   )
   let userLanguage = penpot.localStorage.getItem('user_language')
+  let isOnboardingRead = penpot.localStorage.getItem('is_onboarding_read')
+  let palettesView = penpot.localStorage.getItem('palettes_view')
 
   if (!isWCAGDisplayed) {
-    penpot.localStorage.setItem('is_wcag_displayed', 'true')
-    isWCAGDisplayed = 'true'
+    penpot.localStorage.setItem('is_wcag_displayed', 'false')
+    isWCAGDisplayed = 'false'
   }
 
   if (!isAPCADisplayed) {
@@ -65,6 +67,16 @@ const checkUserPreferences = async () => {
     userLanguage = globalConfig.lang
   }
 
+  if (!isOnboardingRead) {
+    penpot.localStorage.setItem('is_onboarding_read', 'false')
+    isOnboardingRead = 'false'
+  }
+
+  if (!palettesView) {
+    penpot.localStorage.setItem('palettes_view', 'LIST')
+    palettesView = 'LIST'
+  }
+
   tolgee.changeLanguage(userLanguage)
 
   return penpot.ui.sendMessage({
@@ -79,6 +91,8 @@ const checkUserPreferences = async () => {
       canDeepSyncTokens: canDeepSyncTokens === 'true',
       isSuggestedLanguageDisplayed: isSuggestedLanguageDisplayed === 'true',
       userLanguage: userLanguage,
+      isOnboardingRead: isOnboardingRead === 'true',
+      palettesView: palettesView,
     },
   })
 }
