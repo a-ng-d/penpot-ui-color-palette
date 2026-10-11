@@ -25,7 +25,7 @@ const createPalette = async (msg: Msg) => {
         rgb: sourceColor.rgb,
         id: uid(),
         hue: {
-          shift: 0,
+          shift: msg.data.exchange.shift.hue,
           isLocked: false,
         },
         chroma: {
