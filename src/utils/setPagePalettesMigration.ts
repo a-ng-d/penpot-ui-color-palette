@@ -42,10 +42,7 @@ const setPagePalettesMigration = () => {
         ) => ({
           ...color,
           hue: {
-            shift: normalizeShift(
-              color.hue?.shift ?? color.hueShifting,
-              'HUE'
-            ),
+            shift: normalizeShift(color.hue?.shift ?? color.hueShifting, 'HUE'),
             isLocked: color.hue?.isLocked || false,
           },
           chroma: {

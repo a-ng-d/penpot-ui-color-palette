@@ -121,7 +121,7 @@ const updateLocalTokens = async (id: string): Promise<string> => {
           }
         }
 
-        k > 0 ? i++ : i
+        if (k > 0) i++
         k = 0
       })
   else {
@@ -161,7 +161,7 @@ const updateLocalTokens = async (id: string): Promise<string> => {
           k++
         }
 
-        k > 0 ? j++ : j
+        if (k > 0) j++
         k = 0
       }
 
@@ -212,7 +212,7 @@ const updateLocalTokens = async (id: string): Promise<string> => {
             }
           }
 
-          k > 0 ? i++ : i
+          if (k > 0) i++
           k = 0
         })
     })
