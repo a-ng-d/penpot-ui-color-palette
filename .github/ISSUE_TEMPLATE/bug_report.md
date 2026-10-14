@@ -25,4 +25,4 @@ _If applicable, add screenshots to help explain your problem._
 
 **Useful information (please complete the following information):**
  - _Browser [e.g. chrome, safari, firefox, desktop app]_
- - _Link to a Figma document in which there is a copy of the UI Color Palette_
+ - _Link to a Penpot document in which there is a copy of the UI Color Palette_

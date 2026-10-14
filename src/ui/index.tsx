@@ -1,6 +1,6 @@
 import { render } from 'preact'
 import mixpanel from 'mixpanel-browser'
-import { commons, penpotColors, penpotTypes } from '@unoff/ui'
+import { commons, penpotModes, penpotTypes } from '@unoff/ui'
 import App from '@ui-lib/ui/App'
 import { initTolgee } from '@ui-lib/external/translation'
 import {
@@ -168,7 +168,7 @@ window.addEventListener('pluginMessage', ((event: MessageEvent) => {
 
 // Penpot Theme
 void commons
-void penpotColors
+void penpotModes
 void penpotTypes
 
 // Render

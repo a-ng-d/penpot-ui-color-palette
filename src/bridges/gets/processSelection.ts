@@ -112,14 +112,6 @@ const processSelection = () => {
             source: 'CANVAS',
             id: uid(),
             isRemovable: true,
-            hue: {
-              shift: 0,
-              isLocked: false,
-            },
-            chroma: {
-              shift: 100,
-              isLocked: false,
-            },
           })
         })
         selectionHandler('COLOR_SELECTED')

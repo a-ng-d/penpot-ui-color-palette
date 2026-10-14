@@ -14,6 +14,7 @@ import processSelection from './gets/processSelection'
 import jumpToPalette from './gets/jumpToPalette'
 import getPalettesOnCurrentPage from './gets/getPalettesOnCurrentPage'
 import deletePalette from './deletions/deletePalette'
+import createSimulation from './creations/createSimulation'
 import createPaletteFromRemote from './creations/createPaletteFromRemote'
 import createPaletteFromDuplication from './creations/createPaletteFromDuplication'
 import createPaletteFromDocument from './creations/createPaletteFromDocument'
@@ -53,6 +54,7 @@ const loadUI = async () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   penpot.ui.onMessage(async (msg: any) => {
     const path = msg.pluginMessage
+    console.log(path)
 
     const actions: { [key: string]: () => void } = {
       LOAD_DATA: () => {
@@ -217,6 +219,25 @@ const loadUI = async () => {
               },
             })
           }),
+      SIMULATE_PALETTE: async () =>
+        createSimulation(path.id)
+          .then((notice) => {
+            if (notice !== undefined)
+              penpot.ui.sendMessage({
+                type: 'POST_MESSAGE',
+                data: notice,
+              })
+          })
+          .catch((error) =>
+            penpot.ui.sendMessage({
+              type: 'POST_MESSAGE',
+              data: {
+                type: 'ERROR',
+                message: error.message,
+              },
+            })
+          )
+          .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' })),
       SYNC_LOCAL_TOKENS: async () =>
         createLocalTokens(path.id)
           .then(async (message) => [message, await updateLocalTokens(path.id)])
@@ -357,6 +378,7 @@ const loadUI = async () => {
           type: 'GET_PRICING',
           data: {
             licenseTrigger: 'ACTIVATE',
+            origin: path.data?.origin ?? 'UNKNOWN',
           },
         }),
       GET_LICENSE: async () =>
