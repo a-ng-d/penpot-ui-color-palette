@@ -148,6 +148,7 @@ const globalConfig: Config = {
       'COLORS_CHROMA_SHIFTING',
       'COLORS_HUE_SHIFTING',
       'PREVIEW_LOCK_SOURCE_COLORS',
+      'PREVIEW_SHADE_HEX',
       'COLORS_ADD',
       'THEMES_ADD',
       'EXPORT_TOKENS_DTCG',
