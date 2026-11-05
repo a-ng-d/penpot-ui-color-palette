@@ -1,6 +1,7 @@
 import setPagePalettesMigration from '../utils/setPagePalettesMigration'
 import globalConfig from '../global.config'
 import { tolgee } from '..'
+import { reportUsage } from './utils/usage'
 import updateThemes from './updates/updateThemes'
 import updateSettings from './updates/updateSettings'
 import updateScale from './updates/updateScale'
@@ -116,6 +117,9 @@ const loadUI = async () => {
         }),
       UPDATE_DOCUMENT: () =>
         updateDocument(path.view)
+          .then(({ pairs }) =>
+            reportUsage('UPDATE_DOCUMENT', { color: pairs.size })
+          )
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             penpot.ui.sendMessage({
@@ -194,17 +198,25 @@ const loadUI = async () => {
           }),
       SYNC_LOCAL_STYLES: async () =>
         createLocalStyles(path.id)
-          .then(async (message) => [message, await updateLocalStyles(path.id)])
-          .then((messages) =>
+          .then(async (created) => ({
+            created,
+            updated: await updateLocalStyles(path.id),
+          }))
+          .then(({ created, updated }) => {
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
                 type: 'INFO',
-                message: messages.join(tolgee.t('separator')),
+                message: [created.message, updated.message].join(
+                  tolgee.t('separator')
+                ),
                 timer: 10000,
               },
             })
-          )
+            reportUsage('SYNC_LOCAL_STYLES', {
+              style: created.count + updated.count,
+            })
+          })
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             penpot.ui.sendMessage({
@@ -221,12 +233,14 @@ const loadUI = async () => {
           }),
       SIMULATE_PALETTE: async () =>
         createSimulation(path.id)
-          .then((notice) => {
+          .then(({ notice, layers }) => {
             if (notice !== undefined)
               penpot.ui.sendMessage({
                 type: 'POST_MESSAGE',
                 data: notice,
               })
+            if (layers !== undefined)
+              reportUsage('SIMULATE_PALETTE', { layer: layers })
           })
           .catch((error) =>
             penpot.ui.sendMessage({
@@ -240,17 +254,25 @@ const loadUI = async () => {
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' })),
       SYNC_LOCAL_TOKENS: async () =>
         createLocalTokens(path.id)
-          .then(async (message) => [message, await updateLocalTokens(path.id)])
-          .then((messages) =>
+          .then(async (created) => ({
+            created,
+            updated: await updateLocalTokens(path.id),
+          }))
+          .then(({ created, updated }) => {
             penpot.ui.sendMessage({
               type: 'POST_MESSAGE',
               data: {
                 type: 'INFO',
-                message: messages.join(tolgee.t('separator')),
+                message: [created.message, updated.message].join(
+                  tolgee.t('separator')
+                ),
                 timer: 10000,
               },
             })
-          )
+            reportUsage('SYNC_LOCAL_TOKENS', {
+              token: created.count + updated.count,
+            })
+          })
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             penpot.ui.sendMessage({
@@ -267,6 +289,9 @@ const loadUI = async () => {
           }),
       CREATE_DOCUMENT: () =>
         createDocument(path.id, path.view)
+          .then(({ pairs }) =>
+            reportUsage('CREATE_DOCUMENT', { color: pairs.size })
+          )
           .finally(() => penpot.ui.sendMessage({ type: 'STOP_LOADER' }))
           .catch((error) => {
             penpot.ui.sendMessage({
