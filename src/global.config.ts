@@ -121,6 +121,7 @@ const globalConfig: Config = {
       'VIEWS_PALETTE',
       'VIEWS_PALETTE_WITH_PROPERTIES',
       'VIEWS_SHEET',
+      'USER_THEME',
       'HELP_ONBOARDING_AUTO_DISPLAY',
     ],
     [
