@@ -8,7 +8,9 @@ type TokenCatalog = any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TokenSet = any
 
-const updateLocalTokens = async (id: string): Promise<string> => {
+const updateLocalTokens = async (
+  id: string
+): Promise<{ message: string; count: number }> => {
   const rawPalette = penpot.currentPage?.getSharedPluginData(
     'uicp',
     `palette_${id}`
@@ -110,12 +112,12 @@ const updateLocalTokens = async (id: string): Promise<string> => {
             k++
           }
 
-          if (tokenMatch.value !== item.hex) {
+          if (tokenMatch.value?.toLowerCase() !== item.hex?.toLowerCase()) {
             tokenMatch.value = item.hex
             k++
           }
 
-          if (tokenMatch.description !== item.description) {
+          if ((tokenMatch.description ?? '') !== (item.description ?? '')) {
             tokenMatch.description = item.description
             k++
           }
@@ -201,12 +203,16 @@ const updateLocalTokens = async (id: string): Promise<string> => {
               k++
             }
 
-            if (tokenMatch.value !== themeItem.hex) {
+            if (
+              tokenMatch.value?.toLowerCase() !== themeItem.hex?.toLowerCase()
+            ) {
               tokenMatch.value = themeItem.hex
               k++
             }
 
-            if (tokenMatch.description !== themeItem.description) {
+            if (
+              (tokenMatch.description ?? '') !== (themeItem.description ?? '')
+            ) {
               tokenMatch.description = themeItem.description
               k++
             }
@@ -249,7 +255,7 @@ const updateLocalTokens = async (id: string): Promise<string> => {
     `${palette.base.name} - ${tolgee.t('events.tokensSynced')}`
   )
 
-  return messages.join(tolgee.t('separator'))
+  return { message: messages.join(tolgee.t('separator')), count: i + l }
 }
 
 export default updateLocalTokens

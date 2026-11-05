@@ -2,7 +2,9 @@ import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import LocalStyle from '../../canvas/LocalStyle'
 import { tolgee } from '../..'
 
-const createLocalStyles = async (id: string) => {
+const createLocalStyles = async (
+  id: string
+): Promise<{ message: string; count: number }> => {
   const rawPalette = penpot.currentPage?.getSharedPluginData(
     'uicp',
     `palette_${id}`
@@ -21,6 +23,8 @@ const createLocalStyles = async (id: string) => {
   const hasThemes = palette.libraryData.some(
     (item) => !item.id.includes('00000000000')
   )
+
+  let createdCount = 0
 
   const createdLocalStylesStatusMessage = await Promise.all(
     penpot.library.local.colors
@@ -80,12 +84,14 @@ const createLocalStyles = async (id: string) => {
       JSON.stringify(palette)
     )
 
+    createdCount = i
+
     return tolgee.t('info.createdLocalStyles', {
       count: i,
     })
   })
 
-  return createdLocalStylesStatusMessage
+  return { message: createdLocalStylesStatusMessage, count: createdCount }
 }
 
 export default createLocalStyles

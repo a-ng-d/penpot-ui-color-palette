@@ -6,13 +6,16 @@ import {
   ViewConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
 import { Board } from '@penpot/plugin-types'
+import { getLaidOutPairs, UsagePairs } from '../utils/usage'
 import setPaletteName from '../../utils/setPaletteName'
 import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import Sheet from '../../canvas/Sheet'
 import Palette from '../../canvas/Palette'
 import { tolgee } from '../..'
 
-const updateDocument = async (view: ViewConfiguration) => {
+const updateDocument = async (
+  view: ViewConfiguration
+): Promise<{ palette: FullConfiguration; pairs: UsagePairs }> => {
   const document = penpot.selection[0] as Board
   const id = document.getSharedPluginData('uicp', 'id')
   const themeId = document.getSharedPluginData('uicp', 'themeId')
@@ -92,7 +95,7 @@ const updateDocument = async (view: ViewConfiguration) => {
     `${palette.base.name} - ${tolgee.t('events.documentUpdated')}`
   )
 
-  return palette
+  return { palette, pairs: getLaidOutPairs([themeData]) }
 }
 
 export default updateDocument
