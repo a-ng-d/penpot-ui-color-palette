@@ -9,9 +9,6 @@
     "user:read",
     "library:read",
     "library:write",
-    "selection:read",
-    "file:read",
-    "file:write",
     "allow:downloads",
     "allow:localstorage"
   ]
