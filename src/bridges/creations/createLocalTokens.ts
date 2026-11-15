@@ -8,7 +8,9 @@ type TokenCatalog = any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TokenSet = any
 
-const createLocalTokens = async (id: string): Promise<string> => {
+const createLocalTokens = async (
+  id: string
+): Promise<{ message: string; count: number }> => {
   const rawPalette = penpot.currentPage?.getSharedPluginData(
     'uicp',
     `palette_${id}`
@@ -188,7 +190,7 @@ const createLocalTokens = async (id: string): Promise<string> => {
 
   if (i + j === 0) messages.push(tolgee.t('info.noChange'))
 
-  return messages.join(tolgee.t('separator'))
+  return { message: messages.join(tolgee.t('separator')), count: i }
 }
 
 export default createLocalTokens

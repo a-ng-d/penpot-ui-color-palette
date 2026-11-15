@@ -5,6 +5,7 @@ import {
   SourceColorConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
 import { Board, Fill, Shape } from '@penpot/plugin-types'
+import { countSimulationLayers } from '../creations/createSimulation'
 
 export let currentSelection: Array<Shape> = []
 export let previousSelection: Array<Shape> = []
@@ -16,6 +17,11 @@ const processSelection = () => {
 
   const selection: Array<Shape> = penpot.selection
   currentSelection = penpot.selection
+
+  penpot.ui.sendMessage({
+    type: 'SELECTION_MEASURED',
+    data: { layers: countSimulationLayers(selection) },
+  })
 
   const viableSelection: Array<SourceColorConfiguration> = []
 

@@ -3,11 +3,15 @@ import {
   FullConfiguration,
   ViewConfiguration,
 } from '@yelbolt/engine-ui-color-palette'
+import { getLaidOutPairs, getWorkingThemes, UsagePairs } from '../utils/usage'
 import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import Documents from '../../canvas/Documents'
 import { tolgee } from '../..'
 
-const createDocument = async (id: string, view: ViewConfiguration) => {
+const createDocument = async (
+  id: string,
+  view: ViewConfiguration
+): Promise<{ palette: FullConfiguration; pairs: UsagePairs }> => {
   const rawPalette = penpot.currentPage?.getSharedPluginData(
     'uicp',
     `palette_${id}`
@@ -18,10 +22,12 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
 
   const palette = JSON.parse(rawPalette) as FullConfiguration
 
+  const data = new Data(palette).makePaletteData()
+
   const documents = new Documents({
     base: palette.base,
     themes: palette.themes,
-    data: new Data(palette).makePaletteData(),
+    data,
     meta: palette.meta,
     view: view,
   })
@@ -33,7 +39,7 @@ const createDocument = async (id: string, view: ViewConfiguration) => {
     `${palette.base.name} - ${tolgee.t('events.documentCreated')}`
   )
 
-  return palette
+  return { palette, pairs: getLaidOutPairs(getWorkingThemes(data)) }
 }
 
 export default createDocument

@@ -293,11 +293,16 @@ const remapShadows = (
   return changed ? next : null
 }
 
-const remapText = (node: Text, match: Match) => {
+const remapText = (node: Text, match: Match): boolean => {
+  let hasChanged = false
+
   if (node.fills !== 'mixed') {
     const fills = remapFills(node.fills, match)
-    if (fills !== null) node.fills = fills
-    return
+    if (fills !== null) {
+      node.fills = fills
+      hasChanged = true
+    }
+    return hasChanged
   }
 
   const length = node.characters.length
@@ -305,8 +310,13 @@ const remapText = (node: Text, match: Match) => {
     const range = node.getRange(i, i + 1)
     if (range.fills === 'mixed') continue
     const fills = remapFills(range.fills, match)
-    if (fills !== null) range.fills = fills
+    if (fills !== null) {
+      range.fills = fills
+      hasChanged = true
+    }
   }
+
+  return hasChanged
 }
 
 const readTokens = (node: Shape) => {
@@ -317,23 +327,33 @@ const readTokens = (node: Shape) => {
   }
 }
 
-const remapShape = (node: Shape, match: Match) => {
+const remapShape = (node: Shape, match: Match): boolean => {
   const tokensBefore = readTokens(node)
+  let hasChanged = false
 
-  if (node.type === 'text') remapText(node as Text, match)
+  if (node.type === 'text') hasChanged = remapText(node as Text, match)
   else if (Array.isArray(node.fills)) {
     const fills = remapFills(node.fills as Array<Fill>, match)
-    if (fills !== null) node.fills = fills
+    if (fills !== null) {
+      node.fills = fills
+      hasChanged = true
+    }
   }
 
   if (Array.isArray(node.strokes)) {
     const strokes = remapStrokes(node.strokes as Array<Stroke>, match)
-    if (strokes !== null) node.strokes = strokes
+    if (strokes !== null) {
+      node.strokes = strokes
+      hasChanged = true
+    }
   }
 
   if (Array.isArray(node.shadows)) {
     const shadows = remapShadows(node.shadows as Array<Shadow>, match)
-    if (shadows !== null) node.shadows = shadows
+    if (shadows !== null) {
+      node.shadows = shadows
+      hasChanged = true
+    }
   }
 
   const tokensAfter = readTokens(node)
@@ -342,19 +362,49 @@ const remapShape = (node: Shape, match: Match) => {
       before: tokensBefore,
       after: tokensAfter,
     })
+
+  return hasChanged
 }
 
-const simulateShape = (node: Shape, match: Match) => {
-  if (node.hidden || node.blocked) return
+const simulateShape = (node: Shape, match: Match): number => {
+  if (node.hidden || node.blocked) return 0
 
-  remapShape(node, match)
+  let changed = remapShape(node, match) ? 1 : 0
 
   const children = (node as { children?: Array<Shape> }).children
   if (Array.isArray(children))
-    children.forEach((child) => simulateShape(child, match))
+    children.forEach((child) => {
+      changed += simulateShape(child, match)
+    })
+
+  return changed
 }
 
-const createSimulation = async (id: string) => {
+const countShape = (node: Shape): number => {
+  if (node.hidden || node.blocked) return 0
+
+  let count = 1
+
+  const children = (node as { children?: Array<Shape> }).children
+  if (Array.isArray(children))
+    children.forEach((child) => {
+      count += countShape(child)
+    })
+
+  return count
+}
+
+export const countSimulationLayers = (selection: ReadonlyArray<Shape>) =>
+  selection.reduce((total, node) => total + countShape(node), 0)
+
+type SimulationNotice = {
+  type: 'WARNING'
+  message: string
+}
+
+const createSimulation = async (
+  id: string
+): Promise<{ notice?: SimulationNotice; layers?: number }> => {
   const rawPalette = penpot.currentPage?.getSharedPluginData(
     'uicp',
     `palette_${id}`
@@ -366,8 +416,10 @@ const createSimulation = async (id: string) => {
   const selection = penpot.selection
   if (selection.length === 0)
     return {
-      type: 'WARNING' as const,
-      message: tolgee.t('warning.emptySelection'),
+      notice: {
+        type: 'WARNING' as const,
+        message: tolgee.t('warning.emptySelection'),
+      },
     }
 
   const palette = JSON.parse(rawPalette) as FullConfiguration
@@ -377,12 +429,17 @@ const createSimulation = async (id: string) => {
 
   const match = matcher.color
 
+  let layers = 0
   const block = penpot.history.undoBlockBegin()
   try {
-    selection.forEach((node) => simulateShape(node, match))
+    selection.forEach((node) => {
+      layers += simulateShape(node, match)
+    })
   } finally {
     penpot.history.undoBlockFinish(block)
   }
+
+  return { layers }
 }
 
 export default createSimulation

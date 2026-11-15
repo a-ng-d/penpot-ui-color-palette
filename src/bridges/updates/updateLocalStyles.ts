@@ -2,7 +2,9 @@ import { Data, FullConfiguration } from '@yelbolt/engine-ui-color-palette'
 import scheduleSaveVersion from '../../utils/scheduleSaveVersion'
 import { tolgee } from '../..'
 
-const updateLocalStyles = async (id: string) => {
+const updateLocalStyles = async (
+  id: string
+): Promise<{ message: string; count: number }> => {
   const rawPalette = penpot.currentPage?.getSharedPluginData(
     'uicp',
     `palette_${id}`
@@ -23,6 +25,8 @@ const updateLocalStyles = async (id: string) => {
   const hasThemes = palette.libraryData.some(
     (item) => !item.id.includes('00000000000')
   )
+
+  let count = 0
 
   const updatedLocalStylesStatusMessage = await Promise.all(
     penpot.library.local.colors
@@ -95,7 +99,7 @@ const updateLocalStyles = async (id: string) => {
               styleMatch.opacity = item.alpha
               j++
             }
-          } else if (styleMatch.color !== item.hex) {
+          } else if (styleMatch.color !== item.hex?.substring(0, 7)) {
             styleMatch.color = item.hex?.substring(0, 7)
             styleMatch.opacity = 1
             j++
@@ -105,6 +109,8 @@ const updateLocalStyles = async (id: string) => {
           j = 0
         }
       })
+
+    count = i + k
 
     messages.push(
       tolgee.t('info.updatedLocalStyles', {
@@ -124,7 +130,7 @@ const updateLocalStyles = async (id: string) => {
     return messages.join(tolgee.t('separator'))
   })
 
-  return updatedLocalStylesStatusMessage
+  return { message: updatedLocalStylesStatusMessage, count }
 }
 
 export default updateLocalStyles
